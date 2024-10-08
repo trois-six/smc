@@ -2,7 +2,7 @@
 
 **This package allows you to quickly and easily use the Stomshield SMC API via Go.**
 
-This package provides is based on the [OpenAPI specification](https://github.com/trois-six/smc/generator/source/smc-support-3.6-docs-api.zip) of the SMC API, provided by Stormshield.
+This package is based on the [OpenAPI specification](https://github.com/trois-six/smc/generator/source/smc-support-3.6-docs-api.zip) of the SMC API, provided by Stormshield.
 
 As you can see in the [generator/Makefile](generator/Makefile), the package is excluding a lot of the endpoints (cli|config|deployment|firewalls|misc|networkInterfaces|nsrpc|objects|proxy|QoS|routing|rules|rule-sets) of the API right now, as some part of the spec should be revised to be compatible with kin-openapi and oapi-codegen.
 
