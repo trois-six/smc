@@ -1,0 +1,26 @@
+---
+UnifiedConfigResponse:
+  type: object
+  properties:
+    autobackup:
+      type: boolean
+    _metainfos:
+      type: object
+    _certificates:
+      type: object
+    _firewalls:
+      type: object
+    _objects:
+      type: object
+    vpn:
+      type: object
+    _rules:
+      type: object
+    _folders:
+      type: object
+    _preferences:
+      type: object
+    _variables:
+      type: object
+    eventBus:
+      type: object

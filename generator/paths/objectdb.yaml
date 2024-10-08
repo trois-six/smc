@@ -1,0 +1,369 @@
+ObjectDb:
+  get:
+    tags:
+      - objects
+    summary: Retrieve list of objects
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/objects.yaml#/ObjectsListResponse
+      "401":
+        description: Unauthorized access
+  post:
+    tags:
+      - objects
+    summary: Create a new object
+    description: Only one parameter can be provided. Return the created object.
+    requestBody:
+      description: object data to add
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/objects.yaml#/ObjectsProperties
+          example:
+            name: fqdnObjExample
+            _type: fqdn
+            comment: created from swagger API
+            ipv4Address: 1.2.3.4
+            deployment:
+              mode: DEFAULT
+
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/objects.yaml#/ObjectProperties
+      "400":
+        description: >
+          `code` can be :
+
+          - EMISSINGIP: Object need at least one ip provided
+
+          - EMISSINGIPWITHPREFIX: Object need at least one ip with prefix provided
+
+          - EINVALIDIPV4: The ipV4 provided is invalid
+
+          - EINVALIDIPV6: The ipV6 provided is invalid
+
+          - EINVALIDCIDR: Invalid IP with CIDR
+
+          - EINVALIDRESOLUTIONTYPE: Invalid resolution type (Host object)
+
+          - EINVALIDOBJECTTYPE: Invalid group type
+
+          - EREFCOMPAT: Group members are incompatible
+
+          - EREFDUPLICATE: Duplicate in group members
+
+          - EINCOMPLETERANGE: Incomplete range (Ip-Range)
+
+          - EINVALIDRANGE: Invalid range (Ip-range)
+
+          - EINVALIDPORT: Invalid Port
+
+          - EINVALIDINTEGER: Invalid integer (protocol number or router custom gateway threshold)
+
+          - EINVALIDBOOLEAN: Invalid boolean (router activate all backups)
+
+          - EINVALIDARRAY: Invalid array (router principals)
+
+          - EINVALIDNONEMPTYARRAY: Empty array (router principals)
+
+          - EMISSINGTIME: Missing time data
+
+          - EINVALIDTIMESLOT: Invalid timeslot (time)
+
+          - EINVALIDWEEKDAY: Invalid weekday (time)
+
+          - EINVALIDYEARDAY: Invalid yearday (time)
+
+          - EINVALIDPERIOD: Invalid period (time)
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Accès non autorisé
+      "404":
+        description: |
+          `code` can be :
+          - EHANDLERNOTFOUND: Unknown object type
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: Object with same name already exists within its namespace (EDUPLICATE)
+Object:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: Object uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - objects
+    summary: Get a specific object
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/objects.yaml#/ObjectProperties
+      "401":
+        description: Unauthorized access
+      "404":
+        description: |
+          `code` can be :
+          - EOBJECTNOTFOUND: Unabled to find object
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  put:
+    tags:
+      - objects
+    summary: Object update
+    description: Only one parameter can be provided. Return the updated object.
+    requestBody:
+      description: object data to add
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/objects.yaml#/ObjectProperties
+          example:
+            name: fqdnObjExample
+            _type: fqdn
+            comment: updated from Swagger
+            ipv4Address: 5.6.7.8
+            deployment:
+              mode: DEFAULT
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/objects.yaml#/ObjectProperties
+      "400":
+        description: >
+          `code` can be :
+
+          - EMISSINGIP: Object need at least one ip provided
+
+          - EMISSINGIPWITHPREFIX: Object need at least one ip with prefix provided
+
+          - EINVALIDIPV4: The ipV4 provided is invalid
+
+          - EINVALIDIPV6: The ipV6 provided is invalid
+
+          - EINVALIDCIDR: Invalid IP with CIDR
+
+          - EINVALIDRESOLUTIONTYPE: Invalid resolution type (Host object)
+
+          - EINVALIDOBJECTTYPE: Invalid group type
+
+          - EREFCOMPAT: Group members are incompatible
+
+          - EREFDUPLICATE: Duplicate in group members
+
+          - EREFSELFINCLUSION: Group includes itself
+
+          - EINVALIDGROUPWITHRESERVEDOBJECTINTOPO: Group is used in a topology and cannot contain a reserved object
+
+          - EINCOMPLETERANGE: Incomplete range (Ip-Range)
+
+          - EINVALIDRANGE: Invalid range (Ip-range)
+
+          - EINVALIDPORT: Invalid Port
+
+          - EINVALIDINTEGER: Invalid integer (protocol number or router custom gateway threshold)
+
+          - EINVALIDBOOLEAN: Invalid boolean (router activate all backups)
+
+          - EINVALIDARRAY: Invalid array (router principals)
+
+          - EINVALIDNONEMPTYARRAY: Empty array (router principals)
+
+          - EMISSINGTIME: Missing time data
+
+          - EINVALIDTIMESLOT: Invalid timeslot (time)
+
+          - EINVALIDWEEKDAY: Invalid weekday (time)
+
+          - EINVALIDYEARDAY: Invalid yearday (time)
+
+          - EINVALIDPERIOD: Invalid period (time)
+
+          - EINVALIDLATENCY: Invalid latency (sla)
+
+          - EINVALIDJITTER: Invalid jitter (sla)
+
+          - EINVALIDLOSS: Invalid loss (sla)
+
+          - EINVALIDUNREACHABLE: Invalid unreachable (sla)
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Object is read-only (EREADONLY)
+      "404":
+        description: |
+          `code` can be :
+          - EHANDLERNOTFOUND: Unknown object type
+          - ENOTFOUND: Unabled to find object
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: Object with same name already exists within its namespace (EDUPLICATE)
+  delete:
+    tags:
+      - objects
+    summary: Delete an object
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Object is read-only (EREADONLY)
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND : Object not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` can be :
+          - ELOCK : If the object is used somewhere (group, topology, rule)
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+ObjectIsInScope:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: Object uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - objects
+    summary: Returns a result with isInFolderAdminScope equal to true if the object is in folder admin scope
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: object
+                  properties:
+                    isInFolderAdminScope:
+                      type: boolean
+                      example: true
+      "401":
+        description: Unauthorized access
+ObjectsImport:
+  post:
+    tags:
+      - objects
+    summary: Import some objects in a firewall
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              objects:
+                type: string
+                format: binary
+                description: A raw CSV file containing objects
+              filters:
+                type: string
+                description: Import only the given type (e.g host, fqdn, range...) of the objects described inside the file
+                example:
+                  - time
+                  - network
+              update:
+                type: boolean
+                description: Update existing objects
+    responses:
+      "200":
+        description: Import response
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/misc.yaml#/ImportResponse
+      "401":
+        description: Unauthorized
+ObjectDbByType:
+  parameters:
+    - name: type
+      in: path
+      required: true
+      description: Object type
+      schema:
+        type: string
+  get:
+    tags:
+      - objects
+    summary: Retrieve list of objects by type
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/objects.yaml#/ObjectsListResponse
+      "401":
+        description: Unauthorized access

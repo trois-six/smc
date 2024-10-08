@@ -1,0 +1,78 @@
+Routing:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      type: array
+      description: Routes list
+      items:
+        $ref: "#/RouteInfo"
+RouteAddUpdateBody:
+  type: object
+  description: Route add/update body information
+  allOf:
+    - type: object
+      properties:
+        uuid:
+          type: string
+          description: route uuid
+    - $ref: "#/RouteProperties"
+RouteInfo:
+  type: object
+  description: Route information
+  allOf:
+    - type: object
+      properties:
+        fwid:
+          type: string
+          description: Firewall uuid
+        uuid:
+          type: string
+          description: Route uuid
+    - $ref: "#/RouteProperties"
+RoutesInfo:
+  type: array
+  items:
+    type: object
+    description: all routes with their firewall
+    properties:
+      fwname:
+        type: string
+        description: firewall name
+      routes:
+        type: array
+        items:
+          $ref: "#/RouteProperties"
+RouteProperties:
+  type: object
+  properties:
+    routeType:
+      type: string
+      description: Route type
+      enum: [static, return, dynamic, default]
+    gateway:
+      type: string
+      description: Host or router uuid
+    destination:
+      type: string
+      description: Host or network or group uuid
+    iface:
+      type: string
+      description: interface uuid
+    comment:
+      type: string
+      description: Host  or router uuid
+    enabled:
+      type: boolean
+      description: If the route is activated or not
+    restart:
+      type: boolean
+      description: Restart dynamic routing when the firewall becomes active (high availability). Only for dynamic routeType
+    addNetwork:
+      type: boolean
+      description: Add IPv4 networks distributed via dynamic routing to the table of protected networks. Only for dynamic routeType
+    bird:
+      type: string
+      description: Bird config file content

@@ -1,0 +1,317 @@
+Queues:
+  get:
+    tags:
+      - QoS
+    summary: Get all the queues
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/queue.yaml#/MultipleQueuesResponse
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+  post:
+    tags:
+      - QoS
+    summary: Create a queue
+    requestBody:
+      required: true
+      description: the queue properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/queue.yaml#/QueueWithoutUuid
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/queue.yaml#/SingleQueueResponse
+      "400":
+        description: |
+          `code` may have :
+          - ERESERVEDNAME
+          - EFORBIDDENCHAR
+          - ECBQEMPTYBANDWIDTH
+          - EUNKNOWNBODYPARAMS
+          - EINVAL
+          - EINVALIDRANGE
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - errors
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - code
+                    properties:
+                      code:
+                        type: string
+                        example: "EINVALIDRANGE"
+                      message:
+                        type: string
+                        example: ""
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "409":
+        description: |
+          `code` can be :
+            - EDUPLICATE : Queue already exists in database with the same name
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+QueuesBulk:
+  delete:
+    tags:
+      - QoS
+    summary: Delete multiple queues
+    requestBody:
+      required: true
+      description: The list of queues to delete
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../definitions/queue.yaml#/Queue
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find queue
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` might be :
+          - ELOCK : if at least one queue is being used
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+Queue:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: Queue uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - QoS
+    summary: Get one queue
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/queue.yaml#/SingleQueueResponse
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find queue
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+  put:
+    tags:
+      - QoS
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Queue uuid
+        schema:
+          type: string
+    requestBody:
+      required: true
+      description: the queue properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/queue.yaml#/QueueWithoutUuid
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/queue.yaml#/SingleQueueResponse
+      "400":
+        description: |
+          `code` may have :
+          - ERESERVEDNAME
+          - EFORBIDDENCHAR
+          - ECBQEMPTYBANDWIDTH
+          - EUNKNOWNBODYPARAMS
+          - EINVAL
+          - EINVALIDRANGE
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - errors
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - code
+                    properties:
+                      code:
+                        type: string
+                        example: "EINVALIDRANGE"
+                      message:
+                        type: string
+                        example: ""
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find queue
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: |
+          `code` can be :
+            - EDUPLICATE : Queue already exists in database with the same name
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+  delete:
+    tags:
+      - QoS
+    summary: Remove one queue
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        description: Queue UUID
+        required: true
+    responses:
+      "200":
+        description: Success
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find queue
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` might be :
+          - ELOCK : if the queue is being used
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

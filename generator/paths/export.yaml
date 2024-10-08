@@ -1,0 +1,149 @@
+Objects:
+  get:
+    tags:
+      - export
+    summary: Download the export of the objects database data
+    responses:
+      "200":
+        description: Success
+        content:
+          text/csv:
+            schema:
+              description: The object export file in csv format
+              type: string
+      "401":
+        description: Unauthorized access
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+Supervision:
+  post:
+    tags:
+      - export
+    summary: Download the export of the supervision data
+    requestBody:
+      required: false
+      description: The filtered uuids of the firewalls to export
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/export.yaml#/FilteredIds
+    responses:
+      "200":
+        description: Success
+        content:
+          text/csv:
+            schema:
+              description: The supervision export file in csv format
+              type: string
+      "401":
+        description: Unauthorized access
+      "404":
+        description: The supervision export file does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+Variables:
+  get:
+    tags:
+      - variables
+      - export
+    summary: Download the export of the variables data
+    responses:
+      "200":
+        description: Success
+        content:
+          text/csv:
+            schema:
+              description: The variables export file in csv format
+              type: string
+      "401":
+        description: Unauthorized access
+      "404":
+        description: The variables export file does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+CustomProperties:
+  get:
+    tags:
+      - custom properties
+      - export
+    summary: Download the export of the custom properties data
+    responses:
+      "200":
+        description: Success
+        content:
+          text/csv:
+            schema:
+              description: The custom properties export file in csv format
+              type: string
+      "401":
+        description: Unauthorized access
+      "404":
+        description: The custom properties export file does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+SDWANSupervision:
+  get:
+    tags:
+      - export
+    summary: Export of the sdwan supervision data
+    parameters:
+      - name: filter
+        in: query
+        required: false
+        description: An ExtJS filters JSON array
+        schema:
+          type: string
+          example: '[{"property":"name","value":"gatewayA"}]'
+    responses:
+      "200":
+        description: Success
+        content:
+          text/csv:
+            schema:
+              description: A CSV file with the filtered supervision data
+              type: string
+      "401":
+        description: Unauthorized access
+      "404":
+        description: The supervision export file does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

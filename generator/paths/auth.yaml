@@ -1,0 +1,91 @@
+---
+Login:
+  post:
+    tags:
+      - auth
+    summary: Authenticate a user
+    requestBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            required:
+              - username
+            properties:
+              username:
+                type: string
+              password:
+                type: string
+              force:
+                type: boolean
+                default: false
+    responses:
+      "200":
+        description: Authentication succeeded
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/auth.yaml#/AuthResponse"
+      "401":
+        description: Unauthorized access (in case of a bad user/login)
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  description: False in case of a bad login / pwd
+                  default: false
+      "403":
+        description: Forbidden access (in case of a banned IP)
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - delay
+              properties:
+                success:
+                  type: boolean
+                  description: False in case of a banned IP
+                  default: false
+                delay:
+                  type: number
+                  description: duration in seconds of the ban time
+                  example: 120
+      "409":
+        description: Authentication conflict
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/auth.yaml#/ConflictErrorResponse"
+
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+
+Logout:
+  post:
+    tags:
+      - auth
+    summary: Logout the current user
+    responses:
+      "200":
+        description: Logout succeedeed
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized access

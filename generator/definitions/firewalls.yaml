@@ -1,0 +1,670 @@
+---
+FirewallPropertiesWithoutUuid:
+  type: object
+  required:
+    - name
+  properties:
+    name:
+      type: string
+      description: the firewall's name or base-station's name
+      example: someFirewallName
+    place:
+      type: string
+      example: Paris
+    parentFolderPath:
+      type: string
+      example: foo/bar/
+      description: Parent folder's path
+    refCertificates:
+      type: array
+      description: UUIDs list of the installed certificates for this firewall
+      items:
+        type: string
+        example: some-certificate-uuid-1
+    publicIpAddress:
+      type: string
+      example: "1.1.1.1"
+      description: The public IP address that will be used in configuration deployment
+    lockPublicIpToContactIp:
+      type: boolean
+      example: true
+      description: When true (default value), the public IP address will always worth the contact IP
+    vpnDefaultLocalAddress:
+      type: string
+      example: "network-any"
+      description: The uuid of reserved object or Any object used as vpn interface source
+    refVariables:
+      type: array
+      description: Custom variables for this firewall
+      items:
+        type: object
+        properties:
+          uuid:
+            type: string
+            example: var1
+            description: global variable UUID
+          value:
+            type: string
+            example: myValue
+            description: value for this firewall
+    folderTargetUuid:
+      type: string
+      example: "root-folder"
+      description: The uuid of a folder
+    refCustomProperties:
+      type: array
+      description: Custom properties for this firewall
+      items:
+        type: object
+        properties:
+          uuid:
+            type: string
+            example: prop1
+            description: global custom property UUID
+          value:
+            type: string
+            example: myValue
+            description: value for this firewall
+    isNetworkEnabled:
+      type: boolean
+      example: false
+FirewallPropertiesWithUuid:
+  required:
+    - uuid
+  allOf:
+    - $ref: "objects.yaml#/ObjectUuid"
+  properties:
+    name:
+      type: string
+      description: the firewall's name
+      example: someFirewallName
+    place:
+      type: string
+      example: Paris
+    parentFolder:
+      type: string
+      example: some-folder-uuid
+      description: Parent folder's UUID
+    parentFolderPath:
+      type: string
+      example: foo/bar/
+      description: Parent folder's path
+    refCertificates:
+      type: array
+      description: UUIDs list of the installed certificates for this firewall
+      items:
+        type: string
+        example: some-certificate-uuid-1
+    publicIpAddress:
+      type: string
+      example: "1.1.1.1"
+      description: The public IP address that will be used in configuration deployment
+    slsIpAddress:
+      type: string
+      example: "2.2.2.2"
+      description: The IP address of the firewall on the SLS server
+    lockPublicIpToContactIp:
+      type: boolean
+      example: true
+      description: When true (default value), the public IP address will always worth the contact IP
+    publicIpAddressHost:
+      type: string
+      example: "network-any"
+      description: The uuid of reserved object or Any object used in VPN topology if firewall is dynamic peer
+    vpnInterfaceSrc:
+      type: string
+      example: "network-any"
+      description: The uuid of reserved object or Any object used as vpn interface source
+    refVariables:
+      type: array
+      description: Custom variables for this firewall
+      items:
+        type: object
+        properties:
+          uuid:
+            type: string
+            example: var1
+            description: global variable UUID
+          value:
+            type: string
+            example: myValue
+            description: value for this firewall
+    refCustomProperties:
+      type: array
+      description: Custom properties for this firewall
+      items:
+        type: object
+        properties:
+          uuid:
+            type: string
+            example: prop1
+            description: global custom property UUID
+          value:
+            type: string
+            example: myValue
+            description: value for this firewall
+    paygExpiration:
+      type: string
+      example: "2018-12-25"
+      description: The expiration date of the pay as you go (only for PAYG)
+    autoSizingCurMem:
+      type: integer
+      example: 1024
+      description: The current memory of the virtual machine (only for PAYG)
+    autoSizingModel:
+      type: string
+      example: "EVA1"
+      description: The current model of the virtual machine (only for PAYG)
+    isNetworkEnabled:
+      type: boolean
+      example: false
+    lacp:
+      type: boolean
+      example: false
+FirewallPropertiesWithStatusInformation:
+  allOf:
+    - $ref: "#/FirewallPropertiesWithUuid"
+    - type: object
+      properties:
+        licenseStatus:
+          type: object
+          description: |
+            The license status for a firewall. It's represented as an object having a status, the maximum number of connnected firewall allowed by the license, and the number of days before the license expiration date.
+          properties:
+            status:
+              type: string
+              enum:
+                - "LICENSE_IS_OK"
+                - "LICENSE_TOOEARLY"
+                - "LICENSE_EXPIRED"
+                - "LICENSE_WARN"
+                - "LICENSE_FIREWALL_MAX"
+            remainingDays:
+              type: integer
+              description: Number of days before the license expiration date
+            firewallsMax:
+              type: integer
+              description: Maximum number of connected firewalls allowed by the license
+        nsrpcIneligibilityReasons:
+          type: array
+          description: |
+            Ineligibility reason codes for the execution of CLI SNS scripts inside a firewall:
+              - `unsupported-fw-version` : If the firewall version is below the minimal version for the functionnality (2.4.0)
+              - `disconnected-fw` : If the firewall is unconnected
+              - `is-base-station` : Bases station are not inelibility
+          example:
+            ["unsupported-fw-version", "disconnected-fw", "is-base-station"]
+          items:
+            type: string
+            enum:
+              - "unsupported-fw-version"
+              - "disconnected-fw"
+              - "is-base-station"
+        serial:
+          type: string
+          description: Firewall's serial number
+          example: U70SXA02D0010A7
+        version:
+          type: string
+          description: Firewall's version
+          example: 2.4.0
+        confRevision:
+          type: string
+          example: "00001"
+          description: The current confRevision
+        currentDeploymentConfRevision:
+          type: string
+          example: "00002"
+          description: The confRevision number being deployed if firewall is in need Reboot
+        status:
+          type: string
+          description: Firewall's status (operational / nonCritical / critical / disconnected / provisioned)
+          example: operational
+        lastConnection:
+          type: string
+          format: date
+          description: Firewall's last connexion date
+          example: 2015-03-17T16:33:01Z
+        endMaintenanceDate:
+          type: string
+          description: End of maintenance date
+          example: 2042-03-17T00:00:00.000Z
+        licenseCapabilities:
+          type: object
+          description: Firewall license options
+          properties:
+            vulnerabilityManager:
+              type: string
+              description: End Stormshield Vulnerability Manager license validity
+              example: 2042-03-17T00:00:00.000Z
+            advancedAntivirus:
+              type: string
+              description: End of Advanced Antivirus license validity
+              example: 2042-03-17T00:00:00.000Z
+            breachFighterSandboxing:
+              type: string
+              description: End of Breach Fighter Sandboxing license validity
+              example: 2042-03-17T00:00:00.000Z
+            extendedWebControl:
+              type: string
+              description: End of Extended Web Control license validity
+              example: 2042-03-17T00:00:00.000Z
+            industrial:
+              type: string
+              description: End of Industrial license validity
+              example: 2042-03-17T00:00:00.000Z
+        isBaseStation:
+          type: boolean
+          example: false
+        ha:
+          type: boolean
+          description: true if the Firewall is in high availability
+          example: false
+        healthIndicators:
+          type: object
+          description: |
+            The health indicators for a firewall.
+          properties:
+            halink:
+              $ref: "#/HealthIndicator"
+            fan:
+              $ref: "#/HealthIndicator"
+            cpu:
+              $ref: "#/HealthIndicator"
+            mem:
+              $ref: "#/HealthIndicator"
+            disk:
+              $ref: "#/HealthIndicator"
+            raid:
+              $ref: "#/HealthIndicator"
+            power:
+              $ref: "#/HealthIndicator"
+            cpu_temp:
+              $ref: "#/HealthIndicator"
+            cert:
+              $ref: "#/HealthIndicator"
+            crl:
+              $ref: "#/HealthIndicator"
+            configuration_validation:
+              $ref: "#/HealthIndicator"
+            deployment_need_reboot:
+              $ref: "#/HealthIndicator"
+            local_modification:
+              $ref: "#/HealthIndicator"
+            vulnerabilityManager:
+              $ref: "#/HealthIndicator"
+            extendedWebControl:
+              $ref: "#/HealthIndicator"
+            advancedAntivirus:
+              $ref: "#/HealthIndicator"
+            breachFighterSandboxing:
+              $ref: "#/HealthIndicator"
+            industrial:
+              $ref: "#/HealthIndicator"
+            router:
+              $ref: "#/HealthIndicator"
+        systemNodeName:
+          type: string
+          description: The system name of the node
+        networkNeedSync:
+          type: boolean
+          example: false
+          description: Indicates wether SNS network data has to be synchronized
+FirewallsListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/FirewallPropertiesWithStatusInformation"
+HealthIndicator:
+  type: string
+  enum:
+    - "Good"
+    - "Minor"
+    - "Major"
+    - "Unknown"
+    - "N/A"
+FirewallDynaInfoResponse:
+  type: array
+  items:
+    type: object
+    description: Status of firewall
+    properties:
+      timestamp:
+        type: string
+        format: date
+        description: Firewall's connection timestamp
+        example: 2015-03-17T16:33:01Z
+      cpu:
+        type: number
+        description: Firewall's cpu
+        example: 2
+      ram:
+        type: number
+        description: Firewall's ram
+        example: 2
+      disk:
+        type: number
+        description: Firewall's disk space
+        example: 200
+FirewallHaInfoResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      type: object
+      properties:
+        active:
+          type: boolean
+          description: The firewall ha mode is active
+          example: true
+        passive:
+          type: boolean
+          description: The firewall ha mode is passive
+          example: false
+FirewallsImportSuccess:
+  description: import firewalls success response
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      $ref: "#/FirewallsImportSummary"
+FirewallsImportSuccessWithPackGen:
+  description: import firewalls' success response with at least one generated package
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      $ref: "#/FirewallsImportSummaryWithPackGeneration"
+FirewallsImportSummary:
+  description: import summary for firewalls
+  type: object
+  properties:
+    import:
+      type: object
+      properties:
+        created:
+          type: integer
+        updated:
+          type: integer
+        error:
+          type: integer
+    generate:
+      type: object
+      properties:
+        success:
+          type: integer
+        error:
+          type: integer
+    logs:
+      type: array
+      items:
+        type: object
+        properties:
+          level:
+            type: string
+            enum:
+              - "info"
+              - "warn"
+              - "error"
+          message:
+            type: string
+          ctx:
+            type: object
+            properties:
+              lineNumber:
+                type: integer
+FirewallsImportSummaryWithPackGeneration:
+  description: import summary for firewall with a specific uuid used to retrieve/remove connecting packages archive
+  allOf:
+    - $ref: "#/FirewallsImportSummary"
+    - type: object
+      properties:
+        packagesArchiveUuid:
+          type: string
+          example: 1
+          description: ID to the created sub-resource (to retrieve/remove packages)
+FirewallImportErrorResponse:
+  description: Error while importing firewalls
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: false
+    errors:
+      type: array
+      items:
+        type: object
+        properties:
+          message:
+            type: string
+FirewallMonitorRouteResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    total:
+      type: integer
+      description: The total count of records known by the server (in case of pagination)
+      example: 10
+    result:
+      type: array
+      items:
+        allOf:
+          - $ref: "objects.yaml#/RouterPropertiesWithoutUuid"
+          - type: object
+            properties:
+              id:
+                type: string
+                example: "ff-00"
+                description: "ID uses to build tree"
+              uuid:
+                type: string
+                example: "ff-00"
+                description: "Firewall UUID"
+              name:
+                type: string
+                example: "FW1"
+                description: "Firewall name"
+              folderName:
+                type: string
+                example: "My SMC"
+                description: "Parent folder name"
+              leaf:
+                type: boolean
+                description: "Technical information uses to build tree"
+              expanded:
+                type: boolean
+                description: "Indicate if the branch is collapse or not"
+              loaded:
+                type: boolean
+                description: "Technical information uses to build tree"
+              _type:
+                type: string
+                enum:
+                  - "gateway"
+                  - "router"
+                description: "Indicates items type"
+              parentId:
+                type: string
+                description: "Parent ID to build tree"
+              status:
+                type: string
+                enum:
+                  - "not-available"
+                  - "available"
+                  - "active"
+                  - "active-degraded"
+                  - "available-degraded"
+                  - "no-data"
+                description: "Router status"
+              gatewayAddr:
+                type: string
+                example: "192.168.1.1"
+                description: "Gateway address"
+              gatewayType:
+                type: string
+                example: "Principal"
+                description: "Indicate if it is the principal gateway or the failover"
+              quality:
+                type: string
+                example: "UNDEF"
+                description: "Gateway quality state"
+              rtid:
+                type: number
+                example: 1
+                description: "Router ID"
+              usagePrct:
+                type: number
+                example: 0.0
+                description: "Packet percentage to pass through this gateway than others gateways"
+              latency:
+                type: number
+                example: 0
+                description: "Network latency compute by SNS in ms"
+              jitter:
+                type: number
+                example: 0
+                description: "Network jitter compute by SNS in ms"
+              loss:
+                type: number
+                example: 2
+                description: "Packet loss percentage"
+              unreachable:
+                type: number
+                example: 0
+                description: "Unreachable percentage"
+              ipv:
+                type: number
+                example: 4
+                description: "IP version"
+              stateLastChange:
+                type: string
+                description: "Date of last status change"
+              lastChecked:
+                type: string
+                description: "Date of last checked"
+              routeType:
+                type: string
+                example: "PBR"
+                description: "Route type"
+
+FirewallMonitorRouteExportResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      type: array
+      items:
+        type: object
+        properties:
+          folderName:
+            type: string
+            example: "My SMC"
+            description: "Parent folder name"
+          firewallName:
+            type: string
+            example: "my_firewall"
+            description: "Parent firewall name"
+          routerName:
+            type: string
+            example: "my_router"
+            description: "Parent router name"
+          slaLatency:
+            type: number
+            example: 0
+            description: "Network latency compute by SNS in ms"
+          slaJitter:
+            type: number
+            example: 0
+            description: "Network jitter compute by SNS in ms"
+          slaLoss:
+            type: number
+            example: 2
+            description: "Packet loss percentage"
+          slaUnreachable:
+            type: number
+            example: 0
+            description: "Unreachable percentage"
+          monitor:
+            type: string
+            example: "icmp"
+            description: "SDWAN supervision method"
+          rtid:
+            type: number
+            example: 1
+            description: "Router ID"
+          ipv:
+            type: number
+            example: 4
+            description: "IP version"
+          gatewayName:
+            type: string
+            example: "my_gateway"
+            description: "Gateway name"
+          gatewayRouterType:
+            type: string
+            example: "my_gateway"
+            description: "Gateway name"
+          gatewayAddr:
+            type: string
+            example: "192.168.1.1"
+            description: "Gateway address"
+          gatewayType:
+            type: string
+            example: "Default route"
+            description: "PBR or Default route"
+          sla:
+            type: number
+            description: "1 if a sla is assigned, 0 instead"
+          gatewayLatency:
+            type: number
+            example: 0
+            description: "Network latency compute by SNS in ms"
+          gatewayJitter:
+            type: number
+            example: 0
+            description: "Network jitter compute by SNS in ms"
+          gatewayLoss:
+            type: number
+            example: 2
+            description: "Packet loss percentage"
+          gatewayUnreachable:
+            type: number
+            example: 0
+            description: "Unreachable percentage"
+          state:
+            type: string
+            enum:
+              - "ACTIVE"
+              - "AVAILABLE"
+              - "ACTIVE, DEGRADED"
+              - "AVAILABLE, DEGRADED"
+              - "NOT AVAILABLE"
+              - "NO SUPERVISON DATA"
+            description: "Gateway status"
+          usagePrct:
+            type: number
+            example: 0.0
+            description: "Packet percentage to pass through this gateway than others gateways"
+          activeLastChange:
+            type: string
+            description: "Date of last active change"
+          lastChecked:
+            type: string
+            description: "Date of last checked"
+          stateLastChange:
+            type: string
+            description: "Date of last status change"

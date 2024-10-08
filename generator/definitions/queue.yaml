@@ -1,0 +1,71 @@
+---
+SingleQueueResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/Queue"
+MultipleQueuesResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/Queue"
+QueueWithoutUuid:
+  description: A custom queue
+  type: object
+  properties:
+    name:
+      type: string
+      example: myNewQueue
+    comment:
+      type: string
+      example: someComment
+    type:
+      type: string
+      enum:
+        - "PRIQ"
+        - "CBQ"
+        - "MONQ"
+      example: CBQ
+    priority:
+      type: number
+      minimum: 0
+      maximum: 7
+    minBandwidth:
+      type: number
+      minimum: 0
+      maximum: 999999999
+      example: 10
+    maxBandwidth:
+      type: number
+      minimum: 0
+      maximum: 999999999
+      example: 1000
+    minReverseBandwidth:
+      type: number
+      minimum: 0
+      maximum: 999999999
+      example: 10
+    maxReverseBandwidth:
+      type: number
+      minimum: 0
+      maximum: 999999999
+      example: 1000
+  required:
+    - name
+    - type
+Queue:
+  description: A queue
+  allOf:
+    - $ref: "#/QueueWithoutUuid"
+    - type: object
+      properties:
+        uuid:
+          type: string
+      required:
+        - uuid

@@ -1,0 +1,326 @@
+IfacesAssignations:
+  get:
+    tags:
+      - QoS
+    summary: Get all the ifaces assignations
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/ifaces-assignations.yaml#/MultipleIfacesAssignationsResponse
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+  post:
+    tags:
+      - QoS
+    summary: Create an iface assignation
+    requestBody:
+      required: true
+      description: the iface assignation properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/ifaces-assignations.yaml#/IfaceAssignation
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/ifaces-assignations.yaml#/SingleIfaceAssignationResponse
+      "400":
+        description: |
+          `code` may have :
+          - EUNKNOWNBODYPARAMS
+          - EINVAL
+          - EWRONGIFACETYPE
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - errors
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - code
+                    properties:
+                      code:
+                        type: string
+                        example: "EWRONGIFACETYPE"
+                      message:
+                        type: string
+                        example: ""
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "403":
+        description: |
+          `code` may have :
+          - ENETWORKUNHANDLED : Unable to update a iface assignation for a firewall with the network configuration unhandled.`
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find iface assignation
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: |
+          `code` can be :
+            - EDUPLICATE : Iface assignation already exists in database for this iface
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+IfacesAssignationsBulk:
+  delete:
+    tags:
+      - QoS
+    summary: Delete multiple ifaces assignations
+    requestBody:
+      required: true
+      description: The list of ifaces assignations to delete
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../definitions/ifaces-assignations.yaml#/IfaceAssignation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "403":
+        description: |
+          `code` may have :
+          - ENETWORKUNHANDLED : Unable to update a iface assignation for a firewall with the network configuration unhandled.`
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find iface assignation
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+IfaceAssignation:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: Iface assignation uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - QoS
+    summary: Get one iface assignation
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/ifaces-assignations.yaml#/SingleIfaceAssignationResponse
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find iface assignation
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+  put:
+    tags:
+      - QoS
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Iface assignation uuid
+        schema:
+          type: string
+    requestBody:
+      required: true
+      description: the iface assignation properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/ifaces-assignations.yaml#/IfaceAssignationWithoutIface
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/ifaces-assignations.yaml#/SingleIfaceAssignationResponse
+      "400":
+        description: |
+          `code` may have :
+          - EUNKNOWNBODYPARAMS
+          - EINVAL
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - errors
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - code
+                    properties:
+                      code:
+                        type: string
+                        example: "EINVAL"
+                      message:
+                        type: string
+                        example: ""
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "403":
+        description: |
+          `code` may have :
+          - ENETWORKUNHANDLED : Unable to update a iface assignation for a firewall with the network configuration unhandled.`
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find iface assignation
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - QoS
+    summary: Remove one iface assignation
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        description: Iface assignation UUID
+        required: true
+    responses:
+      "200":
+        description: Success
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "403":
+        description: |
+          `code` may have :
+          - ENETWORKUNHANDLED : Unable to update a iface assignation for a firewall with the network configuration unhandled.`
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find iface assignation
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

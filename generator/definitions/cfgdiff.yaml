@@ -1,0 +1,64 @@
+---
+CfgDiffStatusResult:
+  type: object
+  properties:
+    sucess:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/CfgDiffStatusResultData"
+
+CfgDiffStatusResultData:
+  type: object
+  properties:
+    uuid:
+      type: string
+      description: Firewall uuid
+      example: "75532250-c878-42f1-8871-bafa68e944d4"
+    diffStatus:
+      type: string
+      description: "the status of the configuration differential"
+      example: "unchanged"
+
+CfgDiffResult:
+  type: object
+  properties:
+    sucess:
+      type: boolean
+      example: true
+    result:
+      type: object
+      properties:
+        diff:
+          type: string
+          description: Return from command diff applied on last deployed configuration and currently deployable configuration
+          example: |
+            diff -r -x slotinfo -x CA.cert.pem -N --suppress-blank-empty --ignore-blank-lines -I '^#' -U 3 --text /tmp/Synapse/sns/sns-2/current-deployed-configuration/usr/Firewall/ConfigFiles/Global/Filter/01 /tmp/Synapse/sns/sns-2/tmpdir/usr/Firewall/ConfigFiles/Global/Filter/01
+            --- /tmp/Synapse/sns/sns-2/current-deployed-configuration/usr/Firewall/ConfigFiles/Global/Filter/01	1970-01-01 00:00:00.000000000 +0000
+            +++ /tmp/Synapse/sns/sns-2/tmpdir/usr/Firewall/ConfigFiles/Global/Filter/01	2018-05-31 12:36:29.000000000 +0000
+            @@ -0,0 +1,10 @@
+            +[Filter]
+            +separator color="CEE8DF" comment="My SMC (high priority)" collapse="0"
+            +separator color="c0c0c0" comment="Some separator" collapse="0"
+            +pass from Any to Any
+            +separator color="c0c0c0" comment="Separator- rule grouping" collapse="0"
+            +off block from Any to Any
+            +separator color="5795CA" comment="sns-2" collapse="0"
+            +block from Any to Any
+            +
+            +[NAT]
+        lastDeployedCfgBirthDate:
+          type: string
+          description: The date when the last deployed configuration was generated
+        deployableCfgBirthDate:
+          type: string
+          description: The date at which the current deployable configuration was generated
+        revisionNumber:
+          type: integer
+          description: Revision number of the last deployed configuration
+          example: "00001"
+        fileName:
+          type: string
+          description: filename for download
+          example: "sns-name_20010203_040506.diff"

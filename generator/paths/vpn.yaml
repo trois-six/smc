@@ -1,0 +1,555 @@
+---
+DefaultAddressPool:
+  get:
+    tags:
+      - topologies
+    summary: Get default address pool
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                result:
+                  $ref: "../definitions/topologies.yaml#/DefaultAddressPool"
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - topologies
+    summary: Set default address pool
+    requestBody:
+      description: Default address pool
+      content:
+        application/json:
+          schema:
+            $ref: "../definitions/topologies.yaml#/DefaultAddressPool"
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                result:
+                  $ref: "../definitions/topologies.yaml#/DefaultAddressPool"
+      "400":
+        description: >
+          `code` can be:
+            - EINVALIDSUBNET : Address pool must be in a private subnet
+            - ENOADDRESSESAVAILABLE: No addresses available in pool
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+
+AuthAlgorithms:
+  get:
+    tags:
+      - algorithms
+    summary: Get all auth algorithms
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/algorithms.yaml#/AuthAlgorithmsList
+      "401":
+        description: Unauthorized
+EncAlgorithms:
+  get:
+    tags:
+      - algorithms
+    summary: Get all enc algorithms
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/algorithms.yaml#/EncAlgorithmsList
+
+EncryptionProfiles:
+  get:
+    tags:
+      - encryption profiles
+    summary: Get the list of encryption profiles
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/encryptionProfiles.yaml#/EncryptionProfileList
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - encryption profiles
+    summary: Create an encryption profile
+    requestBody:
+      description: Encryption profile's properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/encryptionProfiles.yaml#/EncryptionProfilePropertiesWithoutUuid
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/encryptionProfiles.yaml#/EncryptionProfileProperties
+      "409":
+        description: |
+          `code` can be :
+            - EDUPLICATE : Encryption profile already exists in database with the same name
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "422":
+        description: |
+          `code` can be :
+            - EINVAL : IPSec enc algorithm is not valid
+            - EINVAL : IPSec auth algorithm is not valid
+            - EINVAL : IPSec lifetime should be greater than 30
+            - EINVAL : IPSec pfs is not valid
+            - EINVAL : IKE lifetime should be greater than 40
+            - EINVAL : IKE defaultdh is not valid
+            - EINVAL : IKE enc algorithm is not valid
+            - EINVAL : IKE auth algorithm is not valid
+            - EBUILTIN : Unable to create builtin encryption profile.
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+EncryptionProfile:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: EncryptionProfile UUID
+      schema:
+        type: string
+  get:
+    tags:
+      - encryption profiles
+    summary: Get an encryption profile by its UUID
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/encryptionProfiles.yaml#/EncryptionProfileProperties
+      "401":
+        description: Unauthorized access
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND : Unable to find encryption profile
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  put:
+    tags:
+      - encryption profiles
+    summary: Encryption profile update
+    requestBody:
+      description: encryption profile data to update
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/encryptionProfiles.yaml#/EncryptionProfileProperties
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/encryptionProfiles.yaml#/EncryptionProfileProperties
+      "401":
+        description: Unauthorized access
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND : Unable to find encryption profile
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: |
+          `code` can be :
+            - EDUPLICATE : Encryption profile already exists in database with the same name
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "422":
+        description: |
+          `code` can be :
+            - EINVAL : IPSec enc algorithm is not valid
+            - EINVAL : IPSec auth algorithm is not valid
+            - EINVAL : IPSec lifetime should be greater than 30
+            - EINVAL : IPSec pfs is not valid
+            - EINVAL : IKE lifetime should be greater than 40
+            - EINVAL : IKE defaultdh is not valid
+            - EINVAL : "foo" is not a valid defaultprf
+            - EINVAL : IKE enc algorithm is not valid
+            - EINVAL : IKE auth algorithm is not valid
+            - EBUILTIN : Unable to update builtin encryption profile.
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - encryption profiles
+    summary: Delete an encryption profile
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized access
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND : Unable to find encryption profile
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "422":
+        description: |
+          `code` can be :
+          - EBUILTIN : Unable to delete builtin encryption profile.
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` can be :
+          - ELOCK : Unable to delete a used encryption profile
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+Tunnels:
+  get:
+    tags:
+      - tunnels
+    summary: Get the list of VPN tunnels
+    description: Return the list of VPN tunnels
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/tunnels.yaml#/TunnelsListResponse
+      "401":
+        description: Unauthorized
+
+Topologies:
+  get:
+    tags:
+      - topologies
+    summary: Retrieve the list of topologies
+    description: Return the list of topologies
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/topologies.yaml#/TopologiesListResponse
+      "401":
+        description: Unauthorized access
+  post:
+    tags:
+      - topologies
+    summary: Create new topology
+    requestBody:
+      description: topology data for creation
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/topologies.yaml#/TopologyPropertiesWithoutUuid
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/topologies.yaml#/TopologyPropertiesWithUuid
+      "400":
+        description: >
+          `code` can be :
+          - EINVAL : Invalid topology type (= {"mesh", "site-to-site", "star"})
+          - EINVAL : Encryption profile does not exists
+          - EINVAL : Exactly two endpoints must be provided to a link
+          - EINVAL : A valid {object,peer} couple must be provided
+          - EINVAL : A referenced object does no exist
+          - EINVAL : Link peers must be instances of: ["Firewall", "Host"]
+          - EINVAL : Link objects must be instances of: ["Host", "Group", "Network"]
+          - EINVAL : Link peers must be different
+          - EINVAL : At least one firewall must be set as link peer
+          - EINVAL : At least one firewall has never been connected to SMC
+          - EINVAL : Link objects cannot be service groups
+          - EINVAL : Topology center is not a firewall
+          - EINVAL : Topology center is not among links peers
+          - EINVALIDNONEMPTYARRAY : Topology must contain at least one link
+          - EDUPLICATELINK: Link already exists in another topology. The `ctx` property contains the `topology` uuid and the `endpoints` of the duplicate link
+          - EDIFFERENTIKEVERSION: A firewall cannot have different IKE version from several topologies. The `ctx` property contains the `firewall` uuid
+          - EINVALIDRESERVEDOBJECTINTOPO: A reserved object cannot be used in a topology
+          - EINVALIDGROUPWITHRESERVEDOBJECTINTOPO: A group containing a reserved object cannot be used in a topology
+          - EINVALIDSUBNET : Address pool must be in a private subnet
+          - EUNSUFFICIENTADDRESSES: Not enough addresses available in the defined pool
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized action
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ForbiddenBecauseOfUserScopeResponse
+      "409":
+        description: Topology already exists in database with the same name
+
+Topology:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: Topology UUID
+      schema:
+        type: string
+  get:
+    tags:
+      - topologies
+    summary: Get a topology by its UUID
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/topologies.yaml#/TopologyPropertiesWithUuid
+      "401":
+        description: Unauthorized access
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND : Unable to find topology
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  put:
+    tags:
+      - topologies
+    summary: Topology update
+    requestBody:
+      description: topology data to update
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/topologies.yaml#/TopologyPropertiesWithUuid
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/topologies.yaml#/TopologyPropertiesWithUuid
+      "400":
+        description: >
+          `code` can be :
+
+          - EINVAL : Invalid topology type (= {"mesh", "site-to-site", "star"})
+
+          - EINVAL : Encryption profile does not exists
+
+          - EINVAL : Exactly two endpoints must be provided to a link
+
+          - EINVAL : A valid {object,peer} couple must be provided
+
+          - EINVAL : A referenced object does no exist
+
+          - EINVAL : Link peers must be instances of: ["Firewall", "Host"]
+
+          - EINVAL : Link objects must be instances of: ["Host", "Group", "Network"]
+
+          - EINVAL : Link peers must be different
+
+          - EINVAL : At least one firewall must be set as link peer
+
+          - EINVAL : At least one firewall has never been connected to SMC
+
+          - EINVAL : Link objects cannot be service groups
+
+          - EINVAL : Topology center is not a firewall
+
+          - EINVAL : Topology center is not among links peers
+
+          - EINVALIDNONEMPTYARRAY : Topology must contain at least one link
+
+          - EDUPLICATELINK: Link already exists in another topology. The `ctx` property contains the `topology` uuid and the `endpoints` of the duplicate link
+
+          - EDIFFERENTIKEVERSION: A firewall cannot have different IKE version from several topologies. The `ctx` property contains the `firewall` uuid
+
+          - EINVALIDRESERVEDOBJECTINTOPO: A reserved object cannot be used in a topology
+
+          - EINVALIDGROUPWITHRESERVEDOBJECTINTOPO: A group containing a reserved object cannot be used in a topology
+
+          - EOBJECTSINUSE: Some of the removed peer's deduced objects are in use.
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized action
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ForbiddenBecauseOfUserScopeResponse
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND : Unable to find topology
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: Topology already exists in database with the same name
+  delete:
+    tags:
+      - topologies
+    summary: Delete a topology
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "400":
+        description: |
+          `code` can be :
+          - EINVAL : Missing UUID
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized action
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ForbiddenBecauseOfUserScopeResponse
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND : Unable to find topology
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+TopologyExport:
+  get:
+    tags:
+      - topologies
+    summary: Export a topology into a CSV file
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Topology UUID
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          text/csv:
+            schema:
+              description: The topology export file in CSV format
+              type: string
+      "401":
+        description: Unauthorized access
+      "404":
+        description: The topology does not exist (wrong uuid for instance)
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: |
+          `code` can be :
+          - EONLYROUTEBASED : Only route based topology can be exported
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

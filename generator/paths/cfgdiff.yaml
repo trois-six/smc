@@ -1,0 +1,101 @@
+CfgDiff:
+  get:
+    tags:
+      - cfgdiff
+    summary: Retrieve configuration differences for given firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall uuid
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/cfgdiff.yaml#/CfgDiffResult
+      "401":
+        description: Unauthorized access
+      "423":
+        description: Locked Access
+      "500":
+        description: |
+          `code` might be :
+          - EDIFFGENERATIONFAILED: Configuration file cannot be generated
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+CfgDiffArchive:
+  get:
+    tags:
+      - cfgdiff
+    summary: Retrieve generated tgz archive (not ciphered) file for given firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall uuid
+        schema:
+          type: string
+    responses:
+      "200":
+        description: The requested na file
+        content:
+          application/x-compressed-tar:
+            schema:
+              type: string
+              format: binary
+      "401":
+        description: Unauthorized access
+      "404":
+        description: Archive file does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+CfgDiffNa:
+  get:
+    tags:
+      - cfgdiff
+    summary: Retrieve generated na (ciphered) file for given firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall uuid
+        schema:
+          type: string
+    responses:
+      "200":
+        description: The requested na file
+        content:
+          application/x-compressed-tar:
+            schema:
+              type: string
+              format: binary
+      "401":
+        description: Unauthorized access
+      "404":
+        description: Firewall does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+CfgDiffStatus:
+  get:
+    tags:
+      - cfgdiff
+    summary: Retrieve the differential configuration status for all the firewalls
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/cfgdiff.yaml#/CfgDiffStatusResult
+      "401":
+        description: Unauthorized access

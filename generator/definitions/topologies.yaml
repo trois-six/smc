@@ -1,0 +1,194 @@
+---
+DefaultAddressPool:
+  type: object
+  required:
+    - address
+  properties:
+    address:
+      type: string
+AddressPoolReservationInTopology:
+  type: object
+  required:
+    - remote
+    - ipv4Address
+  properties:
+    remote:
+      allOf:
+        - $ref: common.yaml#/Uuid
+        - description: Remote peer UUID
+    ipv4Address:
+      type: string
+      description: IPv4 address of the reservation, with CIDR - usually /31
+    mask:
+      type: string
+      description: Mask address of the reservation
+    vtiName:
+      type: string
+      description: VTI's name
+      example: VTI_2de6aa53
+    vtiComment:
+      type: string
+      description: VTI's comment
+    remoteVTI:
+      type: string
+      description: Remote VTI system object's name
+      example: Firewall_VTI_2de6aa53
+    peerHost:
+      type: string
+      description: Remote host object's name
+      example: VTI_on_localFw_with_remoteFw_in_topologyName
+    peerHostComment:
+      type: string
+      description: Remote host object's comment
+
+TopologyPeerPropertiesWithoutReadOnly:
+  type: object
+  required:
+    - uuid
+    - publicIpAddressHost
+    - vpnLocalAddress
+  properties:
+    uuid:
+      type: string
+      description: Peer UUID (Firewall or Host)
+    publicIpAddressHost:
+      type: string
+      description: undefined for firewall default, object uuid if overriden, or "any" if peer is dynamic
+    vpnLocalAddress:
+      type: string
+      description: undefined for firewall default, object uuid if overriden
+    endpoints:
+      type: array
+      description: List of traffic endpoints, if policy-based
+      items:
+        type: string
+        description: Object UUID (Network, Host or Group)
+
+TopologyPeerProperties:
+  allOf:
+    - $ref: "#/TopologyPeerPropertiesWithoutReadOnly"
+    - type: object
+      properties:
+        reservations:
+          type: array
+          description: List of peer's reservations, if route-based
+          items:
+            $ref: "#/AddressPoolReservationInTopology"
+
+TopologyPropertiesWithoutUuid:
+  type: object
+  required:
+    - name
+    - encryptionProfile
+    - dpdMode
+    - ikeVersion
+    - peers
+    - enabled
+  properties:
+    name:
+      type: string
+      description: Topology name
+      example: some-topology
+    type:
+      type: string
+      description: Topology type
+      enum: [policy, route]
+      default: policy
+    shape:
+      type: string
+      description: Topology shape
+      enum: [mesh, star]
+      default: mesh
+    enabled:
+      type: boolean
+      description: True if the topology is enabled, false otherwise
+    psk:
+      type: string
+      description: Topology PSK (Required if no authorities)
+      example: my password
+    authorities:
+      description: Associated certificate authority UUID (Required if no psk)
+      type: array
+      items:
+        type: string
+      example: [some-uuid, some-other-uuid]
+    encryptionProfile:
+      type: string
+      description: Associated encryption profile UUID
+      example: d176f167-9e94-459c-8b39-ef7f2907d264
+    dpdMode:
+      type: string
+      description: Dead Peer Detection mode
+      enum: ["off", "passive", "low", "high"]
+      example: "passive"
+    ikeVersion:
+      type: number
+      description: IKE version
+      enum: [1, 2]
+      example: 2
+    ikeDscp:
+      type: number
+      description: The IKE dscp value to apply to the topology IKE traffic. Goes from 0 to 63 and is optional.
+      example: 42
+    peers:
+      type: array
+      description: List of topology peers
+      items:
+        $ref: "#/TopologyPeerPropertiesWithoutReadOnly"
+    center:
+      type: string
+      description: UUID of the peer that will be the center of the topology, if shape is star
+    responderOnly:
+      type: boolean
+      description: ONLY in the case of a star topology, whether the center will be set as responder-only, so that it will not initiate VPN tunnels
+    addressPool:
+      type: string
+      description: IPv4 address with CIDR of the chosen address pool, if route-based
+      default: 172.25.0.0/16
+    pmtud:
+      type: integer
+      description: Path MTU Discovery (0 = "Disabled", 1 = "Always add the DF flag", 2 = "Keep the DF flag")
+      default: 0
+      enum: [0, 1, 2]
+      example: 0
+    fragmentSize:
+      type: integer
+      description: The fragment size
+      default: 1280
+      minimum: 512
+      maximum: 2147483647
+      example: 1280
+
+TopologyPropertiesWithUuid:
+  required:
+    - uuid
+    - name
+    - encryptionProfile
+    - dpdMode
+    - ikeVersion
+    - peers
+    - enabled
+  allOf:
+    - $ref: "objects.yaml#/ObjectUuid"
+    - $ref: "#/TopologyPropertiesWithoutUuid"
+    - type: object
+      properties:
+        nbTunnels:
+          type: number
+          description: Number of tunnels in topology
+          example: 42
+          readOnly: true
+        peers:
+          type: array
+          description: List of topology peers
+          items:
+            $ref: "#/TopologyPeerProperties"
+TopologiesListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/TopologyPropertiesWithUuid"

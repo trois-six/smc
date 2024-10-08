@@ -1,0 +1,92 @@
+Incoherencies:
+  get:
+    tags:
+      - cfgcheck
+    summary: Retrieve all the incoherencies found by the configuration control
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/cfgcheck.yaml#/Incoherencies
+      "401":
+        description: Unauthorized access
+CfgcheckStatus:
+  get:
+    tags:
+      - cfgcheck
+    summary: get the state of the coherency check
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                running:
+                  type: boolean
+                  example: true
+DomainActivation:
+  parameters:
+    - name: domainName
+      in: path
+      schema:
+        type: string
+        enum:
+          - GROUP
+          - ROUTER
+          - RULE
+          - CERTIFICATE
+          - NETWORK_INTERFACE
+          - FIREWALL
+          - TOPOLOGY
+          - IPSECDR
+      description: domain name
+      required: true
+  get:
+    tags:
+      - cfgcheck
+      - ipsec-dr
+    summary: get one check domain activation status
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                status:
+                  type: boolean
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Object is read-only (EREADONLY)
+  put:
+    tags:
+      - cfgcheck
+      - ipsec-dr
+    summary: toggle one check domain
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Object is read-only (EREADONLY)

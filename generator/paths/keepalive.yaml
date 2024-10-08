@@ -1,0 +1,9 @@
+---
+KeepAlive:
+  get:
+    summary: Keep connection to SMC server alive
+    responses:
+      "200":
+        description: Success
+      "401":
+        description: Unauthorized access

@@ -1,0 +1,74 @@
+---
+radiusResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/radius"
+radius:
+  description: Radius configuration
+  allOf:
+    - type: object
+      properties:
+        enabled:
+          type: boolean
+        host:
+          type: string
+          example: "1.1.1.1"
+        port:
+          type: integer
+          example: "69"
+        preSharedKey:
+          type: string
+          example: "smc-key"
+        backupHost:
+          type: string
+          example: "2.2.2.2"
+        backupPort:
+          type: integer
+          example: "6969"
+        backupPreSharedKey:
+          type: string
+          example: "smc-key-2"
+      required:
+        - host
+        - port
+        - preSharedKey
+radiusPostResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        anyOf:
+          - type: object
+            properties:
+              enabled:
+                type: boolean
+              host:
+                type: string
+                example: "1.1.1.1"
+              port:
+                type: integer
+                example: "69"
+              preSharedKey:
+                type: string
+                example: "smc-key"
+          - type: object
+            properties:
+              enabled:
+                type: boolean
+              host:
+                type: string
+                example: "2.2.2.2"
+              port:
+                type: integer
+                example: "6969"
+              preSharedKey:
+                type: string
+                example: "smc-key2"

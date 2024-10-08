@@ -1,0 +1,31 @@
+SnsDiff:
+  get:
+    tags:
+      - snsdiff
+    summary: Retrieve configuration differences for given firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall uuid
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/snsdiff.yaml#/SnsDiffResult
+      "401":
+        description: Unauthorized access
+      "423":
+        description: Locked Access
+      "500":
+        description: |
+          `code` might be :
+          - EDIFFGENERATIONFAILED: Configuration file cannot be generated
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

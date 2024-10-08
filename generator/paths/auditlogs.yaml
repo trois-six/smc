@@ -1,0 +1,15 @@
+LastLogs:
+  get:
+    tags:
+      - logs
+    summary: Return the last audit log lines
+    description: Return an array of log objects
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/auditlogs.yaml#/LogsResponse
+      "401":
+        description: Unauthorized

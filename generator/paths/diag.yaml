@@ -1,0 +1,22 @@
+---
+Diag:
+  get:
+    summary: Download server diag report
+    parameters:
+      - in: query
+        name: isConfidential
+        required: false
+        description: Specifies if sensitive informations must be hidden in report
+        schema:
+          type: boolean
+    responses:
+      "200":
+        description: Success
+        content:
+          application/octet-stream:
+            schema:
+              description: The report archive in tar.gz format
+              type: string
+              format: binary
+      "401":
+        description: Unauthorized access

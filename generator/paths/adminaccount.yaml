@@ -1,0 +1,36 @@
+AdminAccount:
+  put:
+    tags:
+      - adminaccount
+    summary: reset admin's password
+    requestBody:
+      required: true
+      description: admin's password
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            required:
+              - password
+            properties:
+              password:
+                type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/adminaccount.yaml#/AdminAccountResponse
+      "400":
+        description: |
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

@@ -1,0 +1,183 @@
+Config:
+  get:
+    tags:
+      - activeupdate
+    summary: Retrieve activeupdate settings
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                state:
+                  type: boolean
+                  description: service state
+                port:
+                  type: number
+                  description: a simple port
+                interfaces:
+                  type: array
+                  items:
+                    type: string
+                  description: A list of listening network interfaces or an
+                    empty array if the service listens on every interface
+                  example:
+                    - eth0
+                    - eth1
+                syncAutoUpdateState:
+                  type: boolean
+                  description: true if the autoupdate sync has been activated
+                syncAutoUpdatePeriod:
+                  type: string
+                  description: a CRON tab entry representing the sync periodicity
+  put:
+    tags:
+      - activeupdate
+    summary: Updates the activeupdate settings
+    requestBody:
+      required: true
+      description: Some parts of the activeupdate settings
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              state:
+                type: boolean
+                description: service state
+              syncAutoUpdateState:
+                type: boolean
+                description: true if the autoupdate sync must be activated
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                errors:
+                  $ref: "../definitions/common.yaml#/ErrorsList"
+      "401":
+        description: Unauthorized access
+
+Infos:
+  get:
+    tags:
+      - activeupdate
+    summary: Retrieve activeupdate infos
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                certificateDn:
+                  type: string
+                  description: Server certificate DN
+                lastSyncStart:
+                  type: string
+                  description: last synchronization start time
+                lastSyncEnd:
+                  type: string
+                  description: last synchronization end time
+                lastSyncError:
+                  type: string
+                  description: last synchronization error
+Sync:
+  post:
+    tags:
+      - activeupdate
+    summary: Force the activeupdate databases synchronization
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                errors:
+                  $ref: "../definitions/common.yaml#/ErrorsList"
+      "401":
+        description: Unauthorized access
+Import:
+  post:
+    tags:
+      - activeupdate
+    summary: Allows to upload an archive for updating the server's filebase
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              files:
+                type: string
+                format: binary
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                errors:
+                  $ref: "../definitions/common.yaml#/ErrorsList"
+      "400":
+        description: |
+          `code` can be :
+           - EFILEMISSING : When no archive was attached
+           - EBADEXTNAME : When archive has a forbidden extension
+          Example of accepted extension : .tgz, .gz
+      "401":
+        description: Unauthorized access
+Script:
+  get:
+    tags:
+      - activeupdate
+    summary: Give a bash script that can download files-base from an active update server
+    responses:
+      "200":
+        description: success
+        content:
+          application/x-sh:
+            schema:
+              type: string
+              format: binary
+      "401":
+        description: Unauthorized access
+      "500":
+        description: Internal technical error
+
+Certificate:
+  get:
+    tags:
+      - activeupdate
+    summary: Give the https server certificat file of the active update server
+    responses:
+      "200":
+        description: success
+        content:
+          application/x-x509-ca-cert:
+            schema:
+              type: string
+              format: binary
+      "401":
+        description: Unauthorized access
+      "500":
+        description: Internal technical error

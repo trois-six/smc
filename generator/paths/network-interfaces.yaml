@@ -1,0 +1,378 @@
+NetworkInterfaces:
+  get:
+    tags:
+      - networkInterfaces
+    summary: Fetch network interfaces
+    parameters:
+      - in: query
+        name: fwid
+        required: false
+        description: Firewall UUID
+        schema:
+          type: string
+      - in: query
+        name: types
+        required: false
+        description: The interface types of the records
+        schema:
+          type: string
+          example: '["VTI", "Ethernet"]'
+      - name: start
+        in: query
+        required: false
+        description: The index of the first record to get
+        schema:
+          type: number
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: The maximum count of records to get
+        schema:
+          type: number
+          example: 10
+      - name: filter
+        in: query
+        required: false
+        description: An ExtJS filters JSON array
+        schema:
+          type: string
+          example: '[{"property":"any","value":"VTI_"}]'
+      - name: sort
+        in: query
+        required: false
+        description: An ExtJS sorters JSON array
+        schema:
+          type: string
+          example: '[{"property":"name","direction":"ASC"}]'
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/network-interfaces.yaml#/NetworkInterfacesListResponse
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - networkInterfaces
+    summary: Create one network interface
+    requestBody:
+      required: true
+      description: the network interface properties
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../definitions/network-interfaces.yaml#/VlanInterfaceProperties
+              - $ref: ../definitions/network-interfaces.yaml#/AggInterfaceProperties
+              - $ref: ../definitions/network-interfaces.yaml#/BridgeInterfaceProperties
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: ../definitions/network-interfaces.yaml#/VlanInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/AggInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/BridgeInterfaceProperties
+      "401":
+        description: Unauthorized
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : A network interface with the same name for the same firewall already exists
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+NetworkInterfacesTree:
+  get:
+    tags:
+      - networkInterfaces
+    summary: Fetch all network interfaces as tree or for a given firewall
+    parameters:
+      - in: query
+        name: fwid
+        description: Firewall UUID
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/network-interfaces.yaml#/NetworkInterfacesTree
+      "401":
+        description: Unauthorized
+
+NetworkInterface:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: NetworkInterface uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - networkInterfaces
+    summary: Fetch one network interface of any type
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: ../definitions/network-interfaces.yaml#/EthernetInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/VlanInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/AggInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/BridgeInterfaceProperties
+      "401":
+        description: Unauthorized
+      "404":
+        description: NetworkInterface was not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  put:
+    tags:
+      - networkInterfaces
+    summary: Update one network interface of any type
+    requestBody:
+      required: true
+      description: the network interface properties
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: ../definitions/network-interfaces.yaml#/EthernetInterfaceProperties
+              - $ref: ../definitions/network-interfaces.yaml#/VlanInterfaceProperties
+              - $ref: ../definitions/network-interfaces.yaml#/AggInterfaceProperties
+              - $ref: ../definitions/network-interfaces.yaml#/BridgeInterfaceProperties
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              oneOf:
+                - $ref: ../definitions/network-interfaces.yaml#/EthernetInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/VlanInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/AggInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/BridgeInterfaceProperties
+      "400":
+        description: |
+          `code` may have :
+          - EINVAL : Network Interface cannot be updated with a new firewall id.
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: NetworkInterface was not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : A network interface with the same name for the same firewall already exists
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` might be :
+          - ELOCK : if the network interface is being used
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - networkInterfaces
+    summary: Remove a network interface of any type
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        description: network interface UUID
+        required: true
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                result:
+                  type: object
+                  oneOf:
+                    - $ref: ../definitions/network-interfaces.yaml#/VlanInterfaceProperties
+                    - $ref: ../definitions/network-interfaces.yaml#/AggInterfaceProperties
+                    - $ref: ../definitions/network-interfaces.yaml#/BridgeInterfaceProperties
+                    - $ref: ../definitions/network-interfaces.yaml#/VirtualInterfaceProperties
+      "400":
+        description: |
+          `code` may have :
+          - EINVAL : Ethernet interface "interface-name" cannot be deleted`
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "403":
+        description: |
+          `code` may have :
+          - ENETWORKUNHANDLED : Unable to update a network interface for a firewall with the network configuration unhandled.`
+      "404":
+        description: NetworkInterface was not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` might be :
+          - ELOCK : if the network interface is being used
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+NetworkInterfacesBulk:
+  delete:
+    tags:
+      - networkInterfaces
+    summary: Delete multiple network interfaces of any types
+    requestBody:
+      required: true
+      description: the network interfaces to delete
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              oneOf:
+                - $ref: ../definitions/network-interfaces.yaml#/VlanInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/AggInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/BridgeInterfaceProperties
+                - $ref: ../definitions/network-interfaces.yaml#/VirtualInterfaceProperties
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                result:
+                  type: array
+                  items:
+                    oneOf:
+                      - $ref: ../definitions/network-interfaces.yaml#/VlanInterfaceProperties
+                      - $ref: ../definitions/network-interfaces.yaml#/AggInterfaceProperties
+                      - $ref: ../definitions/network-interfaces.yaml#/BridgeInterfaceProperties
+                      - $ref: ../definitions/network-interfaces.yaml#/VirtualInterfaceProperties
+      "400":
+        description: |
+          `code` may have :
+          - EINVAL : Ethernet interface "interface-name" cannot be deleted`
+      "401":
+        description: Unauthorized
+      "404":
+        description: NetworkInterface was not found
+
+NetworkInterfaceMembers:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: NetworkInterface uuid
+      schema:
+        type: string
+  put:
+    tags:
+      - networkInterfaces
+    summary: Update the members of a bridge or aggregate
+    requestBody:
+      required: true
+      description: the network interface properties
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              members:
+                type: array
+                description: list of the interface's members
+                items:
+                  type: string
+                  description: NetworkInterface uuid
+                  example: "75532250-c878-42f1-8871-bafa68e944d4"
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                membersAdded:
+                  type: array
+                  description: list of the members uuid added to the parent interface
+                  items:
+                    type: string
+                    description: NetworkInterface uuid
+                    example: "75532250-c878-42f1-8871-bafa68e944d4"
+                membersRemoved:
+                  type: array
+                  description: list of the members uuid removed from the parent interface
+                  items:
+                    type: string
+                    description: NetworkInterface uuid
+                    example: "75532250-c878-42f1-8871-bafa68e944d4"
+      "400":
+        description: |
+          `code` may have :
+          - EINVAL : Network Interface member cannot be in a network interface from a different firewall.
+          - EINVAL : Member must be an aggregate, a VLAN or an ethernet interface for a bridge.
+          - EINVAL : Member must be an ethernet interface for an aggregate.
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: NetworkInterface was not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` might be :
+          - ELOCK : if the network interface is being used
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

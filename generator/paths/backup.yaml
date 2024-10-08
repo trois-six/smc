@@ -1,0 +1,108 @@
+---
+Backup:
+  post:
+    tags:
+      - backup
+    summary: Upload a backup
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              backupArchive:
+                type: string
+                format: binary
+    responses:
+      "200":
+        description: Uploaded backup successfully
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                confirmationToken:
+                  type: string
+                  description: md5 hash of the archive
+                  example: 1873e9b72d5819f1a2b8e1bb793bad31
+                newIp:
+                  type: string
+                  description: info ip address
+                  example: 192.168.3.10
+      "401":
+        description: Unauthorized access
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+
+Hash:
+  parameters:
+    - name: hash
+      in: path
+      required: true
+      description: The backup hash
+      schema:
+        type: string
+  post:
+    tags:
+      - backup
+    summary: Confirm backup upload and restore
+    requestBody:
+      required: false
+      description: Encryption password, leave blank if you don't want to encrypt the archive
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              password:
+                type: string
+                example: Iw76$k6!o#LtLmbs
+    responses:
+      "200":
+        description: Restored server configuration
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "400":
+        description: Bad Request
+      "401":
+        description: Unauthorized access
+
+BackupDownload:
+  post:
+    tags:
+      - backup
+    summary: Download a backup
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "../definitions/backup.yaml#/BackupDownloadBody"
+    responses:
+      "200":
+        description: success
+        content:
+          application/zip:
+            schema:
+              type: string
+              format: binary
+      "401":
+        description: Unauthorized access
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

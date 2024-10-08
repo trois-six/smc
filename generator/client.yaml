@@ -1,0 +1,6 @@
+# yaml-language-server: $schema=swagger_flat.yaml
+package: smc
+output: ../../smc.gen.go
+generate:
+  models: true
+  client: true

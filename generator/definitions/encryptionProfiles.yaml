@@ -1,0 +1,134 @@
+---
+Ph1Proposal:
+  type: object
+  required:
+    - auth
+    - enc
+  properties:
+    auth:
+      type: string
+      description: IKE auth algorithm name
+      example: sha2_256/256
+    enc:
+      type: string
+      description: IKE enc algorithm name
+      example: aes/256
+
+Ph1Profile:
+  type: object
+  required:
+    - defaultdh
+    - defaultprf
+    - lifetime
+    - proposals
+  properties:
+    defaultdh:
+      type: integer
+      description: Default Diffie-Helman Group
+      enum:
+        - 1
+        - 2
+        - 5
+        - 14
+        - 15
+        - 16
+        - 19
+        - 20
+    defaultprf:
+      type: string
+      description: Default PRF
+      enum:
+        - "auto"
+        - "SHA256"
+        - "SHA384"
+        - "SHA512"
+    lifetime:
+      type: integer
+      description: IKE lifetime
+      example: 3600
+    proposals:
+      type: array
+      description: IKE Authentication proposals
+      items:
+        $ref: "#/Ph1Proposal"
+
+Ph2Profile:
+  type: object
+  required:
+    - pfs
+    - lifetime
+    - auth
+    - enc
+  properties:
+    pfs:
+      type: integer
+      description: IPSec pfs
+      enum:
+        - 0
+        - 1
+        - 2
+        - 5
+        - 14
+        - 15
+        - 16
+    lifetime:
+      type: integer
+      description: IPSec lifetime
+      example: 3600
+    auth:
+      type: array
+      description: IPSec auth algorithm name
+      items:
+        type: string
+      example: ["hmac_sha256/256"]
+    enc:
+      type: array
+      description: IPSec enc algorithm name
+      items:
+        type: string
+      example: ["aes/256"]
+
+EncryptionProfilePropertiesWithoutUuid:
+  type: object
+  required:
+    - name
+    - comment
+    - ph1
+    - ph2
+  properties:
+    name:
+      type: string
+      description: Encryption profile's name
+      example: newEncProfile
+    comment:
+      type: string
+      description: Encryption profile's description/comment
+    ph1:
+      $ref: "#/Ph1Profile"
+    ph2:
+      $ref: "#/Ph2Profile"
+    builtin:
+      type: boolean
+      description: If true encryption profile is considered as builtin in SMC, webui uses it to disable some actions
+      example: true
+
+EncryptionProfilePropertiesAdditionalProperties:
+  type: object
+  required:
+    - hasDeprecatedAlgorithms
+  properties:
+    hasDeprecatedAlgorithms:
+      type: boolean
+      description: If true encryption profile has at least one algorithm tagged as deprecated
+      example: false
+
+EncryptionProfileProperties:
+  allOf:
+    - $ref: objects.yaml#/ObjectUuid
+    - $ref: "#/EncryptionProfilePropertiesWithoutUuid"
+    - $ref: "#/EncryptionProfilePropertiesAdditionalProperties"
+
+EncryptionProfileList:
+  type: array
+  items:
+    $ref: "#/EncryptionProfileProperties"

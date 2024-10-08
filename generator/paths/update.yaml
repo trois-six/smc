@@ -1,0 +1,175 @@
+Update:
+  post:
+    summary: Upload an SMC update file
+    description: Upload an SMC update file. Return an error when no file is sent, or the file is either the wrong type (anything but .upd) or empty.
+    tags:
+      - update
+    requestBody:
+      description: Update file (.upd)
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              updateFile:
+                type: string
+                format: binary
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "400":
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: The update file should be of type UPD (.upd).
+                      code:
+                        type: string
+                        example: EBADEXTNAME
+      "401":
+        description: Unauthorized access
+      "423":
+        description: Locked
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: An update is already processing.
+                      code:
+                        type: string
+                        example: ELOCK
+
+UpdateLaunch:
+  get:
+    tags:
+      - update
+    summary: Launch the upload process
+    description: Launch the upload process after an update file was uploaded. Return an error if no update file was uploaded or if an upload is already processing.
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "400":
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: An update file must be uploaded before launching update process.
+                      code:
+                        type: string
+                        example: EFILEMISSING
+      "401":
+        description: Unauthorized access
+      "423":
+        description: Locked
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: An update is already processing.
+                      code:
+                        type: string
+                        example: ELOCK
+      "500":
+        description: Internal error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                        example: An error occurred during the update process.
+                      code:
+                        type: string
+                        example: INTERNAL_SERVER_ERROR
+UpdateStatus:
+  get:
+    tags:
+      - update
+    summary: Get the update status
+    description: Get the update status (locked or not)
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                locked:
+                  type: boolean
+                  example: true

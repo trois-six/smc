@@ -1,0 +1,15 @@
+---
+Status:
+  get:
+    summary: Return ok when SMC is up
+    responses:
+      "200":
+        description: status
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                status:
+                  type: string
+                  example: "ok"

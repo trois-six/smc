@@ -1,0 +1,48 @@
+---
+SingleTrafficShaperResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/TrafficShaper"
+MultipleTrafficShapersResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/TrafficShaper"
+TrafficShaperWithoutUuid:
+  description: A custom traffic shaper
+  type: object
+  properties:
+    name:
+      type: string
+      example: myNewTraffic
+    outgoingBandwidth:
+      type: number
+      example: 10
+      minimum: 0
+      maximum: 999999999
+    incomingBandwidth:
+      type: number
+      example: 10
+      minimum: 0
+      maximum: 999999999
+  required:
+    - name
+    - outgoingBandwidth
+    - incomingBandwidth
+TrafficShaper:
+  description: A traffic shaper
+  allOf:
+    - $ref: "#/TrafficShaperWithoutUuid"
+    - type: object
+      properties:
+        uuid:
+          type: string
+      required:
+        - uuid

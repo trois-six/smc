@@ -1,0 +1,12 @@
+---
+BackupDownloadBody:
+  type: object
+  properties:
+    password:
+      type: string
+      example: Iw76$k6!o#LtLmbs
+      description: Encryption password, leave blank if you don't want to encrypt the archive
+    includeHistory:
+      type: boolean
+      example: false
+      description: Is backup should contain revision history

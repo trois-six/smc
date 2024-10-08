@@ -1,0 +1,144 @@
+---
+ProtocolList:
+  type: array
+  items:
+    type: object
+    properties:
+      name:
+        type: string
+        description: protocol name
+        example: dicom
+      ipProto:
+        type: array
+        description: list of supported ip protocols for filtering
+        items:
+          type: string
+          enum: [tcp, udp]
+
+CrlProperty:
+  type: object
+  properties:
+    lastUpdate:
+      type: string
+      description: last update
+      example: 2017-08-02T10:07:26Z
+    nextUpdate:
+      type: string
+      description: next update
+      example: 2017-08-02T10:07:26Z
+    revokedCertificates:
+      type: array
+      description: list of revoked certificates from CRL
+      items:
+        type: object
+        properties:
+          serialNumber:
+            type: string
+            description: serial number of certificate
+            example: A9031406
+          revocationDate:
+            type: string
+            description: revocation date of the certificate
+            example: 2017-08-02T10:07:22.000Z
+          reason:
+            type: integer
+            description: reason of revocation
+            example: 0
+
+InitializationPackageProperties:
+  description: Data to send to create an initialization package
+  required:
+    - contacts
+    - fwVersion
+  properties:
+    contacts:
+      $ref: "misc.yaml#/ContactAddresses"
+    fwVersion:
+      description: the firewall target version used for the generation
+      type: string
+      example: "3.1.0"
+    ipSlave:
+      description: the IP address we want to set on the target firewall
+      type: string
+      example: "1.2.3.4"
+    mask:
+      description: the IP mask we want to set on the target firewall
+      type: string
+      example: "255.255.0.0"
+    gateway:
+      description: the gateway IP we want to set on the target firewall
+      type: string
+      example: "1.2.3.4"
+    storePublicIpAndPort:
+      description: Store SMC contact addresses to automatically fill it in further GUI connecting package wizard
+      type: boolean
+      example: true
+
+ContactAddresses:
+  type: array
+  description: list of host/port to contact SMC
+  items:
+    type: object
+    required:
+      - host
+      - port
+    properties:
+      host:
+        description: The SMC server address (ipv4 or fqdn)
+        type: string
+        example: "1.2.3.4"
+      port:
+        description: The SMC server port
+        type: number
+        example: 1234
+      bindaddr:
+        description: The bindaddr address (object name)
+        type: string
+        example: "Any"
+
+DefaultImportSummary:
+  type: object
+  properties:
+    created:
+      type: number
+    updated:
+      type: number
+    ignored:
+      type: number
+    failed:
+      type: number
+
+ImportResponse:
+  description: Result of an import
+  properties:
+    success:
+      type: boolean
+      example: true
+    logs:
+      description: list of logs
+      type: array
+      items:
+        type: object
+        properties:
+          level:
+            description: log level
+            type: string
+            enum: ["info", "warning", "error"]
+          message:
+            description: log message
+            type: string
+            example: 'The ip address "10.1.2" is invalid'
+          ctx:
+            description: context of the log
+            type: object
+            properties:
+              type:
+                description: type of imported csv file
+                type: string
+                enum: ["object", "rule", "ruleSet"]
+              lineNum:
+                description: index of the rule/ruleSet/object in csv file
+                type: number
+              lineContent:
+                description: line extracted from csv file
+                type: object

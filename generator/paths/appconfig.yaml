@@ -1,0 +1,13 @@
+---
+AppConfig:
+  get:
+    summary: Get server configuration environment keys
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/appconfig.yaml#/AppConfigResponse
+      "401":
+        description: Unauthorized access

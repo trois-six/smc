@@ -1,0 +1,130 @@
+---
+Incoherencies:
+  type: object
+  properties:
+    sucess:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/Incoherency"
+
+Incoherency:
+  type: object
+  properties:
+    fwid:
+      type: string
+      description: the fwid of the firewall where the incoherency comes from
+    weight:
+      type: integer
+      description: used to sort incoherencies by levels and domains
+    level:
+      type: string
+      description: criticity level of the incoherency
+      enum: ["warning", "error"]
+    type:
+      type: string
+      description: the type of incoherency
+      enum:
+        [
+          "empty-group",
+          "empty-group-in-rule-fields",
+          "ip-collision-equals",
+          "ip-collision-secant",
+          "ip-collision-contains",
+          "rule-overlap",
+          "missing-mac-in-profinet-rule",
+          "mac-only-host-in-nat-rule",
+          "mac-only-host-not-supported-in-version",
+          "mac-only-host-in-router",
+          "mac-only-host-in-router-in-rule",
+          "conflicting-config-in-ethernet-rule",
+          "config-in-ethernet-rule-not-supported-by-license",
+          "variables-unresolvable-object",
+          "internal-error",
+          "network-interface-ipv4-overlap",
+          "unknown-network-interface",
+          "unknown-network-interface-address",
+          "unknown-network-interface-hidden",
+          "incompatible-network-interface",
+          "network-interface-stp-incompatibility",
+          "network-interface-aggregate-vlan-incompatibility",
+          "incompatible-dr-profile",
+          "certificate-algorithm-dr-incompatibility",
+        ]
+    incoherentElementType:
+      type: string
+      description: the type of the element the incoherency come from
+      enum: ["group", "rule"]
+    origin:
+      $ref: "#/InvolvedItem"
+    involvedItems:
+      type: array
+      description: contains all the elements involved in the incoherency
+      items:
+        $ref: "#/InvolvedItem"
+
+InvolvedItem:
+  type: object
+  properties:
+    entityId:
+      type: string
+      description: the uuid of the involved item
+    ruleIndex:
+      type: integer
+      description: The index of the rule if the entity is a rule
+    fullObj:
+      type: object
+      description: full object
+    objectType:
+      type: string
+      description: the type of object
+      enum:
+        [
+          "rule",
+          "object",
+          "group",
+          "folder",
+          "firewall",
+          "value",
+          "interface",
+          "topology",
+          "certificate",
+        ]
+    field:
+      type: string
+      description: the field of object that contains sub involved items
+      enum:
+        [
+          "src",
+          "dst",
+          "natSrc",
+          "natDst",
+          "srcInterface",
+          "dstInterface",
+          "srcPort",
+          "dstPort",
+          "natSrcPort",
+          "natDstPort",
+          "srcGeo",
+          "dstGeo",
+          "members",
+          "primaryRules",
+          "secondaryRules",
+          "subFolders",
+          "firewalls",
+          "rules",
+          "action",
+          "via",
+          "enforceIPSecForward",
+          "limit",
+          "qname",
+          "ackqname",
+          "inspectionService",
+          "natDstForFilterRule",
+          "sipRedirect",
+          "forceDscp",
+          "tosValue",
+          "router",
+          "encryptionProfile",
+        ]

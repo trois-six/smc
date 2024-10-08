@@ -1,0 +1,62 @@
+Policy:
+  type: object
+  required:
+    - minLength
+    - mandatoryType
+  properties:
+    enabledAuth:
+      type: boolean
+      description: Is local auth enabled ?
+    minLength:
+      type: integer
+      description: Users passwords' minimum length
+      example: 8
+    mandatoryType:
+      type: string
+      description: Users passwords' mandatory character types
+      example: alphanum
+      enum:
+        - none
+        - alphanum
+        - alphaandspecial
+
+PolicyResult:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      $ref: "#/Policy"
+
+ApiKeyPolicy:
+  type: object
+  required:
+    - apiKeyDefaultPeriod
+  properties:
+    apiKeyDefaultPeriod:
+      $ref: "#/ApiKeyDefaultPeriod"
+
+ApiKeyDefaultPeriod:
+  type: object
+  required:
+    - duration
+    - period
+  properties:
+    duration:
+      type: integer
+      description: Default duration of a new api key
+    period:
+      type: string
+      description: Duration multiplier
+      enum:
+        - hours
+        - days
+        - months
+        - years
+
+ApiKeyPolicyResult:
+  type: object
+  properties:
+    result:
+      $ref: "#/ApiKeyPolicy"

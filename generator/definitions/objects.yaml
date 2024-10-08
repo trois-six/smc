@@ -1,0 +1,504 @@
+---
+CheckUsageResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        description: Object describing an object, a firewall, an encryption profile, variable, certificate or a certificate authority
+        type: object
+        properties:
+          sourceElementType:
+            type: string
+            description: >
+              Source configuration element type (object, firewall, certificate, etc) that is checked by the check-usage feature.
+              Most of time it is the target element choose by the user, except for VTI topology.
+          sourceElementUuid:
+            type: string
+            description: Source configuration element UUID that is checked by the check-usage feature.
+          usedByElementType:
+            type: string
+            description: Configuration element type using the source element
+          usedByElementUuid:
+            type: string
+            description: Configuration element UUID using the source element
+          _type:
+            type: string
+            description: >
+              When possible, most specific type (such as type "host", "port" for object) for
+              configuration element using the source element
+          index:
+            type: number
+            description: >
+              When possible (e.g. for rule element), rule index related to
+              configuration element using the source element
+          priority:
+            type: number
+            description: >
+              When possible (e.g. for rule element), rule priority related to
+              configuration element using the source element
+
+ObjectsListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/ObjectProperties"
+
+ObjectPropertiesWithoutUuid:
+  type: object
+  discriminator:
+    propertyName: _type
+  required:
+    - name
+    - _type
+  properties:
+    name:
+      type: string
+      description: Object name
+      example: some-object-name
+    _type:
+      type: string
+      description: Object type
+      example: host
+    comment:
+      type: string
+      description: Object description/comment
+      example: My object
+    deployment:
+      type: object
+      description: Deployment mode
+      properties:
+        force:
+          type: array
+          items:
+            type: string
+        mode:
+          type: string
+          enum: [DEFAULT, ALL]
+ObjectUuid:
+  type: object
+  required:
+    - uuid
+  properties:
+    uuid:
+      type: string
+      description: Object uuid
+      example: "75532250-c878-42f1-8871-bafa68e944d4"
+ObjectUuidList:
+  type: array
+  items:
+    $ref: "#/ObjectUuid"
+  example:
+    [
+      { "uuid": "eab25991-5f01-4b64-90f2-bff36a7ab9a6" },
+      { "uuid": "cc320bd4-c51f-49c6-b741-d8d4b77b2a3f" },
+    ]
+FqdnPropertiesWithoutUuid:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - type: object
+      properties:
+        _type:
+          type: string
+          description: Object type
+          example: fqdn
+        ipv4Address:
+          type: string
+          description: IpV4 address
+          example: "127.0.0.1"
+        ipv6Address:
+          type: string
+          description: IpV6 address
+          example: "::1"
+GroupPropertiesWithoutUuid:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - type: object
+      properties:
+        _type:
+          type: string
+          description: Object type
+          example: group
+        type:
+          type: string
+          description: Group type
+          enum: [object, service, geo]
+        members:
+          type: array
+          description: List of group members uuid
+          items:
+            type: string
+HostPropertiesWithoutUuid:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - type: object
+      properties:
+        _type:
+          type: string
+          description: Object type
+          example: host
+        ipv4Address:
+          type: string
+          description: IpV4 address
+          example: "127.0.0.1"
+        ipv6Address:
+          type: string
+          description: IpV6 address
+          example: "::1"
+        resolutionType:
+          type: string
+          description: Resolution type
+          enum: [IP_ADDRESS, NAME]
+        macAddress:
+          type: string
+          description: Mac address
+          example: "00:10:18:4e:5d:32"
+IpRangePropertiesWithoutUuid:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - type: object
+      properties:
+        _type:
+          type: string
+          description: Object type
+          example: add-range
+        ipv4AddressStart:
+          type: string
+          description: IpV4 start address
+          example: "127.0.0.1"
+        ipv4AddressEnd:
+          type: string
+          description: IpV4 end address
+          example: "127.0.0.1"
+        ipv6AddressStart:
+          type: string
+          description: IpV6 start address
+          example: "::1"
+        ipv6AddressEnd:
+          type: string
+          description: IpV6 end address
+          example: "::1"
+        macAddressStart:
+          type: string
+          description: mac start address
+          example: "00:00:00:00:00:01"
+        macAddressEnd:
+          type: string
+          description: mac end address
+          example: "00:00:00:00:00:01"
+NetworkPropertiesWithoutUuid:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - type: object
+      properties:
+        _type:
+          type: string
+          description: Object type
+          example: network
+        ipv4Address:
+          type: string
+          description: IpV4 address with prefix
+          example: "127.0.0.0/8"
+        ipv6Address:
+          type: string
+          description: IpV6 address with prefix
+          example: "dead:beef::/32"
+PortPropertiesWithoutUuid:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - type: object
+      properties:
+        _type:
+          type: string
+          description: Object type
+          example: port
+        value:
+          type: integer
+          description: port value
+          example: 42
+        protocol:
+          type: string
+          description: protocol
+          enum: [tcp, udp, any]
+        range:
+          type: object
+          description: port range of values
+          properties:
+            start:
+              type: integer
+              description: port range start
+              example: 42
+            end:
+              type: integer
+              description: port range end
+              example: 4242
+ProtocolPropertiesWithoutUuid:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - type: object
+      properties:
+        _type:
+          type: string
+          description: Object type
+          example: protocol
+        number:
+          type: integer
+          description: protocol value
+          example: 42
+RouterPropertiesWithoutUuid:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - type: object
+      required:
+        - gatewayThreshold
+        - loadBalancing
+        - onFailPolicy
+        - principals
+      properties:
+        _type:
+          type: string
+          description: Object type
+          example: router
+        gatewayThreshold:
+          type: string
+          description: gateway threshold
+          enum: [all, one, custom]
+        customGatewayThreshold:
+          type: integer
+          description: custom gateway threshold
+          example: 2
+        loadBalancing:
+          type: string
+          description: load balancing mode
+          enum: [none, connhash, srchash]
+        activateAllBackup:
+          type: boolean
+          description: activate all backups
+        onFailPolicy:
+          type: string
+          description: on fail policy
+          enum: [Pass, Block]
+        principals:
+          type: array
+          description: list of principal gateways
+          items:
+            $ref: "#/RouterGatewayProperties"
+        backups:
+          type: array
+          description: list of backup gateways
+          items:
+            $ref: "#/RouterGatewayProperties"
+        frequency:
+          type: integer
+          description: Delay in seconds between two successive complete tests
+          example: 15
+        wait:
+          type: integer
+          description: Wait this long for the ICMP reply
+          example: 2
+        tries:
+          type: integer
+          description: Make at most this number of tests
+          example: 3
+        monitor:
+          type: string
+          description: Monitor method
+          enum: [tcp_probe, icmp]
+        port:
+          type: string
+          description: Port object uuid. Mandatory if monitor is tcp_probe
+          example: "some-port-uuid"
+        sla:
+          type: string
+          description: SLA object uuid
+          example: "some-sla-uuid"
+RouterGatewayProperties:
+  type: object
+  required:
+    - uuid
+    - testing
+    - weight
+  properties:
+    uuid:
+      type: string
+      description: Host uuid
+      example: "some-host-uuid"
+    testing:
+      type: string
+      description: gateway testing way
+      enum: [none, directly, "host_or_group_uuid"]
+    weight:
+      type: integer
+      description: weight
+      example: 1
+    comment:
+      type: string
+      description: comment
+      example: "some comment"
+TimePropertiesWithoutUuid:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - type: object
+      properties:
+        _type:
+          type: string
+          description: Object type
+          example: time
+        timeSlots:
+          type: array
+          description: list of time slots
+          items:
+            type: object
+            description: time slot
+            properties:
+              start:
+                type: string
+                description: start of time slot (format hh:mm)
+                example: "00:42"
+              end:
+                type: string
+                description: end of time slot (format hh:mm)
+                example: "00:43"
+        weekDays:
+          type: array
+          description: list of week days
+          items:
+            type: integer
+            description: week day
+            enum: [1, 2, 3, 4, 5, 6, 7]
+        yearDays:
+          type: array
+          description: list of year days
+          items:
+            type: object
+            description: year day
+            properties:
+              start:
+                type: string
+                description: start of year day (format MM-DD)
+                example: "01-31"
+              end:
+                type: string
+                description: end of year day (format MM-DD)
+                example: "05-15"
+        periods:
+          type: array
+          description: list of periods
+          items:
+            type: object
+            description: period between two dates
+            properties:
+              start:
+                type: string
+                description: start of period (ISO date format, in UTC)
+                example: "2015-01-01T01:01:01.000Z"
+              end:
+                type: string
+                description: end of period (ISO date format, in UTC)
+                example: "2018-01-01T01:01:01.000Z"
+SlaPropertiesWithoutUuid:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - type: object
+      properties:
+        _type:
+          type: string
+          description: Object type
+          example: sla
+        maxUnreachable:
+          type: integer
+          description: Max gateway unreachable rate in percent.
+          example: 50
+        maxJitter:
+          type: integer
+          description: Max jitter in ms. Value can be in range 0 to 200.
+          example: 200
+        maxLoss:
+          type: number
+          format: float
+          description: Max packet loss in percent.
+          example: 10.5
+        maxLatency:
+          type: integer
+          description: Max packet latency in ms. Value can be in range 0 to 60000.
+          example: 500
+ObjectProperties:
+  allOf:
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+FqdnProperties:
+  allOf:
+    - $ref: "#/FqdnPropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+GeoProperties:
+  allOf:
+    - $ref: "#/ObjectUuid"
+    - $ref: "#/ObjectPropertiesWithoutUuid"
+GroupProperties:
+  allOf:
+    - $ref: "#/GroupPropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+HostProperties:
+  allOf:
+    - $ref: "#/HostPropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+IpRangeProperties:
+  allOf:
+    - $ref: "#/IpRangePropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+NetworkProperties:
+  allOf:
+    - $ref: "#/NetworkPropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+PortProperties:
+  allOf:
+    - $ref: "#/PortPropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+ProtocolProperties:
+  allOf:
+    - $ref: "#/ProtocolPropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+RouterProperties:
+  allOf:
+    - $ref: "#/RouterPropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+TimeProperties:
+  allOf:
+    - $ref: "#/TimePropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+SlaProperties:
+  allOf:
+    - $ref: "#/SlaPropertiesWithoutUuid"
+    - $ref: "#/ObjectUuid"
+
+ObjectsProperties:
+  oneOf:
+    - $ref: "#/FqdnPropertiesWithoutUuid"
+    - $ref: "#/GroupPropertiesWithoutUuid"
+    - $ref: "#/HostPropertiesWithoutUuid"
+    - $ref: "#/IpRangePropertiesWithoutUuid"
+    - $ref: "#/NetworkPropertiesWithoutUuid"
+    - $ref: "#/PortPropertiesWithoutUuid"
+    - $ref: "#/ProtocolPropertiesWithoutUuid"
+    - $ref: "#/TimePropertiesWithoutUuid"
+    - $ref: "#/SlaPropertiesWithoutUuid"
+    - $ref: "#/RouterPropertiesWithoutUuid"
+  discriminator:
+    propertyName: _type
+    mapping:
+      fqdn: "#/FqdnPropertiesWithoutUuid"
+      group: "#/GroupPropertiesWithoutUuid"
+      host: "#/HostPropertiesWithoutUuid"
+      add-range: "#/IpRangePropertiesWithoutUuid"
+      network: "#/NetworkPropertiesWithoutUuid"
+      port: "#/PortPropertiesWithoutUuid"
+      protocol: "#/ProtocolPropertiesWithoutUuid"
+      time: "#/TimePropertiesWithoutUuid"
+      sla: "#/SlaPropertiesWithoutUuid"
+      router: "#/RouterPropertiesWithoutUuid"

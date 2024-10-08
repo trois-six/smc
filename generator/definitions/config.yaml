@@ -1,0 +1,260 @@
+---
+NetworkInterfacesListResponse:
+  type: array
+  items:
+    type: object
+    properties:
+      name:
+        type: string
+        description: interface name
+        example: eth0
+      status:
+        type: string
+        description: interface current configuration status
+        enum: [disabled, static, dhcp]
+      up:
+        type: boolean
+        description: physical interface current state (UP = true / DOWN = false)
+        example: true
+      ipv4Address:
+        type: string
+        description: interface ipV4 address (only for disabled and static status)
+        example: 127.0.0.1
+      gateway:
+        type: string
+        description: configured gateway for this interface (only for disabled and static status)
+        example: 192.168.17.56
+      mask:
+        type: string
+        description: the configured ip mask for this interface (only for disabled and static status)
+        example: 255.255.255.0
+      macAddress:
+        type: string
+        description: Mac address
+        example: "00:10:18:4e:5d:32"
+      linkType:
+        type: string
+        description: Link type of the interface
+        example: "ether"
+      contactInterface:
+        type: boolean
+        description: True if the interface is used to reach the client
+        example: true
+
+NetworkConfiguration:
+  type: object
+  properties:
+    dns:
+      type: string
+      description: DNS address
+      example: 127.168.57.1
+    hostname:
+      type: string
+      description: Name of the host
+      example: SMC
+    interfaces:
+      type: array
+      description: List of interfaces
+      items:
+        type: object
+        properties:
+          name:
+            type: string
+            description: interface name
+            example: eth0
+          status:
+            type: string
+            description: interface current configuration status
+            enum: [disabled, static, dhcp]
+          up:
+            type: boolean
+            description: physical interface current state (UP = true / DOWN = false)
+            example: true
+          ipv4Address:
+            type: string
+            description: interface ipV4 address (only for disabled and static status)
+            example: 127.0.0.1
+          gateway:
+            type: string
+            description: configured gateway for this interface (only for disabled and static status)
+            example: 192.168.17.56
+          mask:
+            type: string
+            description: the configured ip mask for this interface (only for disabled and static status)
+            example: 255.255.255.0
+          macAddress:
+            type: string
+            description: Mac address
+            example: "00:10:18:4e:5d:32"
+          linkType:
+            type: string
+            description: Link type of the interface
+            example: "ether"
+          contactInterface:
+            type: boolean
+            description: True if the interface is used to reach the client
+            example: true
+
+NetworkInterfacesUpdateList:
+  type: array
+  items:
+    type: object
+    properties:
+      name:
+        type: string
+        description: interface name
+        example: eth0
+      status:
+        type: string
+        description: interface current configuration status
+        enum: [disabled, static, dhcp]
+      ipv4Address:
+        type: string
+        description: interface ipV4 address (only for disabled and static status)
+        example: 127.0.0.1
+      gateway:
+        type: string
+        description: configured gateway for this interface (only for disabled and static status)
+        example: 192.168.17.56
+      mask:
+        type: string
+        description: the configured ip mask for this interface (only for disabled and static status)
+        example: 255.255.255.0
+
+Initial:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Action success
+      example: true
+    result:
+      type: object
+      properties:
+        status:
+          type: string
+          description: initial interface configuration status
+          enum: [disabled, static, dhcp]
+        ip:
+          type: string
+          description: IP of the initial configuration
+          example: 192.168.1.10
+        mask:
+          type: string
+          description: IP mask of the initial configuration
+          example: 255.255.0.0
+        gateway:
+          type: string
+          description: Gateway IP of the initial configuration
+          example: 192.168.253.254
+
+InitializedState:
+  type: object
+  properties:
+    status:
+      type: boolean
+      description: Whether SMC has been already initialized or not
+    smcOnCloud:
+      type: string
+      description: Specify if SMC is running on an cloud environment. If not, it is empty
+      enum:
+        - ""
+        - "aws"
+        - "outscale"
+
+InitialConfiguration:
+  type: object
+  properties:
+    adminpassword:
+      type: string
+      description: SMC administrator password
+    status:
+      type: string
+      description: initial interface configuration status
+      enum: [disabled, static, dhcp]
+    ip:
+      type: string
+      description: interface IPV4 address
+      example: 127.0.0.1
+    hostname:
+      type: string
+      description: Name of the host
+      example: SMC
+    mask:
+      type: string
+      description: the configured IP mask for this interface
+      example: 255.255.255.0
+    gateway:
+      type: string
+      description: configured gateway for this interface
+      example: 192.168.17.56
+    dns:
+      type: string
+      description: DNS address
+      example: 127.168.57.1
+    keyboardLayout:
+      type: string
+      description: Keyboard layout
+      example: fr
+
+InitialCloudConfiguration:
+  type: object
+  properties:
+    adminpassword:
+      type: string
+      description: SMC administrator password
+      example: KqLHdFDbjf$dhgsb
+    awsInstanceId:
+      type: string
+      description: The cloud instance id on which SMC is launching
+      example: i-0070c015f673e7159
+
+DRActivation:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Action success
+      example: true
+    result:
+      type: boolean
+      description: DR Mode status
+      example: false
+
+VpnCrlRequired:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Action success
+      example: true
+    result:
+      type: boolean
+      description: VPN CRL REQUIRED status
+      example: false
+Sls:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Action success
+      example: true
+    result:
+      type: string
+      description: IP or Fqdn of the SLS server
+      example: www.url-sls.com
+
+PAPIActivation:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: Action success
+      example: true
+    result:
+      type: object
+      properties:
+        isPapiActive:
+          type: boolean
+          description: Public API activation status
+          example: true

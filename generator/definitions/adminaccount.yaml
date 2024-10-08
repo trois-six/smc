@@ -1,0 +1,8 @@
+---
+AdminAccountResponse:
+  type: object
+  properties:
+    login:
+      type: string
+      description: admin's login
+      example: admin

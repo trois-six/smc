@@ -1,0 +1,13 @@
+FilteredIds:
+  description: Array of firewall uuids to filter on
+  type: object
+  properties:
+    filteredIds:
+      type: array
+      items:
+        type: string
+      example:
+        [
+          "75532250-c878-42f1-8871-bafa68e944d4",
+          "3eb7081a-59de-48c5-a5aa-136bf98802a9",
+        ]

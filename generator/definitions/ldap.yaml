@@ -1,0 +1,52 @@
+---
+ldapResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/ldap"
+ldap:
+  description: Ldap configuration
+  allOf:
+    - type: object
+      properties:
+        enabled:
+          type: boolean
+        type:
+          type: string
+          example: "standard"
+        host:
+          type: string
+          example: "1.1.1.1"
+        hostBackup:
+          type: string
+          example: "2.2.2.2"
+        port:
+          type: integer
+          example: "69"
+        baseDn:
+          type: string
+          example: "smc-dn"
+        login:
+          type: string
+          example: "smc-user"
+        password:
+          type: string
+          example: "smc-password"
+        ssl:
+          type: boolean
+        sslCaCertificate:
+          type: boolean
+        sslCaFile:
+          type: string
+          format: binary
+      required:
+        - type
+        - host
+        - port
+        - baseDn
+        - login
+        - password

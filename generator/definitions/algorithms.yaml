@@ -1,0 +1,69 @@
+---
+Algorithm:
+  type: object
+  required:
+    - name
+    - strengths
+    - ph1
+    - ph2
+  properties:
+    name:
+      type: string
+    strengths:
+      type: array
+      items:
+        type: integer
+    ph1:
+      type: boolean
+    ph2:
+      type: boolean
+    isObsolete:
+      type: boolean
+    isRecommended:
+      type: boolean
+    isDeprecated:
+      type: boolean
+    isDrCompatible:
+      type: boolean
+
+AuthAlgorithmsList:
+  type: object
+  description: A map of auth algorithms.
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      type: array
+      items:
+        $ref: "#/Algorithm"
+        example:
+          name: "sha1"
+          strengths: [160]
+          ph1: true
+          ph2: false
+          isObsolete: true
+          isDeprecated: false
+          isRecommended: false
+          isDrCompatible: false
+
+EncAlgorithmsList:
+  type: object
+  description: A map of encryption algorithms.
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      type: array
+      items:
+        $ref: "#/Algorithm"
+        example:
+          name: "des"
+          strengths: [64]
+          ph1: true
+          ph2: true
+          isObsolete: false
+          isDeprecated: true
+          isRecommended: false
+          isDrCompatible: false

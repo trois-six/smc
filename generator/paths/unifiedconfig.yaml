@@ -1,0 +1,244 @@
+---
+Info:
+  get:
+    summary: Retrieve unifiedconfig modification and deployment date info as well as SMC version
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: object
+                  properties:
+                    version:
+                      type: string
+                      description: SMC version number
+                    lastModification:
+                      type: string
+                      format: date
+                      description: Last time unifiedconfig has been modified
+                    lastDeployment:
+                      type: string
+                      format: date
+                      description: Last time a deployment has been made
+                    lastDeployableModification:
+                      type: string
+                      format: date
+                      description: Last time a modification that needed a deployment has been made
+      "401":
+        description: Unauthorized access
+
+Contacts:
+  get:
+    summary: Retrieve server contacts adresses
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: "../definitions/misc.yaml#/ContactAddresses"
+      "401":
+        description: Unauthorized access
+
+History:
+  get:
+    summary: Retrieve deployment history
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                        description: the deployment date
+                      admin:
+                        type: string
+                        description: deployment author
+                      comment:
+                        type: string
+                        description: some comments
+                      revision:
+                        type: string
+                        description: the revision id
+      "401":
+        description: Unauthorized access
+
+HistoryRevisionRestore:
+  post:
+    summary: Restore History
+    parameters:
+      - name: revision
+        in: path
+        required: true
+        description: revision number
+        schema:
+          type: string
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized access
+      "404":
+        description: Revision not found
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+Deploy:
+  get:
+    tags:
+      - deployment
+    summary: get the state of the current deployment
+    responses:
+      "200":
+        description: the state of the current deployment
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/deploy.yaml#/DeploymentMonitoringResponse"
+      "401":
+        description: Unauthorized access
+  post:
+    tags:
+      - deployment
+    summary: launch a deployment operation
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../definitions/deploy.yaml#/DeployBody"
+          example:
+            target: ["sns-1"]
+            byNames: true
+            comment: deployment launched from Swagger
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  enum: [true]
+      "400":
+        description: |
+          `code` can be :
+           - EFIREWALLNOTFOUND when at least one SNS name is unknown
+           - ENOFW when no target is given
+           - EUNKNOWNFW when one of the given target does not correspond to an existing Firewall"s UUID
+           - EINVALIDPARAM when more than one firewall are specified on redeployment
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+      "401":
+        description: Unauthorized access
+      "423":
+        description: |
+          Occurs when another deployment or a NSRPC script execution is ongoing or postponed
+          `code` can be :
+           - ELOCK
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+      "500":
+        description: internal error
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+
+UnifiedConfig:
+  get:
+    summary: Retrieve the unified configuration at a specific revision.
+      Retrieve the latest configuration if no given revision number
+    parameters:
+      - in: query
+        name: revision
+        required: false
+        description: The revision number to retrieve
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: "../definitions/unifiedconfig.yaml#/UnifiedConfigResponse"
+      "401":
+        description: Unauthorized access
+      "404":
+        description: code EREVISIONNOTFOUND when the given revision number is not found
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  post:
+    summary: Set unified configuration
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized access

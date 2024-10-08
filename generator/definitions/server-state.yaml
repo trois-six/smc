@@ -1,0 +1,10 @@
+---
+CurrentRevision:
+  type: object
+  properties:
+    revision:
+      type: string
+      description: revision number
+      example: 00002
+    isLast:
+      type: boolean

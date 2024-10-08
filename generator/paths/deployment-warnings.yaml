@@ -1,0 +1,23 @@
+ConfigEditors:
+  get:
+    tags:
+      - deployment-warnings
+    summary: Get all administrators (editors) that has made a non deployed modification, with 1 exception
+    description: Get all administrators (editors) that made a modification on deployable configuration, except the user that is making the api request
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: array
+                  items:
+                    $ref: "../definitions/deployment-warnings.yaml#/ConfigEditors"
+      "401":
+        description: Unauthorized access

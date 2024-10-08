@@ -1,0 +1,746 @@
+NSRPCList:
+  get:
+    tags:
+      - nsrpc
+    summary: Script files list uploaded on SMC
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/nsrpc.yaml#/NsrpcListResponse
+  post:
+    tags:
+      - nsrpc
+    summary: Send a script to prepare its execution on a firewall.
+    parameters:
+      - in: path
+        name: scriptname
+        required: true
+        schema:
+          type: string
+        description: CLI script to execute
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              nsrpcScript:
+                description: Must have a .script extension and a proper caracter encoding
+                type: string
+                format: binary
+              force:
+                description: set to true to overwrite file with the same on the server
+                type: boolean
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/nsrpc.yaml#/NsrpcResponse
+      "400":
+        description: |
+          `code` can be :
+            - EUNKNOWNENCODING : The NSRPC script is in a unknown encoding
+            - EBADEXTNAME : The NSRPC script doesn't have a .script extension
+            - EFILEEMPTY : The NSRPC script is empty
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "413":
+        description: |
+          Occurs when the uploaded file exceed SNS_CLI_SCRIPT_MAX_UPLOAD_SIZE
+          `code` can be :
+           - EFILETOOBIG
+      "423":
+        description: |
+          Occurs when another NSRPC script is already being uploaded
+          `code` can be :
+           - ELOCK
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: >
+          Occurs when a script already exists on the server and the force option
+          is not set
+
+          `code` can be :
+
+          - `EDUPLICATE`
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+NSRPCBackupScript:
+  post:
+    tags:
+      - nsrpc
+    summary: Prepare the manual backup script to be execute on a firewall.
+    requestBody:
+      required: false
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              password:
+                description: Password that will be use to encrypt the SNS backup
+                type: string
+                example: Iw76$k6!o#LtLmbs
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/nsrpc.yaml#/NsrpcResponse
+      "400":
+        description: |
+          `code` can be :
+            - EUNKNOWNENCODING : The NSRPC script is in a unknown encoding
+            - EBADEXTNAME : The NSRPC script doesn't have a .script extension
+            - EFILEEMPTY : The NSRPC script is empty
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "413":
+        description: |
+          Occurs when the uploaded file exceed SNS_CLI_SCRIPT_MAX_UPLOAD_SIZE
+          `code` can be :
+           - EFILETOOBIG
+      "423":
+        description: |
+          Occurs when another NSRPC script is already being uploaded
+          `code` can be :
+           - ELOCK
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: >
+          Occurs when a script already exists on the server and the force option
+          is not set
+
+          `code` can be :
+
+          - `EDUPLICATE`
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+NSRPCScript:
+  get:
+    tags:
+      - cli
+      - nsrpc
+    summary: Return the previously uploaded nsrpcScript content
+    parameters:
+      - name: scriptname
+        in: path
+        required: true
+        schema:
+          type: string
+        description: CLI script to execute
+      - name: download
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: if passed, the response will be the raw asked script file
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  enum:
+                    - true
+                result:
+                  type: object
+                  properties:
+                    content:
+                      type: string
+                      description: The nsrpcScript content
+      "400":
+        description: |
+          `code` can be :
+            - EMISSINGSCRIPT when no nsrpcScript has been previously uploaded
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - nsrpc
+    summary: Delete an uploaded nsrpc file from SMC
+    parameters:
+      - name: scriptname
+        in: path
+        required: true
+        schema:
+          type: string
+        description: CLI script to delete
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/nsrpc.yaml#/NsrpcDeleteResponse
+      "404":
+        description: >
+          Occurs when the requested scriptname to delete has not been previously
+          uploaded
+
+          `code` can be :
+            - EMISSINGSCRIPT
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+NSRPCScriptForFirewall:
+  get:
+    tags:
+      - nsrpc
+    summary:
+      Return the previously uploaded nsrpcScript content preprocessed for a
+      specified firewall
+    parameters:
+      - name: scriptname
+        in: path
+        required: true
+        schema:
+          type: string
+        description: CLI script to execute
+      - name: fwid
+        in: path
+        schema:
+          type: string
+        description: Firewall's UUID
+        required: true
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/nsrpc.yaml#/NsrpcScriptContentResponse
+      "400":
+        description: |
+          `code` can be :
+            - EMISSINGSCRIPT when no nsrpcScript has been previously uploaded
+            - EINVALIDPARAM when fwid does not correspond to a firewall
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+NSRPCProgress:
+  get:
+    tags:
+      - nsrpc
+    summary: Current state of NSRPC script execution
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/nsrpc.yaml#/NsrpcStateExecutionResponse
+NSRPCExecute:
+  post:
+    tags:
+      - nsrpc
+    summary: Execute a previously uploaded Nsrpc Script on specified Firewalls
+    parameters:
+      - name: scriptname
+        in: path
+        required: true
+        schema:
+          type: string
+        description: CLI script to execute
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/nsrpc.yaml#/NsrpcExecuteBody
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  enum:
+                    - true
+      "400":
+        description: >
+          `code` can be :
+           - EMISSINGSCRIPT when no nsrpcScript has been previously uploaded
+           - EMISSINGFIREWALL when no target is given
+           - EUNKNOWNFW when one of the given target does not correspond to an existing Firewall's UUID
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          Occurs when another NSRPC script execution or a deployment is ongoing or postponed
+          `code` can be :
+           - ELOCK
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+NSRPCAttach:
+  get:
+    tags:
+      - nsrpc
+    summary: Get all files attached to a NSRPC script
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/nsrpc.yaml#/NsrpcAttachmentResponse
+      "400":
+        description: |
+          `code` can be :
+           - ENOENT : File is missing
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  post:
+    tags:
+      - nsrpc
+    summary: Attach a file needed to execute a NSRPC script
+    description: >
+      It's possible to attach many file as long at they don't exceed
+      100 MIB
+
+      If attached file already exists it'll be replaced
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: string
+            format: binary
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/nsrpc.yaml#/NsrpcResponse
+      "400":
+        description: |
+          `code` can be :
+           - EFILEMISSING : When nsrpcAttachments is missing
+      "413":
+        description: >
+          Occurs when the uploaded file exceed
+          100 MIB
+
+          `code` can be:
+           - EFILETOOBIG
+      "423":
+        description: >
+          Occurs when another file (NSRPC script or attachment) is being
+          uplodaded
+
+          `code` can be :
+           - ELOCK
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+NSRPCExecuteCsv:
+  post:
+    tags:
+      - nsrpc
+    summary: Execute a previously uploaded NSRPC script with a CSV file
+    description: >
+      It's not possible to attach a file if a NSRPC script hasn't been posted
+      before by calling /nsrpc/script API
+
+      If attached csv file already exists it'll be replaced
+    parameters:
+      - name: scriptname
+        in: path
+        required: true
+        schema:
+          type: string
+        description: CLI script to execute
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              csvFile:
+                type: string
+                format: binary
+              target:
+                type: array
+                description:
+                  Firewall's UUIDs on which to run the script, if not defined, use UUIDs
+                  defined in the CSV file
+                items:
+                  type: string
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "400":
+        description: |
+          `code` can be :
+           - EFILEMISSING : When NSRPC script or csvFile is missing
+           - EFILEEMPTY : The csvFile is empty
+           - EINVALIDCSV : When the CSV is not in the right format or is empty
+      "413":
+        description: |
+          Occurs when the uploaded file exceed SNS_CLI_CSV_MAX_UPLOAD_SIZE
+          `code` can be :
+           - EFILETOOBIG
+      "423":
+        description: >
+          Occurs when another file (NSRPC script or attachment) is being
+          uploaded
+
+          `code` can be :
+           - ELOCK
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+NSRPCDryRun:
+  post:
+    tags:
+      - nsrpc
+    summary: Visualize preprocessed script for each given firewalls
+    parameters:
+      - name: scriptname
+        in: path
+        required: true
+        schema:
+          type: string
+        description: CLI script to execute
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/nsrpc.yaml#/NsrpcExecuteBody
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                result:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      fwid:
+                        type: string
+                        description: Firewall\'s UUID
+                      fwname:
+                        type: string
+                        description: Firewall\'s name
+                      content:
+                        type: string
+                        description:
+                          Nsrpc script content with CSV data applied for this
+                          firewall
+      "404":
+        description: Script not found
+NSRPCDryRunScript:
+  post:
+    tags:
+      - nsrpc
+    summary: Visualize preprocessed script with CSV data for each firewalls
+    parameters:
+      - name: scriptname
+        in: path
+        required: true
+        schema:
+          type: string
+        description: CLI script to execute
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              csvFile:
+                type: string
+                format: binary
+              target:
+                type: array
+                description:
+                  Firewall's UUIDs on which to run the script, if not defined, use UUIDs
+                  defined in the CSV file
+                items:
+                  type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      fwid:
+                        type: string
+                        description: Firewall's UUID
+                      fwname:
+                        type: string
+                        description: Firewall's name
+                      content:
+                        type: string
+                        description:
+                          Nsrpc script content with CSV data applied for this
+                          firewall
+      "400":
+        description: |
+          `code` can be :
+           - EFILEMISSING : When NSRPC script or csvFile is missing
+           - EFILEEMPTY : The csvFile is empty
+           - EINVALIDCSV : When the CSV is not in the right format or is empty
+      "413":
+        description: |
+          Occurs when the uploaded file exceed SNS_CLI_CSV_MAX_UPLOAD_SIZE
+          `code` can be :
+           - EFILETOOBIG
+      "423":
+        description: >
+          Occurs when another file (NSRPC script or attachment) is being
+          uploaded
+
+          `code` can be :
+           - ELOCK
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+NSRPCLogs:
+  get:
+    tags:
+      - nsrpc
+    summary: Return NSRPC execution's logs for a given firewall
+    parameters:
+      - name: fwid
+        in: path
+        schema:
+          type: string
+        required: true
+        description: Firewall's UUID
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  enum:
+                    - true
+                result:
+                  type: object
+                  properties:
+                    content:
+                      type: string
+                      description: NSRPC execution's logs
+      "400":
+        description: |
+          `code` can be :
+            - EINVALIDPARAM when fwid does not correspond to a firewall
+NSRPCLogsArchive:
+  get:
+    tags:
+      - nsrpc
+    summary: Return an archive containing all firewalls NSRPC logs
+    responses:
+      "200":
+        description:
+          A tar.gz file containing output.log and generated.txt within folders
+          for each firewalls
+        content:
+          application/x-compressed-tar:
+            schema:
+              type: string
+              format: binary
+NSRPCFirewallLogsArchive:
+  get:
+    tags:
+      - nsrpc
+    summary: Return an archive containing specified firewall's NSRPC logs
+    parameters:
+      - name: fwid
+        in: path
+        schema:
+          type: string
+        required: true
+        description: Firewall\'s UUID
+    responses:
+      "200":
+        description: A tar.gz file containing output.log and generated.txt for this firewall
+        content:
+          application/x-compressed-tar:
+            schema:
+              type: string
+              format: binary
+      "400":
+        description: |
+          `code` can be :
+            - EINVALIDPARAM when fwid does not correspond to a firewall
+NSRPCSchedule:
+  put:
+    tags:
+      - nsrpc
+    summary: Schedule a previously uploaded Nsrpc Script on specified Firewalls
+    parameters:
+      - in: path
+        name: scriptname
+        required: true
+        schema:
+          type: string
+        description: CLI script to execute
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/nsrpc.yaml#/NsrpcScheduleBody
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  enum:
+                    - true
+      "400":
+        description: >
+          `code` can be :
+           - EMISSINGSCRIPT when no nsrpcScript has been previously uploaded
+           - EMISSINGFIREWALL when no target is given
+           - EFIREWALLNOTFOUND when one of the given target does not correspond to an existing Firewall's UUID
+           - EINVALIDDATE invalid date
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          Occurs when another NSRPC script execution or a deployment is ongoing
+          Or when some firewall are not connected
+          `code` can be :
+           - ELOCK
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+NSRPCPendingScripts:
+  get:
+    tags:
+      - nsrpc
+    summary: Return the pending Nsrpc script
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  enum:
+                    - true
+                result:
+                  type: object
+                  properties:
+                    target:
+                      description: Firewalls UUIDs on which a script is pending
+                      type: array
+                      items:
+                        type: string
+                    user:
+                      type: string
+                      description: the login of the user who scheduled the script
+                    script:
+                      type: string
+                      description: script's name
+                    schedule:
+                      type: string
+                      description: (optional) The scheduled date
+                      example: 2037-12-31T00:00:00.000Z
+      "204":
+        description: No pending script
+NSRPCCancelPendingScripts:
+  post:
+    tags:
+      - nsrpc
+    summary: Cancel the pending Nsrpc Script
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  enum:
+                    - true
+      "404":
+        description: |
+          `code` might be :
+          - ENOPENDING : No script is pending

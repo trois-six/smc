@@ -1,0 +1,324 @@
+---
+ProxyStatResponse:
+  type: object
+  xml:
+    name: nws
+  properties:
+    code:
+      type: integer
+      description: Result code
+      example: 100
+      xml:
+        attribute: true
+    msg:
+      type: string
+      description: Result message
+      example: OK
+      xml:
+        attribute: true
+    sessions:
+      type: array
+      items:
+        $ref: "#/ProxySessionObject"
+
+ProxySessionObject:
+  type: object
+  xml:
+    name: session
+  properties:
+    slot:
+      type: integer
+      description: Slot
+      example: 0
+      xml:
+        attribute: true
+    id:
+      type: string
+      description: Session id
+      example: 7ee0bf1e-55ad-11e7-99f9-080027d73006
+      xml:
+        attribute: true
+    state:
+      type: integer
+      description: State
+      example: 2
+    login:
+      type: string
+      description: User login
+      example: smc-admin
+    app:
+      type: string
+      description: App name
+      example: CLI
+    action_waiting:
+      type: integer
+      description: Action waiting
+      example: 1
+    action_succeded:
+      type: integer
+      description: Action succeded
+      example: 156
+    tm_creation:
+      type: string
+      description: Time creation
+      example: 2017-06-20 11:42:10
+    tm_lastaction:
+      type: string
+      description: Time last action
+      example: 2017-06-20 11:54:04
+    dl_wait:
+      type: integer
+      description: Is there a download waiting ?
+      example: 0
+    ul_wait:
+      type: integer
+      description: Is there an upload waiting ?
+      example: 1
+    dl_crc:
+      type: integer
+      description: Download crc
+      example: 0
+    ul_size:
+      type: integer
+      description: Upload size
+      example: 941
+    ul_rest:
+      type: integer
+      description: Upload rest
+      example: 0
+
+ProxyCommandResponse:
+  type: object
+  xml:
+    name: nws
+  properties:
+    code:
+      type: integer
+      description: Result code
+      example: 100
+      xml:
+        attribute: true
+    msg:
+      type: string
+      description: Result message
+      example: OK
+      xml:
+        attribute: true
+    id:
+      type: string
+      description: Command id
+      example: CONFIG SECURITYINSPECTION CONFIG ALARM LIST index=1 extended=1
+      xml:
+        attribute: true
+    serverd:
+      type: array
+      items:
+        $ref: "#/ProxyNwsResponse"
+
+ProxyServerdResponse:
+  type: object
+  xml:
+    name: serverd
+  properties:
+    ret:
+      type: integer
+      description: Result code
+      example: 101
+      xml:
+        attribute: true
+    code:
+      type: string
+      description: Result code for support
+      example: 00a01000
+      xml:
+        attribute: true
+    msg:
+      type: string
+      description: Result message
+      example: Ok
+      xml:
+        attribute: true
+    data:
+      description: Result
+
+ProxyNwsResponse:
+  type: object
+  xml:
+    name: nws
+  properties:
+    code:
+      type: integer
+      description: Result code
+      example: 100
+      xml:
+        attribute: true
+    msg:
+      type: string
+      description: Result message
+      example: OK
+      xml:
+        attribute: true
+
+ProxyUserLoginResponse:
+  type: object
+  xml:
+    name: nws
+  properties:
+    code:
+      type: integer
+      description: Result code
+      example: 100
+      xml:
+        attribute: true
+    msg:
+      type: string
+      description: Result message
+      example: OK
+      xml:
+        attribute: true
+    sessionid:
+      type: string
+      description: Session Id
+      example: beef8a83-550d-11e7-99f9-080027d73006
+    serial:
+      type: string
+      description: firewall's serial number
+      example: V50XXA05G7654A9
+    protocol:
+      type: integer
+      description: protocol number
+    command:
+      type: integer
+      description: command number
+    level:
+      type: string
+      description: list of user's rights
+      example: modify,mon_write,base,contentfilter
+    sessionlevel:
+      type: string
+      description: list of session's rights
+      example: base,contentfilter
+    fwadmin:
+      type: string
+      description: admin mode
+      example: proxy
+    client_address:
+      type: string
+      description: firewall IP address
+      example: 192.168.56.1
+    connection_if:
+      type: string
+      description: connection if
+      example: undetermined
+    need_reboot:
+      type: integer
+      description: Reboot needed ?
+      example: 0
+    prefs:
+      type: array
+      items:
+        $ref: "#/ProxyUserPreferences"
+
+ProxyUserPreferences:
+  type: array
+  xml:
+    name: section
+  properties:
+    title:
+      type: string
+      description: Section name
+      example: Configuration.SecurityPolicy
+      xml:
+        attribute: true
+  items:
+    $ref: "#/ProxyUserPreferencesKeys"
+
+ProxyUserPreferencesKeys:
+  type: object
+  xml:
+    name: key
+  properties:
+    name:
+      type: string
+      description: Key name
+      example: globalFiltering
+      xml:
+        attribute: true
+    value:
+      type: integer
+      description: value (1 or 0)
+      xml:
+        attribute: true
+
+ProxyBodySessionId:
+  description: Session Id
+  type: string
+
+ProxyUploadField:
+  description: File
+  type: string
+  format: binary
+
+###############
+# Parameters  #
+###############
+
+parameters:
+  ProxyFirewallUuid:
+    name: uuid
+    in: path
+    required: true
+    description: Firewall uuid
+    schema:
+      type: string
+
+  ProxyQuerySessionId:
+    name: sessionid
+    in: query
+    description: Session Id
+    required: true
+    schema:
+      type: string
+
+  ProxyAppName:
+    name: app
+    in: query
+    required: true
+    description: App name
+    schema:
+      type: string
+      enum:
+        - webreport
+        - webadmin
+
+  ProxyUserId:
+    name: uid
+    in: query
+    required: true
+    description: base64 encoded username
+    schema:
+      type: string
+
+  ProxyFileNameField:
+    name: filename
+    in: path
+    required: true
+    description: File name
+    schema:
+      type: string
+
+  ProxyManifestConsent:
+    name: consent
+    in: query
+    schema:
+      type: boolean
+    description: When provided, it allows to override a missing manifest
+    required: false
+
+  ProxyManifestRefuse:
+    name: refuse
+    in: query
+    schema:
+      type: boolean
+    description: When provided, refuses the proxy mode and deletes files for the version
+    required: false

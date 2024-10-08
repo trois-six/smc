@@ -1,0 +1,16 @@
+---
+Disclaimer:
+  get:
+    tags:
+      - disclaimer
+    summary: Retrieve the disclaimer file
+    responses:
+      "200":
+        description: The disclaimer file
+        content:
+          text/html:
+            schema:
+              type: string
+              format: binary
+      "404":
+        description: Disclaimer file does not exist

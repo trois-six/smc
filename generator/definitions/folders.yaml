@@ -1,0 +1,115 @@
+---
+FoldersListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/FolderMember"
+FoldersTreeResponse:
+  type: object
+  required: [success, result]
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/FolderMember"
+FolderMember:
+  type: object
+  required:
+    - uuid
+    - name
+    - children
+  properties:
+    uuid:
+      type: string
+      example: "root-folder"
+    name:
+      type: string
+      description: Folder\'s name
+      example: "My SMC"
+    comment:
+      type: string
+      description: Folder's description
+      example: My new folder where I put firewalls
+    firewalls:
+      type: array
+      description: List of firewall UUIDs contained by this folder
+      items:
+        type: string
+        example: "75532250-c878-42f1-8871-bafa68e944d4"
+    children:
+      type: array
+      description: Sub-folders list (mandatory, but can be empty)
+      items:
+        $ref: "#/FolderMember"
+FolderPropertiesWithoutUuid:
+  type: object
+  required:
+    - parentFolder
+    - name
+  properties:
+    name:
+      type: string
+      description: Folder\'s name
+      example: France
+    comment:
+      type: string
+      description: Folder\'s description
+      example: This folder contains all firewalls for France
+    parentFolder:
+      type: string
+      description: Parent folder's UUID
+      example: "75532250-c878-42f1-8871-bafa68e944d4"
+    firewalls:
+      type: array
+      description: List of the firewalls contained by this folder
+      example: ["some-fw-uuid-1", "some-fw-uuid-2"]
+      items:
+        type: string
+FolderProperties:
+  allOf:
+    - $ref: "objects.yaml#/ObjectUuid"
+    - $ref: "#/FolderPropertiesWithoutUuid"
+# RawFolderProperties is the representation of the Folder as rawly returned by the server
+RawFolderProperties:
+  type: object
+  required:
+    - uuid
+    - name
+    - firewalls
+    - rules
+    - subFolders
+    - depth
+  allOf:
+    - $ref: "#/FolderProperties"
+    - properties:
+        rules:
+          type: array
+          description: List of the associated rule's UUID
+          example: ["some-rule-uuid-1", "some-rule-uuid-2"]
+          items:
+            type: string
+        subFolders:
+          type: array
+          description: List of the sub-folder\'s UUID
+          example: ["some-folder-uuid-1"]
+          items:
+            type: string
+        depth:
+          type: integer
+          description: Folder\'s deepness (0 for the root folder)
+AccountFoldersProps:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      type: array
+      description: A list of folders uuid.
+      items:
+        type: string
+        example: "UUID1"

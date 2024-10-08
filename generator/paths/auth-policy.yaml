@@ -1,0 +1,134 @@
+Policy:
+  get:
+    tags:
+      - auth-policy
+    summary: Get users' password policy
+    description: Return the active password policy
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/auth-policy.yaml#/PolicyResult
+      "401":
+        description: Unauthorized access
+  put:
+    tags:
+      - auth-policy
+    summary: Update the users' password policy
+    requestBody:
+      required: true
+      description: The new users' password policy
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/auth-policy.yaml#/Policy
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/auth-policy.yaml#/PolicyResult
+      "400":
+        description: |
+          `code` may have:
+          - ECANNOTUPDATEPOLICY: Only "admin" can edit password policy
+          - EINVALIDLOGINLENGTH: Login should have a length lower than 128 characters
+          - EINVALIDMINLENGTH: Length should be a number greater than 0 and lower than 128
+          - EINVALIDNAMELENGTH: Name should have a length lower than 128 characters
+          - EINVALIDMANDATORYTYPE: Mandatory type should be one of "None", "Alphanumeric" or "Alphabetic and special"
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+post:
+  tags:
+    - auth-policy
+  summary: Test if password is compliant with policy
+  requestBody:
+    required: true
+    description: Test if password is compliant with policy
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            password:
+              type: string
+  responses:
+    "200":
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/auth-policy.yaml#/PolicyResult
+    "400":
+      description: |
+        `code` may have:
+        - EINVALIDMINLENGTH: Length should be a number greater than 0 and lower than 128
+        - EINVALIDNAMELENGTH: Name should have a length lower than 128 characters
+        - EINVALIDMANDATORYTYPE: Mandatory type should be one of "None", "Alphanumeric" or "Alphabetic and special"
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/common.yaml#/ErrorResponse
+    "401":
+      description: Unauthorized access
+
+ApiKeyPolicy:
+  get:
+    tags:
+      - api-policy
+    summary: Get api's key policy
+    description: Return the active api key policy
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/auth-policy.yaml#/ApiKeyPolicyResult
+      "401":
+        description: Unauthorized access
+  put:
+    tags:
+      - api-policy
+    summary: Update the api's key policy
+    requestBody:
+      required: true
+      description: The new api's key policy
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/auth-policy.yaml#/ApiKeyPolicy
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/auth-policy.yaml#/ApiKeyPolicyResult
+      "400":
+        description: |
+          `code` may have:
+          - EDURATIONTYPE: key duration must be a number
+          - EPERIODTYPE: key period must be hours or days or months or years.
+          - EPERIODTOOSHORT: period should be above 1 hour.
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+      "403":
+        description: |
+          `code` may have:
+          - ECANTUPDATEAPIPOLICY: Only "admin" can edit api key policy
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

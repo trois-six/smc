@@ -1,0 +1,455 @@
+openapi: 3.0.1
+info:
+  description: |
+    Management API for every SMC resources
+  version: 1.0.0
+  title: SMC HTTP API
+  contact:
+    name: labo-smc@stormshield.eu
+paths: # MISC
+  /status:
+    $ref: paths/misc.yaml#/Status
+  /api/appconfig:
+    $ref: paths/appconfig.yaml#/AppConfig
+  /api/keepalive:
+    $ref: paths/keepalive.yaml#/KeepAlive
+  /api/lock:
+    $ref: paths/lock.yaml#/Lock
+  /api/backup:
+    $ref: paths/backup.yaml#/Backup
+  /api/backup/download:
+    $ref: paths/backup.yaml#/BackupDownload
+  /api/backup/{hash}:
+    $ref: paths/backup.yaml#/Hash
+  /api/export/objects:
+    $ref: paths/export.yaml#/Objects
+  /api/export/supervision:
+    $ref: paths/export.yaml#/Supervision
+  /api/export/variables:
+    $ref: paths/export.yaml#/Variables
+  /api/export/customproperties:
+    $ref: paths/export.yaml#/CustomProperties
+  /api/export/sdwansupervision:
+    $ref: paths/export.yaml#/SDWANSupervision
+  /api/feature-toggling:
+    $ref: paths/feature-toggling.yaml#/FeatureToggling
+  /api/deployment-warnings/editors:
+    $ref: paths/deployment-warnings.yaml#/ConfigEditors
+  # Diag
+  /api/diag:
+    $ref: paths/diag.yaml#/Diag
+  # Unified Config
+  /api/unifiedconfig/config:
+    $ref: paths/unifiedconfig.yaml#/UnifiedConfig
+  /api/unifiedconfig/info:
+    $ref: paths/unifiedconfig.yaml#/Info
+  /api/unifiedconfig/contacts:
+    $ref: paths/unifiedconfig.yaml#/Contacts
+  /api/unifiedconfig/history:
+    $ref: paths/unifiedconfig.yaml#/History
+  /api/unifiedconfig/history/{revision}/restore:
+    $ref: paths/unifiedconfig.yaml#/HistoryRevisionRestore
+  /api/unifiedconfig/deploy:
+    $ref: paths/unifiedconfig.yaml#/Deploy
+  # Config
+  /api/config/license:
+    $ref: paths/config.yaml#/License
+  /api/config/license/verify:
+    $ref: paths/config.yaml#/LicenseVerify
+  /api/config/interfaces:
+    $ref: paths/config.yaml#/Interfaces
+  /api/config/network:
+    $ref: paths/config.yaml#/Network
+  /api/config/initial:
+    $ref: paths/config.yaml#/Initial
+  /api/config/initial/cloud/{cloudName}:
+    $ref: paths/config.yaml#/InitialCloud
+  /api/config/initialized:
+    $ref: paths/config.yaml#/Initialized
+  /api/config/dr:
+    $ref: paths/config.yaml#/DR
+  /api/config/vpncrlrequired:
+    $ref: paths/config.yaml#/VpnCrlRequired
+  /api/config/sls:
+    $ref: paths/config.yaml#/Sls
+  /api/config/papi:
+    $ref: paths/config.yaml#/PAPI
+  # Authentication
+  /api/auth/login:
+    $ref: paths/auth.yaml#/Login
+  /api/auth/logout:
+    $ref: paths/auth.yaml#/Logout
+  # Disclaimer
+  /api/disclaimer:
+    $ref: paths/disclaimer.yaml#/Disclaimer
+  ################
+  # Config Check #
+  ################
+  /api/cfgcheck/incoherencies:
+    $ref: paths/cfgcheck.yaml#/Incoherencies
+  /api/cfgcheck/status/:
+    $ref: paths/cfgcheck.yaml#/CfgcheckStatus
+  /api/cfgcheck/activation/{domainName}:
+    $ref: paths/cfgcheck.yaml#/DomainActivation
+  ##############
+  # Proxy mode #
+  ##############
+  /proxy/{uuid}/admin/admin.html:
+    $ref: paths/proxy.yaml#/AdminPage
+  /proxy/{uuid}/admin/report.html:
+    $ref: paths/proxy.yaml#/AdminPage
+  /proxy/{uuid}/admin/{filename}:
+    $ref: paths/proxy.yaml#/AdminPage
+  /proxy/{uuid}/api/auth/login:
+    $ref: paths/proxy.yaml#/Login
+  /proxy/{uuid}/api/auth/logout:
+    $ref: paths/proxy.yaml#/Logout
+  /proxy/{uuid}/api/command:
+    $ref: paths/proxy.yaml#/Command
+  /proxy/{uuid}/api/commands:
+    $ref: paths/proxy.yaml#/Commands
+  /proxy/{uuid}/api/prefs:
+    $ref: paths/proxy.yaml#/Preferences
+  /proxy/{uuid}/api/download/{filename}:
+    $ref: paths/proxy.yaml#/DownloadFile
+  /proxy/{uuid}/api/upload:
+    $ref: paths/proxy.yaml#/UploadFile
+  /proxy/{uuid}/api/stat:
+    $ref: paths/proxy.yaml#/Stats
+  /proxy/{uuid}/api/base64:
+    $ref: paths/proxy.yaml#/Base64
+  ################
+  #   Accounts   #
+  ################
+  /api/accounts:
+    $ref: paths/accounts.yaml#/Accounts
+  /api/accounts/{uuid}:
+    $ref: paths/accounts.yaml#/Account
+  /api/accounts/apikeys:
+    $ref: paths/accounts.yaml#/AccountApiKeys
+  /api/accounts/apikeys/{uuid}:
+    $ref: paths/accounts.yaml#/ApiKey
+  /api/accounts/apikeys/revoke/{uuid}:
+    $ref: paths/accounts.yaml#/RevokeApiKeys
+  ################
+  #   AdminAccounts   #
+  ################
+  /api/adminaccount:
+    $ref: paths/adminaccount.yaml#/AdminAccount
+  ###################
+  #   Auth policy   #
+  ###################
+  /api/authpolicy:
+    $ref: paths/auth-policy.yaml#/Policy
+  /api/apipolicy:
+    $ref: paths/auth-policy.yaml#/ApiKeyPolicy
+  #################################
+  #   Remote auth configuration   #
+  #################################
+  /api/ldap:
+    $ref: paths/ldap.yaml#/Ldap
+  /api/radius:
+    $ref: paths/radius.yaml#/Radius
+  #################
+  #   Firewalls   #
+  #################
+  /api/firewalls:
+    $ref: paths/firewalls.yaml#/Firewalls
+  /api/firewalls/{uuid}:
+    $ref: paths/firewalls.yaml#/Firewall
+  /api/firewalls/get:
+    $ref: paths/firewalls.yaml#/FirewallsPartial
+  /api/firewalls/dyna-info:
+    $ref: paths/firewalls.yaml#/FirewallDynaInfo
+  /api/firewalls/byname/{name}:
+    $ref: paths/firewalls.yaml#/FirewallByName
+  /api/firewalls/{uuid}/topologies:
+    $ref: paths/firewalls.yaml#/FirewallTopologies
+  /api/firewalls/{uuid}/package:
+    $ref: paths/firewalls.yaml#/FirewallInitPackage
+  /api/firewalls/{uuid}/objects:
+    $ref: paths/firewalls.yaml#/FirewallObjects
+  /api/firewalls/{uuid}/network/refresh:
+    $ref: paths/firewalls.yaml#/FirewallNetworkRefresh
+  /api/firewalls/{uuid}/qos/refresh:
+    $ref: paths/firewalls.yaml#/FirewallQoSRefresh
+  /api/firewalls/{uuid}/routing:
+    $ref: paths/firewalls.yaml#/FirewallRouting
+  /api/firewalls/{uuid}/routing/local:
+    $ref: paths/firewalls.yaml#/FirewallRoutingLocal
+  /api/firewalls/{uuid}/ha-info:
+    $ref: paths/firewalls.yaml#/FirewallHaInfo
+  /api/firewalls/import:
+    $ref: paths/firewalls.yaml#/FirewallsImport
+  /api/firewalls/import/{uuid}:
+    $ref: paths/firewalls.yaml#/FirewallsImportPackagesResult
+  /api/firewalls/{uuid}/supervision/refresh:
+    $ref: paths/firewalls.yaml#/FirewallSupervisionRefresh
+  /api/firewalls/reboot:
+    $ref: paths/firewalls.yaml#/FirewallsReboot
+  /api/firewalls/monitor-route/root:
+    $ref: paths/firewalls.yaml#/FirewallMonitorRoute
+  /api/firewalls/monitor-route/export:
+    $ref: paths/firewalls.yaml#/FirewallMonitorRouteExport
+  ###############
+  #   Folders   #
+  ###############
+  /api/folders:
+    $ref: paths/folders.yaml#/Folders
+  /api/folders/{uuid}:
+    $ref: paths/folders.yaml#/Folder
+  /api/folders/byname/{name}:
+    $ref: paths/folders.yaml#/FolderByName
+  /api/folders/accountFolders:
+    $ref: paths/folders.yaml#/AccountFolders
+  #############
+  #   Usage   #
+  #############
+  /api/usage/{uuid}:
+    $ref: paths/usage.yaml#/CheckUsage
+  ################
+  #   Objectdb   #
+  ################
+  /api/objectdb:
+    $ref: paths/objectdb.yaml#/ObjectDb
+  /api/objectdb/type/{type}:
+    $ref: paths/objectdb.yaml#/ObjectDbByType
+  /api/objectdb/{uuid}:
+    $ref: paths/objectdb.yaml#/Object
+  /api/objectdb/{uuid}/isInScope:
+    $ref: paths/objectdb.yaml#/ObjectIsInScope
+  /api/objectdb/import:
+    $ref: paths/objectdb.yaml#/ObjectsImport
+  ###########
+  #  Routing  #
+  ###########
+  /api/routing/{uuid}:
+    $ref: paths/routing.yaml#/Route
+  /api/routing/getbirdconfigerror:
+    $ref: paths/routing.yaml#/RouteGetBirdConfigError
+  /api/routing/import:
+    $ref: paths/routing.yaml#/ImportRoute
+  ###########
+  #  Rules  #
+  ###########
+  /api/rules:
+    $ref: paths/rules.yaml#/Rules
+  /api/rules/{uuid}:
+    $ref: paths/rules.yaml#/Rule
+  /api/rules/bulk:
+    $ref: paths/rules.yaml#/RulesBulk
+  /api/rules/by-parent/{parentUuid}:
+    $ref: paths/rules.yaml#/ParentRules
+  /api/rules/import:
+    $ref: paths/rules.yaml#/RulesImport
+  /api/rules/export:
+    $ref: paths/rules.yaml#/RulesExport
+  /api/rules/refs/{parentUuid}:
+    $ref: paths/rules.yaml#/RefsRule
+  /api/rules/refs/{parentUuid}/bulk:
+    $ref: paths/rules.yaml#/RefsRulesBulk
+  /api/rules/import-from-fw/{uuid}/{slotSpecifier}:
+    $ref: paths/rules.yaml#/RulesImportFromFirewalls
+  /api/rules/local/{uuid}:
+    $ref: paths/rules.yaml#/RulesFetchFromFirewalls
+  #################
+  #  Rule sets  #
+  #################
+  /api/rulesets:
+    $ref: paths/rule-sets.yaml#/RuleSets
+  /api/rulesets/{uuid}:
+    $ref: paths/rule-sets.yaml#/RuleSet
+  /api/rulesets/import:
+    $ref: paths/rule-sets.yaml#/RuleSetsImport
+  /api/rulesets/export:
+    $ref: paths/rule-sets.yaml#/RuleSetsExport
+  /api/rulesets/rules:
+    $ref: paths/rule-sets.yaml#/RuleSetsRules
+  #################
+  #  Qos - Queues  #
+  #################
+  /api/qos/queues:
+    $ref: paths/queue.yaml#/Queues
+  /api/qos/queues/bulk:
+    $ref: paths/queue.yaml#/QueuesBulk
+  /api/qos/queues/{uuid}:
+    $ref: paths/queue.yaml#/Queue
+  #################
+  #  Qos - TrafficShapers  #
+  #################
+  /api/qos/traffic-shapers:
+    $ref: paths/traffic-shaper.yaml#/TrafficShapers
+  /api/qos/traffic-shapers/bulk:
+    $ref: paths/traffic-shaper.yaml#/TrafficShaperBulk
+  /api/qos/traffic-shapers/{uuid}:
+    $ref: paths/traffic-shaper.yaml#/TrafficShaper
+  #################
+  #  Qos - Ifaces Assignations  #
+  #################
+  /api/qos/ifaces-assignations:
+    $ref: paths/ifaces-assignations.yaml#/IfacesAssignations
+  /api/qos/ifaces-assignations/bulk:
+    $ref: paths/ifaces-assignations.yaml#/IfacesAssignationsBulk
+  /api/qos/ifaces-assignations/{uuid}:
+    $ref: paths/ifaces-assignations.yaml#/IfaceAssignation
+  ###########
+  #   VPN   #
+  ###########
+  /api/vpn/defaultAddressPool:
+    $ref: paths/vpn.yaml#/DefaultAddressPool
+  /api/vpn/algorithms/auth:
+    $ref: paths/vpn.yaml#/AuthAlgorithms
+  /api/vpn/algorithms/enc:
+    $ref: paths/vpn.yaml#/EncAlgorithms
+  /api/vpn/encryptionProfiles:
+    $ref: paths/vpn.yaml#/EncryptionProfiles
+  /api/vpn/encryptionProfiles/{uuid}:
+    $ref: paths/vpn.yaml#/EncryptionProfile
+  /api/vpn/tunnels:
+    $ref: paths/vpn.yaml#/Tunnels
+  /api/vpn/topologies:
+    $ref: paths/vpn.yaml#/Topologies
+  /api/vpn/topologies/{uuid}:
+    $ref: paths/vpn.yaml#/Topology
+  /api/vpn/topologies/{uuid}/export:
+    $ref: paths/vpn.yaml#/TopologyExport
+  /api/autobackup:
+    $ref: paths/autobackup.yaml#/Autobackup
+  /api/autobackup/results:
+    $ref: paths/autobackup.yaml#/AutobackupResults
+  /api/autobackup/{date}/archive:
+    $ref: paths/autobackup.yaml#/AutobackupArchive
+  /api/autobackup/{date}/{uuid-firewall}/backup:
+    $ref: paths/autobackup.yaml#/AutobackupForFirewall
+  /api/autobackup/smc/backup/{date}:
+    $ref: paths/autobackup.yaml#/AutobackupSmc
+  # Update
+  /api/update:
+    $ref: paths/update.yaml#/Update
+  /api/update/launch:
+    $ref: paths/update.yaml#/UpdateLaunch
+  /api/update/status:
+    $ref: paths/update.yaml#/UpdateStatus
+  /api/cfgdiff/diff/{uuid}:
+    $ref: paths/cfgdiff.yaml#/CfgDiff
+  /api/cfgdiff/archive/{uuid}:
+    $ref: paths/cfgdiff.yaml#/CfgDiffArchive
+  /api/cfgdiff/na/{uuid}:
+    $ref: paths/cfgdiff.yaml#/CfgDiffNa
+  /api/cfgdiff/status:
+    $ref: paths/cfgdiff.yaml#/CfgDiffStatus
+  /api/message-boxes:
+    $ref: paths/message-boxes.yaml#/MessageBoxes
+  /api/logs/last:
+    $ref: paths/logs.yaml#/LastLogs
+  /api/logs/audit/last:
+    $ref: paths/auditlogs.yaml#/LastLogs
+  /api/nsrpc/script:
+    $ref: paths/nsrpc.yaml#/NSRPCList
+  /api/nsrpc/usebackupscript:
+    $ref: paths/nsrpc.yaml#/NSRPCBackupScript
+  /api/nsrpc/script/{scriptname}:
+    $ref: paths/nsrpc.yaml#/NSRPCScript
+  /api/nsrpc/script/{scriptname}/{fwid}:
+    $ref: paths/nsrpc.yaml#/NSRPCScriptForFirewall
+  /api/nsrpc/progress:
+    $ref: paths/nsrpc.yaml#/NSRPCProgress
+  /api/nsrpc/execute/{scriptname}:
+    $ref: paths/nsrpc.yaml#/NSRPCExecute
+  /api/nsrpc/attach:
+    $ref: paths/nsrpc.yaml#/NSRPCAttach
+  /api/nsrpc/csv/{scriptname}:
+    $ref: paths/nsrpc.yaml#/NSRPCExecuteCsv
+  /api/nsrpc/dry-run/{scriptname}:
+    $ref: paths/nsrpc.yaml#/NSRPCDryRun
+  /api/nsrpc/csv/dry-run/{scriptname}:
+    $ref: paths/nsrpc.yaml#/NSRPCDryRunScript
+  /api/nsrpc/log/{fwid}:
+    $ref: paths/nsrpc.yaml#/NSRPCLogs
+  /api/nsrpc/archive:
+    $ref: paths/nsrpc.yaml#/NSRPCLogsArchive
+  /api/nsrpc/archive/{fwid}:
+    $ref: paths/nsrpc.yaml#/NSRPCFirewallLogsArchive
+  /api/nsrpc/schedule/{scriptname}:
+    $ref: paths/nsrpc.yaml#/NSRPCSchedule
+  /api/nsrpc/pending:
+    $ref: paths/nsrpc.yaml#/NSRPCPendingScripts
+  /api/nsrpc/pending/cancel:
+    $ref: paths/nsrpc.yaml#/NSRPCCancelPendingScripts
+  /api/certificates/authorities:
+    $ref: paths/certificates.yaml#/CertificationAuthorities
+  /api/certificates/authorities/root:
+    $ref: paths/certificates.yaml#/CertificationAuthoritiesTree
+  /api/certificates/authorities/{caUuid}:
+    $ref: paths/certificates.yaml#/CertificationAuthority
+  /api/certificates/authorities/crl:
+    $ref: paths/certificates.yaml#/CACRL
+  /api/certificates/authorities/crl/{caUuid}:
+    $ref: paths/certificates.yaml#/CACRLByUuid
+  /api/certificates/authorities/{caUuid}.crl:
+    $ref: paths/certificates.yaml#/CAGetCRL
+  /api/certificates:
+    $ref: paths/certificates.yaml#/Certificates
+  /api/certificates/get:
+    $ref: paths/certificates.yaml#/CertificatesPartial
+  /api/certificates/{uuid}:
+    $ref: paths/certificates.yaml#/Certificate
+  /api/certificates/renew:
+    $ref: paths/certificates.yaml#/CertificatesRenew
+  /api/definitions/protocols:
+    $ref: paths/definitions.yaml#/ApplicativeProtocols
+  /api/definitions/ethernetprotocols:
+    $ref: paths/definitions.yaml#/EthernetProtocols
+  /api/definitions/ipprotocols:
+    $ref: paths/definitions.yaml#/IPProtocols
+  /api/definitions/icmpcodes:
+    $ref: paths/definitions.yaml#/ICMPCodes
+  #################
+  #   Variables   #
+  #################
+  /api/variables:
+    $ref: paths/variables.yaml#/Variables
+  /api/variables/{uuid}:
+    $ref: paths/variables.yaml#/Variable
+  /api/variables/import:
+    $ref: paths/variables.yaml#/VariablesImport
+  ########################
+  #   Custom Properties  #
+  ########################
+  /api/customproperties:
+    $ref: paths/custom-properties.yaml#/CustomProperties
+  /api/customproperties/{uuid}:
+    $ref: paths/custom-properties.yaml#/CustomProperty
+  ##########################
+  #   Network Interfaces   #
+  ##########################
+  /api/network/interfaces:
+    $ref: paths/network-interfaces.yaml#/NetworkInterfaces
+  /api/network/interfaces/bulk:
+    $ref: paths/network-interfaces.yaml#/NetworkInterfacesBulk
+  /api/network/interfaces/{uuid}:
+    $ref: paths/network-interfaces.yaml#/NetworkInterface
+  /api/network/interfaces/{uuid}/members:
+    $ref: paths/network-interfaces.yaml#/NetworkInterfaceMembers
+  /api/network/interfaces/root:
+    $ref: paths/network-interfaces.yaml#/NetworkInterfacesTree
+  ###############################
+  #   SNS local configuration   #
+  ###############################
+  /api/snsdiff/diff/{uuid}:
+    $ref: paths/snsdiff.yaml#/SnsDiff
+  ##################################
+  #   ActiveUpdate configuration   #
+  ##################################
+  /api/activeupdate:
+    $ref: paths/activeupdate.yaml#/Config
+  /api/activeupdate/infos:
+    $ref: paths/activeupdate.yaml#/Infos
+  /api/activeupdate/sync:
+    $ref: paths/activeupdate.yaml#/Sync
+  /api/activeupdate/import:
+    $ref: paths/activeupdate.yaml#/Import
+  /api/activeupdate/script:
+    $ref: paths/activeupdate.yaml#/Script
+  /api/activeupdate/certificate:
+    $ref: paths/activeupdate.yaml#/Certificate

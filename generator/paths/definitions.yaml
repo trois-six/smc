@@ -1,0 +1,120 @@
+ApplicativeProtocols:
+  get:
+    tags:
+      - misc
+    summary: get the supported applicative protocol list for filtering
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/misc.yaml#/ProtocolList
+EthernetProtocols:
+  get:
+    tags:
+      - misc
+    summary: get the supported ethernet protocol list for filtering
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: ethernet protocol name
+                        example:
+                          - profinet-rt
+IPProtocols:
+  get:
+    tags:
+      - misc
+    summary: get the supported ip protocol list for filtering
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        description: ip protocol name
+                        example:
+                          - tcp
+                          - udp
+                          - gre
+ICMPCodes:
+  get:
+    tags:
+      - misc
+    summary: get the supported icmp codes for filtering
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        description: icmp version the code belongs to
+                        enum:
+                          - icmp
+                          - icmpv6
+                      name:
+                        type: string
+                        example:
+                          - network_unreachable
+                          - host_unreachable
+                          - no_route_to_destination
+                      data:
+                        type: object
+                        properties:
+                          type:
+                            type: number
+                            description: icmp message type number
+                          code:
+                            type: number
+                            description: icmp message code number
+                          all:
+                            type: boolean
+                            description: available only for "all_icmp_codes" or
+                              "all_icmpv6_codes" messages
+                            enum:
+                              - true

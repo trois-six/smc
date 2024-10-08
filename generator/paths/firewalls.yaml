@@ -1,0 +1,967 @@
+Firewalls:
+  get:
+    tags:
+      - firewalls
+    summary: Récupération de la liste des firewalls et base-stations
+    description: Retourne la liste des firewalls et base-stations (à plat)
+    responses:
+      "200":
+        description: Réussite
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallsListResponse
+      "401":
+        description: Accès non autorisé
+  post:
+    tags:
+      - firewalls
+    summary: Création d'un nouveau Firewall
+    requestBody:
+      required: true
+      description: la description du firewall ou la base-station à rajouter
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/firewalls.yaml#/FirewallPropertiesWithoutUuid
+    responses:
+      "201":
+        description: Réussite
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/firewalls.yaml#/FirewallPropertiesWithUuid
+      "400":
+        description: >
+          `code` peut valoir :
+
+          - EREFNOTFOUND : Si un certificat référencé dans refCertificates n"existe pas
+
+          - EINVAL : Si un paramètre obligatoire n"est pas fourni
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Accès non autorisé
+      "403":
+        description: >
+          `code` peut valoir :
+
+          - EINVALIDVERSIONDR : Si le mode DR est activé et que la version du firewall est < 4.2.0
+
+          - EBASESTATIONDR : Si le mode DR est activé et que l'on créé une base station
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: Firewall or object already exists in database with the same name
+
+FirewallsPartial:
+  post:
+    tags:
+      - firewalls
+    summary: Récupération de la liste des firewalls et base-stations selon les IDs passés en paramètre
+    description: Retourne la liste des firewalls et base-stations (à plat)
+    requestBody:
+      required: false
+      description: Une liste d'ID de firewalls
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              fwids:
+                type: array
+                items:
+                  type: string
+                example:
+                  - sns-uuid-1
+                  - sns-uuid-2
+    responses:
+      "200":
+        description: Réussite
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallsListResponse
+      "401":
+        description: Accès non autorisé
+
+Firewall:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: The firewall's uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - firewalls
+    summary: Retrieving a specific firewall regarding its uuid
+    description: Return a firewall object
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallPropertiesWithStatusInformation
+      "401":
+        description: Unauthorized access
+      "404":
+        description: |
+          `code` can be:
+          - ENOTFOUND : The firewall has not been found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  put:
+    tags:
+      - firewalls
+    summary: Mise à jour d'un Firewall
+    requestBody:
+      description: The firewall or base station to modify
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/firewalls.yaml#/FirewallPropertiesWithUuid
+      required: true
+    responses:
+      "200":
+        description: Réussite
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/firewalls.yaml#/FirewallPropertiesWithUuid
+      "400":
+        description: >
+          `code` peut valoir :
+
+          - EREFNOTFOUND : Si un certificat référencé dans refCertificates n"existe pas
+
+          - EINVAL : Si un paramètre obligatoire n"est pas fourni
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Accès non autorisé
+      "404":
+        description: |
+          `code` peut valoir :
+          - ENOTFOUND : Le firewall référencé par son UUID est introuvable
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: Firewall or object already exists in database with the same name
+  delete:
+    tags:
+      - firewalls
+    summary: Supprime un Firewall
+    responses:
+      "200":
+        description: Réussite
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "400":
+        description: |
+          `code` peut valoir :
+          - EINVAL : l"UUID est manquant
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Accès non autorisé
+      "404":
+        description: |
+          `code` peut valoir :
+          - ENOTFOUND : Le firewall référencé par son UUID est introuvable
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` peut valoir :
+          - ELOCK : Si le firewall est utilisé (dans une conf VPN, ...)
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+FirewallByName:
+  parameters:
+    - name: name
+      in: path
+      required: true
+      description: The firewall's name
+      schema:
+        type: string
+  get:
+    tags:
+      - firewalls
+    summary: Retrieving a specific firewall regarding its name
+    description: Return a firewall object
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallPropertiesWithStatusInformation
+      "401":
+        description: Unauthorized access
+      "404":
+        description: |
+          `code` peut valoir :
+          - ENOTFOUND : The firewall has not been found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+FirewallTopologies:
+  get:
+    tags:
+      - firewalls
+      - topologies
+    summary: Fetch VPN topologies for a given firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/topologies.yaml#/TopologiesListResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: Firewall does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+FirewallObjects:
+  get:
+    tags:
+      - firewalls
+    summary: Fetch objects for a given firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/objects.yaml#/ObjectsListResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: Firewall does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+FirewallNetworkRefresh:
+  post:
+    tags:
+      - firewalls
+      - networkInterfaces
+      - routing
+    summary: Force the recover of firewall's network configuration (interfaces and routes)
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "404":
+        description: Firewall does not exist
+      "500":
+        description: Internal server error
+      "503":
+        description: Firewall is not connected
+FirewallQoSRefresh:
+  post:
+    tags:
+      - QoS
+      - firewalls
+    summary: Force the recover of Qos configuration and firewall's network configuration (interfaces and routes)
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "404":
+        description: Firewall does not exist
+      "409":
+        description: ECQOS Conflict
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - errors
+                - success
+              properties:
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - code
+                      - message
+                      - ctx
+                    properties:
+                      code:
+                        type: string
+                        enum: [ECONFLICTECQOS]
+                      message:
+                        type: string
+                        enum: [Cannot recover QoS configuration]
+                      ctx:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            type:
+                              type: string
+                              enum: [queue, trafficShaper]
+                            name:
+                              type: string
+                              example: PRIQ_1
+                            uuid:
+                              type: string
+                              example: 7937f12e-222f-48a1-bdcc-4af09718de42
+                success:
+                  type: boolean
+                  enum: [false]
+
+      "500":
+        description: Internal server error
+      "503":
+        description: Firewall is not connected
+
+FirewallRouting:
+  get:
+    tags:
+      - firewalls
+      - routing
+    summary: Fetch the routing policy for a firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/routing.yaml#/Routing
+      "401":
+        description: Unauthorized
+      "404":
+        description: Firewall does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  post:
+    tags:
+      - firewalls
+      - routing
+    summary: Create a route on the firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+    requestBody:
+      required: true
+      description: the routing properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/routing.yaml#/RouteAddUpdateBody
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/routing.yaml#/Routing
+      "401":
+        description: Unauthorized
+      "403":
+        description: |
+          `code` can be:
+          - EREFUSED : Cannot add a dynamic routing configuration
+          - EREFUSED : Cannot add a route on a "Never Seen" firewall
+          - EREFUSED : Cannot add a default route
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: |
+          `code` can be:
+          - ENOTFOUND : The firewall has not been found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+FirewallRoutingLocal:
+  get:
+    tags:
+      - firewalls
+      - routing
+    summary: Fetch the firewall's routing configuration, in the case of SMC handling only Read-Only on routing configuration
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: object
+                  properties:
+                    routes:
+                      type: array
+                      items:
+                        $ref: ../definitions/routing.yaml#/RouteInfo
+                    objects:
+                      type: array
+                      items:
+                        $ref: ../definitions/objects.yaml#/ObjectProperties
+                    isReadOnly:
+                      type: boolean
+                      example: true
+      "404":
+        description: Firewall does not exist
+      "500":
+        description: Internal server error
+      "503":
+        description: Firewall is not connected
+FirewallInitPackage:
+  post:
+    tags:
+      - firewalls
+      - package
+    summary: Generate an init package for a given firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/misc.yaml#/InitializationPackageProperties
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "400":
+        description: Bad request
+      "404":
+        description: Firewall does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+FirewallDynaInfo:
+  get:
+    tags:
+      - firewalls
+    summary: Get firewall dynamic information
+    parameters:
+      - name: since
+        in: query
+        required: true
+        description: timestamp limit for dyna-info retrieval
+        schema:
+          type: number
+          example: 10
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                timestamp:
+                  type: string
+                result:
+                  $ref: ../definitions/firewalls.yaml#/FirewallDynaInfoResponse
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - firewalls
+    summary: Get firewall dynamic information
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              fwIds:
+                description: firewalls uuid
+                type: array
+                items:
+                  type: string
+                example: ["sns-uuid-1", "sns-uuid-2"]
+              since:
+                type: number
+                example: 10
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                timestamp:
+                  type: string
+                result:
+                  $ref: ../definitions/firewalls.yaml#/FirewallDynaInfoResponse
+      "401":
+        description: Unauthorized
+FirewallHaInfo:
+  get:
+    tags:
+      - firewalls
+    summary: Get firewall HA information
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallHaInfoResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: Not found
+FirewallsImport:
+  post:
+    tags:
+      - firewalls
+    summary: Import an appliances CSV file, create/edit the appliances and/or generate related packages.
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              appliances:
+                description: File containing appliances (only Firewalls or only VPN Gateways)
+                type: string
+                format: binary
+              editAppliances:
+                description: Set to true to create/edit appliances (not required if generatePackages is enabled)
+                type: boolean
+              generatePackages:
+                description: Set to true to generate packages (not required if editAppliances is enabled)
+                type: boolean
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallsImportSuccess
+            example:
+              success: true
+              result:
+                import:
+                  created: 1
+                  updated: 1
+                  error: 4
+                generate:
+                  success: 0
+                  error: 3
+                  packOutdir: /tmp/import-firewalls-2020-08-25_13-27-32
+                logs:
+                  [
+                    {
+                      level: "warn",
+                      message: "Parent folder is mandatory",
+                      ctx: { lineNumber: 2 },
+                    },
+                  ]
+      "201":
+        description: Success with an uuid that needs to be provided to retrieve/remove generated packages
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallsImportSuccessWithPackGen
+            example:
+              success: true
+              result:
+                import:
+                  created: 6
+                  updated: 0
+                  error: 1
+                generate:
+                  success: 5
+                  error: 1
+                  packOutdir: /tmp/import-firewalls-2020-08-25_13-27-32
+                packagesArchiveUuid: 87b763db-dfcf-485c-bf82-3d80834bbd44
+                logs:
+                  [
+                    {
+                      level: "warn",
+                      message: "Non empty string required",
+                      ctx: { lineNumber: 42 },
+                    },
+                  ]
+      "400":
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallImportErrorResponse
+FirewallsImportPackagesResult:
+  get:
+    tags:
+      - firewalls
+    summary: Download generated packages for a given firewalls' import
+    description: Download a zip file containing connecting packages from a given import
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: The firewall's uuid
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Download success
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/SuccessResponse"
+      "401":
+        description: Unauthorized access
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: Connecting packages not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallImportErrorResponse
+  delete:
+    tags:
+      - firewalls
+    summary: Remove generated packages for a given firewalls import
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: The firewall's uuid
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Deletion success
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/SuccessResponse"
+      "401":
+        description: Unauthorized access
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: Rattachment packages not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallImportErrorResponse
+FirewallSupervisionRefresh:
+  post:
+    tags:
+      - firewalls
+    summary: Force the update of firewall's informations
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "400":
+        description: Firewall is not connected
+      "404":
+        description: Firewall does not exist
+      "500":
+        description: Internal server error
+FirewallsReboot:
+  post:
+    tags:
+      - firewalls
+    summary: Redémarrage des firewalls selon les IDs passés en paramètre
+    requestBody:
+      required: true
+      description: Une liste d'ID de firewalls
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              targets:
+                type: array
+                items:
+                  type: string
+                example:
+                  - sns-uuid-1
+                  - sns-uuid-2
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Accès non autorisé
+FirewallMonitorRoute:
+  get:
+    tags:
+      - firewalls
+    summary: Get MONITOR ROUTE information
+    parameters:
+      - name: start
+        in: query
+        required: false
+        description: The index of the first record to get
+        schema:
+          type: number
+          example: 0
+      - name: limit
+        in: query
+        required: false
+        description: The maximum count of records to get
+        schema:
+          type: number
+          example: 10
+      - name: filter
+        in: query
+        required: false
+        description: An ExtJS filters JSON array
+        schema:
+          type: string
+          example: '[{"property":"name","value":"gatewayA"}]'
+      - name: sort
+        in: query
+        required: false
+        description: An ExtJS sorters JSON array
+        schema:
+          type: string
+          example: '[{"property":"name","direction":"ASC"}]'
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallMonitorRouteResponse
+      "401":
+        description: Unauthorized
+FirewallMonitorRouteExport:
+  get:
+    tags:
+      - firewalls
+    summary: Export flat MONITOR ROUTE data
+    parameters:
+      - name: filter
+        in: query
+        required: false
+        description: An ExtJS filters JSON array
+        schema:
+          type: string
+          example: '[{"property":"name","value":"gatewayA"}]'
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/firewalls.yaml#/FirewallMonitorRouteExportResponse
+      "401":
+        description: Unauthorized

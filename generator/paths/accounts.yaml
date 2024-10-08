@@ -1,0 +1,317 @@
+Accounts:
+  get:
+    tags:
+      - accounts
+    summary: Get accounts list
+    description: Return a list of accounts
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: array
+                  items:
+                    $ref: "../definitions/accounts.yaml#/AccountPropertiesWithoutPassword"
+      "401":
+        description: Unauthorized access
+  post:
+    tags:
+      - accounts
+    summary: Create a new account
+    requestBody:
+      required: true
+      description: The user description to add
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/accounts.yaml#/AccountCreateRequest
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/accounts.yaml#/AccountPropertiesWithoutPassword
+      "400":
+        description: |
+          `code` may have:
+          - EACCALREADYEXISTS: Login already exists
+          - ELOGINISRESERVED: Login is reserved. It is already used as system account.
+          - ELOGINMANDATORY: Login is mandatory
+          - EINVALIDLOGIN: A valid identifier is mandatory for local authentication
+          - ENAMEMANDATORY: Name is mandatory
+          - ENOPASSWORDFORGROUPS: A group cannot have a password
+          - EPASSWORDMANDATORY: Password is mandatory
+          - EFORBIDDENCHAR: Invalid login: "${user.login}" (forbidden char: "${forbiddenCharMatch}")
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+      "409":
+        description: Account already exists in database with the same login
+Account:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: Account uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - accounts
+    summary: Fetch account
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/accounts.yaml#/AccountPropertiesWithoutPassword
+      "401":
+        description: Unauthorized access
+      "403":
+        description: |
+          `code` may have:
+          - ECANNOTGETUSER: Only 'admin' can get different user
+  put:
+    tags:
+      - accounts
+    summary: Update account
+    requestBody:
+      required: true
+      description: Account description
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/accounts.yaml#/AccountUpdateRequest
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/accounts.yaml#/AccountPropertiesWithoutPassword
+      "400":
+        description: |
+          `code` may have:
+          - ELOGINMANDATORY: Login is mandatory
+          - ENAMEMANDATORY: Name is mandatory
+          - ELOGINREADONLY: Account "${users[uuid].login}" login is readonly
+          - ECANNOTMODIFYADMINRIGHTS: Admin rights cannot be changed
+          - EMISSINGCURRENTPASSWORD: You must provide the current password in order to modify it
+          - ENOPASSWORDFORGROUPS: A group cannot have a password
+          - EWRONGCURRENTPASSWORD: You must provide the current password in order to modify it
+          - EMISSINGPASSWORD: You must provide a password to allow local authentication
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+      "403":
+        description: |
+          `code` may have:
+          - ECANNOTUPDATEUSER: Only "admin" can edit other users
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: |
+          `code` may have:
+          - EUSERDOESNOTEXIST: Account "${uuid}" does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: Account already exists in database with the same login
+  delete:
+    tags:
+      - accounts
+    summary: Delete a user/group
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/accounts.yaml#/AccountPropertiesWithoutPassword
+      "400":
+        description: |
+          `code` may have:
+          - EINVAL: Miss uuid
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+      "403":
+        description: |
+          `code` may have:
+          - EUSERNOTREMOVABLE: The specified account cannot be removed
+          - EFORBIDDENRIGHT: The specified permission cannot be given to the specified account
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: |
+          `code` may have:
+          - EUSERDOESNOTEXIST: Account "${uuid}" does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+ApiKey:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: API key uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - accounts
+    summary: Fetch an API key
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/accounts.yaml#/ApiKeyProperties
+      "404":
+        description: |
+          `code` may have:
+          - EKEYNOTFOUND: The given uuid is unknown
+      "403":
+        description: |
+          `code` may have:
+          - EFORBIDDEN: The requester cannot access the API key with the given uuid
+
+AccountApiKeys:
+  post:
+    tags:
+      - accounts
+    summary: Generate and store a new API key
+    requestBody:
+      required: true
+      description: The parameters of the API key to generate
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/accounts.yaml#/AccountApiKeyCreateRequest
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/accounts.yaml#/CreateApiKeyResponse
+      "400":
+        description: |
+          `code` may have:
+          - ELOGINREQUIRED: Login is mandatory
+          - ELOGINTYPE: Login must be a string
+          - ENAMEREQUIRED: Name is mandatory
+          - ENAMETYPE: Name must be a string
+          - EDATETYPE: Date must be a valid ISO date string
+          - EINVALIDDATE: Date must be in the future
+          - EBADKEYPERMS: Permissions are mandatory and cannot be wider than creator permissions
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+      "403":
+        description: |
+          `code` may have:
+          - EFORBIDDEN: You are not allowed to create API keys
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+RevokeApiKeys:
+  post:
+    tags:
+      - accounts
+    summary: Revoke an API key.
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: API key uuid
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/accounts.yaml#/ApiKeyProperties
+      "400":
+        description: |
+          `code` may have:
+          - ELOGINREQUIRED: Login is mandatory
+          - EKEYNOTFOUND: The key does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+      "403":
+        description: |
+          `code` may have:
+          - ECANTREVOKEAPIKEY: The user is not authorized to revoke this key
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

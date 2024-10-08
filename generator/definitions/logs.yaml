@@ -1,0 +1,32 @@
+---
+LogsResponse:
+  type: object
+  properties:
+    lines:
+      type: array
+      items:
+        type: object
+        description: Log entry
+        properties:
+          domain:
+            type: string
+            description: domain key
+          hostname:
+            type: string
+            description: host name
+          level:
+            type: number
+            description: log level
+          msg:
+            type: string
+            description: Log message
+          name:
+            type: string
+          pid:
+            type: number
+            description: process Id
+          time:
+            type: string
+            description: timestamp
+          v:
+            type: number

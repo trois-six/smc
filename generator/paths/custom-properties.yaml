@@ -1,0 +1,191 @@
+CustomProperties:
+  get:
+    tags:
+      - custom properties
+    summary: Get all custom properties
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/custom-properties.yaml#/MultipleCustomPropertiesResponse
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - custom properties
+    summary: Create a custom property
+    requestBody:
+      required: true
+      description: the custom property
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/custom-properties.yaml#/CustomPropertyWithoutUuid
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/custom-properties.yaml#/SingleCustomPropertyResponse
+      "400":
+        description: |
+          `code` may have :
+          - EEMPTYNAME : Custom property name is empty
+          - EFORBIDDENCHAR : Forbidden char into the custom property name: '...'
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : A custom property named "..." already exists
+          - ETOOMANYITEMS : Max custom properties reached (20)
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+
+CustomProperty:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: Custom Property uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - custom properties
+    summary: Get one custom property
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/custom-properties.yaml#/SingleCustomPropertyResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: Custom property was not found
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+  put:
+    tags:
+      - custom properties
+    summary: Update one custom property
+    requestBody:
+      required: true
+      description: the custom property
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/custom-properties.yaml#/CustomPropertyWithoutUuid
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/custom-properties.yaml#/SingleCustomPropertyResponse
+      "400":
+        description: |
+          `code` may have :
+          - EEMPTYNAME : Custom property name is empty
+          - EFORBIDDENCHAR : Forbidden char into the custom property name: '...'
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` may have :
+            - ENOTFOUND : Custom property not found with id "..."
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : A custom property named "..." already exists
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - custom properties
+    summary: Remove one custom property
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        description: Custom Property UUID
+        required: true
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "404":
+        description: Custom property was not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+CustomPropertiesImport:
+  post:
+    tags:
+      - custom properties
+    summary: Import custom properties from a CSV file
+    requestBody:
+      description: A CSV file
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              customProperties:
+                type: string
+                format: binary
+          encoding:
+            customProperties:
+              contentType: text/csv
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/custom-properties.yaml#/CustomPropertiesImportListResponse
+      "400":
+        description: |
+          Bad request but `code` might be :
+          - EIMPORTFAIL : the import failed
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized

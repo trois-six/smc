@@ -1,0 +1,22 @@
+LastLogs:
+  get:
+    tags:
+      - logs
+    summary: Return the last log lines
+    description: Return an array of log objects
+    parameters:
+      - name: minlevel
+        in: query
+        schema:
+          type: string
+        description: Minimum log level name
+        required: false
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/logs.yaml#/LogsResponse
+      "401":
+        description: Unauthorized

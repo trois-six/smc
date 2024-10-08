@@ -1,0 +1,70 @@
+---
+DeployBody:
+  description: deploy request body
+  properties:
+    target:
+      description: can also be "all" to run the deployment on every firewall
+      type: array
+      items:
+        type: string
+        description: Firewall's UUID (or name if byNames has been set) on which the deployment needs to be performed
+    byNames:
+      description: if truthy, the target field will be interpreted as an array of firewall names
+      type: boolean
+    redeploy:
+      description: if truthy, it's a redeployment request for one firewall. Else, it's a deployment request
+      type: boolean
+    comment:
+      description: The comment that will be attached to the deployment
+      type: string
+  required:
+    - target
+
+DeploymentMonitoringResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      enum: [true]
+    user:
+      type: string
+      description: Login of the user who launched the deployment operation
+    date:
+      type: string
+      format: date
+      description: Start execution date
+    revision:
+      type: string
+      description: the revision number of the deployment
+    firewalls:
+      type: array
+      items:
+        type: object
+        description: Can have more properties which are specific to the firewall and not related to the deployment operation
+        properties:
+          step:
+            type: integer
+            description: Current deployment step on this firewall
+            enum: [0, 1, 2, 3, 4]
+          revision:
+            type: string
+            description: Revision of the config that is currently deployed on this firewall
+          postponed:
+            type: boolean
+            description: true if the target firewall was initially disconnected when this deployment started
+          total:
+            type: integer
+            description: Total number of deployment steps on this firewall. Usefull to know if the deployment is finished
+            enum: [1, 2, 3, 4]
+          state:
+            type: string
+            description: Current deployment state
+          code:
+            type: string
+            description: Current deployment code (similar to state)
+          name:
+            type: string
+            description: Firewall's name
+          uuid:
+            type: string
+            description: Firewall's UUID

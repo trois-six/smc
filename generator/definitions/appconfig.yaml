@@ -1,0 +1,31 @@
+---
+AppConfigResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      type: object
+      properties:
+        INSTALL_CERTIFICATE_MAX_UPLOAD_SIZE:
+          type: number
+          example: 10
+        SNS_CLI_OUTPUT_DIR_PATH:
+          type: string
+          example: "/var/tmp/sns-cli/output"
+        SNS_CLI_SCRIPT_MAX_UPLOAD_SIZE:
+          type: number
+          example: 2
+        SNS_CLI_ATTACHMENTS_MAX_UPLOAD_SIZE:
+          type: number
+          example: 100
+        UI_MAX_IDLE_DURATION:
+          type: number
+          example: 5
+        FW_PORT:
+          type: number
+          example: 1754
+        VPN_MESH_ROUTE_BASED_MAX_PEERS:
+          type: number
+          example: 30

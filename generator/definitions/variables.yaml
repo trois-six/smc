@@ -1,0 +1,64 @@
+---
+SingleVariableResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/Variable"
+MultipleVariablesResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/Variable"
+VariableWithoutUuid:
+  description: A custom variable
+  type: object
+  properties:
+    name:
+      type: string
+      example: myNewVar
+    comment:
+      type: string
+      example: created from Swagger
+  required:
+    - name
+Variable:
+  description: A custom variable
+  allOf:
+    - $ref: "#/VariableWithoutUuid"
+    - type: object
+      properties:
+        uuid:
+          type: string
+      required:
+        - uuid
+VariablesImportSummary:
+  type: object
+  properties:
+    importSummary:
+      type: object
+      properties:
+        created:
+          type: integer
+        defined:
+          type: integer
+        error:
+          type: integer
+        undefined:
+          type: integer
+        updated:
+          type: integer
+VariablesImportListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      allOf:
+        - $ref: "misc.yaml#/ImportResponse"
+        - $ref: "#/VariablesImportSummary"

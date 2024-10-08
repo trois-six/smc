@@ -1,0 +1,19 @@
+ConfigEditors:
+  type: array
+  items:
+    type: object
+    properties:
+      editorUuid:
+        $ref: "common.yaml#/Uuid"
+      editorName:
+        type: string
+        description: The user name of the editor. This name can come from Database or from ldap/radius server
+        example: John Doe
+      editorIdentifier:
+        type: string
+        description: The user identifier
+        example: user69
+      isDeleted:
+        type: boolean
+        description: This value is true if the user is no longer present on SMC
+        example: false

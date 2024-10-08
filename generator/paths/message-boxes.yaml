@@ -1,0 +1,36 @@
+MessageBoxes:
+  get:
+    tags:
+      - message-boxes
+    summary: Retrieve the messages contained by all SMC"s message boxes
+    description: Retrieve the messages contained by all SMC"s message boxes
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  fwid:
+                    type: string
+                    description: The UUID of the firewall concerned by this message
+                  user:
+                    type: string
+                    description: The user responsible of the creation of this message
+                  date:
+                    type: string
+                    description: Message\"s datetime (ISO 8601 format, \"YYYY-MM-DD\")
+                  type:
+                    type: string
+                    description: Message"s type
+                  sendAttemptsCount:
+                    type: number
+                    description: Send attempts count
+                  body:
+                    type: string
+                    description: The message"s body
+      "401":
+        description: Unauthorized

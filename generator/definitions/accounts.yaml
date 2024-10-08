@@ -1,0 +1,165 @@
+---
+AccountPropertiesBase:
+  type: object
+  properties:
+    identifier:
+      type: string
+      description: the account's id (different from login if the user is member of a group)
+      example: jdoe
+    name:
+      type: string
+      description: the user's name
+      example: Some Account name
+    dn:
+      type: string
+      description: user's DN
+      example: CN=bob,DC=company,DC=world
+    description:
+      type: string
+      description: The user's description
+      example: some user description
+    email:
+      type: string
+      example: user@email.com
+      description: Account's email
+    permissions:
+      type: array
+      description: Array of access rights
+      items:
+        type: string
+        example: "smc"
+        enum:
+          - "smc"
+          - "sns"
+          - "console"
+          - "ssh"
+          - "api"
+    folders:
+      type: array
+      description: Array of folder rights
+      items:
+        type: string
+        example: "folder-uuid"
+    kind:
+      type: string
+      example: user
+      description: Type of account (user or group)
+    localAuth:
+      type: boolean
+      description: does the user can use the local authentication
+
+AccountPropertiesPassword:
+  type: object
+  properties:
+    password:
+      type: string
+      description: User password
+      example: "$2a$10$HM7zy3pUuoyKwnaFk4A4W.9gLQZ3BGWeJqwdlPiOJN6TayLbSQ1Na"
+
+AccountPropertiesOldPassword:
+  type: object
+  properties:
+    oldPassword:
+      type: string
+      description: User current password
+      example: "$2a$10$HM7zy3pUuoyKwnaFk4A4W.9gLQZ3BGWeJqwdlPiOJN6TayLbSQ1Na"
+
+AccountPropertiesWithoutPassword:
+  type: object
+  allOf:
+    - $ref: "objects.yaml#/ObjectUuid"
+    - $ref: "#/AccountPropertiesBase"
+
+AccountCreateRequest:
+  type: object
+  allOf:
+    - $ref: "#/AccountPropertiesBase"
+    - $ref: "#/AccountPropertiesPassword"
+
+AccountUpdateRequest:
+  type: object
+  allOf:
+    - $ref: "objects.yaml#/ObjectUuid"
+    - $ref: "#/AccountPropertiesBase"
+    - $ref: "#/AccountPropertiesOldPassword"
+    - $ref: "#/AccountPropertiesPassword"
+
+AccountApiKeyCreateRequest:
+  type: object
+  required:
+    - name
+    - login
+  properties:
+    name:
+      type: string
+      description: The name of the key (must be unique for the user)
+      example: "API_KEY_1"
+    expiredAt:
+      type: string
+      description: The timestamp of when the token expires
+      example: "2030-01-01T00:00:00.000Z"
+    permissions:
+      type: array
+      description: Array of access rights
+      items:
+        type: string
+        example: "smc"
+        enum:
+          - "smc"
+
+ApiKeyProperties:
+  type: object
+  description: The API key public properties
+  required:
+    - uuid
+    - name
+    - login
+    - prefix
+    - createdAt
+    - expiredAt
+    - permissions
+  properties:
+    uuid:
+      $ref: "common.yaml#/Uuid"
+    name:
+      type: string
+      description: The name of the token
+      example: "API_KEY_1"
+    login:
+      type: string
+      description: The login of the user
+      example: "jdoe"
+    prefix:
+      type: string
+      description: The API key prefix
+      example: "a025671hps48"
+    createdAt:
+      type: string
+      description: The timestamp when the token was created
+      example: "2020-01-01T00:00:00.000Z"
+    expiredAt:
+      type: string
+      description: The timestamp of when the token expires
+      example: "2020-01-01T00:00:00.000Z"
+    revokedAt:
+      type: string
+      description: The timestamp of when the key has been revoked
+      example: "2020-01-01T00:00:00.000Z"
+    permissions:
+      type: array
+      description: Array of access rights
+      items:
+        type: string
+        example: "smc"
+        enum:
+          - "smc"
+
+CreateApiKeyResponse:
+  allOf:
+    - type: object
+      properties:
+        token:
+          type: string
+          description: The client token used to access the API.
+          example: "xxxxxxx:xxxxxxxx"
+    - $ref: "#/ApiKeyProperties"

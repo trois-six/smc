@@ -1,0 +1,26 @@
+FeatureToggling:
+  get:
+    tags:
+      - feature-toggling
+    summary: Get statuses of all feature toggles
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: array
+                  description: Feature toggles statuses
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                      isEnabled:
+                        type: boolean

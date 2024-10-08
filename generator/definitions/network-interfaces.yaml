@@ -1,0 +1,352 @@
+NetworkInterfaceUuid:
+  type: object
+  required:
+    - uuid
+  properties:
+    uuid:
+      type: string
+      description: NetworkInterface uuid
+      example: "75532250-c878-42f1-8871-bafa68e944d4"
+
+NetworkInterfaceCommonPropertiesWithoutUuid:
+  type: object
+  required:
+    - name
+    - fwid
+    - interfaceType
+    - enabled
+    - dhcp4
+    - ipv4Addresses
+  properties:
+    enabled:
+      type: boolean
+      description: "Activation state of the interface - must be true to create a bridge"
+    name:
+      type: string
+      description: "Name of the interface"
+    fwid:
+      type: string
+      description: "The id of the firewall it belongs to"
+      example: "sns-uuid-1"
+    interfaceType:
+      type: string
+      enum: ["Aggregate", "Ethernet", "VLAN", "Bridge"]
+      description: "Type of the interface"
+      example: "VLAN"
+    comment:
+      type: string
+      description: "Comment"
+    mtu:
+      type: integer
+      description: "Maximum Transmission Unit of the interface"
+    dhcp4:
+      type: boolean
+      description: "Is DHCP activated for IPv4"
+    dhcpLeaseTime:
+      type: integer
+      description: "Requested lease time (seconds)"
+    dhcpHostname:
+      type: string
+      description: "DNS name"
+    requestDns:
+      type: boolean
+      description: "Request domain name servers from the DHCP server and create host objects"
+    ipv4Addresses:
+      type: array
+      description: "IPv4 addresses array of the interface"
+      items:
+        type: object
+        properties:
+          address:
+            type: string
+            description: "IPv4 address without mask"
+          mask:
+            type: string
+            description: "Mask in CIDR or IP address format"
+          comment:
+            type: string
+            description: "Comment for the IPv4 address"
+    physicalName:
+      type: string
+      description: "The interface's physical name"
+    forward:
+      type: object
+      description: "Routing without analysis, only if parentInterface refers to a bridge interface"
+      properties:
+        ipx:
+          type: boolean
+        netBios:
+          type: boolean
+        appleTalk:
+          type: boolean
+        ipv6:
+          type: boolean
+        pppoe:
+          type: boolean
+    fastRoute:
+      type: boolean
+      description: "Routing by interface: keep initial routing, only if parentInterface refers to a bridge interface"
+    keepVlanId:
+      type: boolean
+      description: "Routing by interface: keep VLAN IDs, only if parentInterface refers to a bridge interface"
+    aggregateMode:
+      type: string
+      enum: ["lacp", "failover"]
+      description: "Allow to use the aggregated interface with a failover mode (master/backup) or not"
+    failoverMaster:
+      type: string
+      description: "Define a failover interface which is the master"
+
+EthernetInterfacePropertiesWithoutUuid:
+  type: object
+  required:
+    - media
+    - protected
+  properties:
+    media:
+      type: string
+      enum:
+        [
+          "autoselect",
+          "10mbhalf",
+          "10mbfull",
+          "100mbhalf",
+          "100mbfull",
+          "1gbfull",
+          "10gbfull",
+          "20gbfull",
+          "25gbfull",
+          "40gbfull",
+        ]
+      description: "Media type of the interface"
+      example: "40gbfull"
+    port:
+      type: integer
+      description: "Physical port of the interface"
+    macAddress:
+      type: string
+      description: "Mac address of the interface"
+    ha:
+      type: boolean
+      description: "Is the interface used for the HA link"
+    physicalMacAddress:
+      type: string
+      description: "Physical MAC address of the interface"
+    protected:
+      type: boolean
+      description: "Is the interface protected"
+    parentInterface:
+      type: string
+      description: The uuid of the parent interface
+EthernetInterfaceProperties:
+  allOf:
+    - $ref: "#/EthernetInterfacePropertiesWithoutUuid"
+    - $ref: "#/NetworkInterfaceCommonPropertiesWithoutUuid"
+    - $ref: "#/NetworkInterfaceUuid"
+EthernetInterfaceWithChildren:
+  allOf:
+    - $ref: "#/EthernetInterfaceProperties"
+    - type: object
+      properties:
+        children:
+          type: array
+          items:
+            type: object
+
+VlanInterfacePropertiesWithoutUuid:
+  type: object
+  required:
+    - vlanId
+    - priority
+    - physical
+    - protected
+  properties:
+    vlanId:
+      type: integer
+      description: The ID of the vlan
+    priority:
+      type: integer
+      description: The priority of the vlan (CoS)
+    physical:
+      type: string
+      description: The uuid of the ethernet parent interface
+    protected:
+      type: boolean
+      description: "Is the interface protected"
+    parentInterface:
+      type: string
+      description: The uuid of the parent interface
+VlanInterfaceProperties:
+  allOf:
+    - $ref: "#/VlanInterfacePropertiesWithoutUuid"
+    - $ref: "#/NetworkInterfaceCommonPropertiesWithoutUuid"
+    - $ref: "#/NetworkInterfaceUuid"
+VlanInterfaceWithChildren:
+  allOf:
+    - $ref: "#/VlanInterfaceProperties"
+    - type: object
+      properties:
+        children:
+          type: array
+          items:
+            type: object
+
+AggInterfacePropertiesWithoutUuid:
+  type: object
+  required:
+    - protected
+  properties:
+    macAddress:
+      type: string
+      description: "Mac address of the interface"
+    physicalMacAddress:
+      type: string
+      description: "Physical MAC address of the interface"
+    protected:
+      type: boolean
+      description: "Is the interface protected"
+    parentInterface:
+      type: string
+      description: The uuid of the parent interface
+AggInterfaceProperties:
+  allOf:
+    - $ref: "#/AggInterfacePropertiesWithoutUuid"
+    - $ref: "#/NetworkInterfaceCommonPropertiesWithoutUuid"
+    - $ref: "#/NetworkInterfaceUuid"
+AggInterfaceWithChildren:
+  allOf:
+    - $ref: "#/AggInterfaceProperties"
+    - type: object
+      properties:
+        children:
+          type: array
+          items:
+            anyOf:
+              - $ref: "#/EthernetInterfaceProperties"
+              - $ref: "#/VlanInterfaceProperties"
+              - type: object
+
+BridgeInterfacePropertiesWithoutUuid:
+  type: object
+  properties:
+    macAddress:
+      type: string
+      description: "Mac address of the interface"
+    physicalMacAddress:
+      type: string
+      description: "Physical MAC address of the interface"
+    useStp:
+      type: integer
+      description: "The loop detection type"
+    mstConfigName:
+      type: string
+      description: "MSTP region name"
+    mstConfigIdFormatSelector:
+      type: integer
+      description: "MSTP format selector"
+    mstConfigRevision:
+      type: integer
+      description: "MSTP revision number"
+    stpPriority:
+      type: integer
+      description: "Common and Internal Spanning Tree (CIST)"
+    mstpInstances:
+      type: array
+      description: "MSTP instances array of the interface"
+      items:
+        type: object
+        properties:
+          vlanIds:
+            type: string
+            description: "List of VLAN IDs of the MSTP instance"
+          priority:
+            type: integer
+            description: "MSTP instance priority"
+BridgeInterfaceProperties:
+  allOf:
+    - $ref: "#/BridgeInterfacePropertiesWithoutUuid"
+    - $ref: "#/NetworkInterfaceCommonPropertiesWithoutUuid"
+    - $ref: "#/NetworkInterfaceUuid"
+BridgeInterfaceWithChildren:
+  allOf:
+    - $ref: "#/BridgeInterfaceProperties"
+    - type: object
+      properties:
+        children:
+          type: array
+          items:
+            anyOf:
+              - $ref: "#/EthernetInterfaceProperties"
+              - $ref: "#/VlanInterfaceProperties"
+              - $ref: "#/AggInterfaceProperties"
+              - type: object
+
+VirtualInterfacePropertiesWithoutUuid:
+  type: object
+  properties:
+    enabled:
+      type: boolean
+      description: "Activation state of the virtual interface"
+    name:
+      type: string
+      description: "Name of the virtual interface"
+    fwid:
+      type: string
+      description: "The id of the firewall it belongs to"
+      example: "sns-uuid-1"
+    comment:
+      type: string
+      description: "Comment"
+    mtu:
+      type: integer
+      default: 1500
+      description: "Maximum Transmission Unit of the interface"
+    ipv4Address:
+      type: string
+      description: "IPV4 address of the virtual interface"
+    mask:
+      type: string
+      description: "Mask address of the virtual interface"
+    peerName:
+      type: string
+    topologyName:
+      type: integer
+    interfaceType:
+      type: string
+      description: "Type of the interface"
+      default: "VTI"
+
+VirtualInterfaceProperties:
+  allOf:
+    - $ref: "#/VirtualInterfacePropertiesWithoutUuid"
+    - $ref: "#/NetworkInterfaceUuid"
+
+NetworkInterfacesListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    total:
+      type: number
+      example: 5
+    result:
+      type: array
+      items:
+        anyOf:
+          - $ref: "#/EthernetInterfaceProperties"
+          - $ref: "#/VlanInterfaceProperties"
+          - $ref: "#/AggInterfaceProperties"
+          - $ref: "#/BridgeInterfaceProperties"
+          - $ref: "#/VirtualInterfaceProperties"
+          - type: object
+
+NetworkInterfacesTree:
+  type: array
+  items:
+    anyOf:
+      - $ref: "#/EthernetInterfaceWithChildren"
+      - $ref: "#/VlanInterfaceWithChildren"
+      - $ref: "#/AggInterfaceWithChildren"
+      - $ref: "#/BridgeInterfaceWithChildren"
+      - type: object

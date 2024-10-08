@@ -1,0 +1,314 @@
+TrafficShapers:
+  get:
+    tags:
+      - QoS
+    summary: Get all the traffic shapers
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/traffic-shaper.yaml#/MultipleTrafficShapersResponse
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+  post:
+    tags:
+      - QoS
+    summary: Create a traffic shaper
+    requestBody:
+      required: true
+      description: the traffic shaper properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/traffic-shaper.yaml#/TrafficShaperWithoutUuid
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/traffic-shaper.yaml#/SingleTrafficShaperResponse
+      "400":
+        description: |
+          `code` may have :
+          - ERESERVEDNAME
+          - EFORBIDDENCHAR
+          - EUNKNOWNBODYPARAMS
+          - EINVAL
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - errors
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - code
+                    properties:
+                      code:
+                        type: string
+                        example: "EINVAL"
+                      message:
+                        type: string
+                        example: ""
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "409":
+        description: |
+          `code` can be :
+            - EDUPLICATE : Traffic shaper already exists in database with the same name
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+TrafficShaperBulk:
+  delete:
+    tags:
+      - QoS
+    summary: Delete multiple traffic shapers
+    requestBody:
+      required: true
+      description: The list of traffic shapers to delete
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../definitions/traffic-shaper.yaml#/TrafficShaper
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find traffic shaper
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` might be :
+          - ELOCK : if at least one traffic shaper is being used
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+TrafficShaper:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: TrafficShaper uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - QoS
+    summary: Get one traffic shaper
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/traffic-shaper.yaml#/SingleTrafficShaperResponse
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find traffic shaper
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+  put:
+    tags:
+      - QoS
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: TrafficShaper uuid
+        schema:
+          type: string
+    requestBody:
+      required: true
+      description: the traffic shaper properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/traffic-shaper.yaml#/TrafficShaperWithoutUuid
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/traffic-shaper.yaml#/SingleTrafficShaperResponse
+      "400":
+        description: |
+          `code` may have :
+          - ERESERVEDNAME
+          - EFORBIDDENCHAR
+          - EUNKNOWNBODYPARAMS
+          - EINVAL
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - errors
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                errors:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - code
+                    properties:
+                      code:
+                        type: string
+                        example: "EUNKNOWNBODYPARAMS"
+                      message:
+                        type: string
+                        example: ""
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find traffic shaper
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: |
+          `code` can be :
+            - EDUPLICATE : Traffic shaper already exists in database with the same name
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+  delete:
+    tags:
+      - QoS
+    summary: Remove one traffic shaper
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        description: TrafficShaper UUID
+        required: true
+    responses:
+      "200":
+        description: Success
+      "401":
+        description: Unauthorized
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: false
+      "404":
+        description: |
+          `code` can be :
+          - ENOTFOUND: Unabled to find traffic shaper
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` might be :
+          - ELOCK : if the traffic shaper is being used
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

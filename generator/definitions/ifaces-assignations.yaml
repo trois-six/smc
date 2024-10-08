@@ -1,0 +1,45 @@
+---
+SingleIfaceAssignationResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/IfaceAssignation"
+MultipleIfacesAssignationsResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/IfaceAssignation"
+IfaceAssignationWithoutIface:
+  description: A custom iface assignation
+  type: object
+  properties:
+    trafficShaper:
+      type: string
+      example: "ab42a927-7477-4b3e-aded-30473d5577e7"
+    defaultQueue:
+      type: string
+      example: "ab42a927-7477-4b3e-aded-30473d5577e8"
+    defaultACKQueue:
+      type: string
+      example: "ab42a927-7477-4b3e-aded-30473d5577e9"
+  required:
+    - trafficShaper
+    - defaultQueue
+    - defaultACKQueue
+IfaceAssignation:
+  description: An iface assignation
+  allOf:
+    - $ref: "#/IfaceAssignationWithoutIface"
+    - type: object
+      properties:
+        iface:
+          type: string
+          example: "ab42a927-7477-4b3e-aded-30473d5577e6"
+      required:
+        - iface

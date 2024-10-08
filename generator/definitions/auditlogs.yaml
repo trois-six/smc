@@ -1,0 +1,70 @@
+---
+LogsResponse:
+  type: object
+  properties:
+    lines:
+      type: array
+      items:
+        type: object
+        description: Audit log entry
+        properties:
+          level:
+            type: number
+            default: 30
+            description: log level
+          pid:
+            type: number
+            description: process Id
+          time:
+            type: string
+            description: timestamp
+          user:
+            type: string
+            description: user name
+          id:
+            type: string
+            default: smc
+            description: application identified
+          smcVersion:
+            type: string
+            description: SMC version number
+            example: 3.6.1
+          name:
+            type: string
+            default: audit
+            description: log type
+          hostname:
+            type: string
+            description: host name
+            example: smc.host.stormshield.eu
+          domain:
+            type: string
+            description: domain key
+          sessionid:
+            type: string
+            description: session id string
+          fw:
+            type: string
+            description: firewall name
+          action:
+            type: string
+            description: action name
+            enum:
+              - "create"
+              - "update"
+              - "delete"
+          actionStatus:
+            type: string
+            description: action status
+            enum:
+              - "success"
+              - "fail"
+          objectType:
+            type: string
+            description: object type
+          msg:
+            type: string
+            description: Text message containing details about action
+          v:
+            type: number
+            default: 0

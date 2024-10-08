@@ -1,0 +1,58 @@
+---
+AutoBackupFirewallResultData:
+  type: object
+  required:
+    - uuid
+    - name
+    - success
+  properties:
+    uuid:
+      type: string
+      description: Firewall\'s uuid
+      example: "some-firewall-uuid"
+    name:
+      type: string
+      description: Firewall\'s name
+      example: "some-firewall-name"
+    success:
+      type: boolean
+      description: Whether the backup has been successfull
+    size:
+      type: integer
+      description: Backup file's size. Only if success == true
+      example: 1234
+    reason:
+      type: string
+      description: Reason why the backup has not been successfull. Only if success == false
+      example: offline
+    serverdOutput:
+      type: array
+      items:
+        type: string
+      description: Serverd output. Only if the reason is a serverd error.
+      example: ['200 code=00100200 msg="Unknown command"']
+
+AutoBackupResult:
+  type: object
+  required:
+    - startDate
+    - duration
+    - size
+    - results
+  properties:
+    startDate:
+      type: string
+      format: date
+      example: "2016-11-22T15:38:01.844Z"
+    duration:
+      type: integer
+      description: Backup duration (in seconds)
+      example: 60
+    size:
+      type: integer
+      description: Backup size (in bytes)
+      example: 42
+    results:
+      type: array
+      items:
+        $ref: "#/AutoBackupFirewallResultData"

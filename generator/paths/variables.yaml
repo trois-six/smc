@@ -1,0 +1,188 @@
+Variables:
+  get:
+    tags:
+      - variables
+    summary: Get all firewalls custom variables
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/variables.yaml#/MultipleVariablesResponse
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - variables
+    summary: Create a firewall's custom variable
+    requestBody:
+      required: true
+      description: the variable properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/variables.yaml#/VariableWithoutUuid
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/variables.yaml#/SingleVariableResponse
+      "400":
+        description: |
+          `code` may have :
+          - EEMPTYNAME : Name can not be empty
+          - EFORBIDDENCHAR : Name contains forbidden character
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : A variable with the same name already exists
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+
+Variable:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: Variable uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - variables
+    summary: Get one firewalls custom variable
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/variables.yaml#/SingleVariableResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: Variable was not found
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+  put:
+    tags:
+      - variables
+    summary: Update one firewalls custom variable
+    requestBody:
+      required: true
+      description: the variable properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/variables.yaml#/VariableWithoutUuid
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/variables.yaml#/SingleVariableResponse
+      # "400":
+      #   description: |
+      #     `code` may have :
+      #     - EEMPTYNAME : Name can not be empty
+      #     - EFORBIDDENCHAR : Name contains forbidden character
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      # "404":
+      #   description: Variable was not found
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: ../definitions/common.yaml#/ErrorResponse
+      # "409":
+      #   description: |
+      #     `code` might be :
+      #     - EDUPLICATE : A variable with the same name already exists
+      #   content:
+      #     application/json:
+      #       schema:
+      #         $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - variables
+    summary: Remove one firewalls custom variable
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        description: Variable UUID
+        required: true
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "401":
+        description: Unauthorized
+      "404":
+        description: Variable was not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+VariablesImport:
+  post:
+    tags:
+      - variables
+    summary: Import variables from a CSV file
+    requestBody:
+      description: A CSV file
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              variables:
+                type: string
+                format: binary
+          encoding:
+            variables:
+              contentType: text/csv
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/variables.yaml#/VariablesImportListResponse
+      "400":
+        description: |
+          Bad request but `code` might be :
+          - EIMPORTFAIL : the import failed
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized

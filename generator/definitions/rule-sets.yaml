@@ -1,0 +1,64 @@
+---
+SingleRuleSetResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/RuleSet"
+MultipleRuleSetsResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/RuleSet"
+RuleSetWithoutUuid:
+  description: A custom rule set
+  type: object
+  properties:
+    name:
+      type: string
+      example: myNewVar
+    firewalls:
+      type: array
+      description: List of assigned firewall's UUID
+      example: ["some-fw-uuid-1", "some-fw-uuid-2"]
+      items:
+        type: string
+    rulesType:
+      type: string
+      description: rules type
+      enum: [filter, nat]
+  required:
+    - name
+    - rulesType
+RuleSet:
+  description: A custom rule set
+  allOf:
+    - $ref: "#/RuleSetWithoutUuid"
+    - type: object
+      properties:
+        uuid:
+          type: string
+      required:
+        - uuid
+
+RuleSetImportSummary:
+  allOf:
+    - description: Summary of rule sets import
+    - $ref: "../definitions/misc.yaml#/DefaultImportSummary"
+
+ImportResult:
+  description: Information about the import
+  allOf:
+    - $ref: ../definitions/misc.yaml#/ImportResponse
+    - type: object
+      properties:
+        importSummary:
+          type: object
+          properties:
+            ruleset:
+              $ref: "#/RuleSetImportSummary"

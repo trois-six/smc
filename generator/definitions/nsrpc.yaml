@@ -1,0 +1,170 @@
+---
+NsrpcResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    conflicts:
+      type: string
+      example: "file.script, file2.script, file3.script"
+    scriptPath:
+      type: string
+      example: "/data/users/nsrpc-scripts/myScript.script"
+
+NsrpcListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      type: object
+      properties:
+        content:
+          type: array
+          example:
+            [
+              { "name": "script1.script", "firewallsInError": [] },
+              { "name": "script2.script", firewallsInError: [] },
+              { "name": "script3.script", "firewallsInError": ["sns-uuid-1"] },
+            ]
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "manual-firewall-backup.script"
+              firewallsInError:
+                type: array
+                items:
+                  type: string
+                description: Firewall's UUIDs array that has encountered an error during preprocessing
+                example: ["sns-uuid-1", "sns-uuid-2"]
+
+NsrpcDeleteResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    message:
+      type: string
+      example: "file.script deleted"
+
+NsrpcStateExecutionResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      enum: [true]
+    user:
+      type: string
+      description: Login of the user who launched the nsrpc execution
+    date:
+      type: string
+      format: date
+      description: Start execution date
+    firewalls:
+      type: array
+      items:
+        type: object
+        description: Can have more properties which are specific to the firewall and not related to NSRPC script execution
+        properties:
+          step:
+            type: integer
+            description: Current execution step on this firewall
+            enum: [0, 1, 2, 3]
+          total:
+            type: integer
+            description: Total number of execution steps on this firewall. Usefull to know if the execution is finished
+            enum: [1, 2, 3]
+          state:
+            type: string
+            description: Current execution state
+          code:
+            type: string
+            description: Current execution code (similar to state)
+          name:
+            type: string
+            description: Firewall's name
+          fwid:
+            type: string
+            description: Firewall's UUID
+
+NsrpcScriptContentResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    content:
+      type: string
+      description: The nsrpcScript content preprocessed for this firewall
+    errors:
+      type: array
+      description: Only present if there are some errors during preprocessing
+      items:
+        type: object
+        properties:
+          code:
+            type: string
+            example: NO_VALUE
+          line:
+            type: integer
+            description: Line number on which the error occurs
+          msg:
+            type: string
+            example: 'Line 1: No value for variable "CUSTOM_var1"'
+          vars:
+            type: array
+            items:
+              type: string
+              example: CUSTOM_var2
+
+NsrpcExecuteBody:
+  description: nsrpc execute body
+  properties:
+    target:
+      description: can also be "all" to let the script be run on each firewall
+      type: array
+      items:
+        type: string
+        description: Firewall's UUID (or name if byNames has been set) on which the script needs to be executed
+      example: ["sns-1"]
+    byNames:
+      description: if truthy, the target field will be interpreted as an array of firewall names
+      type: boolean
+  required:
+    - target
+
+NsrpcScheduleBody:
+  description: nsrpc scheduling request body
+  properties:
+    schedule:
+      description: script's execution date
+      type: string
+      example: "2020-03-21T14:20:23.928Z"
+    target:
+      description: can also be "all" to let the script be run on each firewall
+      type: array
+      items:
+        type: string
+        description: Firewall's UUID on which the script needs to be executed
+      example: ["sns-1"]
+    byNames:
+      description: if truthy, the target field will be interpreted as an array of firewall names
+      type: boolean
+  required:
+    - target
+
+NsrpcAttachmentResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      type: array
+      description: Firewall's attachment files
+      items:
+        type: string

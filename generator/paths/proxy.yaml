@@ -1,0 +1,333 @@
+---
+AdminPage:
+  parameters:
+    - $ref: "../definitions/proxy.yaml#/parameters/ProxyFirewallUuid"
+    - $ref: "../definitions/proxy.yaml#/parameters/ProxyAppName"
+    - $ref: "../definitions/proxy.yaml#/parameters/ProxyUserId"
+    - $ref: "../definitions/proxy.yaml#/parameters/ProxyManifestConsent"
+    - $ref: "../definitions/proxy.yaml#/parameters/ProxyManifestRefuse"
+  get:
+    tags:
+      - proxy
+    summary: Retrieve SNS GUI files
+    responses:
+      "200":
+        description: Request granted
+      "202":
+        description: Accepted the request and downloading the webui
+      "303":
+        description: Detected a firewall without manifest, continue at your peril
+      "400":
+        description: Bad request
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Firewall sent an invalid manifest, cannot continue
+      "404":
+        description: Firewall not found
+
+Login:
+  parameters:
+    - $ref: "../definitions/proxy.yaml#/parameters/ProxyFirewallUuid"
+  post:
+    tags:
+      - proxy
+    summary: Routed towards SNS Auth API
+    requestBody:
+      description: Requested rights
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/xml:
+            schema:
+              $ref: "../definitions/proxy.yaml#/ProxyUserLoginResponse"
+
+Logout:
+  parameters:
+    - $ref: "../definitions/proxy.yaml#/parameters/ProxyFirewallUuid"
+  post:
+    tags:
+      - proxy
+    summary: Routed towards SNS logout API
+    requestBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            $ref: "../definitions/proxy.yaml#/ProxyBodySessionId"
+    responses:
+      "200":
+        description: Success
+        content:
+          application/xml:
+            schema:
+              $ref: "../definitions/proxy.yaml#/ProxyNwsResponse"
+
+Command:
+  parameters:
+    - $ref: "../definitions/proxy.yaml#/parameters/ProxyFirewallUuid"
+  post:
+    tags:
+      - proxy
+    summary: Command API routing
+    requestBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            required:
+              - sessionId
+              - cmd
+            properties:
+              sessionId:
+                $ref: "../definitions/proxy.yaml#/ProxyBodySessionId"
+              cmd:
+                description: Command name
+                type: string
+              id:
+                description: Command id
+                type: string
+              stopOnError:
+                description: Should stop on error
+                type: boolean
+              page:
+                description: Paging page
+                type: number
+              start:
+                description: Paging start
+                type: number
+              limit:
+                description: Paging limit
+                type: number
+              dir:
+                description: Sort order
+                type: string
+              search:
+                description: Search string
+                type: string
+              searchfield:
+                description: Search field
+                type: string
+              sort:
+                description: Sort column
+                type: string
+              refresh:
+                description: Force refresh
+                type: boolean
+    responses:
+      "200":
+        description: Request received
+        content:
+          application/xml:
+            schema:
+              $ref: "../definitions/proxy.yaml#/ProxyCommandResponse"
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Forbidden
+      "404":
+        description: Firewall not found
+  get:
+    tags:
+      - proxy
+    summary: Aggregated commands API routing
+    parameters:
+      - $ref: "../definitions/proxy.yaml#/parameters/ProxyQuerySessionId"
+      - name: cmd
+        in: query
+        description: Command name
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: Command id
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Request received
+        content:
+          application/xml:
+            schema:
+              $ref: "../definitions/proxy.yaml#/ProxyCommandResponse"
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Forbidden
+      "404":
+        description: Firewall not found
+Commands:
+  parameters:
+    - $ref: ../definitions/proxy.yaml#/parameters/ProxyFirewallUuid
+  post:
+    tags:
+      - proxy
+    summary: Aggregated commands API routing
+    requestBody:
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            required:
+              - sessionId
+            properties:
+              sessionId:
+                $ref: ../definitions/proxy.yaml#/ProxyBodySessionId
+              cmd1:
+                description: First command
+                type: string
+              cmd2:
+                description: Second command
+                type: string
+              cmd3:
+                description: Third command and so on...
+                type: string
+    responses:
+      "200":
+        description: Request received
+        content:
+          application/xml:
+            schema:
+              $ref: ../definitions/proxy.yaml#/ProxyCommandResponse
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Forbidden
+      "404":
+        description: Firewall not found
+Preferences:
+  parameters:
+    - $ref: ../definitions/proxy.yaml#/parameters/ProxyFirewallUuid
+  post:
+    tags:
+      - proxy
+    summary: User preferences API routing
+    requestBody:
+      required: true
+      content:
+        application/x-www-form-urlencoded:
+          schema:
+            type: object
+            properties:
+              sessionId:
+                $ref: ../definitions/proxy.yaml#/ProxyBodySessionId
+              key:
+                description: Action key
+                type: string
+              section:
+                description: Section
+                type: string
+              value:
+                description: Value
+                type: string
+    responses:
+      "200":
+        description: Request received
+        content:
+          application/xml:
+            schema:
+              $ref: ../definitions/proxy.yaml#/ProxyNwsResponse
+      "400":
+        description: Bad request
+        content:
+          application/xml:
+            schema:
+              $ref: ../definitions/proxy.yaml#/ProxyNwsResponse
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Forbidden
+      "404":
+        description: Firewall not found
+DownloadFile:
+  parameters:
+    - $ref: ../definitions/proxy.yaml#/parameters/ProxyFirewallUuid
+    - $ref: ../definitions/proxy.yaml#/parameters/ProxyFileNameField
+  get:
+    tags:
+      - proxy
+    summary: Download API routing
+    parameters:
+      - $ref: ../definitions/proxy.yaml#/parameters/ProxyQuerySessionId
+    responses:
+      "200":
+        description: Request received
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Forbidden
+      "404":
+        description: Firewall not found
+UploadFile:
+  parameters:
+    - $ref: ../definitions/proxy.yaml#/parameters/ProxyFirewallUuid
+  post:
+    tags:
+      - proxy
+    summary: Upload API routing
+    parameters:
+      - $ref: ../definitions/proxy.yaml#/parameters/ProxyQuerySessionId
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: ../definitions/proxy.yaml#/ProxyUploadField
+    responses:
+      "200":
+        description: Request received
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Forbidden
+      "404":
+        description: Firewall not found
+Stats:
+  parameters:
+    - $ref: ../definitions/proxy.yaml#/parameters/ProxyFirewallUuid
+  post:
+    tags:
+      - proxy
+    summary: Stat (upload/download/commands progress) API routing
+    parameters:
+      - $ref: ../definitions/proxy.yaml#/parameters/ProxyQuerySessionId
+    responses:
+      "200":
+        description: Request received
+        content:
+          application/xml:
+            schema:
+              $ref: ../definitions/proxy.yaml#/ProxyStatResponse
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Forbidden
+      "404":
+        description: Firewall not found
+Base64:
+  parameters:
+    - $ref: ../definitions/proxy.yaml#/parameters/ProxyFirewallUuid
+  post:
+    tags:
+      - proxy
+    summary: File sending API routing
+    parameters:
+      - $ref: ../definitions/proxy.yaml#/parameters/ProxyQuerySessionId
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: ../definitions/proxy.yaml#/ProxyUploadField
+    responses:
+      "200":
+        description: Request received
+      "401":
+        description: Unauthorized access
+      "403":
+        description: Forbidden
+      "404":
+        description: Firewall not found

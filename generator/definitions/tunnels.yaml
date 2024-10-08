@@ -1,0 +1,97 @@
+---
+TunnelsListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/TunnelProperties"
+
+TunnelProperties:
+  type: object
+  required:
+    - uuid
+    - name
+    - rulename
+    - type
+    - shape
+    - left
+    - right
+    - status
+  properties:
+    uuid:
+      type: string
+      description: topology's UUID
+      example: topology-uuid
+    name:
+      type: string
+      description: topology's name
+      example: topology-name
+    rulename:
+      type: string
+      description: link's digest according to VPN config rulename token
+      example: 8de805f1ad829d4bf4f21a6380434ea4
+    type:
+      type: string
+      description: topology's type
+      example: policy
+    shape:
+      type: string
+      description: topology's shape
+      example: mesh
+    left:
+      type: object
+      description: tunnel's left side couple gateway-objects
+      allOf:
+        - $ref: "#/TunnelEndpoint"
+    right:
+      type: object
+      description: tunnel's right side couple  gateway-objects
+      allOf:
+        - $ref: "#/TunnelEndpoint"
+    status:
+      type: object
+      description: Tunnel's status
+      properties:
+        state:
+          type: string
+          enum: [up, down, unknown]
+          example: down
+        left:
+          type: string
+          enum: [mature, dead, unknown]
+          example: mature
+        right:
+          type: string
+          enum: [mature, dead, unknown]
+          example: dead
+
+TunnelEndpoint:
+  type: object
+  properties:
+    gateway:
+      type: string
+      description: endpoint gateway
+      example: some-firewall-name
+    endpoint:
+      type: string
+      description: endpoint object
+      example: some-network-name
+    publicIpAddress:
+      type: string
+      description: IP address used for this tunnel endpoint (comes from firewall or topology endpoint's configuration)
+      example: 1.2.3.4
+    vpnLocalAddressName:
+      type: string
+      description: Interface configured for this tunnel endpoint (comes from firewall or topology endpoint's configuration)
+      example: Any, Firewall_out, ...
+    detectedPublicIpAddress:
+      type: string
+      description: IP address used by Firewall on this tunnel endpoint
+      example: null, 1.2.3.4
+    detectedVpnLocalAddressName:
+      type: string
+      description: Interface used for this tunnel endpoint or null when tunnel has never been up
+      example: null, Firewall_out

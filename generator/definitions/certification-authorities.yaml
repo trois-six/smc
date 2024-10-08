@@ -1,0 +1,136 @@
+---
+CertificationAuthorityWriteableProps:
+  type: object
+  properties:
+    name:
+      type: string
+      description: The name of the CA
+      example: MyCA
+    crlDistributionPoints:
+      type: array
+      description: The list of CRL distribution points for this CA
+      items:
+        type: string
+        example: "https://first.url.eu/certificaterevocationlist.crl"
+    comment:
+      type: string
+      description: The description of the CA
+      example: Site 1 CA
+    enrollment:
+      type: object
+      required:
+        - serverUrl
+      properties:
+        protocol:
+          type: string
+          enum: [SCEP, EST]
+          readOnly: true
+          description: The enrollment protocol (SCEP if server URL protocol is HTTP, EST if HTTPS)
+        serverUrl:
+          type: string
+          description: The URL of the enrollment server for this authority
+          example: https://testrfc7030.com:8443/
+        serverCaname:
+          type: string
+          description: The enrollment server CA name on SNS if protocol is EST; usually a DN if no short name has been defined
+          example: CN=ManagementCA O=EJBCA Sample C=SE
+        scepMethod:
+          type: string
+          enum: [get, post]
+        estAlias:
+          type: string
+          description: Additional path segment if protocol is EST and server provides service for multiple CAs
+          example: ecdsa_est
+
+CertificationAuthorityWithoutUuid:
+  allOf:
+    - $ref: "certification-authorities.yaml#/CertificationAuthorityWriteableProps"
+    - type: object
+      properties:
+        subject:
+          type: string
+          description: The subject of the CA's certificate
+          example: "emailAddress=firstname.lastname@company.com,CN=Firstname LASTNAME,O=COMPANY,C=FR"
+        issuer:
+          type: string
+          description: The issuer of the CA's certificate
+          example: "CN=Company Users Authority,O=COMPANY,C=FR"
+        hash:
+          type: string
+          description: The hash of the CA's certificate
+          example: 66528ad2
+        startDate:
+          type: string
+          format: date
+          description: The start date of the CA's certificate
+        endDate:
+          type: string
+          format: date
+          description: The end date of the CA's certificate
+        status:
+          type: string
+          description: Authority current status
+          example: "VALID"
+        importedCrl:
+          $ref: "certification-authorities.yaml#/AuthoriesImportedCrl"
+
+CertificationAuthority:
+  allOf:
+    - $ref: "certification-authorities.yaml#/CertificationAuthorityWithoutUuid"
+    - $ref: "objects.yaml#/ObjectUuid"
+
+CertificationAuthorityWithChildren:
+  allOf:
+    - $ref: "certification-authorities.yaml#/CertificationAuthorityWithoutUuid"
+    - $ref: "objects.yaml#/ObjectUuid"
+    - type: object
+      properties:
+        children:
+          type: array
+          items:
+            $ref: "certification-authorities.yaml#/CertificationAuthorityWithChildren"
+        mtype:
+          type: string
+          description: Type of the certificate ("certificate" or "authority")
+          enum: [certificate, authority]
+
+CertificationAuthoritiesList:
+  type: array
+  items:
+    $ref: "certification-authorities.yaml#/CertificationAuthority"
+
+CertificationAuthoritiesTree:
+  type: array
+  items:
+    $ref: "certification-authorities.yaml#/CertificationAuthorityWithChildren"
+
+CertificateInWarnings:
+  type: array
+  items:
+    type: string
+    description: uuid of the certificates that does not match the CA subject
+    example: "some-cert-uuid-1"
+
+AuthoriesImportedCrl:
+  type: object
+  description: CRL for authority
+  properties:
+    lastUpdate:
+      type: string
+      format: date-time
+    nextUpdate:
+      type: string
+      format: date-time
+    revokedCertificate:
+      type: array
+      description: list of revoked certificates
+      items:
+        type: object
+        properties:
+          serialNumber:
+            type: string
+          revocationDate:
+            type: string
+            format: date-time
+          reason:
+            type: number

@@ -1,0 +1,73 @@
+AuthResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    version:
+      type: string
+      description: SMC version
+      example: 0.0.1
+    serverDate:
+      type: string
+      description: server time
+      example: Wed May 23 2018 13:34:49 GMT+0545 (+0545)
+    currentRevision:
+      $ref: "../definitions/server-state.yaml#/CurrentRevision"
+    permissions:
+      $ref: "#/SessionPermissions"
+    user:
+      type: object
+      properties:
+        identifier:
+          type: string
+          description: user identifier (empty for remote users)
+          example: admin
+        login:
+          type: string
+          description: same as identifier if it exists
+        name:
+          type: string
+          description: user long name
+        permissions:
+          $ref: "#/SessionPermissions"
+        uuid:
+          type: string
+          description: user uuid
+        localAuth:
+          type: boolean
+          description: whether local authentication is enabled for this user or not
+          example: true
+
+ConflictErrorResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      default: false
+    serverDate:
+      type: string
+      description: server time
+      example: 2023-01-05T11:15:28.227Z
+    currentAdmin:
+      type: object
+      properties:
+        id:
+          type: string
+          example: m9omtmY5xNrxc65h6dna6nEqII3N2g0B
+        user:
+          type: string
+          example: admin
+        connectionTime:
+          type: string
+          example: 2023-01-05T11:15:28.227Z
+        ip:
+          type: string
+          example: 192.168.123.1
+
+SessionPermissions:
+  type: array
+  description: session permissions
+  items:
+    type: string
+    example: "smc"

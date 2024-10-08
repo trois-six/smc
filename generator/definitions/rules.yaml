@@ -1,0 +1,798 @@
+---
+RulePropertiesWithoutUuid:
+  type: object
+  required:
+    - action
+    - status
+    - src
+    - dst
+  properties:
+    name:
+      type: string
+      description: Rule name
+      example: Some Rule name
+    status:
+      type: string
+      description: enable or disable a rule
+      enum: ["on", "off"]
+      example: "on"
+    action:
+      type: string
+      enum: [block, decrypt, deleg, log, pass, reset, nat]
+      description: The action of the rule
+      example: pass
+    count:
+      type: boolean
+      description: should we activate packet counter for this rule
+    enforceIPSecForward:
+      type: boolean
+      description: Force source packets in IPSec
+    enforceIPSecReverse:
+      type: boolean
+      description: Force return packets in IPSec
+    noHASync:
+      type: boolean
+      description: This connexion is synchronized by HA
+    limit:
+      type: string
+      description: QoS limits
+      enum: [none, protect, alarm]
+    tcpRateLimit:
+      type: integer
+      description: QoS maximum number of TCP connections per second
+      minimum: 1
+      maximum: 2147483647
+    udpRateLimit:
+      type: integer
+      description: QoS maximum number of UDP connections per second
+      minimum: 0
+      maximum: 2147483647
+    icmpRateLimit:
+      type: integer
+      description: QoS maximum number of ICMP connections per second
+      minimum: 0
+      maximum: 2147483647
+    sctpRateLimit:
+      type: integer
+      description: QoS maximum number of SCTP connections per second
+      minimum: 0
+      maximum: 2147483647
+    reqRateLimit:
+      type: integer
+      description: QoS maximum number of application requests per second
+      minimum: 0
+      maximum: 2147483647
+    forceDscp:
+      type: boolean
+      description: QoS DSCP forced
+    dscpValue:
+      type: integer
+      description: QoS DSCP value
+      minimum: 0
+      maximum: 63
+    qid:
+      type: string
+      description: a QoS queue id
+    ackqid:
+      type: string
+      description: a QoS ACK queue id
+    qname:
+      type: string
+      description: a QoS queue name
+    ackqname:
+      type: string
+      description: a QoS ACK queue name
+    fairness:
+      type: string
+      enum: [user, host, state]
+      description: the QoS fairness strategy
+    inspectionLevel:
+      type: string
+      enum: [ids, ips, firewall]
+      description: Set the inspection Level of the rule
+      example: ids
+    inspectionAntivirus:
+      type: boolean
+      description: enable Antivirus inspection
+    inspectionAntispam:
+      type: boolean
+      description: enable Antispam inspection
+    inspectionSandboxing:
+      type: boolean
+      description: enable Sandboxing inspection
+    inspectionUrlFiltering:
+      type: integer
+      minimum: 0
+      maximum: 9
+      description: use given UrlFiltering policy
+    inspectionMailFiltering:
+      type: integer
+      minimum: 0
+      maximum: 9
+      description: use given MailFiltering policy
+    inspectionFtpFiltering:
+      type: boolean
+      description: enable FtpFiltering inspection
+    inspectionSslFiltering:
+      type: integer
+      minimum: 0
+      maximum: 9
+      description: use given SslFiltering policy
+    inspectionService:
+      type: string
+      enum: [httpproxy, webportal]
+      description: specify inspection Service if any
+    inspectionServiceException:
+      type: array
+      description: inspection service exceptions for webportal, should be names of url group objects
+      example: [auth_bypass, guest_services]
+      items:
+        type: string
+    log:
+      type: string
+      description: how we should log the matching of this rule
+      enum: [log, log level minor, log level major]
+      example: log level minor
+    logToDisk:
+      type: boolean
+      description: should we log to Disk?
+    logToIpfix:
+      type: boolean
+      description: should we log to Ipfix?
+    logToSyslog:
+      type: boolean
+      description: should we log to Syslog?
+    beforeVpn:
+      type: boolean
+      description: activate rule even if it comes from or goes to ipsec tunnel
+    sipRedirect:
+      type: boolean
+      description: enable sip redirect
+    schedule:
+      type: string
+      description: uuid of the time to schedule the rule
+    inspectionConfig:
+      type: integer
+      description: config to use for ids or ips
+      minimum: 0
+      maximum: 9
+    router:
+      type: string
+      description: where to route trafic matching this rule. This should be an object name
+      example: main_firewall
+    tosValue:
+      type: integer
+      description: trafic DSCP value
+      minimum: 0
+      maximum: 63
+    etherProto:
+      type: string
+      description: the ethernet protocol to match
+      enum: [profinet-rt]
+    ipState:
+      type: boolean
+      description: keep state for ipproto
+    ipProto:
+      type: string
+      description: the ip protocol to match
+      enum:
+        [
+          icmpv6,
+          vpn-ah,
+          vpn-esp,
+          gre,
+          udp,
+          tcp,
+          igmp,
+          icmp,
+          ggp,
+          ipencap,
+          egp,
+          igp,
+          hmp,
+          rdp,
+          ipv6encap,
+          rsvp,
+          swipe,
+          mobile,
+          ipv6,
+          eigrp,
+          ospf,
+          ipip,
+          etherip,
+          encap,
+          pim,
+          ipcomp,
+          vrrp,
+          l2tp,
+          sctp,
+        ]
+    icmpValue:
+      type: string
+      description: the icmp "action" to match
+      enum:
+        [
+          network_unreachable,
+          host_unreachable,
+          protocol_unreachable,
+          port_unreachable,
+          fragmentation_needed,
+          source_route_failed,
+          dest_network_unknown,
+          dest_host_unknown,
+          dest_network_prohibited,
+          host_network_prohibited,
+          network_unreachable_for_tos,
+          host_unreachable_for_tos,
+          comm_prohibited_by_filtering,
+          host_precedence_violation,
+          precedence_cutoff_in_effect,
+          redirect_for_network,
+          redirect_for_host,
+          redirect_for_tos_and_network,
+          redirect_for_tos_and_host,
+          echo_request,
+          router_advertisement,
+          router_selection,
+          ttl_eq0_during_transit,
+          ttl_eq0_during_reassembly,
+          bad_IP_header,
+          required_option_missing,
+          timestamp_request,
+          address_mask_request,
+          no_route_to_destination,
+          communication_administratively_prohibited,
+          beyond_scope_of_source_address,
+          address_unreachable,
+          source_address_failed_ingress_egress_policy,
+          reject_route_to_destination,
+          packet_too_big,
+          hop_limit_exceeded_in_transit,
+          fragment_reassembly_time_exceeded,
+          erroneous_header_field_encountered,
+          unrecognized_next_header_type_encountered,
+          unrecognized_ipv6_option_encountered,
+          multicast_listener_query,
+          multicast_listener_report,
+          multicast_listener_done,
+          router_solicitation,
+          redirect_message,
+          router_renumbering_command,
+          router_renumbering_result,
+          sequence_number_reset,
+          node_information_query_ipv6,
+          node_information_query_r_noop,
+          node_information_query_ipv4,
+          node_information_response_successful,
+          node_information_response_refused,
+          node_information_response_unknown,
+          inverse_neighbor_discovery_solicitation,
+          inverse_neighbor_discovery_advertisement,
+          version_2_multicast_listener_report,
+          home_agent_address_discovery_request,
+          home_agent_address_discovery_reply,
+          mobile_prefix_solicitation,
+          mobile_prefix_advertisement,
+          multicast_router_advertisement,
+          multicast_router_solicitation,
+          multicast_router_termination,
+          fmipv6_messages,
+        ]
+    proto:
+      type: string
+      description: the applicative protocols to detect
+      enum:
+        [
+          bgp,
+          bittorrent,
+          bt-sync,
+          citrix-ica,
+          citrix-proxy,
+          cotp,
+          datahub,
+          dcerpc,
+          dcv,
+          dhcp,
+          dicom,
+          dnp3,
+          dns,
+          edonkey,
+          enip,
+          ftp,
+          genbroker,
+          git,
+          gntp,
+          gnutella,
+          h245,
+          h323,
+          hicp,
+          hl7,
+          hpdataprotector,
+          http,
+          http-websocket,
+          icmp,
+          idrivesync,
+          igmp,
+          imap4,
+          ip,
+          irc,
+          kaspersky-ksn,
+          ldap_tcp,
+          mgcp,
+          modbus,
+          ms-sql,
+          msn,
+          mysql,
+          nb-cifs,
+          nb-dgm,
+          nb-epmap,
+          nb-ns,
+          nb-ssn,
+          netb,
+          nntp,
+          ntp,
+          opcua,
+          openvpn,
+          oracle-tns,
+          oscar,
+          p2p_dht,
+          pgsql,
+          pop3,
+          proxy,
+          qqim,
+          quake3,
+          radius,
+          radmin,
+          rdp,
+          realwin,
+          rip,
+          rtcp,
+          rtp,
+          rtp_rtcp,
+          rtsp,
+          s7,
+          sip,
+          skype,
+          smtp,
+          snmp,
+          ssh,
+          ssl,
+          steam,
+          svn,
+          tcpudp,
+          teamspeak,
+          teamviewer,
+          telnet,
+          teredo,
+          tftp,
+          upnp-ssdp,
+          utp,
+          vmware,
+          vnc,
+          xarrow,
+          xmpp,
+          ymsg,
+        ]
+    srcUserOperator:
+      type: string
+      description: operator to apply on srcUser
+      enum: ["=", "!"]
+    srcUserType:
+      type: string
+      enum:
+        [
+          "unknown",
+          "any",
+          "anyNonLdap",
+          "anyGuest",
+          "anySponsored",
+          "anyVoucher",
+          "user",
+          "group",
+        ]
+      description: user type
+      example: group
+    srcUser:
+      type: string
+      description: trafic from user
+      example: paul
+    srcOperator:
+      type: string
+      description: operator to apply on src
+      enum: ["=", "!"]
+    src:
+      type: array
+      description: Array of object uuids for rule sources
+      items:
+        type: string
+        example: d176f167-9e94-459c-8b39-ef7f2907d264
+    srcUserDomain:
+      type: string
+      description: domain to use to look for user
+      example: stormshield.eu
+    srcAuthMethod:
+      type: string
+      description: authentication method used by the user to login
+      enum:
+        [
+          AGENT-AD,
+          AGENT-GUARD,
+          GUEST,
+          IPSEC,
+          KERBEROS,
+          OPENVPN,
+          PLAIN,
+          RADIUS,
+          SPNEGO,
+          SPONSOR,
+          SSL,
+          VOUCHER,
+        ]
+    srcPortOperator:
+      type: string
+      description: operator to apply on srcPort
+      enum: ["=", "!=", "gt", "lt"]
+    srcPort:
+      type: string
+      description: Uuid of port/port group to set the source port section of a rule
+      example: d176f167-9e94-459c-8b39-ef7f2907d264
+    srcInterface:
+      type: string
+      description: name of the source interface
+      example: bridge
+    srcGeo:
+      type: array
+      description: Array of string of source geo objects or geo groups
+      example: ["af", "eu:fr", "some-group-geo-uuid"]
+      items:
+        type: string
+    srcIpRep:
+      type: array
+      description: Array of string of public IP addresses reputation
+      enum:
+        [
+          "anonymizer",
+          "botnet",
+          "malware",
+          "phishing",
+          "scanner",
+          "spam",
+          "tor or exit node",
+          "bad",
+          "exploit",
+          "suspect",
+        ]
+      example: ["spam", "botnet"]
+      items:
+        type: string
+    srcHostRepOperator:
+      type: string
+      description: operator to apply on srcHostRep
+      enum: ["lt", "gt"]
+    srcHostRep:
+      type: integer
+      description: Hosts reputation score for source
+      minimum: 0
+      maximum: 65535
+    via:
+      type: string
+      description: trafic came via
+      enum: [httpproxy, sslproxy, ipsec, vpnssl]
+    dstOperator:
+      type: string
+      description: operator to apply on dst
+      enum: ["=", "!"]
+    dst:
+      type: array
+      description: Array of object uuids for rule destinations
+      items:
+        type: string
+        example: d176f167-9e94-459c-8b39-ef7f2907d264
+    dstGeo:
+      type: array
+      description: Array of string of destination geo objects or geo groups
+      example: ["af", "eu:fr", "some-group-geo-uuid"]
+      items:
+        type: string
+    dstIpRep:
+      type: array
+      description: Array of string of public IP addresses reputation
+      enum:
+        [
+          "anonymizer",
+          "botnet",
+          "malware",
+          "phishing",
+          "scanner",
+          "spam",
+          "tor or exit node",
+          "bad",
+        ]
+      example: ["spam", "botnet"]
+      items:
+        type: string
+    dstPortOperator:
+      type: string
+      description: operator to apply on dstPort
+      enum: ["=", "!=", "gt", "lt"]
+    dstPort:
+      type: array
+      description: an array of port/port groups uuids to set the destination port section of a rule
+      items:
+        type: string
+        example: d176f167-9e94-459c-8b39-ef7f2907d264
+    dstInterface:
+      type: string
+      description: destination interface
+      example: bridge1
+    dstHostRepOperator:
+      type: string
+      description: operator to apply on dstHostRep
+      enum: ["lt", "gt"]
+    dstHostRep:
+      type: integer
+      description: Hosts reputation score for destination
+      minimum: 0
+      maximum: 65535
+    natSrc:
+      type: string
+      description: Uuid of an object to set the NAT src property
+      example: d176f167-9e94-459c-8b39-ef7f2907d264
+    natSrcPort:
+      type: string
+      description: Uuid of port/port group to set the NAT source port section of a rule
+      example: d176f167-9e94-459c-8b39-ef7f2907d264
+    natSrcPortOperator:
+      type: string
+      description: operator to apply on natSrcPort
+      enum: ["=", "!=", "gt", "lt"]
+    natSrcBalancingType:
+      type: string
+      description: load balancing to apply on natSrc
+      enum: ["roundrobin", "srchash", "connhash", "random"]
+    natChooseSrcPortRandomly:
+      type: boolean
+      description: Choose random translated source port
+    natDst:
+      type: string
+      description: Uuid of an object to set the NAT dst property
+      example: d176f167-9e94-459c-8b39-ef7f2907d264
+    natDstARP:
+      type: boolean
+      description: enable arp publication
+    natDstPort:
+      type: string
+      description: uuid of a port to set the NAT destination port section of a rule
+      example: d176f167-9e94-459c-8b39-ef7f2907d264
+    natDstPortOperator:
+      type: string
+      description: operator to apply on natDstPort
+      enum: ["=", "!=", "gt", "lt"]
+    natDstBalancingType:
+      type: string
+      description: load balancing to apply on natDst
+      enum: ["roundrobin", "srchash", "connhash", "random"]
+    natDstBetweenPorts:
+      type: string
+      description: load balancing to apply on natDst port
+      enum: ["roundrobin", "srchash", "connhash", "random"]
+    sep:
+      type: boolean
+      description: indicates if the rule is a separator
+    collapsed:
+      type: boolean
+      description: (Rule separator only) indicates if the rule separator is collapsed or expanded
+    color:
+      type: string
+      description: (Rule separator only) color of the separator in hexa format
+      example: c0d1e2
+RulePropertiesWithoutParent:
+  description: Use for rule update cause we don't allow parent folder modification for now
+  allOf:
+    - $ref: "#/RulePropertiesWithoutUuid"
+    - $ref: "objects.yaml#/ObjectUuid"
+RuleParentProperties:
+  type: object
+  required:
+    - parent
+    - parentType
+  properties:
+    parent:
+      type: string
+      description: Parent uuid
+      example: "75532250-c878-42f1-8871-bafa68e944d4"
+    parentType:
+      $ref: "#/ParentType"
+BulkRuleParentProperties:
+  description: Use for rule update cause we don't allow parent folder modification for now
+  allOf:
+    - $ref: "#/RuleParentProperties"
+    - $ref: "objects.yaml#/ObjectUuid"
+RuleProperties:
+  allOf:
+    - $ref: "#/RulePropertiesWithoutParent"
+    - $ref: "#/RuleParentProperties"
+RulesListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/RuleProperties"
+RulePropertiesWithoutParentList:
+  type: array
+  items:
+    $ref: "#/RulePropertiesWithoutParent"
+RulePropertiesWithoutUuidList:
+  type: array
+  items:
+    $ref: "#/RulePropertiesWithoutUuid"
+RulePropertiesList:
+  type: array
+  items:
+    $ref: "#/RuleProperties"
+RulesImportSummary:
+  type: object
+  properties:
+    rule:
+      type: object
+      description: Counts of imported rules or errors
+      properties:
+        created:
+          type: number
+        failed:
+          type: number
+        natRuleCreated:
+          type: number
+        natRuleFailed:
+          type: number
+        filterRuleCreated:
+          type: number
+        filterRuleFailed:
+          type: number
+    createdRulesUuid:
+      type: array
+      items:
+        type: string
+        description: Uuid of created rule
+    object:
+      allOf:
+        - description: Counts of imported objects or errors
+        - $ref: "../definitions/misc.yaml#/DefaultImportSummary"
+
+RulesFetchListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: object
+      properties:
+        objects:
+          type: array
+          items:
+            $ref: "../definitions/objects.yaml#/ObjectProperties"
+        rules:
+          type: array
+          items:
+            $ref: "#/RuleProperties"
+
+RulesImportListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      allOf:
+        - $ref: "misc.yaml#/ImportResponse"
+        - $ref: "#/RulesImportSummary"
+
+RuleIndex:
+  type: integer
+  minimum: 0
+RuleAddRequestBody:
+  allOf:
+    - $ref: "#/RulePropertiesWithoutUuid"
+    - $ref: "#/RuleParentProperties"
+RuleBulkAddRequestBody:
+  type: array
+  items:
+    $ref: "#/RuleAddRequestBody"
+RuleGetResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/RuleProperties"
+RuleAddResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/RuleProperties"
+RuleBulkAddResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/RuleProperties"
+RuleUpdateResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/RulePropertiesWithoutParent"
+RuleBulkUpdateResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/RulePropertiesWithoutParentList"
+RuleDeleteResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+BulkRuleDeleteResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+
+RefsParentResult:
+  type: object
+  required:
+    - uuid
+  properties:
+    uuid:
+      $ref: ./common.yaml#/Uuid
+RefsParentResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      description: All the rule uuid contained by the parent
+      items:
+        $ref: "#/RefsParentResult"
+
+MoveToParentRequest:
+  type: object
+  properties:
+    uuid:
+      type: string
+      description: rule uuid to be moved
+
+BulkMoveToParentRequest:
+  type: array
+  description: rules to move
+  items:
+    $ref: "#/MoveToParentRequest"
+
+BulkMoveToParentResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/RefsParentResult"
+
+ParentType:
+  type: string
+  enum:
+    - firewall
+    - folder-primary
+    - folder-secondary
+    - rule-set

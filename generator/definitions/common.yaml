@@ -1,0 +1,87 @@
+---
+ErrorResponse:
+  type: object
+  required:
+    - success
+    - errors
+  properties:
+    success:
+      type: boolean
+      description: False in case of error
+      default: false
+      enum: [false]
+    errors:
+      $ref: "#/ErrorsList"
+
+SuccessResponse:
+  type: object
+  required:
+    - success
+  properties:
+    success:
+      type: boolean
+      description: Always set to true on success
+      default: true
+      enum: [true]
+
+ErrorsList:
+  type: array
+  items:
+    type: object
+    required:
+      - code
+    properties:
+      code:
+        type: string
+        example: ""
+      message:
+        type: string
+        example: ""
+      field:
+        type: string
+        example: ""
+      ctx:
+        type: object
+        example: { firewall: "some-firewall-uuid" }
+
+Uuid:
+  type: string
+  description: An uuid
+  example: "75532250-c878-42f1-8871-bafa68e944d4"
+
+ForbiddenBecauseOfUserScopeResponse:
+  type: object
+  required:
+    - success
+    - errors
+  properties:
+    success:
+      type: boolean
+      description: False in case of error
+      default: false
+      enum: [false]
+    errors:
+      type: array
+      items:
+        type: object
+        required:
+          - code
+        properties:
+          code:
+            type: string
+            default: "EFORBIDDENINUSERSCOPE"
+            enum: ["EFORBIDDENINUSERSCOPE", "EFORBIDDENINUSERSCOPEUSAGE"]
+          message:
+            type: string
+            example: "The action is prohibited due to consequences beyond the user's editing scope."
+          ctx:
+            type: object
+            properties:
+              items:
+                type: string
+                description: List of elements names
+                example: "office_network, france_geo"
+              folders:
+                type: string
+                description: List of folders names
+                example: "MySMC, France"

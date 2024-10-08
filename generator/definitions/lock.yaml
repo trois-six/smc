@@ -1,0 +1,22 @@
+---
+LockResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+      example: true
+    result:
+      type: object
+      properties:
+        locked:
+          type: boolean
+          example: true
+        deployment:
+          type: boolean
+          example: true
+        nsrpcExecution:
+          type: boolean
+          example: true
+        certificateInstallation:
+          type: boolean
+          example: true

@@ -1,0 +1,41 @@
+Ldap:
+  get:
+    tags:
+      - ldap
+    summary: Get Ldap server configuration
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/ldap.yaml#/ldapResponse
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - ldap
+    summary: Update Ldap server configuration
+    requestBody:
+      required: true
+      description: Ldap configuration
+      content:
+        multipart/form-data:
+          schema:
+            $ref: ../definitions/ldap.yaml#/ldap
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/ldap.yaml#/ldapResponse
+      "500":
+        description: |
+          "internal server error"
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          -  EINVALIDPARAM : Invalid LDAP configuration

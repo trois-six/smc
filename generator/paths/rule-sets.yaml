@@ -1,0 +1,283 @@
+RuleSets:
+  get:
+    tags:
+      - rule-sets
+    summary: Get all the rule sets
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rule-sets.yaml#/MultipleRuleSetsResponse
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - rule-sets
+    summary: Create a rule set
+    parameters:
+      - name: position
+        in: query
+        required: false
+        description: an integer or last or first
+        schema:
+          type: string
+    requestBody:
+      required: true
+      description: the rule set properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/rule-sets.yaml#/RuleSetWithoutUuid
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rule-sets.yaml#/SingleRuleSetResponse
+      "400":
+        description: |
+          `code` may have :
+          - EINVAL                    : Invalid index "<your position>", it must be a positive integer
+          - EEMPTYNAME                : Name can not be empty
+          - EINVALIDRULESETASSIGNMENT : The rule set cannot be assigned to a base station
+          - EFIREWALLNOTFOUND         : Rule set can only contain existing firewalls
+          - ERULESETINFOLDER          : Rule set can not be contained in folders
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: Couldn't find rule
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : A rule set named "<rule set name>" already exists
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+
+RuleSet:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: Rule set uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - rule-sets
+    summary: Get one rule set
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rule-sets.yaml#/SingleRuleSetResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: Rule set was not found
+        content:
+          application/json:
+            schema:
+              $ref: "../definitions/common.yaml#/ErrorResponse"
+  put:
+    tags:
+      - rule-sets
+    summary: |
+      Update one rule set (manage "first" and "last" position value).
+      Rule set color is managed through the header.
+    parameters:
+      - name: position
+        in: query
+        required: false
+        description: an integer or last or first
+        schema:
+          type: string
+    requestBody:
+      required: true
+      description: the rule set properties
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/rule-sets.yaml#/RuleSetWithoutUuid
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rule-sets.yaml#/SingleRuleSetResponse
+      "400":
+        description: |
+          `code` may have :
+          - EINVAL                 : Invalid index "<your position>", it must be a positive integer
+          - EEMPTYNAME             : Name can not be empty
+          - ERULESETINFOLDER       : Rule set can not be contained in folders
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` may have :
+          - ENOTFOUND             : Rule set was not found
+          - ERULENOTFOUND         : Rule was not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : A rule set named "<rule set name>" already exists
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - rule-sets
+    summary: Remove one rule set
+    parameters:
+      - in: path
+        name: uuid
+        schema:
+          type: string
+        description: Rule set UUID
+        required: true
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rule-sets.yaml#/SingleRuleSetResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: Rule set was not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+RuleSetsRules:
+  parameters:
+    - name: rulesType
+      in: query
+      description: The type of ruleset
+      required: true
+      schema:
+        type: string
+        enum:
+          - filter
+          - nat
+  get:
+    tags:
+      - rule-sets
+    summary: Get rulesets rules for export service
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RulesListResponse
+      "401":
+        description: Unauthorized
+
+RuleSetsExport:
+  get:
+    tags:
+      - rule-sets
+    summary: Export the rules from each ruleSet into a CSV file
+    parameters:
+      - name: rulesType
+        in: query
+        description: The type of ruleset
+        required: true
+        schema:
+          type: string
+          enum:
+            - filter
+            - nat
+    responses:
+      "200":
+        description: Success
+        content:
+          text/csv:
+            schema:
+              description: The rules within each rules set
+              type: string
+      "400":
+        description: The rulesType does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+RuleSetsImport:
+  post:
+    tags:
+      - rule-sets
+    summary: Import some rule sets from a CSV file
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              rulesType:
+                description: Type of rule set
+                type: string
+                enum: ["nat", "filter"]
+              update:
+                description: Indicates if existing rule sets must be overwritten
+                type: boolean
+                default: false
+            required: ["rulesType"]
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rule-sets.yaml#/ImportResult
+      "400":
+        description: |
+          `code` might be:
+          - EINVAL: not a valid rulesType
+          - EFILEMISSING : file is missing
+          - EBADEXTNAME : bad file extension (expected ".csv")
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

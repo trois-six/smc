@@ -1,0 +1,279 @@
+Folders:
+  get:
+    tags:
+      - folders
+    summary: Récupération de l\"arborescence des dossiers
+    description:
+      Retourne toute l\"arborescence des sous-dossiers en partant du dossier My
+      SMC
+    parameters:
+      - in: query
+        name: nested
+        required: false
+        description: Indicate if output is nested or flat
+        schema:
+          type: boolean
+    responses:
+      default:
+        description: Success with nested param false or no param
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/folders.yaml#/FoldersListResponse
+      "200":
+        description: Success with nested param true
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/folders.yaml#/FoldersTreeResponse
+      "401":
+        description: Accès non autorisé
+  post:
+    tags:
+      - folders
+    summary: Ajoute un nouveau sous-dossier
+    description: >
+      Attention : L"IHM envoie des propriétés ignorées par le serveur : uuid,
+      leaf
+    requestBody:
+      description: la description du dossier à rajouter
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/folders.yaml#/FolderPropertiesWithoutUuid
+    responses:
+      "201":
+        description: Réussite
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - result
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/folders.yaml#/RawFolderProperties
+      "400":
+        description: >
+          `code` peut valoir :
+
+          - EMAXDEPTH : le dossier ne peut pas être créé car il atteint une profondeur supérieure à celle autorisée (4)
+
+          - EINVAL : un mauvais UUID a été renseigné pour un de ses firewalls ou pour le dossier parent
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Accès non autorisé
+      "404":
+        description: |
+          `code` peut valoir :
+          - EPARENTFOLDERNOTFOUND : le dossier parent n"est pas trouvé
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: Folder already exists in database with the same name
+Folder:
+  parameters:
+    - name: uuid
+      in: path
+      required: true
+      description: the folder"s uuid
+      schema:
+        type: string
+  get:
+    tags:
+      - folders
+    summary: Retrieving a specific folder regarding its uuid
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - result
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/folders.yaml#/RawFolderProperties
+      "401":
+        description: Unauthorized access
+      "404":
+        description: |
+          `code` can be:
+          - ENOTFOUND : The folder has not been found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  put:
+    tags:
+      - folders
+    summary: Edit a folder
+    description: >
+      Attention : L"IHM envoie des propriétés ignorées par le serveur :
+      parentId, leaf, children, subFolders, rules
+    requestBody:
+      description: Folder description to edit
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/folders.yaml#/FolderProperties
+    responses:
+      "200":
+        description: Réussite
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - result
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/folders.yaml#/RawFolderProperties
+      "400":
+        description: >
+          `code` peut valoir :
+
+          - EMAXDEPTH : le dossier ne peut pas être créé car il atteint une profondeur supérieure à celle autorisée (4)
+
+          #- EINVAL : un mauvais UUID a été renseigné pour le dossier à éditer, pour un de ses firewalls ou pour le dossier parent, ou si on tente de déplacer e dossier dans un de ses propres descendants
+
+          - EPROPFORBIDDEN : la liste des sous-dossiers a changé
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Accès non autorisé
+      "404":
+        description: |
+          `code` peut valoir :
+          - ENOTFOUND : le dossier n"est pas trouvé
+          - EPARENTFOLDERNOTFOUND : le dossier parent n"est pas trouvé
+          - EORPHANS : l"opération va produire des firewalls orphelins
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - folders
+    summary: Delete a folder
+    parameters:
+      - in: query
+        name: destinationFolder
+        required: false
+        description: Folder uuid where firewalls and folders will be moved
+        schema:
+          type: string
+    responses:
+      "200":
+        description: Réussite
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: object
+                  example: { uuid: "deleteted-folder-uuid" }
+      "400":
+        description: >
+          `code` peut valoir :
+
+          - EMAXDEPTH : le dossier de destination ne peut pas être utilisé car il génère un arbre dont la profondeur est supérieure à celle autorisée (4)
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Accès non autorisé
+      "404":
+        description: >
+          `code` peut valoir :
+
+          - ENOTFOUND : le dossier à supprimer n"est pas trouvé
+
+          - EDESTFOLDERNOTFOUND : le dossier de destination des folders enfants et firewalls n"est pas trouvé
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+FolderByName:
+  parameters:
+    - name: name
+      in: path
+      required: true
+      description: the folder"s name
+      schema:
+        type: string
+  get:
+    tags:
+      - folders
+    summary: Retrieving a specific folder regarding its name
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - success
+                - result
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/folders.yaml#/RawFolderProperties
+      "401":
+        description: Unauthorized access
+      "404":
+        description: |
+          `code` can be:
+          - ENOTFOUND : The folder has not been found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+AccountFolders:
+  get:
+    tags:
+      - folders
+    summary: Get folders uuids linked to the user account of the current session
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/folders.yaml#/AccountFoldersProps
+      "401":
+        description: |
+          `code` may have:
+          - Unauthorized: if not logged in

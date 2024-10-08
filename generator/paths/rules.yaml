@@ -1,0 +1,512 @@
+Rules:
+  get:
+    tags:
+      - rules
+    summary: Retrieve all rules
+    description: Return an array of flat rules found in unified config
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RulesListResponse
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - rules
+    summary: Create a rule within a parent
+    description: Create a rule and associate it with a parent at some position
+    parameters:
+      - name: index
+        in: query
+        description: The index of the rule in the parent
+        required: false
+        schema:
+          $ref: ../definitions/rules.yaml#/RuleIndex
+    requestBody:
+      required: true
+      description: The properties of the rule with information about parents
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/rules.yaml#/RuleAddRequestBody
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RuleAddResponse
+      "401":
+        description: Unauthorized
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : A rule with the same name already exists
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+Rule:
+  parameters:
+    - name: uuid
+      in: path
+      description: The uuid of the rule
+      required: true
+      schema:
+        type: string
+  get:
+    tags:
+      - rules
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RuleGetResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ERULENOTFOUND : the rule could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  put:
+    tags:
+      - rules
+    requestBody:
+      required: true
+      description: The properties to update in the rule
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/rules.yaml#/RulePropertiesWithoutParent
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RuleUpdateResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the rule could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - rules
+    requestBody:
+      required: true
+      description: The properties to delete the rule
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/rules.yaml#/RuleParentProperties
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RuleDeleteResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the rule could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+RulesBulk:
+  post:
+    tags:
+      - rules
+    summary: Create multiple rules within a parent
+    description: Create multiple rules and associate them with a parent at some position
+    parameters:
+      - name: index
+        in: query
+        description: The index of the rule in the parent
+        required: false
+        schema:
+          $ref: ../definitions/rules.yaml#/RuleIndex
+    requestBody:
+      required: true
+      description: An array of properties of the rules with information about parents
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/rules.yaml#/RuleBulkAddRequestBody
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RuleBulkAddResponse
+      "401":
+        description: Unauthorized
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : A rule with the same name already exists
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - rules
+    requestBody:
+      required: true
+      description: The list of rules with uuids and parent properties
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: ../definitions/rules.yaml#/BulkRuleParentProperties
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/BulkRuleDeleteResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the rule could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+ParentRules:
+  parameters:
+    - name: parentUuid
+      in: path
+      description: The uuid of the parent
+      required: true
+      schema:
+        $ref: ../definitions/common.yaml#/Uuid
+    - name: parentType
+      in: query
+      description: The parent type, necessary to specify the priority of the rules to export from a folder
+      required: false
+      schema:
+        $ref: ../definitions/rules.yaml#/ParentType
+  get:
+    tags:
+      - rules
+    summary: Get parent rules for export service
+    description: For a folder, return all rules (high and low priorities). For a firewall, return whole rules hierarchy.
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RulesListResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND: the parent could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+RefsRule:
+  parameters:
+    - name: parentUuid
+      in: path
+      description: The uuid of the parent
+      required: true
+      schema:
+        $ref: ../definitions/common.yaml#/Uuid
+    - name: parentType
+      in: query
+      description: The type of the parent
+      required: true
+      schema:
+        $ref: ../definitions/rules.yaml#/ParentType
+  get:
+    tags:
+      - rules
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RefsParentResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND: the parent could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+RefsRulesBulk:
+  parameters:
+    - name: parentUuid
+      in: path
+      description: The uuid of the parent
+      required: true
+      schema:
+        $ref: ../definitions/common.yaml#/Uuid
+    - name: parentType
+      in: query
+      description: The type of the parent
+      required: true
+      schema:
+        $ref: ../definitions/rules.yaml#/ParentType
+  post:
+    tags:
+      - rules
+    parameters:
+      - name: insertionIndex
+        in: query
+        description: Where it should be inserted in the given parent
+        required: false
+        schema:
+          $ref: ../definitions/rules.yaml#/RuleIndex
+      - name: originalParentUuid
+        in: query
+        description: The id of the parent from where the rules are moved
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/rules.yaml#/BulkMoveToParentRequest
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/BulkMoveToParentResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ERULENOTFOUND : the rule could not be found
+          - ENOTFOUND: the parent could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+RulesImport:
+  post:
+    tags:
+      - rules
+    summary: Import rules from a CSV file
+    parameters:
+      - name: parent
+        in: query
+        description: Parent uuid
+        example: "75532250-c878-42f1-8871-bafa68e944d4"
+        required: true
+        schema:
+          type: string
+      - name: parentType
+        in: query
+        description: The parent type. If the parent is a folder, specifies the default priority of the rules to import. Is overwritten by "smc_folder_prio" field.
+        required: true
+        schema:
+          $ref: ../definitions/rules.yaml#/ParentType
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            allOf:
+              - type: object
+                required:
+                  - rules
+                properties:
+                  rules:
+                    type: string
+                    format: binary
+                    description: A raw CSV file containing rules
+                  objects:
+                    type: string
+                    format: binary
+                    description: A raw CSV file containing objects
+                  update:
+                    type: boolean
+                    default: false
+                    description: Update existing objects
+                  replace:
+                    type: boolean
+                    default: false
+                    description: true to replace existing rules, or false to add rules after the existing ones
+    responses:
+      "200":
+        description: Import response
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/misc.yaml#/ImportResponse
+      "400":
+        description: Bad request (error in CSV file for instance)
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the parent could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+RulesExport:
+  get:
+    tags:
+      - rules
+    summary: Export rules into a CSV file
+    parameters:
+      - name: parent
+        in: query
+        required: true
+        description: the parent's uuid
+        schema:
+          $ref: ../definitions/common.yaml#/Uuid
+    responses:
+      "200":
+        description: Success
+        content:
+          text/csv:
+            schema:
+              description: The rules export file in CSV format
+              type: string
+      "401":
+        description: Unauthorized access
+      "404":
+        description: The parent does not exist (wrong uuid for instance)
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+RulesImportFromFirewalls:
+  post:
+    tags:
+      - firewalls
+      - rules
+    summary: Import local or global rules from a firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+      - name: slotSpecifier
+        in: path
+        required: true
+        description: Specify the slot context
+        schema:
+          type: string
+          enum:
+            - global
+            - local
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RulesImportListResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: Firewall does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+RulesFetchFromFirewalls:
+  get:
+    tags:
+      - firewalls
+      - rules
+      - objects
+    summary: Returns local rules from a firewall
+    parameters:
+      - name: uuid
+        in: path
+        required: true
+        description: Firewall UUID
+        schema:
+          type: string
+      - name: type
+        in: query
+        description: The type of the requested rules (nat or filter)
+        required: true
+        schema:
+          type: string
+          enum: [nat, filter]
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/rules.yaml#/RulesFetchListResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: Firewall does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

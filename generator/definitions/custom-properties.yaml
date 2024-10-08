@@ -1,0 +1,61 @@
+---
+SingleCustomPropertyResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      $ref: "#/CustomProperty"
+MultipleCustomPropertiesResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      type: array
+      items:
+        $ref: "#/CustomProperty"
+CustomPropertyWithoutUuid:
+  description: A custom property
+  type: object
+  properties:
+    name:
+      type: string
+      example: myNewCustomProp
+  required:
+    - name
+CustomProperty:
+  description: A custom property
+  allOf:
+    - $ref: "#/CustomPropertyWithoutUuid"
+    - type: object
+      properties:
+        uuid:
+          type: string
+      required:
+        - uuid
+CustomPropertiesImportSummary:
+  type: object
+  properties:
+    importSummary:
+      type: object
+      properties:
+        created:
+          type: integer
+        defined:
+          type: integer
+        error:
+          type: integer
+        undefined:
+          type: integer
+        updated:
+          type: integer
+CustomPropertiesImportListResponse:
+  type: object
+  properties:
+    success:
+      type: boolean
+    result:
+      allOf:
+        - $ref: "misc.yaml#/ImportResponse"
+        - $ref: "#/CustomPropertiesImportSummary"

@@ -1,0 +1,212 @@
+---
+CertificatesList:
+  type: array
+  items:
+    $ref: "certificates.yaml#/Certificate"
+Certificate:
+  type: object
+  properties:
+    uuid:
+      type: string
+      description: The certificate uuid
+      example: certificate-uuid
+    name:
+      type: string
+      description: The certificate name
+      example: certificate-name
+    type:
+      type: string
+      description: The certificate type
+      enum:
+        - "x.509"
+        - "reference"
+    subject:
+      type: string
+      description: The certificate subject
+      example: emailAddress=firstname.lastname@stormshield.eu,CN=Firstname LASTNAME,O=STORMSHIELD,C=FR
+    issuer:
+      type: string
+      description: The certificate issuer
+      example: CN=Stormshield Users Authority,O=STORMSHIELD,C=FR
+    startDate:
+      type: string
+      format: date-time
+      description: The validity start date
+      example: "2016-03-03T08:37:36.000Z"
+    endDate:
+      type: string
+      format: date-time
+      description: The validity end date
+      example: "2017-03-03T08:37:36.000Z"
+    hash:
+      type: string
+      description: The certificate hash
+      example: 42128ad2
+    issuerHash:
+      type: string
+      description: The certificate issuer hash
+      example: RSA-SHA256
+    signatureAlgorithm:
+      type: string
+      description: The certificate signatureAlgorithm
+      example: RSA-SHA256
+    keyType:
+      type: string
+      description: The certificate issuer keyType
+      example: RSA
+    keySize:
+      type: string
+      description: The certificate issuer keySize
+      example: 256
+    tpm:
+      type: string
+      description: The certificate TPM status
+      enum:
+        - "none"
+        - "ondisk"
+        - "onchip"
+    bindAddr:
+      type: string
+      format: uuid
+      description: A reference to the firewall interface host object (Firewall_) for the enrollment
+    crlBindAddr:
+      type: string
+      format: uuid
+      description: A reference to the firewall interface host object (Firewall_) for the CRL
+    crlPeriod:
+      type: number
+      example: 21600
+      description: The period frequency (in seconds) for the CRL
+    status:
+      description: The certificate status
+      enum:
+        - "EXPIRED"
+        - "NOT_YET_VALID"
+        - "UNKNOWN"
+        - "VALID"
+        - "WILL_EXPIRE_SOON"
+CertificateUpload:
+  description: upload a certificate's file
+  type: object
+  required:
+    - certificate
+  properties:
+    default:
+      description: set certificate as default for firewall
+      type: boolean
+    password:
+      description: the p12 file password if any
+      type: string
+    action:
+      description: type of action i.e. import on SMC or install on a firewall.
+      default: "import"
+      type: string
+      enum:
+        - "import"
+        - "install"
+    certificate:
+      description: the certificate file
+      type: string
+      format: binary
+CertificateCreateScep:
+  type: object
+  required:
+    - subject
+    - issuer
+  properties:
+    subject:
+      description: the subject of SCEP certificate
+      type: string
+    issuer:
+      description: the issuer of SCEP certificate
+      type: string
+    default:
+      description: set certificate as default for firewall
+      type: boolean
+CertificatePropertiesUpdate:
+  type: object
+  properties:
+    bindAddr:
+      type: string
+      format: uuid
+      description: A reference to the firewall interface host object (Firewall_) for the enrollment
+    crlBindAddr:
+      type: string
+      format: uuid
+      description: A reference to the firewall interface host object (Firewall_) for the CRL
+    crlPeriod:
+      type: number
+      example: 21600
+      description: The period frequency (in seconds) for the CRL
+    subject:
+      description: the subject of SCEP certificate
+      type: string
+    issuer:
+      description: the issuer of SCEP certificate
+      type: string
+    default:
+      description: set certificate as default for firewall
+      type: boolean
+CertificatesRenewList:
+  type: object
+  properties:
+    certificates:
+      type: array
+      description: certificate uuid list
+      items:
+        type: string
+        description: certificate uuid
+CertificatesRenewRequestResults:
+  type: object
+  properties:
+    success:
+      type: boolean
+      description: true if request has been executed
+    result:
+      type: array
+      description: certificate uuid list
+      items:
+        type: string
+    outputResult:
+      type: object
+      properties:
+        requestResults:
+          type: array
+          description: list of request results from SNS
+          items:
+            type: object
+            description: renew request status
+            properties:
+              status:
+                type: string
+                description: transaction status
+                enum:
+                  - "IN_ERROR"
+                  - "SUCCESS"
+              certificateUuid:
+                type: string
+                description: certificate uuid
+              errorMessage:
+                type: string
+        errors:
+          type: array
+          description: list of errors on SMC side (bad requests or bad configuration)
+          items:
+            type: object
+            description: error
+            properties:
+              code:
+                type: string
+                enum:
+                  - "ECERTISSUERMISMATCH"
+                  - "ECERTMISSINGENROLLMENTSERVERURL"
+                  - "ENONMATCHINGCERTTYPE"
+                  - "ENOTFOUND"
+                  - "EMISSINGFIREWALL"
+                  - "EINVALIDVERSION"
+                  - "EUNREACHABLEFIREWALL"
+              message:
+                type: string
+              certificateUuid:
+                type: string
+                description: uuid of certificate in error

@@ -1,0 +1,194 @@
+Route:
+  parameters:
+    - name: uuid
+      in: path
+      description: The uuid of the route
+      required: true
+      schema:
+        type: string
+  get:
+    tags:
+      - routing
+    summary: Get a specific route
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/routing.yaml#/RouteInfo
+      "401":
+        description: Unauthorized
+  put:
+    tags:
+      - routing
+    summary: Update a route
+    requestBody:
+      required: true
+      description: Route description
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/routing.yaml#/RouteAddUpdateBody
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/routing.yaml#/RouteInfo
+      "400":
+        description: >
+          Bad request.
+
+          - RouteType is not valid
+
+          - Dynamic routeType and bird config is invalid
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: >
+          Not Found.
+
+          - uuid is not in db
+
+          - routeType in db does not match routeType in the PUT request
+  delete:
+    tags:
+      - routing
+    summary: Remove a route on the firewall
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/routing.yaml#/Routing
+      "401":
+        description: Unauthorized
+      "403":
+        description: Cannot remove the default route
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: |
+          `code` can be:
+          - ENOTFOUND : The firewall has not been found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+RoutesForAllFirewalls:
+  get:
+    tags:
+      - routing
+    summary: Get all routes for all firewalls
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/routing.yaml#/RoutesInfo
+      "401":
+        description: Unauthorized
+RouteGetBirdConfigError:
+  post:
+    tags:
+      - routing
+    summary: Return the possible error of a bird configuration
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              bird:
+                description: The bird config file content
+                type: string
+              birdVersion:
+                description: Bird version (allowed values are "v1" and "v2")
+                type: string
+                example: "v2"
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                error:
+                  type: string
+                  description: present only if success = false
+                  example: "bird: /dev/stdin:20:1 syntax error"
+ImportRoute:
+  post:
+    tags:
+      - routing
+    summary: Import routes from a CSV file
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              routes:
+                type: string
+                format: binary
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                result:
+                  type: object
+                  properties:
+                    importSummary:
+                      type: object
+                      properties:
+                        routes:
+                          type: number
+                          description: "number of routes created"
+                    logs:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          level:
+                            description: log level
+                            type: string
+                            enum: ["info", "warning", "error"]
+                          message:
+                            description: log message
+                            type: string
+                            example: "File is missing"
+      "400":
+        description: |
+          `code` can be :
+           - EFILEMISSING : When no csv file was attached
+           - EBADEXTNAME : When csv has a unexpected extension (allow: .csv)
+           - EFILEEMPTY : When file appears to be empty
+      "403":
+        description: Forbidden operation like adding two default routes in one firewall

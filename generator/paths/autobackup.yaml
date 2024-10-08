@@ -1,0 +1,208 @@
+Autobackup:
+  get:
+    tags:
+      - autobackup
+    summary: Retrieve the autobackup activation state
+    description: Retrieve the autobackup activation state
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                enabled:
+                  type: boolean
+                  example: false
+      "401":
+        description: Unauthorized access
+  post:
+    tags:
+      - autobackup
+    summary: Set the autobackup activation state
+    requestBody:
+      description: autobackup activation state
+      required: true
+      content:
+        application/json:
+          schema:
+            required:
+              - enabled
+            properties:
+              enabled:
+                type: boolean
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/SuccessResponse
+      "400":
+        description: Bad request
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized access
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+AutobackupResults:
+  get:
+    tags:
+      - autobackup
+    summary: Retrieve the autobackup results
+    description: Retrieve the autobackup results
+    responses:
+      "200":
+        description: success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: array
+                  items:
+                    $ref: ../definitions/autobackup.yaml#/AutoBackupResult
+      "401":
+        description: Unauthorized access
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+AutobackupArchive:
+  get:
+    tags:
+      - autobackup
+    summary: Retrieve an archive for a given backup
+    description: Retrieve an archive for a given backup
+    parameters:
+      - name: date
+        schema:
+          type: string
+        in: path
+        required: true
+        description: Backup date as ISO string (see /autobackup/results)
+    responses:
+      "200":
+        description: success
+        content:
+          application/zip:
+            schema:
+              type: string
+              format: binary
+      "401":
+        description: Unauthorized access
+      "404":
+        description: Backup does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+AutobackupForFirewall:
+  get:
+    tags:
+      - autobackup
+    summary: Retrieve the backup for a given backup and firewall
+    description: Retrieve the backup for a given backup and firewall
+    parameters:
+      - name: date
+        in: path
+        required: true
+        description: Backup date as ISO string (see /autobackup/results)
+        schema:
+          type: string
+      - name: uuid-firewall
+        in: path
+        required: true
+        description: Firewall uuid
+        schema:
+          type: string
+    responses:
+      "200":
+        description: success
+        content:
+          application/gzip:
+            schema:
+              type: string
+              format: binary
+      "401":
+        description: Unauthorized access
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: Backup does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+AutobackupSmc:
+  get:
+    tags:
+      - autobackup
+    summary: Retrieve the smc backup for a given backup
+    description: Retrieve the smc backup for a given backup
+    parameters:
+      - name: date
+        in: path
+        required: true
+        description: Backup date as ISO string (see /autobackup/results)
+        schema:
+          type: string
+    responses:
+      "200":
+        description: success
+        content:
+          application/gzip:
+            schema:
+              type: string
+              format: binary
+      "401":
+        description: Unauthorized access
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "404":
+        description: Backup does not exist
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "500":
+        description: Internal server error
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse

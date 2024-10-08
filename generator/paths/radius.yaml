@@ -1,0 +1,41 @@
+Radius:
+  get:
+    tags:
+      - radius
+    summary: Get Radius server configuration
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/radius.yaml#/radiusResponse
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - radius
+    summary: Update radius server configuration
+    requestBody:
+      required: true
+      description: Radius configuration
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/radius.yaml#/radius
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/radius.yaml#/radiusPostResponse
+      "500":
+        description: |
+          "internal server error"
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          -  EINVALIDPARAM : Invalid Radius configuration

@@ -1,0 +1,787 @@
+CertificationAuthorities:
+  get:
+    tags:
+      - certification authorities
+    summary: Retrieve all Certification Authorities
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/certification-authorities.yaml#/CertificationAuthoritiesList
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - certification authorities
+    summary: Upload a Certification Authority file
+    requestBody:
+      description: CA file in PEM, CER, CRT or DER format
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              ca:
+                type: string
+                format: binary
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                uuids:
+                  type: array
+                  items:
+                    type: string
+                  description:
+                    All the CAs persisted in the unified config. The first uuid of
+                    this array is the leaf of the trust chain (lowest ca)
+                  example:
+                    - some-ca-uuid-1
+                    - some-ca-uuid-2
+      "400":
+        description: >
+          `code` might be :
+
+          - EINVAL : the file is not a CA
+
+          - EBADEXTNAME : Bad extension (expected .pem, .cer, .crt or .der)
+
+          - EFILEMISSING : CA not provided
+
+          - EFILEEMPTY : CA is empty.
+
+          - EFILETOOBIG : File too big
+
+          - EUNSIGNEDCHAIN : Unable to validate certificate chain signature
+
+          - EINVALIDBUNDLEFILE : Cannot parse PEM bundle file
+
+          - EINVALIDCERTCHAIN : The trust chain in certificate bundle is not valid (not continuous)
+
+          - EINVALIDEMPTYSTRING : Some required fields in the certificate are empty.
+
+          - ENOTACA : CA certificate flag is not set therefore not a valid CA
+
+          - EISSUERUNKNOWN : The issuer of the CA is unknown.
+
+          - EKEYCHECKFAILED : Unable to get the certificate"s public key
+
+          - EOPENSSLCONVERTIONFAILED : OpenSSL failed to convert DER file into PEM
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the CA could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : The certificate authority already exists
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+
+CertificationAuthoritiesTree:
+  get:
+    tags:
+      - certification authorities
+    summary: Return Certification Authorities and certificates tree
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/certification-authorities.yaml#/CertificationAuthoritiesTree
+      "401":
+        description: Unauthorized
+
+CertificationAuthority:
+  parameters:
+    - name: caUuid
+      in: path
+      schema:
+        type: string
+      description: CA\"s UUID
+      required: true
+  get:
+    tags:
+      - certification authorities
+    summary: Retrieve a single Certification Authority
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                result:
+                  $ref: ../definitions/certification-authorities.yaml#/CertificationAuthority
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the CA could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  post:
+    tags:
+      - certification authorities
+    summary: Upload a new certification authority file
+    requestBody:
+      description: CA file in PEM, CER, CRT or DER format
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              ca:
+                type: string
+                format: binary
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                uuid:
+                  type: string
+                  example: some-ca-uuid
+      "400":
+        description: >
+          `code` might be :
+
+          - EINVAL : the file is not a CA
+
+          - EBADEXTNAME : Bad extension (expected .pem, .cer, .crt or .der)
+
+          - EFILEMISSING : CA not provided
+
+          - EFILEEMPTY : CA is empty.
+
+          - EFILETOOBIG : File too big
+
+          - EINVALIDEMPTYSTRING : Some required fields in the certificate are empty.
+
+          - EWRONGFILEFORMAT : The file is not a CA file or contains multiple files
+
+          - ENOTCOMPLIANTKEY : The CA has not been updated because the given key does not match the current one.
+
+          - ECAMISMATCH : The CA has not been updated because the given file describes another certification authority.
+
+          - EKEYCHECKFAILED : Unable to get the certificate"s public key
+
+          - EOPENSSLCONVERTIONFAILED : OpenSSL failed to convert DER file into PEM
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the CA could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : The certificate authority already exists
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  put:
+    tags:
+      - certification authorities
+    summary: Update a certification authority"s name or comment
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/certification-authorities.yaml#/CertificationAuthorityWriteableProps
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "400":
+        description: |
+          `code` might be :
+          - EINVAL : the uuid parameter is empty
+          - EINVALIDCAENROLLMENTCONFIG:
+            - The server URL has not been defined
+            - The server protocol is invalid (must be HTTP for SCEP or HTTPS for EST)
+            - The enrollment protocol is EST and no server CA name has been defined
+            - A scepMethod has been defined while enrollment protocol is EST
+            - An estAlias has been defined while enrollment protocol is SCEP
+          - EINVALIDCAENROLLMENTCONFIGURL:
+            - The enrollment protocol is EST and server URL contains a path, a query or a fragment
+            - The enrollment protocol is SCEP and server URL contains a query or a fragment
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the CA could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : A CA with the same name already exists
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - certification authorities
+    summary: Delete a Certification Authority
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+      "400":
+        description: |
+          `code` might be :
+          - EINVAL : the uuid parameter is empty
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the CA could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+CACRL:
+  post:
+    summary: Import a Certificate Revocation List for a CA, trying to deduce the CA from the given CRL issuer. This endpoint API does not require ReadWrite privileges.
+    tags:
+      - certification authorities
+    requestBody:
+      description: CRL file in PEM format
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              crl:
+                type: string
+                format: binary
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  type: array
+                  items:
+                    $ref: ../definitions/misc.yaml#/CrlProperty
+      "400":
+        description: |
+          `code` might be :
+          - EUNABLETOLOADCRL : Unable to load CRL
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: >
+          `code` might be :
+
+          - ENOTFOUND : No CA matches the issuer extracted from the given CRL file
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+CACRLByUuid:
+  post:
+    tags:
+      - certification authorities
+    summary: Import a Certificate Revocation List for an existing CA.
+    parameters:
+      - name: caUuid
+        in: path
+        schema:
+          type: string
+        description: CA's UUID
+        required: true
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              crl:
+                type: string
+                format: binary
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/misc.yaml#/CrlProperty
+      "400":
+        description: |
+          `code` might be :
+          - ECERTISSUERMISMATCH: CRL issuer mismatch
+          - EUNABLETOLOADCRL : Unable to load CRL
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : CA not found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+CAGetCRL:
+  get:
+    tags:
+      - certification authorities
+    summary: Retrieve a Certification Authority"s Revocation List.
+    description:
+      This route is meant to be called from SNS only. The port number is the
+      same as the one used by SNS to contact SMC.
+    parameters:
+      - name: caUuid
+        in: path
+        schema:
+          type: string
+        description: CA"s uuid
+        required: true
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              description: The CA"s CRL in PEM format
+              type: string
+              format: binary
+      "400":
+        description: |
+          `code` might be :
+          - EINVAL : the caName parameter is empty
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the CA could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+Certificates:
+  get:
+    tags:
+      - certificates
+    summary: Retrieve all certificates
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/certificates.yaml#/CertificatesList
+      "401":
+        description: Unauthorized
+  post:
+    tags:
+      - certificates
+    summary: Upload a certificate
+    parameters:
+      - name: destFwUuid
+        in: query
+        required: true
+        description: the firewall uuid to link the certificate with
+        schema:
+          type: string
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: ../definitions/certificates.yaml#/CertificateUpload
+        application/json:
+          schema:
+            $ref: ../definitions/certificates.yaml#/CertificateCreateScep
+    responses:
+      "201":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                result:
+                  type: object
+                  properties:
+                    secured:
+                      type: boolean
+                      description: whether the certificate has been installed on firewall's TPM
+                    output:
+                      type: array
+                      description: output of the serverd commands triggered by the API call
+                      items:
+                        type: string
+
+      "400":
+        description: |
+          `code` might be :
+          - EDATAMISSING : No file nor certificate information provided
+          - EDUPLICATE : Certificate already exists on firewall
+          - ENOTFOUND : Unable to find firewall ID
+          - EISSUERUNKNOWN : The issuer of the certificate is unknown.
+          - EBADEXTNAME : Bad file extension
+          - ENOTACERTIFICATE: File is detected as a CA, not a plain certificate
+          - EINVALIDBINDADDR: The bindAddr value does not refer to a valid firewall interface host object
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "409":
+        description: |
+          `code` might be :
+          - EDUPLICATE : certificate with same subject already exists on the firewall
+Certificate:
+  parameters:
+    - in: path
+      name: uuid
+      schema:
+        type: string
+      required: true
+      description: The certificate's uuid
+  get:
+    tags:
+      - certificates
+    summary: Retrieve a single certificate
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                result:
+                  $ref: ../definitions/certificates.yaml#/Certificate
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the certificate could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  post:
+    tags:
+      - certificates
+    summary: Update a file certificate
+    description: The new uploaded certificate must match the existing certificate subject
+    parameters:
+      - name: destFwUuid
+        in: query
+        required: true
+        description: the firewall uuid to link the certificate with
+        schema:
+          type: string
+    requestBody:
+      content:
+        multipart/form-data:
+          schema:
+            $ref: ../definitions/certificates.yaml#/CertificateUpload
+        application/json:
+          schema:
+            $ref: ../definitions/certificates.yaml#/CertificateCreateScep
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/certificates.yaml#/Certificate
+      "400":
+        description: |
+          `code` might be :
+          - EINVAL : the uuid parameter is empty
+          - ENONMATCHINGCERTSUBJECT : the new certificate does not match the existing certificate subject
+          - ENONMATCHINGCERTTYPE : the new certificate does not match the existing certificate type
+          - ENOTACERTIFICATE: File is detected as a CA, not a plain certificate
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the certificate could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  put:
+    tags:
+      - certificates
+    summary: Update certificate additional properties
+    description: Used to update reference certificate and additional properties
+    requestBody:
+      required: true
+      description: The certificate properties
+      content:
+        application/json:
+          schema:
+            $ref: "../definitions/certificates.yaml#/CertificatePropertiesUpdate"
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/certificates.yaml#/Certificate
+      "400":
+        description: |
+          `code` might be :
+          - EINVAL : the uuid parameter is empty
+          - ENONMATCHINGCERTSUBJECT : the new certificate does not match the existing certificate subject
+          - ENONMATCHINGCERTTYPE : the new certificate does not match the existing certificate type
+          - EINVALIDBINDADDR: The bindAddr value does not refer to a valid firewall interface host object
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the certificate could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+  delete:
+    tags:
+      - certificates
+    summary: Delete a certificate
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                result:
+                  $ref: ../definitions/certificates.yaml#/Certificate
+      "400":
+        description: |
+          `code` might be :
+          - EINVAL : the uuid parameter is empty
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized
+      "404":
+        description: |
+          `code` might be :
+          - ENOTFOUND : the certificate could not be found
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "423":
+        description: |
+          `code` might be :
+          - ELOCK : if the certificate is a default certificate on a firewall that is used in PKI topology
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+CertificatesPartial:
+  post:
+    tags:
+      - certificates
+    summary: Retrieve a list of certificates by uuids
+    description: Retrieve a list of certificates
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              uuids:
+                type: array
+                items:
+                  type: string
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/certificates.yaml#/Certificate
+      "401":
+        description: Unauthorized
+CertificatesRenew:
+  post:
+    tags:
+      - certificates
+    summary: Renew some certificates
+    description: Send SCEP certificates renew requests
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: ../definitions/certificates.yaml#/CertificatesRenewList
+    responses:
+      "200":
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/certificates.yaml#/CertificatesRenewRequestResults
+      "400":
+        description: |
+          `code` might be :
+          - EINVAL : Wrong parameters (certificates id).
+          - ETOOMANYITEMS : Too many certificates to renew at once.
+        content:
+          application/json:
+            schema:
+              $ref: ../definitions/common.yaml#/ErrorResponse
+      "401":
+        description: Unauthorized

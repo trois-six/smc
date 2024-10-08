@@ -1,0 +1,35 @@
+SnsDiffResult:
+  type: object
+  properties:
+    sucess:
+      type: boolean
+      example: true
+    result:
+      type: object
+      properties:
+        diff:
+          type: string
+          description: Return from command diff applied on last deployed configuration and SNS local configuration
+          example: |
+            diff -r -x slotinfo -x CA.cert.pem -N --suppress-blank-empty --ignore-blank-lines -I '^#' -U 3 --text /tmp/sns/data/snsconfigurations/sns-uuid-2/current-deployed-configuration/usr/Firewall/ConfigFiles/Global/Filter/01 /tmp/sns/data/snsconfigurations/sns-uuid-2/tmpdir/usr/Firewall/ConfigFiles/Global/Filter/01
+            --- /tmp/sns/data/snsconfigurations/sns-uuid-2/current-deployed-configuration/usr/Firewall/ConfigFiles/Global/Filter/01    2021-03-02 11:10:29.738762057 +0100
+            +++ /tmp/sns/data/snsconfigurations/sns-uuid-2/tmpdir/usr/Firewall/ConfigFiles/Global/Filter/01    2021-03-02 11:10:29.730762083 +0100
+            @@ -4,5 +4,7 @@
+             pass from Any to Any rulename "some-rul"
+             separator color="c0c0c0" comment="Separator- rule grouping" collapse="1"
+             off block from Any to Any rulename "78c099de"
+            +separator color="5795CA" comment="sns-2" collapse="1"
+            +separator color="c0c0c0" comment="Separator- rule grouping" collapse="1"
+
+            [NAT]
+        lastDeployedCfgBirthDate:
+          type: string
+          description: The date when the last deployed configuration was generated
+        revisionNumber:
+          type: integer
+          description: Revision number of the last deployed configuration
+          example: "00001"
+        fileName:
+          type: string
+          description: filename for download
+          example: "sns-name_20010203_040506.diff"

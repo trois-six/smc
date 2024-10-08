@@ -1,0 +1,24 @@
+---
+VTIList:
+  type: array
+  items:
+    type: object
+    required:
+      - name
+      - comment
+      - parent
+    properties:
+      uuid:
+        type: string
+        description: VTI's UUID
+      name:
+        type: string
+        description: VTI's name
+        example: VTI_1
+      comment:
+        type: string
+        description: VTI's description/comment
+        example: Used in 'topology.name' to route to 'remote.name'
+      parent:
+        type: string
+        description: firewall's UUID
