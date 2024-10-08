@@ -55,6 +55,10 @@ func main() {
 }
 ```
 
+## Documentation
+
+The [documentation](https://pkg.go.dev/github.com/trois-six/smc) is available.
+
 ## Regenerate the client
 
 If you need to regenerate the client, you can use the following command:
