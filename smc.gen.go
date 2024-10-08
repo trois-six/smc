@@ -4,13 +4,149 @@
 package smc
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
+	"fmt"
+	"io"
 	"net/http"
 	"net/url"
 	"strings"
 	"time"
 
+	"github.com/oapi-codegen/runtime"
 	openapi_types "github.com/oapi-codegen/runtime/types"
+)
+
+const (
+	ApiKeyScopes = "apiKey.Scopes"
+)
+
+// Defines values for DefinitionsAccountsAccountApiKeyCreateRequestPermissions.
+const (
+	DefinitionsAccountsAccountApiKeyCreateRequestPermissionsSmc DefinitionsAccountsAccountApiKeyCreateRequestPermissions = "smc"
+)
+
+// Defines values for DefinitionsAccountsAccountCreateRequestPermissions.
+const (
+	DefinitionsAccountsAccountCreateRequestPermissionsApi     DefinitionsAccountsAccountCreateRequestPermissions = "api"
+	DefinitionsAccountsAccountCreateRequestPermissionsConsole DefinitionsAccountsAccountCreateRequestPermissions = "console"
+	DefinitionsAccountsAccountCreateRequestPermissionsSmc     DefinitionsAccountsAccountCreateRequestPermissions = "smc"
+	DefinitionsAccountsAccountCreateRequestPermissionsSns     DefinitionsAccountsAccountCreateRequestPermissions = "sns"
+	DefinitionsAccountsAccountCreateRequestPermissionsSsh     DefinitionsAccountsAccountCreateRequestPermissions = "ssh"
+)
+
+// Defines values for DefinitionsAccountsAccountPropertiesBasePermissions.
+const (
+	DefinitionsAccountsAccountPropertiesBasePermissionsApi     DefinitionsAccountsAccountPropertiesBasePermissions = "api"
+	DefinitionsAccountsAccountPropertiesBasePermissionsConsole DefinitionsAccountsAccountPropertiesBasePermissions = "console"
+	DefinitionsAccountsAccountPropertiesBasePermissionsSmc     DefinitionsAccountsAccountPropertiesBasePermissions = "smc"
+	DefinitionsAccountsAccountPropertiesBasePermissionsSns     DefinitionsAccountsAccountPropertiesBasePermissions = "sns"
+	DefinitionsAccountsAccountPropertiesBasePermissionsSsh     DefinitionsAccountsAccountPropertiesBasePermissions = "ssh"
+)
+
+// Defines values for DefinitionsAccountsAccountPropertiesWithoutPasswordPermissions.
+const (
+	DefinitionsAccountsAccountPropertiesWithoutPasswordPermissionsApi     DefinitionsAccountsAccountPropertiesWithoutPasswordPermissions = "api"
+	DefinitionsAccountsAccountPropertiesWithoutPasswordPermissionsConsole DefinitionsAccountsAccountPropertiesWithoutPasswordPermissions = "console"
+	DefinitionsAccountsAccountPropertiesWithoutPasswordPermissionsSmc     DefinitionsAccountsAccountPropertiesWithoutPasswordPermissions = "smc"
+	DefinitionsAccountsAccountPropertiesWithoutPasswordPermissionsSns     DefinitionsAccountsAccountPropertiesWithoutPasswordPermissions = "sns"
+	DefinitionsAccountsAccountPropertiesWithoutPasswordPermissionsSsh     DefinitionsAccountsAccountPropertiesWithoutPasswordPermissions = "ssh"
+)
+
+// Defines values for DefinitionsAccountsAccountUpdateRequestPermissions.
+const (
+	DefinitionsAccountsAccountUpdateRequestPermissionsApi     DefinitionsAccountsAccountUpdateRequestPermissions = "api"
+	DefinitionsAccountsAccountUpdateRequestPermissionsConsole DefinitionsAccountsAccountUpdateRequestPermissions = "console"
+	DefinitionsAccountsAccountUpdateRequestPermissionsSmc     DefinitionsAccountsAccountUpdateRequestPermissions = "smc"
+	DefinitionsAccountsAccountUpdateRequestPermissionsSns     DefinitionsAccountsAccountUpdateRequestPermissions = "sns"
+	DefinitionsAccountsAccountUpdateRequestPermissionsSsh     DefinitionsAccountsAccountUpdateRequestPermissions = "ssh"
+)
+
+// Defines values for DefinitionsAccountsApiKeyPropertiesPermissions.
+const (
+	DefinitionsAccountsApiKeyPropertiesPermissionsSmc DefinitionsAccountsApiKeyPropertiesPermissions = "smc"
+)
+
+// Defines values for DefinitionsAccountsCreateApiKeyResponsePermissions.
+const (
+	Smc DefinitionsAccountsCreateApiKeyResponsePermissions = "smc"
+)
+
+// Defines values for DefinitionsAuditlogsLogsResponseLinesAction.
+const (
+	Create DefinitionsAuditlogsLogsResponseLinesAction = "create"
+	Delete DefinitionsAuditlogsLogsResponseLinesAction = "delete"
+	Update DefinitionsAuditlogsLogsResponseLinesAction = "update"
+)
+
+// Defines values for DefinitionsAuditlogsLogsResponseLinesActionStatus.
+const (
+	Fail    DefinitionsAuditlogsLogsResponseLinesActionStatus = "fail"
+	Success DefinitionsAuditlogsLogsResponseLinesActionStatus = "success"
+)
+
+// Defines values for DefinitionsAuthPolicyApiKeyDefaultPeriodPeriod.
+const (
+	Days   DefinitionsAuthPolicyApiKeyDefaultPeriodPeriod = "days"
+	Hours  DefinitionsAuthPolicyApiKeyDefaultPeriodPeriod = "hours"
+	Months DefinitionsAuthPolicyApiKeyDefaultPeriodPeriod = "months"
+	Years  DefinitionsAuthPolicyApiKeyDefaultPeriodPeriod = "years"
+)
+
+// Defines values for DefinitionsAuthPolicyPolicyMandatoryType.
+const (
+	DefinitionsAuthPolicyPolicyMandatoryTypeAlphaandspecial DefinitionsAuthPolicyPolicyMandatoryType = "alphaandspecial"
+	DefinitionsAuthPolicyPolicyMandatoryTypeAlphanum        DefinitionsAuthPolicyPolicyMandatoryType = "alphanum"
+	DefinitionsAuthPolicyPolicyMandatoryTypeNone            DefinitionsAuthPolicyPolicyMandatoryType = "none"
+)
+
+// Defines values for DefinitionsCertificatesCertificateTpm.
+const (
+	DefinitionsCertificatesCertificateTpmNone   DefinitionsCertificatesCertificateTpm = "none"
+	DefinitionsCertificatesCertificateTpmOnchip DefinitionsCertificatesCertificateTpm = "onchip"
+	DefinitionsCertificatesCertificateTpmOndisk DefinitionsCertificatesCertificateTpm = "ondisk"
+)
+
+// Defines values for DefinitionsCertificatesCertificateType.
+const (
+	Reference DefinitionsCertificatesCertificateType = "reference"
+	X509      DefinitionsCertificatesCertificateType = "x.509"
+)
+
+// Defines values for DefinitionsCertificatesCertificateUploadAction.
+const (
+	Import  DefinitionsCertificatesCertificateUploadAction = "import"
+	Install DefinitionsCertificatesCertificateUploadAction = "install"
+)
+
+// Defines values for DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode.
+const (
+	ECERTISSUERMISMATCH             DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode = "ECERTISSUERMISMATCH"
+	ECERTMISSINGENROLLMENTSERVERURL DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode = "ECERTMISSINGENROLLMENTSERVERURL"
+	EINVALIDVERSION                 DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode = "EINVALIDVERSION"
+	EMISSINGFIREWALL                DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode = "EMISSINGFIREWALL"
+	ENONMATCHINGCERTTYPE            DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode = "ENONMATCHINGCERTTYPE"
+	ENOTFOUND                       DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode = "ENOTFOUND"
+	EUNREACHABLEFIREWALL            DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode = "EUNREACHABLEFIREWALL"
+)
+
+// Defines values for DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultRequestResultsStatus.
+const (
+	INERROR DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultRequestResultsStatus = "IN_ERROR"
+	SUCCESS DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultRequestResultsStatus = "SUCCESS"
+)
+
+// Defines values for DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentProtocol.
+const (
+	DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentProtocolEST  DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentProtocol = "EST"
+	DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentProtocolSCEP DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentProtocol = "SCEP"
+)
+
+// Defines values for DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentScepMethod.
+const (
+	DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentScepMethodGet  DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentScepMethod = "get"
+	DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentScepMethodPost DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentScepMethod = "post"
 )
 
 // Defines values for DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildrenEnrollmentProtocol.
@@ -27,8 +163,8 @@ const (
 
 // Defines values for DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildrenMtype.
 const (
-	Authority   DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildrenMtype = "authority"
-	Certificate DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildrenMtype = "certificate"
+	DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildrenMtypeAuthority   DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildrenMtype = "authority"
+	DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildrenMtypeCertificate DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildrenMtype = "certificate"
 )
 
 // Defines values for DefinitionsCertificationAuthoritiesCertificationAuthorityWithoutUuidEnrollmentProtocol.
@@ -45,22 +181,298 @@ const (
 
 // Defines values for DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentProtocol.
 const (
-	EST  DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentProtocol = "EST"
-	SCEP DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentProtocol = "SCEP"
+	DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentProtocolEST  DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentProtocol = "EST"
+	DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentProtocolSCEP DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentProtocol = "SCEP"
 )
 
 // Defines values for DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentScepMethod.
 const (
-	Get  DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentScepMethod = "get"
-	Post DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentScepMethod = "post"
+	DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentScepMethodGet  DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentScepMethod = "get"
+	DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentScepMethodPost DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentScepMethod = "post"
+)
+
+// Defines values for DefinitionsCfgcheckIncoherencyIncoherentElementType.
+const (
+	DefinitionsCfgcheckIncoherencyIncoherentElementTypeGroup DefinitionsCfgcheckIncoherencyIncoherentElementType = "group"
+	DefinitionsCfgcheckIncoherencyIncoherentElementTypeRule  DefinitionsCfgcheckIncoherencyIncoherentElementType = "rule"
+)
+
+// Defines values for DefinitionsCfgcheckIncoherencyLevel.
+const (
+	DefinitionsCfgcheckIncoherencyLevelError   DefinitionsCfgcheckIncoherencyLevel = "error"
+	DefinitionsCfgcheckIncoherencyLevelWarning DefinitionsCfgcheckIncoherencyLevel = "warning"
+)
+
+// Defines values for DefinitionsCfgcheckIncoherencyType.
+const (
+	CertificateAlgorithmDrIncompatibility        DefinitionsCfgcheckIncoherencyType = "certificate-algorithm-dr-incompatibility"
+	ConfigInEthernetRuleNotSupportedByLicense    DefinitionsCfgcheckIncoherencyType = "config-in-ethernet-rule-not-supported-by-license"
+	ConflictingConfigInEthernetRule              DefinitionsCfgcheckIncoherencyType = "conflicting-config-in-ethernet-rule"
+	EmptyGroup                                   DefinitionsCfgcheckIncoherencyType = "empty-group"
+	EmptyGroupInRuleFields                       DefinitionsCfgcheckIncoherencyType = "empty-group-in-rule-fields"
+	IncompatibleDrProfile                        DefinitionsCfgcheckIncoherencyType = "incompatible-dr-profile"
+	IncompatibleNetworkInterface                 DefinitionsCfgcheckIncoherencyType = "incompatible-network-interface"
+	InternalError                                DefinitionsCfgcheckIncoherencyType = "internal-error"
+	IpCollisionContains                          DefinitionsCfgcheckIncoherencyType = "ip-collision-contains"
+	IpCollisionEquals                            DefinitionsCfgcheckIncoherencyType = "ip-collision-equals"
+	IpCollisionSecant                            DefinitionsCfgcheckIncoherencyType = "ip-collision-secant"
+	MacOnlyHostInNatRule                         DefinitionsCfgcheckIncoherencyType = "mac-only-host-in-nat-rule"
+	MacOnlyHostInRouter                          DefinitionsCfgcheckIncoherencyType = "mac-only-host-in-router"
+	MacOnlyHostInRouterInRule                    DefinitionsCfgcheckIncoherencyType = "mac-only-host-in-router-in-rule"
+	MacOnlyHostNotSupportedInVersion             DefinitionsCfgcheckIncoherencyType = "mac-only-host-not-supported-in-version"
+	MissingMacInProfinetRule                     DefinitionsCfgcheckIncoherencyType = "missing-mac-in-profinet-rule"
+	NetworkInterfaceAggregateVlanIncompatibility DefinitionsCfgcheckIncoherencyType = "network-interface-aggregate-vlan-incompatibility"
+	NetworkInterfaceIpv4Overlap                  DefinitionsCfgcheckIncoherencyType = "network-interface-ipv4-overlap"
+	NetworkInterfaceStpIncompatibility           DefinitionsCfgcheckIncoherencyType = "network-interface-stp-incompatibility"
+	RuleOverlap                                  DefinitionsCfgcheckIncoherencyType = "rule-overlap"
+	UnknownNetworkInterface                      DefinitionsCfgcheckIncoherencyType = "unknown-network-interface"
+	UnknownNetworkInterfaceAddress               DefinitionsCfgcheckIncoherencyType = "unknown-network-interface-address"
+	UnknownNetworkInterfaceHidden                DefinitionsCfgcheckIncoherencyType = "unknown-network-interface-hidden"
+	VariablesUnresolvableObject                  DefinitionsCfgcheckIncoherencyType = "variables-unresolvable-object"
+)
+
+// Defines values for DefinitionsCfgcheckInvolvedItemField.
+const (
+	Ackqname            DefinitionsCfgcheckInvolvedItemField = "ackqname"
+	Action              DefinitionsCfgcheckInvolvedItemField = "action"
+	Dst                 DefinitionsCfgcheckInvolvedItemField = "dst"
+	DstGeo              DefinitionsCfgcheckInvolvedItemField = "dstGeo"
+	DstInterface        DefinitionsCfgcheckInvolvedItemField = "dstInterface"
+	DstPort             DefinitionsCfgcheckInvolvedItemField = "dstPort"
+	EncryptionProfile   DefinitionsCfgcheckInvolvedItemField = "encryptionProfile"
+	EnforceIPSecForward DefinitionsCfgcheckInvolvedItemField = "enforceIPSecForward"
+	Firewalls           DefinitionsCfgcheckInvolvedItemField = "firewalls"
+	ForceDscp           DefinitionsCfgcheckInvolvedItemField = "forceDscp"
+	InspectionService   DefinitionsCfgcheckInvolvedItemField = "inspectionService"
+	Limit               DefinitionsCfgcheckInvolvedItemField = "limit"
+	Members             DefinitionsCfgcheckInvolvedItemField = "members"
+	NatDst              DefinitionsCfgcheckInvolvedItemField = "natDst"
+	NatDstForFilterRule DefinitionsCfgcheckInvolvedItemField = "natDstForFilterRule"
+	NatDstPort          DefinitionsCfgcheckInvolvedItemField = "natDstPort"
+	NatSrc              DefinitionsCfgcheckInvolvedItemField = "natSrc"
+	NatSrcPort          DefinitionsCfgcheckInvolvedItemField = "natSrcPort"
+	PrimaryRules        DefinitionsCfgcheckInvolvedItemField = "primaryRules"
+	Qname               DefinitionsCfgcheckInvolvedItemField = "qname"
+	Router              DefinitionsCfgcheckInvolvedItemField = "router"
+	Rules               DefinitionsCfgcheckInvolvedItemField = "rules"
+	SecondaryRules      DefinitionsCfgcheckInvolvedItemField = "secondaryRules"
+	SipRedirect         DefinitionsCfgcheckInvolvedItemField = "sipRedirect"
+	Src                 DefinitionsCfgcheckInvolvedItemField = "src"
+	SrcGeo              DefinitionsCfgcheckInvolvedItemField = "srcGeo"
+	SrcInterface        DefinitionsCfgcheckInvolvedItemField = "srcInterface"
+	SrcPort             DefinitionsCfgcheckInvolvedItemField = "srcPort"
+	SubFolders          DefinitionsCfgcheckInvolvedItemField = "subFolders"
+	TosValue            DefinitionsCfgcheckInvolvedItemField = "tosValue"
+	Via                 DefinitionsCfgcheckInvolvedItemField = "via"
+)
+
+// Defines values for DefinitionsCfgcheckInvolvedItemObjectType.
+const (
+	DefinitionsCfgcheckInvolvedItemObjectTypeCertificate DefinitionsCfgcheckInvolvedItemObjectType = "certificate"
+	DefinitionsCfgcheckInvolvedItemObjectTypeFirewall    DefinitionsCfgcheckInvolvedItemObjectType = "firewall"
+	DefinitionsCfgcheckInvolvedItemObjectTypeFolder      DefinitionsCfgcheckInvolvedItemObjectType = "folder"
+	DefinitionsCfgcheckInvolvedItemObjectTypeGroup       DefinitionsCfgcheckInvolvedItemObjectType = "group"
+	DefinitionsCfgcheckInvolvedItemObjectTypeInterface   DefinitionsCfgcheckInvolvedItemObjectType = "interface"
+	DefinitionsCfgcheckInvolvedItemObjectTypeObject      DefinitionsCfgcheckInvolvedItemObjectType = "object"
+	DefinitionsCfgcheckInvolvedItemObjectTypeRule        DefinitionsCfgcheckInvolvedItemObjectType = "rule"
+	DefinitionsCfgcheckInvolvedItemObjectTypeTopology    DefinitionsCfgcheckInvolvedItemObjectType = "topology"
+	DefinitionsCfgcheckInvolvedItemObjectTypeValue       DefinitionsCfgcheckInvolvedItemObjectType = "value"
+)
+
+// Defines values for DefinitionsCommonErrorResponseSuccess.
+const (
+	DefinitionsCommonErrorResponseSuccessFalse DefinitionsCommonErrorResponseSuccess = false
+)
+
+// Defines values for DefinitionsCommonForbiddenBecauseOfUserScopeResponseErrorsCode.
+const (
+	EFORBIDDENINUSERSCOPE      DefinitionsCommonForbiddenBecauseOfUserScopeResponseErrorsCode = "EFORBIDDENINUSERSCOPE"
+	EFORBIDDENINUSERSCOPEUSAGE DefinitionsCommonForbiddenBecauseOfUserScopeResponseErrorsCode = "EFORBIDDENINUSERSCOPEUSAGE"
+)
+
+// Defines values for DefinitionsCommonForbiddenBecauseOfUserScopeResponseSuccess.
+const (
+	DefinitionsCommonForbiddenBecauseOfUserScopeResponseSuccessFalse DefinitionsCommonForbiddenBecauseOfUserScopeResponseSuccess = false
+)
+
+// Defines values for DefinitionsCommonSuccessResponseSuccess.
+const (
+	True DefinitionsCommonSuccessResponseSuccess = true
+)
+
+// Defines values for DefinitionsConfigNetworkConfigurationInterfacesStatus.
+const (
+	DefinitionsConfigNetworkConfigurationInterfacesStatusDhcp     DefinitionsConfigNetworkConfigurationInterfacesStatus = "dhcp"
+	DefinitionsConfigNetworkConfigurationInterfacesStatusDisabled DefinitionsConfigNetworkConfigurationInterfacesStatus = "disabled"
+	DefinitionsConfigNetworkConfigurationInterfacesStatusStatic   DefinitionsConfigNetworkConfigurationInterfacesStatus = "static"
+)
+
+// Defines values for DefinitionsConfigNetworkInterfacesListResponseStatus.
+const (
+	DefinitionsConfigNetworkInterfacesListResponseStatusDhcp     DefinitionsConfigNetworkInterfacesListResponseStatus = "dhcp"
+	DefinitionsConfigNetworkInterfacesListResponseStatusDisabled DefinitionsConfigNetworkInterfacesListResponseStatus = "disabled"
+	DefinitionsConfigNetworkInterfacesListResponseStatusStatic   DefinitionsConfigNetworkInterfacesListResponseStatus = "static"
+)
+
+// Defines values for DefinitionsConfigNetworkInterfacesUpdateListStatus.
+const (
+	Dhcp     DefinitionsConfigNetworkInterfacesUpdateListStatus = "dhcp"
+	Disabled DefinitionsConfigNetworkInterfacesUpdateListStatus = "disabled"
+	Static   DefinitionsConfigNetworkInterfacesUpdateListStatus = "static"
+)
+
+// Defines values for DefinitionsEncryptionProfilesPh1ProfileDefaultdh.
+const (
+	DefinitionsEncryptionProfilesPh1ProfileDefaultdhN1  DefinitionsEncryptionProfilesPh1ProfileDefaultdh = 1
+	DefinitionsEncryptionProfilesPh1ProfileDefaultdhN14 DefinitionsEncryptionProfilesPh1ProfileDefaultdh = 14
+	DefinitionsEncryptionProfilesPh1ProfileDefaultdhN15 DefinitionsEncryptionProfilesPh1ProfileDefaultdh = 15
+	DefinitionsEncryptionProfilesPh1ProfileDefaultdhN16 DefinitionsEncryptionProfilesPh1ProfileDefaultdh = 16
+	DefinitionsEncryptionProfilesPh1ProfileDefaultdhN19 DefinitionsEncryptionProfilesPh1ProfileDefaultdh = 19
+	DefinitionsEncryptionProfilesPh1ProfileDefaultdhN2  DefinitionsEncryptionProfilesPh1ProfileDefaultdh = 2
+	DefinitionsEncryptionProfilesPh1ProfileDefaultdhN20 DefinitionsEncryptionProfilesPh1ProfileDefaultdh = 20
+	DefinitionsEncryptionProfilesPh1ProfileDefaultdhN5  DefinitionsEncryptionProfilesPh1ProfileDefaultdh = 5
+)
+
+// Defines values for DefinitionsEncryptionProfilesPh1ProfileDefaultprf.
+const (
+	Auto   DefinitionsEncryptionProfilesPh1ProfileDefaultprf = "auto"
+	SHA256 DefinitionsEncryptionProfilesPh1ProfileDefaultprf = "SHA256"
+	SHA384 DefinitionsEncryptionProfilesPh1ProfileDefaultprf = "SHA384"
+	SHA512 DefinitionsEncryptionProfilesPh1ProfileDefaultprf = "SHA512"
+)
+
+// Defines values for DefinitionsEncryptionProfilesPh2ProfilePfs.
+const (
+	DefinitionsEncryptionProfilesPh2ProfilePfsN0  DefinitionsEncryptionProfilesPh2ProfilePfs = 0
+	DefinitionsEncryptionProfilesPh2ProfilePfsN1  DefinitionsEncryptionProfilesPh2ProfilePfs = 1
+	DefinitionsEncryptionProfilesPh2ProfilePfsN14 DefinitionsEncryptionProfilesPh2ProfilePfs = 14
+	DefinitionsEncryptionProfilesPh2ProfilePfsN15 DefinitionsEncryptionProfilesPh2ProfilePfs = 15
+	DefinitionsEncryptionProfilesPh2ProfilePfsN16 DefinitionsEncryptionProfilesPh2ProfilePfs = 16
+	DefinitionsEncryptionProfilesPh2ProfilePfsN2  DefinitionsEncryptionProfilesPh2ProfilePfs = 2
+	DefinitionsEncryptionProfilesPh2ProfilePfsN5  DefinitionsEncryptionProfilesPh2ProfilePfs = 5
+)
+
+// Defines values for DefinitionsMiscImportResponseLogsCtxType.
+const (
+	DefinitionsMiscImportResponseLogsCtxTypeObject  DefinitionsMiscImportResponseLogsCtxType = "object"
+	DefinitionsMiscImportResponseLogsCtxTypeRule    DefinitionsMiscImportResponseLogsCtxType = "rule"
+	DefinitionsMiscImportResponseLogsCtxTypeRuleSet DefinitionsMiscImportResponseLogsCtxType = "ruleSet"
+)
+
+// Defines values for DefinitionsMiscImportResponseLogsLevel.
+const (
+	DefinitionsMiscImportResponseLogsLevelError   DefinitionsMiscImportResponseLogsLevel = "error"
+	DefinitionsMiscImportResponseLogsLevelInfo    DefinitionsMiscImportResponseLogsLevel = "info"
+	DefinitionsMiscImportResponseLogsLevelWarning DefinitionsMiscImportResponseLogsLevel = "warning"
 )
 
 // Defines values for DefinitionsRulesParentType.
 const (
-	Firewall        DefinitionsRulesParentType = "firewall"
-	FolderPrimary   DefinitionsRulesParentType = "folder-primary"
-	FolderSecondary DefinitionsRulesParentType = "folder-secondary"
-	RuleSet         DefinitionsRulesParentType = "rule-set"
+	DefinitionsRulesParentTypeFirewall        DefinitionsRulesParentType = "firewall"
+	DefinitionsRulesParentTypeFolderPrimary   DefinitionsRulesParentType = "folder-primary"
+	DefinitionsRulesParentTypeFolderSecondary DefinitionsRulesParentType = "folder-secondary"
+	DefinitionsRulesParentTypeRuleSet         DefinitionsRulesParentType = "rule-set"
+)
+
+// Defines values for DefinitionsTopologiesTopologyPropertiesWithUuidDpdMode.
+const (
+	DefinitionsTopologiesTopologyPropertiesWithUuidDpdModeHigh    DefinitionsTopologiesTopologyPropertiesWithUuidDpdMode = "high"
+	DefinitionsTopologiesTopologyPropertiesWithUuidDpdModeLow     DefinitionsTopologiesTopologyPropertiesWithUuidDpdMode = "low"
+	DefinitionsTopologiesTopologyPropertiesWithUuidDpdModeOff     DefinitionsTopologiesTopologyPropertiesWithUuidDpdMode = "off"
+	DefinitionsTopologiesTopologyPropertiesWithUuidDpdModePassive DefinitionsTopologiesTopologyPropertiesWithUuidDpdMode = "passive"
+)
+
+// Defines values for DefinitionsTopologiesTopologyPropertiesWithUuidIkeVersion.
+const (
+	DefinitionsTopologiesTopologyPropertiesWithUuidIkeVersionN1 DefinitionsTopologiesTopologyPropertiesWithUuidIkeVersion = 1
+	DefinitionsTopologiesTopologyPropertiesWithUuidIkeVersionN2 DefinitionsTopologiesTopologyPropertiesWithUuidIkeVersion = 2
+)
+
+// Defines values for DefinitionsTopologiesTopologyPropertiesWithUuidPmtud.
+const (
+	DefinitionsTopologiesTopologyPropertiesWithUuidPmtudN0 DefinitionsTopologiesTopologyPropertiesWithUuidPmtud = 0
+	DefinitionsTopologiesTopologyPropertiesWithUuidPmtudN1 DefinitionsTopologiesTopologyPropertiesWithUuidPmtud = 1
+	DefinitionsTopologiesTopologyPropertiesWithUuidPmtudN2 DefinitionsTopologiesTopologyPropertiesWithUuidPmtud = 2
+)
+
+// Defines values for DefinitionsTopologiesTopologyPropertiesWithUuidShape.
+const (
+	DefinitionsTopologiesTopologyPropertiesWithUuidShapeMesh DefinitionsTopologiesTopologyPropertiesWithUuidShape = "mesh"
+	DefinitionsTopologiesTopologyPropertiesWithUuidShapeStar DefinitionsTopologiesTopologyPropertiesWithUuidShape = "star"
+)
+
+// Defines values for DefinitionsTopologiesTopologyPropertiesWithUuidType.
+const (
+	DefinitionsTopologiesTopologyPropertiesWithUuidTypePolicy DefinitionsTopologiesTopologyPropertiesWithUuidType = "policy"
+	DefinitionsTopologiesTopologyPropertiesWithUuidTypeRoute  DefinitionsTopologiesTopologyPropertiesWithUuidType = "route"
+)
+
+// Defines values for DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdMode.
+const (
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdModeHigh    DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdMode = "high"
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdModeLow     DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdMode = "low"
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdModeOff     DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdMode = "off"
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdModePassive DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdMode = "passive"
+)
+
+// Defines values for DefinitionsTopologiesTopologyPropertiesWithoutUuidIkeVersion.
+const (
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidIkeVersionN1 DefinitionsTopologiesTopologyPropertiesWithoutUuidIkeVersion = 1
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidIkeVersionN2 DefinitionsTopologiesTopologyPropertiesWithoutUuidIkeVersion = 2
+)
+
+// Defines values for DefinitionsTopologiesTopologyPropertiesWithoutUuidPmtud.
+const (
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidPmtudN0 DefinitionsTopologiesTopologyPropertiesWithoutUuidPmtud = 0
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidPmtudN1 DefinitionsTopologiesTopologyPropertiesWithoutUuidPmtud = 1
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidPmtudN2 DefinitionsTopologiesTopologyPropertiesWithoutUuidPmtud = 2
+)
+
+// Defines values for DefinitionsTopologiesTopologyPropertiesWithoutUuidShape.
+const (
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidShapeMesh DefinitionsTopologiesTopologyPropertiesWithoutUuidShape = "mesh"
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidShapeStar DefinitionsTopologiesTopologyPropertiesWithoutUuidShape = "star"
+)
+
+// Defines values for DefinitionsTopologiesTopologyPropertiesWithoutUuidType.
+const (
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidTypePolicy DefinitionsTopologiesTopologyPropertiesWithoutUuidType = "policy"
+	DefinitionsTopologiesTopologyPropertiesWithoutUuidTypeRoute  DefinitionsTopologiesTopologyPropertiesWithoutUuidType = "route"
+)
+
+// Defines values for DefinitionsTunnelsTunnelPropertiesStatusLeft.
+const (
+	DefinitionsTunnelsTunnelPropertiesStatusLeftDead    DefinitionsTunnelsTunnelPropertiesStatusLeft = "dead"
+	DefinitionsTunnelsTunnelPropertiesStatusLeftMature  DefinitionsTunnelsTunnelPropertiesStatusLeft = "mature"
+	DefinitionsTunnelsTunnelPropertiesStatusLeftUnknown DefinitionsTunnelsTunnelPropertiesStatusLeft = "unknown"
+)
+
+// Defines values for DefinitionsTunnelsTunnelPropertiesStatusRight.
+const (
+	DefinitionsTunnelsTunnelPropertiesStatusRightDead    DefinitionsTunnelsTunnelPropertiesStatusRight = "dead"
+	DefinitionsTunnelsTunnelPropertiesStatusRightMature  DefinitionsTunnelsTunnelPropertiesStatusRight = "mature"
+	DefinitionsTunnelsTunnelPropertiesStatusRightUnknown DefinitionsTunnelsTunnelPropertiesStatusRight = "unknown"
+)
+
+// Defines values for DefinitionsTunnelsTunnelPropertiesStatusState.
+const (
+	Down    DefinitionsTunnelsTunnelPropertiesStatusState = "down"
+	Unknown DefinitionsTunnelsTunnelPropertiesStatusState = "unknown"
+	Up      DefinitionsTunnelsTunnelPropertiesStatusState = "up"
+)
+
+// Defines values for DefinitionsVariablesVariablesImportListResponseResultLogsCtxType.
+const (
+	DefinitionsVariablesVariablesImportListResponseResultLogsCtxTypeObject  DefinitionsVariablesVariablesImportListResponseResultLogsCtxType = "object"
+	DefinitionsVariablesVariablesImportListResponseResultLogsCtxTypeRule    DefinitionsVariablesVariablesImportListResponseResultLogsCtxType = "rule"
+	DefinitionsVariablesVariablesImportListResponseResultLogsCtxTypeRuleSet DefinitionsVariablesVariablesImportListResponseResultLogsCtxType = "ruleSet"
+)
+
+// Defines values for DefinitionsVariablesVariablesImportListResponseResultLogsLevel.
+const (
+	Error   DefinitionsVariablesVariablesImportListResponseResultLogsLevel = "error"
+	Info    DefinitionsVariablesVariablesImportListResponseResultLogsLevel = "info"
+	Warning DefinitionsVariablesVariablesImportListResponseResultLogsLevel = "warning"
 )
 
 // Defines values for DefinitionsProxyParametersProxyAppName.
@@ -68,6 +480,620 @@ const (
 	Webadmin  DefinitionsProxyParametersProxyAppName = "webadmin"
 	Webreport DefinitionsProxyParametersProxyAppName = "webreport"
 )
+
+// DefinitionsAccountsAccountApiKeyCreateRequest defines model for definitions_accounts_AccountApiKeyCreateRequest.
+type DefinitionsAccountsAccountApiKeyCreateRequest struct {
+	// ExpiredAt The timestamp of when the token expires
+	ExpiredAt *string `json:"expiredAt,omitempty"`
+
+	// Name The name of the key (must be unique for the user)
+	Name string `json:"name"`
+
+	// Permissions Array of access rights
+	Permissions *[]DefinitionsAccountsAccountApiKeyCreateRequestPermissions `json:"permissions,omitempty"`
+}
+
+// DefinitionsAccountsAccountApiKeyCreateRequestPermissions defines model for DefinitionsAccountsAccountApiKeyCreateRequest.Permissions.
+type DefinitionsAccountsAccountApiKeyCreateRequestPermissions string
+
+// DefinitionsAccountsAccountCreateRequest defines model for definitions_accounts_AccountCreateRequest.
+type DefinitionsAccountsAccountCreateRequest struct {
+	// Description The user's description
+	Description *string `json:"description,omitempty"`
+
+	// Dn user's DN
+	Dn *string `json:"dn,omitempty"`
+
+	// Email Account's email
+	Email *string `json:"email,omitempty"`
+
+	// Folders Array of folder rights
+	Folders *[]string `json:"folders,omitempty"`
+
+	// Identifier the account's id (different from login if the user is member of a group)
+	Identifier *string `json:"identifier,omitempty"`
+
+	// Kind Type of account (user or group)
+	Kind *string `json:"kind,omitempty"`
+
+	// LocalAuth does the user can use the local authentication
+	LocalAuth *bool `json:"localAuth,omitempty"`
+
+	// Name the user's name
+	Name *string `json:"name,omitempty"`
+
+	// Password User password
+	Password *string `json:"password,omitempty"`
+
+	// Permissions Array of access rights
+	Permissions *[]DefinitionsAccountsAccountCreateRequestPermissions `json:"permissions,omitempty"`
+}
+
+// DefinitionsAccountsAccountCreateRequestPermissions defines model for DefinitionsAccountsAccountCreateRequest.Permissions.
+type DefinitionsAccountsAccountCreateRequestPermissions string
+
+// DefinitionsAccountsAccountPropertiesBase defines model for definitions_accounts_AccountPropertiesBase.
+type DefinitionsAccountsAccountPropertiesBase struct {
+	// Description The user's description
+	Description *string `json:"description,omitempty"`
+
+	// Dn user's DN
+	Dn *string `json:"dn,omitempty"`
+
+	// Email Account's email
+	Email *string `json:"email,omitempty"`
+
+	// Folders Array of folder rights
+	Folders *[]string `json:"folders,omitempty"`
+
+	// Identifier the account's id (different from login if the user is member of a group)
+	Identifier *string `json:"identifier,omitempty"`
+
+	// Kind Type of account (user or group)
+	Kind *string `json:"kind,omitempty"`
+
+	// LocalAuth does the user can use the local authentication
+	LocalAuth *bool `json:"localAuth,omitempty"`
+
+	// Name the user's name
+	Name *string `json:"name,omitempty"`
+
+	// Permissions Array of access rights
+	Permissions *[]DefinitionsAccountsAccountPropertiesBasePermissions `json:"permissions,omitempty"`
+}
+
+// DefinitionsAccountsAccountPropertiesBasePermissions defines model for DefinitionsAccountsAccountPropertiesBase.Permissions.
+type DefinitionsAccountsAccountPropertiesBasePermissions string
+
+// DefinitionsAccountsAccountPropertiesOldPassword defines model for definitions_accounts_AccountPropertiesOldPassword.
+type DefinitionsAccountsAccountPropertiesOldPassword struct {
+	// OldPassword User current password
+	OldPassword *string `json:"oldPassword,omitempty"`
+}
+
+// DefinitionsAccountsAccountPropertiesPassword defines model for definitions_accounts_AccountPropertiesPassword.
+type DefinitionsAccountsAccountPropertiesPassword struct {
+	// Password User password
+	Password *string `json:"password,omitempty"`
+}
+
+// DefinitionsAccountsAccountPropertiesWithoutPassword defines model for definitions_accounts_AccountPropertiesWithoutPassword.
+type DefinitionsAccountsAccountPropertiesWithoutPassword struct {
+	// Description The user's description
+	Description *string `json:"description,omitempty"`
+
+	// Dn user's DN
+	Dn *string `json:"dn,omitempty"`
+
+	// Email Account's email
+	Email *string `json:"email,omitempty"`
+
+	// Folders Array of folder rights
+	Folders *[]string `json:"folders,omitempty"`
+
+	// Identifier the account's id (different from login if the user is member of a group)
+	Identifier *string `json:"identifier,omitempty"`
+
+	// Kind Type of account (user or group)
+	Kind *string `json:"kind,omitempty"`
+
+	// LocalAuth does the user can use the local authentication
+	LocalAuth *bool `json:"localAuth,omitempty"`
+
+	// Name the user's name
+	Name *string `json:"name,omitempty"`
+
+	// Permissions Array of access rights
+	Permissions *[]DefinitionsAccountsAccountPropertiesWithoutPasswordPermissions `json:"permissions,omitempty"`
+
+	// Uuid Object uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsAccountsAccountPropertiesWithoutPasswordPermissions defines model for DefinitionsAccountsAccountPropertiesWithoutPassword.Permissions.
+type DefinitionsAccountsAccountPropertiesWithoutPasswordPermissions string
+
+// DefinitionsAccountsAccountUpdateRequest defines model for definitions_accounts_AccountUpdateRequest.
+type DefinitionsAccountsAccountUpdateRequest struct {
+	// Description The user's description
+	Description *string `json:"description,omitempty"`
+
+	// Dn user's DN
+	Dn *string `json:"dn,omitempty"`
+
+	// Email Account's email
+	Email *string `json:"email,omitempty"`
+
+	// Folders Array of folder rights
+	Folders *[]string `json:"folders,omitempty"`
+
+	// Identifier the account's id (different from login if the user is member of a group)
+	Identifier *string `json:"identifier,omitempty"`
+
+	// Kind Type of account (user or group)
+	Kind *string `json:"kind,omitempty"`
+
+	// LocalAuth does the user can use the local authentication
+	LocalAuth *bool `json:"localAuth,omitempty"`
+
+	// Name the user's name
+	Name *string `json:"name,omitempty"`
+
+	// OldPassword User current password
+	OldPassword *string `json:"oldPassword,omitempty"`
+
+	// Password User password
+	Password *string `json:"password,omitempty"`
+
+	// Permissions Array of access rights
+	Permissions *[]DefinitionsAccountsAccountUpdateRequestPermissions `json:"permissions,omitempty"`
+
+	// Uuid Object uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsAccountsAccountUpdateRequestPermissions defines model for DefinitionsAccountsAccountUpdateRequest.Permissions.
+type DefinitionsAccountsAccountUpdateRequestPermissions string
+
+// DefinitionsAccountsApiKeyProperties The API key public properties
+type DefinitionsAccountsApiKeyProperties struct {
+	// CreatedAt The timestamp when the token was created
+	CreatedAt string `json:"createdAt"`
+
+	// ExpiredAt The timestamp of when the token expires
+	ExpiredAt string `json:"expiredAt"`
+
+	// Login The login of the user
+	Login string `json:"login"`
+
+	// Name The name of the token
+	Name string `json:"name"`
+
+	// Permissions Array of access rights
+	Permissions []DefinitionsAccountsApiKeyPropertiesPermissions `json:"permissions"`
+
+	// Prefix The API key prefix
+	Prefix string `json:"prefix"`
+
+	// RevokedAt The timestamp of when the key has been revoked
+	RevokedAt *string `json:"revokedAt,omitempty"`
+
+	// Uuid An uuid
+	Uuid DefinitionsCommonUuid `json:"uuid"`
+}
+
+// DefinitionsAccountsApiKeyPropertiesPermissions defines model for DefinitionsAccountsApiKeyProperties.Permissions.
+type DefinitionsAccountsApiKeyPropertiesPermissions string
+
+// DefinitionsAccountsCreateApiKeyResponse defines model for definitions_accounts_CreateApiKeyResponse.
+type DefinitionsAccountsCreateApiKeyResponse struct {
+	// CreatedAt The timestamp when the token was created
+	CreatedAt string `json:"createdAt"`
+
+	// ExpiredAt The timestamp of when the token expires
+	ExpiredAt string `json:"expiredAt"`
+
+	// Login The login of the user
+	Login string `json:"login"`
+
+	// Name The name of the token
+	Name string `json:"name"`
+
+	// Permissions Array of access rights
+	Permissions []DefinitionsAccountsCreateApiKeyResponsePermissions `json:"permissions"`
+
+	// Prefix The API key prefix
+	Prefix string `json:"prefix"`
+
+	// RevokedAt The timestamp of when the key has been revoked
+	RevokedAt *string `json:"revokedAt,omitempty"`
+
+	// Token The client token used to access the API.
+	Token *string `json:"token,omitempty"`
+
+	// Uuid An uuid
+	Uuid DefinitionsCommonUuid `json:"uuid"`
+}
+
+// DefinitionsAccountsCreateApiKeyResponsePermissions defines model for DefinitionsAccountsCreateApiKeyResponse.Permissions.
+type DefinitionsAccountsCreateApiKeyResponsePermissions string
+
+// DefinitionsAdminaccountAdminAccountResponse defines model for definitions_adminaccount_AdminAccountResponse.
+type DefinitionsAdminaccountAdminAccountResponse struct {
+	// Login admin's login
+	Login *string `json:"login,omitempty"`
+}
+
+// DefinitionsAlgorithmsAlgorithm defines model for definitions_algorithms_Algorithm.
+type DefinitionsAlgorithmsAlgorithm struct {
+	IsDeprecated   *bool  `json:"isDeprecated,omitempty"`
+	IsDrCompatible *bool  `json:"isDrCompatible,omitempty"`
+	IsObsolete     *bool  `json:"isObsolete,omitempty"`
+	IsRecommended  *bool  `json:"isRecommended,omitempty"`
+	Name           string `json:"name"`
+	Ph1            bool   `json:"ph1"`
+	Ph2            bool   `json:"ph2"`
+	Strengths      []int  `json:"strengths"`
+}
+
+// DefinitionsAlgorithmsAuthAlgorithmsList A map of auth algorithms.
+type DefinitionsAlgorithmsAuthAlgorithmsList struct {
+	Result  *[]DefinitionsAlgorithmsAlgorithm `json:"result,omitempty"`
+	Success *bool                             `json:"success,omitempty"`
+}
+
+// DefinitionsAlgorithmsEncAlgorithmsList A map of encryption algorithms.
+type DefinitionsAlgorithmsEncAlgorithmsList struct {
+	Result  *[]DefinitionsAlgorithmsAlgorithm `json:"result,omitempty"`
+	Success *bool                             `json:"success,omitempty"`
+}
+
+// DefinitionsAuditlogsLogsResponse defines model for definitions_auditlogs_LogsResponse.
+type DefinitionsAuditlogsLogsResponse struct {
+	Lines *[]struct {
+		// Action action name
+		Action *DefinitionsAuditlogsLogsResponseLinesAction `json:"action,omitempty"`
+
+		// ActionStatus action status
+		ActionStatus *DefinitionsAuditlogsLogsResponseLinesActionStatus `json:"actionStatus,omitempty"`
+
+		// Domain domain key
+		Domain *string `json:"domain,omitempty"`
+
+		// Fw firewall name
+		Fw *string `json:"fw,omitempty"`
+
+		// Hostname host name
+		Hostname *string `json:"hostname,omitempty"`
+
+		// Id application identified
+		Id *string `json:"id,omitempty"`
+
+		// Level log level
+		Level *float32 `json:"level,omitempty"`
+
+		// Msg Text message containing details about action
+		Msg *string `json:"msg,omitempty"`
+
+		// Name log type
+		Name *string `json:"name,omitempty"`
+
+		// ObjectType object type
+		ObjectType *string `json:"objectType,omitempty"`
+
+		// Pid process Id
+		Pid *float32 `json:"pid,omitempty"`
+
+		// Sessionid session id string
+		Sessionid *string `json:"sessionid,omitempty"`
+
+		// SmcVersion SMC version number
+		SmcVersion *string `json:"smcVersion,omitempty"`
+
+		// Time timestamp
+		Time *string `json:"time,omitempty"`
+
+		// User user name
+		User *string  `json:"user,omitempty"`
+		V    *float32 `json:"v,omitempty"`
+	} `json:"lines,omitempty"`
+}
+
+// DefinitionsAuditlogsLogsResponseLinesAction action name
+type DefinitionsAuditlogsLogsResponseLinesAction string
+
+// DefinitionsAuditlogsLogsResponseLinesActionStatus action status
+type DefinitionsAuditlogsLogsResponseLinesActionStatus string
+
+// DefinitionsAuthPolicyApiKeyDefaultPeriod defines model for definitions_auth-policy_ApiKeyDefaultPeriod.
+type DefinitionsAuthPolicyApiKeyDefaultPeriod struct {
+	// Duration Default duration of a new api key
+	Duration int `json:"duration"`
+
+	// Period Duration multiplier
+	Period DefinitionsAuthPolicyApiKeyDefaultPeriodPeriod `json:"period"`
+}
+
+// DefinitionsAuthPolicyApiKeyDefaultPeriodPeriod Duration multiplier
+type DefinitionsAuthPolicyApiKeyDefaultPeriodPeriod string
+
+// DefinitionsAuthPolicyApiKeyPolicy defines model for definitions_auth-policy_ApiKeyPolicy.
+type DefinitionsAuthPolicyApiKeyPolicy struct {
+	ApiKeyDefaultPeriod DefinitionsAuthPolicyApiKeyDefaultPeriod `json:"apiKeyDefaultPeriod"`
+}
+
+// DefinitionsAuthPolicyApiKeyPolicyResult defines model for definitions_auth-policy_ApiKeyPolicyResult.
+type DefinitionsAuthPolicyApiKeyPolicyResult struct {
+	Result *DefinitionsAuthPolicyApiKeyPolicy `json:"result,omitempty"`
+}
+
+// DefinitionsAuthPolicyPolicy defines model for definitions_auth-policy_Policy.
+type DefinitionsAuthPolicyPolicy struct {
+	// EnabledAuth Is local auth enabled ?
+	EnabledAuth *bool `json:"enabledAuth,omitempty"`
+
+	// MandatoryType Users passwords' mandatory character types
+	MandatoryType DefinitionsAuthPolicyPolicyMandatoryType `json:"mandatoryType"`
+
+	// MinLength Users passwords' minimum length
+	MinLength int `json:"minLength"`
+}
+
+// DefinitionsAuthPolicyPolicyMandatoryType Users passwords' mandatory character types
+type DefinitionsAuthPolicyPolicyMandatoryType string
+
+// DefinitionsAuthPolicyPolicyResult defines model for definitions_auth-policy_PolicyResult.
+type DefinitionsAuthPolicyPolicyResult struct {
+	Result  *DefinitionsAuthPolicyPolicy `json:"result,omitempty"`
+	Success *bool                        `json:"success,omitempty"`
+}
+
+// DefinitionsAuthAuthResponse defines model for definitions_auth_AuthResponse.
+type DefinitionsAuthAuthResponse struct {
+	CurrentRevision *DefinitionsServerStateCurrentRevision `json:"currentRevision,omitempty"`
+
+	// Permissions session permissions
+	Permissions *DefinitionsAuthSessionPermissions `json:"permissions,omitempty"`
+
+	// ServerDate server time
+	ServerDate *string `json:"serverDate,omitempty"`
+	Success    *bool   `json:"success,omitempty"`
+	User       *struct {
+		// Identifier user identifier (empty for remote users)
+		Identifier *string `json:"identifier,omitempty"`
+
+		// LocalAuth whether local authentication is enabled for this user or not
+		LocalAuth *bool `json:"localAuth,omitempty"`
+
+		// Login same as identifier if it exists
+		Login *string `json:"login,omitempty"`
+
+		// Name user long name
+		Name *string `json:"name,omitempty"`
+
+		// Permissions session permissions
+		Permissions *DefinitionsAuthSessionPermissions `json:"permissions,omitempty"`
+
+		// Uuid user uuid
+		Uuid *string `json:"uuid,omitempty"`
+	} `json:"user,omitempty"`
+
+	// Version SMC version
+	Version *string `json:"version,omitempty"`
+}
+
+// DefinitionsAuthConflictErrorResponse defines model for definitions_auth_ConflictErrorResponse.
+type DefinitionsAuthConflictErrorResponse struct {
+	CurrentAdmin *struct {
+		ConnectionTime *string `json:"connectionTime,omitempty"`
+		Id             *string `json:"id,omitempty"`
+		Ip             *string `json:"ip,omitempty"`
+		User           *string `json:"user,omitempty"`
+	} `json:"currentAdmin,omitempty"`
+
+	// ServerDate server time
+	ServerDate *string `json:"serverDate,omitempty"`
+	Success    *bool   `json:"success,omitempty"`
+}
+
+// DefinitionsAuthSessionPermissions session permissions
+type DefinitionsAuthSessionPermissions = []string
+
+// DefinitionsAutobackupAutoBackupFirewallResultData defines model for definitions_autobackup_AutoBackupFirewallResultData.
+type DefinitionsAutobackupAutoBackupFirewallResultData struct {
+	// Name Firewall\'s name
+	Name string `json:"name"`
+
+	// Reason Reason why the backup has not been successfull. Only if success == false
+	Reason *string `json:"reason,omitempty"`
+
+	// ServerdOutput Serverd output. Only if the reason is a serverd error.
+	ServerdOutput *[]string `json:"serverdOutput,omitempty"`
+
+	// Size Backup file's size. Only if success == true
+	Size *int `json:"size,omitempty"`
+
+	// Success Whether the backup has been successfull
+	Success bool `json:"success"`
+
+	// Uuid Firewall\'s uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsAutobackupAutoBackupResult defines model for definitions_autobackup_AutoBackupResult.
+type DefinitionsAutobackupAutoBackupResult struct {
+	// Duration Backup duration (in seconds)
+	Duration int                                                 `json:"duration"`
+	Results  []DefinitionsAutobackupAutoBackupFirewallResultData `json:"results"`
+
+	// Size Backup size (in bytes)
+	Size      int                `json:"size"`
+	StartDate openapi_types.Date `json:"startDate"`
+}
+
+// DefinitionsBackupBackupDownloadBody defines model for definitions_backup_BackupDownloadBody.
+type DefinitionsBackupBackupDownloadBody struct {
+	// IncludeHistory Is backup should contain revision history
+	IncludeHistory *bool `json:"includeHistory,omitempty"`
+
+	// Password Encryption password, leave blank if you don't want to encrypt the archive
+	Password *string `json:"password,omitempty"`
+}
+
+// DefinitionsCertificatesCertificate defines model for definitions_certificates_Certificate.
+type DefinitionsCertificatesCertificate struct {
+	// BindAddr A reference to the firewall interface host object (Firewall_) for the enrollment
+	BindAddr *openapi_types.UUID `json:"bindAddr,omitempty"`
+
+	// CrlBindAddr A reference to the firewall interface host object (Firewall_) for the CRL
+	CrlBindAddr *openapi_types.UUID `json:"crlBindAddr,omitempty"`
+
+	// CrlPeriod The period frequency (in seconds) for the CRL
+	CrlPeriod *float32 `json:"crlPeriod,omitempty"`
+
+	// EndDate The validity end date
+	EndDate *time.Time `json:"endDate,omitempty"`
+
+	// Hash The certificate hash
+	Hash *string `json:"hash,omitempty"`
+
+	// Issuer The certificate issuer
+	Issuer *string `json:"issuer,omitempty"`
+
+	// IssuerHash The certificate issuer hash
+	IssuerHash *string `json:"issuerHash,omitempty"`
+
+	// KeySize The certificate issuer keySize
+	KeySize *string `json:"keySize,omitempty"`
+
+	// KeyType The certificate issuer keyType
+	KeyType *string `json:"keyType,omitempty"`
+
+	// Name The certificate name
+	Name *string `json:"name,omitempty"`
+
+	// SignatureAlgorithm The certificate signatureAlgorithm
+	SignatureAlgorithm *string `json:"signatureAlgorithm,omitempty"`
+
+	// StartDate The validity start date
+	StartDate *time.Time `json:"startDate,omitempty"`
+
+	// Status The certificate status
+	Status *interface{} `json:"status,omitempty"`
+
+	// Subject The certificate subject
+	Subject *string `json:"subject,omitempty"`
+
+	// Tpm The certificate TPM status
+	Tpm *DefinitionsCertificatesCertificateTpm `json:"tpm,omitempty"`
+
+	// Type The certificate type
+	Type *DefinitionsCertificatesCertificateType `json:"type,omitempty"`
+
+	// Uuid The certificate uuid
+	Uuid *string `json:"uuid,omitempty"`
+}
+
+// DefinitionsCertificatesCertificateTpm The certificate TPM status
+type DefinitionsCertificatesCertificateTpm string
+
+// DefinitionsCertificatesCertificateType The certificate type
+type DefinitionsCertificatesCertificateType string
+
+// DefinitionsCertificatesCertificateCreateScep defines model for definitions_certificates_CertificateCreateScep.
+type DefinitionsCertificatesCertificateCreateScep struct {
+	// Default set certificate as default for firewall
+	Default *bool `json:"default,omitempty"`
+
+	// Issuer the issuer of SCEP certificate
+	Issuer string `json:"issuer"`
+
+	// Subject the subject of SCEP certificate
+	Subject string `json:"subject"`
+}
+
+// DefinitionsCertificatesCertificatePropertiesUpdate defines model for definitions_certificates_CertificatePropertiesUpdate.
+type DefinitionsCertificatesCertificatePropertiesUpdate struct {
+	// BindAddr A reference to the firewall interface host object (Firewall_) for the enrollment
+	BindAddr *openapi_types.UUID `json:"bindAddr,omitempty"`
+
+	// CrlBindAddr A reference to the firewall interface host object (Firewall_) for the CRL
+	CrlBindAddr *openapi_types.UUID `json:"crlBindAddr,omitempty"`
+
+	// CrlPeriod The period frequency (in seconds) for the CRL
+	CrlPeriod *float32 `json:"crlPeriod,omitempty"`
+
+	// Default set certificate as default for firewall
+	Default *bool `json:"default,omitempty"`
+
+	// Issuer the issuer of SCEP certificate
+	Issuer *string `json:"issuer,omitempty"`
+
+	// Subject the subject of SCEP certificate
+	Subject *string `json:"subject,omitempty"`
+}
+
+// DefinitionsCertificatesCertificateUpload upload a certificate's file
+type DefinitionsCertificatesCertificateUpload struct {
+	// Action type of action i.e. import on SMC or install on a firewall.
+	Action *DefinitionsCertificatesCertificateUploadAction `json:"action,omitempty"`
+
+	// Certificate the certificate file
+	Certificate openapi_types.File `json:"certificate"`
+
+	// Default set certificate as default for firewall
+	Default *bool `json:"default,omitempty"`
+
+	// Password the p12 file password if any
+	Password *string `json:"password,omitempty"`
+}
+
+// DefinitionsCertificatesCertificateUploadAction type of action i.e. import on SMC or install on a firewall.
+type DefinitionsCertificatesCertificateUploadAction string
+
+// DefinitionsCertificatesCertificatesList defines model for definitions_certificates_CertificatesList.
+type DefinitionsCertificatesCertificatesList = []DefinitionsCertificatesCertificate
+
+// DefinitionsCertificatesCertificatesRenewList defines model for definitions_certificates_CertificatesRenewList.
+type DefinitionsCertificatesCertificatesRenewList struct {
+	// Certificates certificate uuid list
+	Certificates *[]string `json:"certificates,omitempty"`
+}
+
+// DefinitionsCertificatesCertificatesRenewRequestResults defines model for definitions_certificates_CertificatesRenewRequestResults.
+type DefinitionsCertificatesCertificatesRenewRequestResults struct {
+	OutputResult *struct {
+		// Errors list of errors on SMC side (bad requests or bad configuration)
+		Errors *[]struct {
+			// CertificateUuid uuid of certificate in error
+			CertificateUuid *string                                                                       `json:"certificateUuid,omitempty"`
+			Code            *DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode `json:"code,omitempty"`
+			Message         *string                                                                       `json:"message,omitempty"`
+		} `json:"errors,omitempty"`
+
+		// RequestResults list of request results from SNS
+		RequestResults *[]struct {
+			// CertificateUuid certificate uuid
+			CertificateUuid *string `json:"certificateUuid,omitempty"`
+			ErrorMessage    *string `json:"errorMessage,omitempty"`
+
+			// Status transaction status
+			Status *DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultRequestResultsStatus `json:"status,omitempty"`
+		} `json:"requestResults,omitempty"`
+	} `json:"outputResult,omitempty"`
+
+	// Result certificate uuid list
+	Result *[]string `json:"result,omitempty"`
+
+	// Success true if request has been executed
+	Success *bool `json:"success,omitempty"`
+}
+
+// DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode defines model for DefinitionsCertificatesCertificatesRenewRequestResults.OutputResult.Errors.Code.
+type DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultErrorsCode string
+
+// DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultRequestResultsStatus transaction status
+type DefinitionsCertificatesCertificatesRenewRequestResultsOutputResultRequestResultsStatus string
 
 // DefinitionsCertificationAuthoritiesAuthoriesImportedCrl CRL for authority
 type DefinitionsCertificationAuthoritiesAuthoriesImportedCrl struct {
@@ -81,6 +1107,68 @@ type DefinitionsCertificationAuthoritiesAuthoriesImportedCrl struct {
 		SerialNumber   *string    `json:"serialNumber,omitempty"`
 	} `json:"revokedCertificate,omitempty"`
 }
+
+// DefinitionsCertificationAuthoritiesCertificationAuthoritiesList defines model for definitions_certification-authorities_CertificationAuthoritiesList.
+type DefinitionsCertificationAuthoritiesCertificationAuthoritiesList = []DefinitionsCertificationAuthoritiesCertificationAuthority
+
+// DefinitionsCertificationAuthoritiesCertificationAuthoritiesTree defines model for definitions_certification-authorities_CertificationAuthoritiesTree.
+type DefinitionsCertificationAuthoritiesCertificationAuthoritiesTree = []DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildren
+
+// DefinitionsCertificationAuthoritiesCertificationAuthority defines model for definitions_certification-authorities_CertificationAuthority.
+type DefinitionsCertificationAuthoritiesCertificationAuthority struct {
+	// Comment The description of the CA
+	Comment *string `json:"comment,omitempty"`
+
+	// CrlDistributionPoints The list of CRL distribution points for this CA
+	CrlDistributionPoints *[]string `json:"crlDistributionPoints,omitempty"`
+
+	// EndDate The end date of the CA's certificate
+	EndDate    *openapi_types.Date `json:"endDate,omitempty"`
+	Enrollment *struct {
+		// EstAlias Additional path segment if protocol is EST and server provides service for multiple CAs
+		EstAlias *string `json:"estAlias,omitempty"`
+
+		// Protocol The enrollment protocol (SCEP if server URL protocol is HTTP, EST if HTTPS)
+		Protocol   *DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentProtocol   `json:"protocol,omitempty"`
+		ScepMethod *DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentScepMethod `json:"scepMethod,omitempty"`
+
+		// ServerCaname The enrollment server CA name on SNS if protocol is EST; usually a DN if no short name has been defined
+		ServerCaname *string `json:"serverCaname,omitempty"`
+
+		// ServerUrl The URL of the enrollment server for this authority
+		ServerUrl string `json:"serverUrl"`
+	} `json:"enrollment,omitempty"`
+
+	// Hash The hash of the CA's certificate
+	Hash *string `json:"hash,omitempty"`
+
+	// ImportedCrl CRL for authority
+	ImportedCrl *DefinitionsCertificationAuthoritiesAuthoriesImportedCrl `json:"importedCrl,omitempty"`
+
+	// Issuer The issuer of the CA's certificate
+	Issuer *string `json:"issuer,omitempty"`
+
+	// Name The name of the CA
+	Name *string `json:"name,omitempty"`
+
+	// StartDate The start date of the CA's certificate
+	StartDate *openapi_types.Date `json:"startDate,omitempty"`
+
+	// Status Authority current status
+	Status *string `json:"status,omitempty"`
+
+	// Subject The subject of the CA's certificate
+	Subject *string `json:"subject,omitempty"`
+
+	// Uuid Object uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentProtocol The enrollment protocol (SCEP if server URL protocol is HTTP, EST if HTTPS)
+type DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentProtocol string
+
+// DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentScepMethod defines model for DefinitionsCertificationAuthoritiesCertificationAuthority.Enrollment.ScepMethod.
+type DefinitionsCertificationAuthoritiesCertificationAuthorityEnrollmentScepMethod string
 
 // DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildren defines model for definitions_certification-authorities_CertificationAuthorityWithChildren.
 type DefinitionsCertificationAuthoritiesCertificationAuthorityWithChildren struct {
@@ -231,8 +1319,380 @@ type DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnro
 // DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentScepMethod defines model for DefinitionsCertificationAuthoritiesCertificationAuthorityWriteableProps.Enrollment.ScepMethod.
 type DefinitionsCertificationAuthoritiesCertificationAuthorityWriteablePropsEnrollmentScepMethod string
 
+// DefinitionsCfgcheckIncoherencies defines model for definitions_cfgcheck_Incoherencies.
+type DefinitionsCfgcheckIncoherencies struct {
+	Result *[]DefinitionsCfgcheckIncoherency `json:"result,omitempty"`
+	Sucess *bool                             `json:"sucess,omitempty"`
+}
+
+// DefinitionsCfgcheckIncoherency defines model for definitions_cfgcheck_Incoherency.
+type DefinitionsCfgcheckIncoherency struct {
+	// Fwid the fwid of the firewall where the incoherency comes from
+	Fwid *string `json:"fwid,omitempty"`
+
+	// IncoherentElementType the type of the element the incoherency come from
+	IncoherentElementType *DefinitionsCfgcheckIncoherencyIncoherentElementType `json:"incoherentElementType,omitempty"`
+
+	// InvolvedItems contains all the elements involved in the incoherency
+	InvolvedItems *[]DefinitionsCfgcheckInvolvedItem `json:"involvedItems,omitempty"`
+
+	// Level criticity level of the incoherency
+	Level  *DefinitionsCfgcheckIncoherencyLevel `json:"level,omitempty"`
+	Origin *DefinitionsCfgcheckInvolvedItem     `json:"origin,omitempty"`
+
+	// Type the type of incoherency
+	Type *DefinitionsCfgcheckIncoherencyType `json:"type,omitempty"`
+
+	// Weight used to sort incoherencies by levels and domains
+	Weight *int `json:"weight,omitempty"`
+}
+
+// DefinitionsCfgcheckIncoherencyIncoherentElementType the type of the element the incoherency come from
+type DefinitionsCfgcheckIncoherencyIncoherentElementType string
+
+// DefinitionsCfgcheckIncoherencyLevel criticity level of the incoherency
+type DefinitionsCfgcheckIncoherencyLevel string
+
+// DefinitionsCfgcheckIncoherencyType the type of incoherency
+type DefinitionsCfgcheckIncoherencyType string
+
+// DefinitionsCfgcheckInvolvedItem defines model for definitions_cfgcheck_InvolvedItem.
+type DefinitionsCfgcheckInvolvedItem struct {
+	// EntityId the uuid of the involved item
+	EntityId *string `json:"entityId,omitempty"`
+
+	// Field the field of object that contains sub involved items
+	Field *DefinitionsCfgcheckInvolvedItemField `json:"field,omitempty"`
+
+	// FullObj full object
+	FullObj *map[string]interface{} `json:"fullObj,omitempty"`
+
+	// ObjectType the type of object
+	ObjectType *DefinitionsCfgcheckInvolvedItemObjectType `json:"objectType,omitempty"`
+
+	// RuleIndex The index of the rule if the entity is a rule
+	RuleIndex *int `json:"ruleIndex,omitempty"`
+}
+
+// DefinitionsCfgcheckInvolvedItemField the field of object that contains sub involved items
+type DefinitionsCfgcheckInvolvedItemField string
+
+// DefinitionsCfgcheckInvolvedItemObjectType the type of object
+type DefinitionsCfgcheckInvolvedItemObjectType string
+
+// DefinitionsCfgdiffCfgDiffResult defines model for definitions_cfgdiff_CfgDiffResult.
+type DefinitionsCfgdiffCfgDiffResult struct {
+	Result *struct {
+		// DeployableCfgBirthDate The date at which the current deployable configuration was generated
+		DeployableCfgBirthDate *string `json:"deployableCfgBirthDate,omitempty"`
+
+		// Diff Return from command diff applied on last deployed configuration and currently deployable configuration
+		Diff *string `json:"diff,omitempty"`
+
+		// FileName filename for download
+		FileName *string `json:"fileName,omitempty"`
+
+		// LastDeployedCfgBirthDate The date when the last deployed configuration was generated
+		LastDeployedCfgBirthDate *string `json:"lastDeployedCfgBirthDate,omitempty"`
+
+		// RevisionNumber Revision number of the last deployed configuration
+		RevisionNumber *int `json:"revisionNumber,omitempty"`
+	} `json:"result,omitempty"`
+	Sucess *bool `json:"sucess,omitempty"`
+}
+
+// DefinitionsCfgdiffCfgDiffStatusResult defines model for definitions_cfgdiff_CfgDiffStatusResult.
+type DefinitionsCfgdiffCfgDiffStatusResult struct {
+	Result *[]DefinitionsCfgdiffCfgDiffStatusResultData `json:"result,omitempty"`
+	Sucess *bool                                        `json:"sucess,omitempty"`
+}
+
+// DefinitionsCfgdiffCfgDiffStatusResultData defines model for definitions_cfgdiff_CfgDiffStatusResultData.
+type DefinitionsCfgdiffCfgDiffStatusResultData struct {
+	// DiffStatus the status of the configuration differential
+	DiffStatus *string `json:"diffStatus,omitempty"`
+
+	// Uuid Firewall uuid
+	Uuid *string `json:"uuid,omitempty"`
+}
+
+// DefinitionsCommonErrorResponse defines model for definitions_common_ErrorResponse.
+type DefinitionsCommonErrorResponse struct {
+	Errors DefinitionsCommonErrorsList `json:"errors"`
+
+	// Success False in case of error
+	Success DefinitionsCommonErrorResponseSuccess `json:"success"`
+}
+
+// DefinitionsCommonErrorResponseSuccess False in case of error
+type DefinitionsCommonErrorResponseSuccess bool
+
+// DefinitionsCommonErrorsList defines model for definitions_common_ErrorsList.
+type DefinitionsCommonErrorsList = []struct {
+	Code    string                  `json:"code"`
+	Ctx     *map[string]interface{} `json:"ctx,omitempty"`
+	Field   *string                 `json:"field,omitempty"`
+	Message *string                 `json:"message,omitempty"`
+}
+
+// DefinitionsCommonForbiddenBecauseOfUserScopeResponse defines model for definitions_common_ForbiddenBecauseOfUserScopeResponse.
+type DefinitionsCommonForbiddenBecauseOfUserScopeResponse struct {
+	Errors []struct {
+		Code DefinitionsCommonForbiddenBecauseOfUserScopeResponseErrorsCode `json:"code"`
+		Ctx  *struct {
+			// Folders List of folders names
+			Folders *string `json:"folders,omitempty"`
+
+			// Items List of elements names
+			Items *string `json:"items,omitempty"`
+		} `json:"ctx,omitempty"`
+		Message *string `json:"message,omitempty"`
+	} `json:"errors"`
+
+	// Success False in case of error
+	Success DefinitionsCommonForbiddenBecauseOfUserScopeResponseSuccess `json:"success"`
+}
+
+// DefinitionsCommonForbiddenBecauseOfUserScopeResponseErrorsCode defines model for DefinitionsCommonForbiddenBecauseOfUserScopeResponse.Errors.Code.
+type DefinitionsCommonForbiddenBecauseOfUserScopeResponseErrorsCode string
+
+// DefinitionsCommonForbiddenBecauseOfUserScopeResponseSuccess False in case of error
+type DefinitionsCommonForbiddenBecauseOfUserScopeResponseSuccess bool
+
+// DefinitionsCommonSuccessResponse defines model for definitions_common_SuccessResponse.
+type DefinitionsCommonSuccessResponse struct {
+	// Success Always set to true on success
+	Success DefinitionsCommonSuccessResponseSuccess `json:"success"`
+}
+
+// DefinitionsCommonSuccessResponseSuccess Always set to true on success
+type DefinitionsCommonSuccessResponseSuccess bool
+
 // DefinitionsCommonUuid An uuid
 type DefinitionsCommonUuid = string
+
+// DefinitionsConfigNetworkConfiguration defines model for definitions_config_NetworkConfiguration.
+type DefinitionsConfigNetworkConfiguration struct {
+	// Dns DNS address
+	Dns *string `json:"dns,omitempty"`
+
+	// Hostname Name of the host
+	Hostname *string `json:"hostname,omitempty"`
+
+	// Interfaces List of interfaces
+	Interfaces *[]struct {
+		// ContactInterface True if the interface is used to reach the client
+		ContactInterface *bool `json:"contactInterface,omitempty"`
+
+		// Gateway configured gateway for this interface (only for disabled and static status)
+		Gateway *string `json:"gateway,omitempty"`
+
+		// Ipv4Address interface ipV4 address (only for disabled and static status)
+		Ipv4Address *string `json:"ipv4Address,omitempty"`
+
+		// LinkType Link type of the interface
+		LinkType *string `json:"linkType,omitempty"`
+
+		// MacAddress Mac address
+		MacAddress *string `json:"macAddress,omitempty"`
+
+		// Mask the configured ip mask for this interface (only for disabled and static status)
+		Mask *string `json:"mask,omitempty"`
+
+		// Name interface name
+		Name *string `json:"name,omitempty"`
+
+		// Status interface current configuration status
+		Status *DefinitionsConfigNetworkConfigurationInterfacesStatus `json:"status,omitempty"`
+
+		// Up physical interface current state (UP = true / DOWN = false)
+		Up *bool `json:"up,omitempty"`
+	} `json:"interfaces,omitempty"`
+}
+
+// DefinitionsConfigNetworkConfigurationInterfacesStatus interface current configuration status
+type DefinitionsConfigNetworkConfigurationInterfacesStatus string
+
+// DefinitionsConfigNetworkInterfacesListResponse defines model for definitions_config_NetworkInterfacesListResponse.
+type DefinitionsConfigNetworkInterfacesListResponse = []struct {
+	// ContactInterface True if the interface is used to reach the client
+	ContactInterface *bool `json:"contactInterface,omitempty"`
+
+	// Gateway configured gateway for this interface (only for disabled and static status)
+	Gateway *string `json:"gateway,omitempty"`
+
+	// Ipv4Address interface ipV4 address (only for disabled and static status)
+	Ipv4Address *string `json:"ipv4Address,omitempty"`
+
+	// LinkType Link type of the interface
+	LinkType *string `json:"linkType,omitempty"`
+
+	// MacAddress Mac address
+	MacAddress *string `json:"macAddress,omitempty"`
+
+	// Mask the configured ip mask for this interface (only for disabled and static status)
+	Mask *string `json:"mask,omitempty"`
+
+	// Name interface name
+	Name *string `json:"name,omitempty"`
+
+	// Status interface current configuration status
+	Status *DefinitionsConfigNetworkInterfacesListResponseStatus `json:"status,omitempty"`
+
+	// Up physical interface current state (UP = true / DOWN = false)
+	Up *bool `json:"up,omitempty"`
+}
+
+// DefinitionsConfigNetworkInterfacesListResponseStatus interface current configuration status
+type DefinitionsConfigNetworkInterfacesListResponseStatus string
+
+// DefinitionsConfigNetworkInterfacesUpdateList defines model for definitions_config_NetworkInterfacesUpdateList.
+type DefinitionsConfigNetworkInterfacesUpdateList = []struct {
+	// Gateway configured gateway for this interface (only for disabled and static status)
+	Gateway *string `json:"gateway,omitempty"`
+
+	// Ipv4Address interface ipV4 address (only for disabled and static status)
+	Ipv4Address *string `json:"ipv4Address,omitempty"`
+
+	// Mask the configured ip mask for this interface (only for disabled and static status)
+	Mask *string `json:"mask,omitempty"`
+
+	// Name interface name
+	Name *string `json:"name,omitempty"`
+
+	// Status interface current configuration status
+	Status *DefinitionsConfigNetworkInterfacesUpdateListStatus `json:"status,omitempty"`
+}
+
+// DefinitionsConfigNetworkInterfacesUpdateListStatus interface current configuration status
+type DefinitionsConfigNetworkInterfacesUpdateListStatus string
+
+// DefinitionsCustomPropertiesCustomProperty defines model for definitions_custom-properties_CustomProperty.
+type DefinitionsCustomPropertiesCustomProperty struct {
+	Name string `json:"name"`
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsCustomPropertiesCustomPropertyWithoutUuid A custom property
+type DefinitionsCustomPropertiesCustomPropertyWithoutUuid struct {
+	Name string `json:"name"`
+}
+
+// DefinitionsCustomPropertiesMultipleCustomPropertiesResponse defines model for definitions_custom-properties_MultipleCustomPropertiesResponse.
+type DefinitionsCustomPropertiesMultipleCustomPropertiesResponse struct {
+	Result  *[]DefinitionsCustomPropertiesCustomProperty `json:"result,omitempty"`
+	Success *bool                                        `json:"success,omitempty"`
+}
+
+// DefinitionsCustomPropertiesSingleCustomPropertyResponse defines model for definitions_custom-properties_SingleCustomPropertyResponse.
+type DefinitionsCustomPropertiesSingleCustomPropertyResponse struct {
+	// Result A custom property
+	Result  *DefinitionsCustomPropertiesCustomProperty `json:"result,omitempty"`
+	Success *bool                                      `json:"success,omitempty"`
+}
+
+// DefinitionsEncryptionProfilesEncryptionProfileList defines model for definitions_encryptionProfiles_EncryptionProfileList.
+type DefinitionsEncryptionProfilesEncryptionProfileList = []DefinitionsEncryptionProfilesEncryptionProfileProperties
+
+// DefinitionsEncryptionProfilesEncryptionProfileProperties defines model for definitions_encryptionProfiles_EncryptionProfileProperties.
+type DefinitionsEncryptionProfilesEncryptionProfileProperties struct {
+	// Builtin If true encryption profile is considered as builtin in SMC, webui uses it to disable some actions
+	Builtin *bool `json:"builtin,omitempty"`
+
+	// Comment Encryption profile's description/comment
+	Comment string `json:"comment"`
+
+	// HasDeprecatedAlgorithms If true encryption profile has at least one algorithm tagged as deprecated
+	HasDeprecatedAlgorithms bool `json:"hasDeprecatedAlgorithms"`
+
+	// Name Encryption profile's name
+	Name string                                  `json:"name"`
+	Ph1  DefinitionsEncryptionProfilesPh1Profile `json:"ph1"`
+	Ph2  DefinitionsEncryptionProfilesPh2Profile `json:"ph2"`
+
+	// Uuid Object uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsEncryptionProfilesEncryptionProfilePropertiesAdditionalProperties defines model for definitions_encryptionProfiles_EncryptionProfilePropertiesAdditionalProperties.
+type DefinitionsEncryptionProfilesEncryptionProfilePropertiesAdditionalProperties struct {
+	// HasDeprecatedAlgorithms If true encryption profile has at least one algorithm tagged as deprecated
+	HasDeprecatedAlgorithms bool `json:"hasDeprecatedAlgorithms"`
+}
+
+// DefinitionsEncryptionProfilesEncryptionProfilePropertiesWithoutUuid defines model for definitions_encryptionProfiles_EncryptionProfilePropertiesWithoutUuid.
+type DefinitionsEncryptionProfilesEncryptionProfilePropertiesWithoutUuid struct {
+	// Builtin If true encryption profile is considered as builtin in SMC, webui uses it to disable some actions
+	Builtin *bool `json:"builtin,omitempty"`
+
+	// Comment Encryption profile's description/comment
+	Comment string `json:"comment"`
+
+	// Name Encryption profile's name
+	Name string                                  `json:"name"`
+	Ph1  DefinitionsEncryptionProfilesPh1Profile `json:"ph1"`
+	Ph2  DefinitionsEncryptionProfilesPh2Profile `json:"ph2"`
+}
+
+// DefinitionsEncryptionProfilesPh1Profile defines model for definitions_encryptionProfiles_Ph1Profile.
+type DefinitionsEncryptionProfilesPh1Profile struct {
+	// Defaultdh Default Diffie-Helman Group
+	Defaultdh DefinitionsEncryptionProfilesPh1ProfileDefaultdh `json:"defaultdh"`
+
+	// Defaultprf Default PRF
+	Defaultprf DefinitionsEncryptionProfilesPh1ProfileDefaultprf `json:"defaultprf"`
+
+	// Lifetime IKE lifetime
+	Lifetime int `json:"lifetime"`
+
+	// Proposals IKE Authentication proposals
+	Proposals []DefinitionsEncryptionProfilesPh1Proposal `json:"proposals"`
+}
+
+// DefinitionsEncryptionProfilesPh1ProfileDefaultdh Default Diffie-Helman Group
+type DefinitionsEncryptionProfilesPh1ProfileDefaultdh int
+
+// DefinitionsEncryptionProfilesPh1ProfileDefaultprf Default PRF
+type DefinitionsEncryptionProfilesPh1ProfileDefaultprf string
+
+// DefinitionsEncryptionProfilesPh1Proposal defines model for definitions_encryptionProfiles_Ph1Proposal.
+type DefinitionsEncryptionProfilesPh1Proposal struct {
+	// Auth IKE auth algorithm name
+	Auth string `json:"auth"`
+
+	// Enc IKE enc algorithm name
+	Enc string `json:"enc"`
+}
+
+// DefinitionsEncryptionProfilesPh2Profile defines model for definitions_encryptionProfiles_Ph2Profile.
+type DefinitionsEncryptionProfilesPh2Profile struct {
+	// Auth IPSec auth algorithm name
+	Auth []string `json:"auth"`
+
+	// Enc IPSec enc algorithm name
+	Enc []string `json:"enc"`
+
+	// Lifetime IPSec lifetime
+	Lifetime int `json:"lifetime"`
+
+	// Pfs IPSec pfs
+	Pfs DefinitionsEncryptionProfilesPh2ProfilePfs `json:"pfs"`
+}
+
+// DefinitionsEncryptionProfilesPh2ProfilePfs IPSec pfs
+type DefinitionsEncryptionProfilesPh2ProfilePfs int
+
+// DefinitionsExportFilteredIds Array of firewall uuids to filter on
+type DefinitionsExportFilteredIds struct {
+	FilteredIds *[]string `json:"filteredIds,omitempty"`
+}
+
+// DefinitionsFoldersAccountFoldersProps defines model for definitions_folders_AccountFoldersProps.
+type DefinitionsFoldersAccountFoldersProps struct {
+	// Result A list of folders uuid.
+	Result  *[]string `json:"result,omitempty"`
+	Success *bool     `json:"success,omitempty"`
+}
 
 // DefinitionsFoldersFolderMember defines model for definitions_folders_FolderMember.
 type DefinitionsFoldersFolderMember struct {
@@ -250,14 +1710,678 @@ type DefinitionsFoldersFolderMember struct {
 	Uuid string `json:"uuid"`
 }
 
+// DefinitionsFoldersFolderProperties defines model for definitions_folders_FolderProperties.
+type DefinitionsFoldersFolderProperties struct {
+	// Comment Folder\'s description
+	Comment *string `json:"comment,omitempty"`
+
+	// Firewalls List of the firewalls contained by this folder
+	Firewalls *[]string `json:"firewalls,omitempty"`
+
+	// Name Folder\'s name
+	Name string `json:"name"`
+
+	// ParentFolder Parent folder's UUID
+	ParentFolder string `json:"parentFolder"`
+
+	// Uuid Object uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsFoldersFolderPropertiesWithoutUuid defines model for definitions_folders_FolderPropertiesWithoutUuid.
+type DefinitionsFoldersFolderPropertiesWithoutUuid struct {
+	// Comment Folder\'s description
+	Comment *string `json:"comment,omitempty"`
+
+	// Firewalls List of the firewalls contained by this folder
+	Firewalls *[]string `json:"firewalls,omitempty"`
+
+	// Name Folder\'s name
+	Name string `json:"name"`
+
+	// ParentFolder Parent folder's UUID
+	ParentFolder string `json:"parentFolder"`
+}
+
+// DefinitionsFoldersFoldersListResponse defines model for definitions_folders_FoldersListResponse.
+type DefinitionsFoldersFoldersListResponse struct {
+	Result  *[]DefinitionsFoldersFolderMember `json:"result,omitempty"`
+	Success *bool                             `json:"success,omitempty"`
+}
+
+// DefinitionsFoldersFoldersTreeResponse defines model for definitions_folders_FoldersTreeResponse.
+type DefinitionsFoldersFoldersTreeResponse struct {
+	Result  DefinitionsFoldersFolderMember `json:"result"`
+	Success bool                           `json:"success"`
+}
+
+// DefinitionsFoldersRawFolderProperties defines model for definitions_folders_RawFolderProperties.
+type DefinitionsFoldersRawFolderProperties struct {
+	// Comment Folder\'s description
+	Comment *string `json:"comment,omitempty"`
+
+	// Depth Folder\'s deepness (0 for the root folder)
+	Depth *int `json:"depth,omitempty"`
+
+	// Firewalls List of the firewalls contained by this folder
+	Firewalls *[]string `json:"firewalls,omitempty"`
+
+	// Name Folder\'s name
+	Name string `json:"name"`
+
+	// ParentFolder Parent folder's UUID
+	ParentFolder string `json:"parentFolder"`
+
+	// Rules List of the associated rule's UUID
+	Rules *[]string `json:"rules,omitempty"`
+
+	// SubFolders List of the sub-folder\'s UUID
+	SubFolders *[]string `json:"subFolders,omitempty"`
+
+	// Uuid Object uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsLdapLdap defines model for definitions_ldap_ldap.
+type DefinitionsLdapLdap struct {
+	BaseDn           string              `json:"baseDn"`
+	Enabled          *bool               `json:"enabled,omitempty"`
+	Host             string              `json:"host"`
+	HostBackup       *string             `json:"hostBackup,omitempty"`
+	Login            string              `json:"login"`
+	Password         string              `json:"password"`
+	Port             int                 `json:"port"`
+	Ssl              *bool               `json:"ssl,omitempty"`
+	SslCaCertificate *bool               `json:"sslCaCertificate,omitempty"`
+	SslCaFile        *openapi_types.File `json:"sslCaFile,omitempty"`
+	Type             string              `json:"type"`
+}
+
+// DefinitionsLdapLdapResponse defines model for definitions_ldap_ldapResponse.
+type DefinitionsLdapLdapResponse struct {
+	Result  *[]DefinitionsLdapLdap `json:"result,omitempty"`
+	Success *bool                  `json:"success,omitempty"`
+}
+
+// DefinitionsLockLockResponse defines model for definitions_lock_LockResponse.
+type DefinitionsLockLockResponse struct {
+	Result *struct {
+		CertificateInstallation *bool `json:"certificateInstallation,omitempty"`
+		Deployment              *bool `json:"deployment,omitempty"`
+		Locked                  *bool `json:"locked,omitempty"`
+		NsrpcExecution          *bool `json:"nsrpcExecution,omitempty"`
+	} `json:"result,omitempty"`
+	Success *bool `json:"success,omitempty"`
+}
+
+// DefinitionsLogsLogsResponse defines model for definitions_logs_LogsResponse.
+type DefinitionsLogsLogsResponse struct {
+	Lines *[]struct {
+		// Domain domain key
+		Domain *string `json:"domain,omitempty"`
+
+		// Hostname host name
+		Hostname *string `json:"hostname,omitempty"`
+
+		// Level log level
+		Level *float32 `json:"level,omitempty"`
+
+		// Msg Log message
+		Msg  *string `json:"msg,omitempty"`
+		Name *string `json:"name,omitempty"`
+
+		// Pid process Id
+		Pid *float32 `json:"pid,omitempty"`
+
+		// Time timestamp
+		Time *string  `json:"time,omitempty"`
+		V    *float32 `json:"v,omitempty"`
+	} `json:"lines,omitempty"`
+}
+
+// DefinitionsMiscContactAddresses list of host/port to contact SMC
+type DefinitionsMiscContactAddresses = []struct {
+	// Bindaddr The bindaddr address (object name)
+	Bindaddr *string `json:"bindaddr,omitempty"`
+
+	// Host The SMC server address (ipv4 or fqdn)
+	Host string `json:"host"`
+
+	// Port The SMC server port
+	Port float32 `json:"port"`
+}
+
+// DefinitionsMiscCrlProperty defines model for definitions_misc_CrlProperty.
+type DefinitionsMiscCrlProperty struct {
+	// LastUpdate last update
+	LastUpdate *string `json:"lastUpdate,omitempty"`
+
+	// NextUpdate next update
+	NextUpdate *string `json:"nextUpdate,omitempty"`
+
+	// RevokedCertificates list of revoked certificates from CRL
+	RevokedCertificates *[]struct {
+		// Reason reason of revocation
+		Reason *int `json:"reason,omitempty"`
+
+		// RevocationDate revocation date of the certificate
+		RevocationDate *string `json:"revocationDate,omitempty"`
+
+		// SerialNumber serial number of certificate
+		SerialNumber *string `json:"serialNumber,omitempty"`
+	} `json:"revokedCertificates,omitempty"`
+}
+
+// DefinitionsMiscImportResponse Result of an import
+type DefinitionsMiscImportResponse struct {
+	// Logs list of logs
+	Logs *[]struct {
+		// Ctx context of the log
+		Ctx *struct {
+			// LineContent line extracted from csv file
+			LineContent *map[string]interface{} `json:"lineContent,omitempty"`
+
+			// LineNum index of the rule/ruleSet/object in csv file
+			LineNum *float32 `json:"lineNum,omitempty"`
+
+			// Type type of imported csv file
+			Type *DefinitionsMiscImportResponseLogsCtxType `json:"type,omitempty"`
+		} `json:"ctx,omitempty"`
+
+		// Level log level
+		Level *DefinitionsMiscImportResponseLogsLevel `json:"level,omitempty"`
+
+		// Message log message
+		Message *string `json:"message,omitempty"`
+	} `json:"logs,omitempty"`
+	Success *bool `json:"success,omitempty"`
+}
+
+// DefinitionsMiscImportResponseLogsCtxType type of imported csv file
+type DefinitionsMiscImportResponseLogsCtxType string
+
+// DefinitionsMiscImportResponseLogsLevel log level
+type DefinitionsMiscImportResponseLogsLevel string
+
+// DefinitionsMiscInitializationPackageProperties Data to send to create an initialization package
+type DefinitionsMiscInitializationPackageProperties struct {
+	// Contacts list of host/port to contact SMC
+	Contacts DefinitionsMiscContactAddresses `json:"contacts"`
+
+	// FwVersion the firewall target version used for the generation
+	FwVersion string `json:"fwVersion"`
+
+	// Gateway the gateway IP we want to set on the target firewall
+	Gateway *string `json:"gateway,omitempty"`
+
+	// IpSlave the IP address we want to set on the target firewall
+	IpSlave *string `json:"ipSlave,omitempty"`
+
+	// Mask the IP mask we want to set on the target firewall
+	Mask *string `json:"mask,omitempty"`
+
+	// StorePublicIpAndPort Store SMC contact addresses to automatically fill it in further GUI connecting package wizard
+	StorePublicIpAndPort *bool `json:"storePublicIpAndPort,omitempty"`
+}
+
+// DefinitionsObjectsCheckUsageResponse defines model for definitions_objects_CheckUsageResponse.
+type DefinitionsObjectsCheckUsageResponse struct {
+	Result *[]struct {
+		// Type When possible, most specific type (such as type "host", "port" for object) for configuration element using the source element
+		Type *string `json:"_type,omitempty"`
+
+		// Index When possible (e.g. for rule element), rule index related to configuration element using the source element
+		Index *float32 `json:"index,omitempty"`
+
+		// Priority When possible (e.g. for rule element), rule priority related to configuration element using the source element
+		Priority *float32 `json:"priority,omitempty"`
+
+		// SourceElementType Source configuration element type (object, firewall, certificate, etc) that is checked by the check-usage feature. Most of time it is the target element choose by the user, except for VTI topology.
+		SourceElementType *string `json:"sourceElementType,omitempty"`
+
+		// SourceElementUuid Source configuration element UUID that is checked by the check-usage feature.
+		SourceElementUuid *string `json:"sourceElementUuid,omitempty"`
+
+		// UsedByElementType Configuration element type using the source element
+		UsedByElementType *string `json:"usedByElementType,omitempty"`
+
+		// UsedByElementUuid Configuration element UUID using the source element
+		UsedByElementUuid *string `json:"usedByElementUuid,omitempty"`
+	} `json:"result,omitempty"`
+	Success *bool `json:"success,omitempty"`
+}
+
 // DefinitionsObjectsObjectUuid defines model for definitions_objects_ObjectUuid.
 type DefinitionsObjectsObjectUuid struct {
 	// Uuid Object uuid
 	Uuid string `json:"uuid"`
 }
 
+// DefinitionsRadiusRadius defines model for definitions_radius_radius.
+type DefinitionsRadiusRadius struct {
+	BackupHost         *string `json:"backupHost,omitempty"`
+	BackupPort         *int    `json:"backupPort,omitempty"`
+	BackupPreSharedKey *string `json:"backupPreSharedKey,omitempty"`
+	Enabled            *bool   `json:"enabled,omitempty"`
+	Host               string  `json:"host"`
+	Port               int     `json:"port"`
+	PreSharedKey       string  `json:"preSharedKey"`
+}
+
+// DefinitionsRadiusRadiusPostResponse defines model for definitions_radius_radiusPostResponse.
+type DefinitionsRadiusRadiusPostResponse struct {
+	Result  *[]DefinitionsRadiusRadiusPostResponse_Result_Item `json:"result,omitempty"`
+	Success *bool                                              `json:"success,omitempty"`
+}
+
+// DefinitionsRadiusRadiusPostResponseResult0 defines model for .
+type DefinitionsRadiusRadiusPostResponseResult0 struct {
+	Enabled      *bool   `json:"enabled,omitempty"`
+	Host         *string `json:"host,omitempty"`
+	Port         *int    `json:"port,omitempty"`
+	PreSharedKey *string `json:"preSharedKey,omitempty"`
+}
+
+// DefinitionsRadiusRadiusPostResponseResult1 defines model for .
+type DefinitionsRadiusRadiusPostResponseResult1 struct {
+	Enabled      *bool   `json:"enabled,omitempty"`
+	Host         *string `json:"host,omitempty"`
+	Port         *int    `json:"port,omitempty"`
+	PreSharedKey *string `json:"preSharedKey,omitempty"`
+}
+
+// DefinitionsRadiusRadiusPostResponse_Result_Item defines model for definitions_radius_radiusPostResponse.result.Item.
+type DefinitionsRadiusRadiusPostResponse_Result_Item struct {
+	union json.RawMessage
+}
+
+// DefinitionsRadiusRadiusResponse defines model for definitions_radius_radiusResponse.
+type DefinitionsRadiusRadiusResponse struct {
+	Result  *[]DefinitionsRadiusRadius `json:"result,omitempty"`
+	Success *bool                      `json:"success,omitempty"`
+}
+
 // DefinitionsRulesParentType defines model for definitions_rules_ParentType.
 type DefinitionsRulesParentType string
+
+// DefinitionsServerStateCurrentRevision defines model for definitions_server-state_CurrentRevision.
+type DefinitionsServerStateCurrentRevision struct {
+	IsLast *bool `json:"isLast,omitempty"`
+
+	// Revision revision number
+	Revision *string `json:"revision,omitempty"`
+}
+
+// DefinitionsSnsdiffSnsDiffResult defines model for definitions_snsdiff_SnsDiffResult.
+type DefinitionsSnsdiffSnsDiffResult struct {
+	Result *struct {
+		// Diff Return from command diff applied on last deployed configuration and SNS local configuration
+		Diff *string `json:"diff,omitempty"`
+
+		// FileName filename for download
+		FileName *string `json:"fileName,omitempty"`
+
+		// LastDeployedCfgBirthDate The date when the last deployed configuration was generated
+		LastDeployedCfgBirthDate *string `json:"lastDeployedCfgBirthDate,omitempty"`
+
+		// RevisionNumber Revision number of the last deployed configuration
+		RevisionNumber *int `json:"revisionNumber,omitempty"`
+	} `json:"result,omitempty"`
+	Sucess *bool `json:"sucess,omitempty"`
+}
+
+// DefinitionsTopologiesAddressPoolReservationInTopology defines model for definitions_topologies_AddressPoolReservationInTopology.
+type DefinitionsTopologiesAddressPoolReservationInTopology struct {
+	// Ipv4Address IPv4 address of the reservation, with CIDR - usually /31
+	Ipv4Address string `json:"ipv4Address"`
+
+	// Mask Mask address of the reservation
+	Mask *string `json:"mask,omitempty"`
+
+	// PeerHost Remote host object's name
+	PeerHost *string `json:"peerHost,omitempty"`
+
+	// PeerHostComment Remote host object's comment
+	PeerHostComment *string `json:"peerHostComment,omitempty"`
+	Remote          string  `json:"remote"`
+
+	// RemoteVTI Remote VTI system object's name
+	RemoteVTI *string `json:"remoteVTI,omitempty"`
+
+	// VtiComment VTI's comment
+	VtiComment *string `json:"vtiComment,omitempty"`
+
+	// VtiName VTI's name
+	VtiName *string `json:"vtiName,omitempty"`
+}
+
+// DefinitionsTopologiesDefaultAddressPool defines model for definitions_topologies_DefaultAddressPool.
+type DefinitionsTopologiesDefaultAddressPool struct {
+	Address string `json:"address"`
+}
+
+// DefinitionsTopologiesTopologiesListResponse defines model for definitions_topologies_TopologiesListResponse.
+type DefinitionsTopologiesTopologiesListResponse struct {
+	Result  *[]DefinitionsTopologiesTopologyPropertiesWithUuid `json:"result,omitempty"`
+	Success *bool                                              `json:"success,omitempty"`
+}
+
+// DefinitionsTopologiesTopologyPeerProperties defines model for definitions_topologies_TopologyPeerProperties.
+type DefinitionsTopologiesTopologyPeerProperties struct {
+	// Endpoints List of traffic endpoints, if policy-based
+	Endpoints *[]string `json:"endpoints,omitempty"`
+
+	// PublicIpAddressHost undefined for firewall default, object uuid if overriden, or "any" if peer is dynamic
+	PublicIpAddressHost string `json:"publicIpAddressHost"`
+
+	// Reservations List of peer's reservations, if route-based
+	Reservations *[]DefinitionsTopologiesAddressPoolReservationInTopology `json:"reservations,omitempty"`
+
+	// Uuid Peer UUID (Firewall or Host)
+	Uuid string `json:"uuid"`
+
+	// VpnLocalAddress undefined for firewall default, object uuid if overriden
+	VpnLocalAddress string `json:"vpnLocalAddress"`
+}
+
+// DefinitionsTopologiesTopologyPeerPropertiesWithoutReadOnly defines model for definitions_topologies_TopologyPeerPropertiesWithoutReadOnly.
+type DefinitionsTopologiesTopologyPeerPropertiesWithoutReadOnly struct {
+	// Endpoints List of traffic endpoints, if policy-based
+	Endpoints *[]string `json:"endpoints,omitempty"`
+
+	// PublicIpAddressHost undefined for firewall default, object uuid if overriden, or "any" if peer is dynamic
+	PublicIpAddressHost string `json:"publicIpAddressHost"`
+
+	// Uuid Peer UUID (Firewall or Host)
+	Uuid string `json:"uuid"`
+
+	// VpnLocalAddress undefined for firewall default, object uuid if overriden
+	VpnLocalAddress string `json:"vpnLocalAddress"`
+}
+
+// DefinitionsTopologiesTopologyPropertiesWithUuid defines model for definitions_topologies_TopologyPropertiesWithUuid.
+type DefinitionsTopologiesTopologyPropertiesWithUuid struct {
+	// AddressPool IPv4 address with CIDR of the chosen address pool, if route-based
+	AddressPool *string `json:"addressPool,omitempty"`
+
+	// Authorities Associated certificate authority UUID (Required if no psk)
+	Authorities *[]string `json:"authorities,omitempty"`
+
+	// Center UUID of the peer that will be the center of the topology, if shape is star
+	Center *string `json:"center,omitempty"`
+
+	// DpdMode Dead Peer Detection mode
+	DpdMode DefinitionsTopologiesTopologyPropertiesWithUuidDpdMode `json:"dpdMode"`
+
+	// Enabled True if the topology is enabled, false otherwise
+	Enabled bool `json:"enabled"`
+
+	// EncryptionProfile Associated encryption profile UUID
+	EncryptionProfile string `json:"encryptionProfile"`
+
+	// FragmentSize The fragment size
+	FragmentSize *int `json:"fragmentSize,omitempty"`
+
+	// IkeDscp The IKE dscp value to apply to the topology IKE traffic. Goes from 0 to 63 and is optional.
+	IkeDscp *float32 `json:"ikeDscp,omitempty"`
+
+	// IkeVersion IKE version
+	IkeVersion DefinitionsTopologiesTopologyPropertiesWithUuidIkeVersion `json:"ikeVersion"`
+
+	// Name Topology name
+	Name string `json:"name"`
+
+	// NbTunnels Number of tunnels in topology
+	NbTunnels *float32 `json:"nbTunnels,omitempty"`
+
+	// Peers List of topology peers
+	Peers []DefinitionsTopologiesTopologyPeerProperties `json:"peers"`
+
+	// Pmtud Path MTU Discovery (0 = "Disabled", 1 = "Always add the DF flag", 2 = "Keep the DF flag")
+	Pmtud *DefinitionsTopologiesTopologyPropertiesWithUuidPmtud `json:"pmtud,omitempty"`
+
+	// Psk Topology PSK (Required if no authorities)
+	Psk *string `json:"psk,omitempty"`
+
+	// ResponderOnly ONLY in the case of a star topology, whether the center will be set as responder-only, so that it will not initiate VPN tunnels
+	ResponderOnly *bool `json:"responderOnly,omitempty"`
+
+	// Shape Topology shape
+	Shape *DefinitionsTopologiesTopologyPropertiesWithUuidShape `json:"shape,omitempty"`
+
+	// Type Topology type
+	Type *DefinitionsTopologiesTopologyPropertiesWithUuidType `json:"type,omitempty"`
+
+	// Uuid Object uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsTopologiesTopologyPropertiesWithUuidDpdMode Dead Peer Detection mode
+type DefinitionsTopologiesTopologyPropertiesWithUuidDpdMode string
+
+// DefinitionsTopologiesTopologyPropertiesWithUuidIkeVersion IKE version
+type DefinitionsTopologiesTopologyPropertiesWithUuidIkeVersion float32
+
+// DefinitionsTopologiesTopologyPropertiesWithUuidPmtud Path MTU Discovery (0 = "Disabled", 1 = "Always add the DF flag", 2 = "Keep the DF flag")
+type DefinitionsTopologiesTopologyPropertiesWithUuidPmtud int
+
+// DefinitionsTopologiesTopologyPropertiesWithUuidShape Topology shape
+type DefinitionsTopologiesTopologyPropertiesWithUuidShape string
+
+// DefinitionsTopologiesTopologyPropertiesWithUuidType Topology type
+type DefinitionsTopologiesTopologyPropertiesWithUuidType string
+
+// DefinitionsTopologiesTopologyPropertiesWithoutUuid defines model for definitions_topologies_TopologyPropertiesWithoutUuid.
+type DefinitionsTopologiesTopologyPropertiesWithoutUuid struct {
+	// AddressPool IPv4 address with CIDR of the chosen address pool, if route-based
+	AddressPool *string `json:"addressPool,omitempty"`
+
+	// Authorities Associated certificate authority UUID (Required if no psk)
+	Authorities *[]string `json:"authorities,omitempty"`
+
+	// Center UUID of the peer that will be the center of the topology, if shape is star
+	Center *string `json:"center,omitempty"`
+
+	// DpdMode Dead Peer Detection mode
+	DpdMode DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdMode `json:"dpdMode"`
+
+	// Enabled True if the topology is enabled, false otherwise
+	Enabled bool `json:"enabled"`
+
+	// EncryptionProfile Associated encryption profile UUID
+	EncryptionProfile string `json:"encryptionProfile"`
+
+	// FragmentSize The fragment size
+	FragmentSize *int `json:"fragmentSize,omitempty"`
+
+	// IkeDscp The IKE dscp value to apply to the topology IKE traffic. Goes from 0 to 63 and is optional.
+	IkeDscp *float32 `json:"ikeDscp,omitempty"`
+
+	// IkeVersion IKE version
+	IkeVersion DefinitionsTopologiesTopologyPropertiesWithoutUuidIkeVersion `json:"ikeVersion"`
+
+	// Name Topology name
+	Name string `json:"name"`
+
+	// Peers List of topology peers
+	Peers []DefinitionsTopologiesTopologyPeerPropertiesWithoutReadOnly `json:"peers"`
+
+	// Pmtud Path MTU Discovery (0 = "Disabled", 1 = "Always add the DF flag", 2 = "Keep the DF flag")
+	Pmtud *DefinitionsTopologiesTopologyPropertiesWithoutUuidPmtud `json:"pmtud,omitempty"`
+
+	// Psk Topology PSK (Required if no authorities)
+	Psk *string `json:"psk,omitempty"`
+
+	// ResponderOnly ONLY in the case of a star topology, whether the center will be set as responder-only, so that it will not initiate VPN tunnels
+	ResponderOnly *bool `json:"responderOnly,omitempty"`
+
+	// Shape Topology shape
+	Shape *DefinitionsTopologiesTopologyPropertiesWithoutUuidShape `json:"shape,omitempty"`
+
+	// Type Topology type
+	Type *DefinitionsTopologiesTopologyPropertiesWithoutUuidType `json:"type,omitempty"`
+}
+
+// DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdMode Dead Peer Detection mode
+type DefinitionsTopologiesTopologyPropertiesWithoutUuidDpdMode string
+
+// DefinitionsTopologiesTopologyPropertiesWithoutUuidIkeVersion IKE version
+type DefinitionsTopologiesTopologyPropertiesWithoutUuidIkeVersion float32
+
+// DefinitionsTopologiesTopologyPropertiesWithoutUuidPmtud Path MTU Discovery (0 = "Disabled", 1 = "Always add the DF flag", 2 = "Keep the DF flag")
+type DefinitionsTopologiesTopologyPropertiesWithoutUuidPmtud int
+
+// DefinitionsTopologiesTopologyPropertiesWithoutUuidShape Topology shape
+type DefinitionsTopologiesTopologyPropertiesWithoutUuidShape string
+
+// DefinitionsTopologiesTopologyPropertiesWithoutUuidType Topology type
+type DefinitionsTopologiesTopologyPropertiesWithoutUuidType string
+
+// DefinitionsTunnelsTunnelEndpoint defines model for definitions_tunnels_TunnelEndpoint.
+type DefinitionsTunnelsTunnelEndpoint struct {
+	// DetectedPublicIpAddress IP address used by Firewall on this tunnel endpoint
+	DetectedPublicIpAddress *string `json:"detectedPublicIpAddress,omitempty"`
+
+	// DetectedVpnLocalAddressName Interface used for this tunnel endpoint or null when tunnel has never been up
+	DetectedVpnLocalAddressName *string `json:"detectedVpnLocalAddressName,omitempty"`
+
+	// Endpoint endpoint object
+	Endpoint *string `json:"endpoint,omitempty"`
+
+	// Gateway endpoint gateway
+	Gateway *string `json:"gateway,omitempty"`
+
+	// PublicIpAddress IP address used for this tunnel endpoint (comes from firewall or topology endpoint's configuration)
+	PublicIpAddress *string `json:"publicIpAddress,omitempty"`
+
+	// VpnLocalAddressName Interface configured for this tunnel endpoint (comes from firewall or topology endpoint's configuration)
+	VpnLocalAddressName *string `json:"vpnLocalAddressName,omitempty"`
+}
+
+// DefinitionsTunnelsTunnelProperties defines model for definitions_tunnels_TunnelProperties.
+type DefinitionsTunnelsTunnelProperties struct {
+	// Left tunnel's left side couple gateway-objects
+	Left DefinitionsTunnelsTunnelEndpoint `json:"left"`
+
+	// Name topology's name
+	Name string `json:"name"`
+
+	// Right tunnel's right side couple  gateway-objects
+	Right DefinitionsTunnelsTunnelEndpoint `json:"right"`
+
+	// Rulename link's digest according to VPN config rulename token
+	Rulename string `json:"rulename"`
+
+	// Shape topology's shape
+	Shape string `json:"shape"`
+
+	// Status Tunnel's status
+	Status struct {
+		Left  *DefinitionsTunnelsTunnelPropertiesStatusLeft  `json:"left,omitempty"`
+		Right *DefinitionsTunnelsTunnelPropertiesStatusRight `json:"right,omitempty"`
+		State *DefinitionsTunnelsTunnelPropertiesStatusState `json:"state,omitempty"`
+	} `json:"status"`
+
+	// Type topology's type
+	Type string `json:"type"`
+
+	// Uuid topology's UUID
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsTunnelsTunnelPropertiesStatusLeft defines model for DefinitionsTunnelsTunnelProperties.Status.Left.
+type DefinitionsTunnelsTunnelPropertiesStatusLeft string
+
+// DefinitionsTunnelsTunnelPropertiesStatusRight defines model for DefinitionsTunnelsTunnelProperties.Status.Right.
+type DefinitionsTunnelsTunnelPropertiesStatusRight string
+
+// DefinitionsTunnelsTunnelPropertiesStatusState defines model for DefinitionsTunnelsTunnelProperties.Status.State.
+type DefinitionsTunnelsTunnelPropertiesStatusState string
+
+// DefinitionsTunnelsTunnelsListResponse defines model for definitions_tunnels_TunnelsListResponse.
+type DefinitionsTunnelsTunnelsListResponse struct {
+	Result  *[]DefinitionsTunnelsTunnelProperties `json:"result,omitempty"`
+	Success *bool                                 `json:"success,omitempty"`
+}
+
+// DefinitionsVariablesMultipleVariablesResponse defines model for definitions_variables_MultipleVariablesResponse.
+type DefinitionsVariablesMultipleVariablesResponse struct {
+	Result  *[]DefinitionsVariablesVariable `json:"result,omitempty"`
+	Success *bool                           `json:"success,omitempty"`
+}
+
+// DefinitionsVariablesSingleVariableResponse defines model for definitions_variables_SingleVariableResponse.
+type DefinitionsVariablesSingleVariableResponse struct {
+	// Result A custom variable
+	Result  *DefinitionsVariablesVariable `json:"result,omitempty"`
+	Success *bool                         `json:"success,omitempty"`
+}
+
+// DefinitionsVariablesVariable defines model for definitions_variables_Variable.
+type DefinitionsVariablesVariable struct {
+	Comment *string `json:"comment,omitempty"`
+	Name    string  `json:"name"`
+	Uuid    string  `json:"uuid"`
+}
+
+// DefinitionsVariablesVariableWithoutUuid A custom variable
+type DefinitionsVariablesVariableWithoutUuid struct {
+	Comment *string `json:"comment,omitempty"`
+	Name    string  `json:"name"`
+}
+
+// DefinitionsVariablesVariablesImportListResponse defines model for definitions_variables_VariablesImportListResponse.
+type DefinitionsVariablesVariablesImportListResponse struct {
+	Result *struct {
+		ImportSummary *struct {
+			Created   *int `json:"created,omitempty"`
+			Defined   *int `json:"defined,omitempty"`
+			Error     *int `json:"error,omitempty"`
+			Undefined *int `json:"undefined,omitempty"`
+			Updated   *int `json:"updated,omitempty"`
+		} `json:"importSummary,omitempty"`
+
+		// Logs list of logs
+		Logs *[]struct {
+			// Ctx context of the log
+			Ctx *struct {
+				// LineContent line extracted from csv file
+				LineContent *map[string]interface{} `json:"lineContent,omitempty"`
+
+				// LineNum index of the rule/ruleSet/object in csv file
+				LineNum *float32 `json:"lineNum,omitempty"`
+
+				// Type type of imported csv file
+				Type *DefinitionsVariablesVariablesImportListResponseResultLogsCtxType `json:"type,omitempty"`
+			} `json:"ctx,omitempty"`
+
+			// Level log level
+			Level *DefinitionsVariablesVariablesImportListResponseResultLogsLevel `json:"level,omitempty"`
+
+			// Message log message
+			Message *string `json:"message,omitempty"`
+		} `json:"logs,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	} `json:"result,omitempty"`
+	Success *bool `json:"success,omitempty"`
+}
+
+// DefinitionsVariablesVariablesImportListResponseResultLogsCtxType type of imported csv file
+type DefinitionsVariablesVariablesImportListResponseResultLogsCtxType string
+
+// DefinitionsVariablesVariablesImportListResponseResultLogsLevel log level
+type DefinitionsVariablesVariablesImportListResponseResultLogsLevel string
+
+// DefinitionsVariablesVariablesImportSummary defines model for definitions_variables_VariablesImportSummary.
+type DefinitionsVariablesVariablesImportSummary struct {
+	ImportSummary *struct {
+		Created   *int `json:"created,omitempty"`
+		Defined   *int `json:"defined,omitempty"`
+		Error     *int `json:"error,omitempty"`
+		Undefined *int `json:"undefined,omitempty"`
+		Updated   *int `json:"updated,omitempty"`
+	} `json:"importSummary,omitempty"`
+}
 
 // DefinitionsProxyParametersProxyAppName defines model for definitions_proxy_parameters_ProxyAppName.
 type DefinitionsProxyParametersProxyAppName string
@@ -276,6 +2400,320 @@ type DefinitionsProxyParametersProxyManifestRefuse = bool
 
 // DefinitionsProxyParametersProxyUserId defines model for definitions_proxy_parameters_ProxyUserId.
 type DefinitionsProxyParametersProxyUserId = string
+
+// PutApiActiveupdateJSONBody defines parameters for PutApiActiveupdate.
+type PutApiActiveupdateJSONBody struct {
+	// State service state
+	State *bool `json:"state,omitempty"`
+
+	// SyncAutoUpdateState true if the autoupdate sync must be activated
+	SyncAutoUpdateState *bool `json:"syncAutoUpdateState,omitempty"`
+}
+
+// PostApiActiveupdateImportMultipartBody defines parameters for PostApiActiveupdateImport.
+type PostApiActiveupdateImportMultipartBody struct {
+	Files *openapi_types.File `json:"files,omitempty"`
+}
+
+// PutApiAdminaccountFormdataBody defines parameters for PutApiAdminaccount.
+type PutApiAdminaccountFormdataBody struct {
+	Password string `form:"password" json:"password"`
+}
+
+// PostApiAuthLoginFormdataBody defines parameters for PostApiAuthLogin.
+type PostApiAuthLoginFormdataBody struct {
+	Force    *bool   `form:"force,omitempty" json:"force,omitempty"`
+	Password *string `form:"password,omitempty" json:"password,omitempty"`
+	Username string  `form:"username" json:"username"`
+}
+
+// PostApiAutobackupJSONBody defines parameters for PostApiAutobackup.
+type PostApiAutobackupJSONBody struct {
+	Enabled bool `json:"enabled"`
+}
+
+// PostApiBackupMultipartBody defines parameters for PostApiBackup.
+type PostApiBackupMultipartBody struct {
+	BackupArchive *openapi_types.File `json:"backupArchive,omitempty"`
+}
+
+// PostApiBackupHashJSONBody defines parameters for PostApiBackupHash.
+type PostApiBackupHashJSONBody struct {
+	Password *string `json:"password,omitempty"`
+}
+
+// PostApiCertificatesParams defines parameters for PostApiCertificates.
+type PostApiCertificatesParams struct {
+	// DestFwUuid the firewall uuid to link the certificate with
+	DestFwUuid string `form:"destFwUuid" json:"destFwUuid"`
+}
+
+// PostApiCertificatesAuthoritiesMultipartBody defines parameters for PostApiCertificatesAuthorities.
+type PostApiCertificatesAuthoritiesMultipartBody struct {
+	Ca *openapi_types.File `json:"ca,omitempty"`
+}
+
+// PostApiCertificatesAuthoritiesCrlMultipartBody defines parameters for PostApiCertificatesAuthoritiesCrl.
+type PostApiCertificatesAuthoritiesCrlMultipartBody struct {
+	Crl *openapi_types.File `json:"crl,omitempty"`
+}
+
+// PostApiCertificatesAuthoritiesCrlCaUuidMultipartBody defines parameters for PostApiCertificatesAuthoritiesCrlCaUuid.
+type PostApiCertificatesAuthoritiesCrlCaUuidMultipartBody struct {
+	Crl *openapi_types.File `json:"crl,omitempty"`
+}
+
+// PostApiCertificatesAuthoritiesCaUuidMultipartBody defines parameters for PostApiCertificatesAuthoritiesCaUuid.
+type PostApiCertificatesAuthoritiesCaUuidMultipartBody struct {
+	Ca *openapi_types.File `json:"ca,omitempty"`
+}
+
+// PostApiCertificatesGetJSONBody defines parameters for PostApiCertificatesGet.
+type PostApiCertificatesGetJSONBody struct {
+	Uuids *[]string `json:"uuids,omitempty"`
+}
+
+// PostApiCertificatesUuidParams defines parameters for PostApiCertificatesUuid.
+type PostApiCertificatesUuidParams struct {
+	// DestFwUuid the firewall uuid to link the certificate with
+	DestFwUuid string `form:"destFwUuid" json:"destFwUuid"`
+}
+
+// PostApiConfigLicenseMultipartBody defines parameters for PostApiConfigLicense.
+type PostApiConfigLicenseMultipartBody struct {
+	License *openapi_types.File `json:"license,omitempty"`
+}
+
+// GetApiExportSdwansupervisionParams defines parameters for GetApiExportSdwansupervision.
+type GetApiExportSdwansupervisionParams struct {
+	// Filter An ExtJS filters JSON array
+	Filter *string `form:"filter,omitempty" json:"filter,omitempty"`
+}
+
+// GetApiFoldersParams defines parameters for GetApiFolders.
+type GetApiFoldersParams struct {
+	// Nested Indicate if output is nested or flat
+	Nested *bool `form:"nested,omitempty" json:"nested,omitempty"`
+}
+
+// DeleteApiFoldersUuidParams defines parameters for DeleteApiFoldersUuid.
+type DeleteApiFoldersUuidParams struct {
+	// DestinationFolder Folder uuid where firewalls and folders will be moved
+	DestinationFolder *string `form:"destinationFolder,omitempty" json:"destinationFolder,omitempty"`
+}
+
+// GetApiLogsLastParams defines parameters for GetApiLogsLast.
+type GetApiLogsLastParams struct {
+	// Minlevel Minimum log level name
+	Minlevel *string `form:"minlevel,omitempty" json:"minlevel,omitempty"`
+}
+
+// PostApiUpdateMultipartBody defines parameters for PostApiUpdate.
+type PostApiUpdateMultipartBody struct {
+	UpdateFile *openapi_types.File `json:"updateFile,omitempty"`
+}
+
+// PostApiVariablesImportMultipartBody defines parameters for PostApiVariablesImport.
+type PostApiVariablesImportMultipartBody struct {
+	Variables *openapi_types.File `json:"variables,omitempty"`
+}
+
+// PostApiAccountsJSONRequestBody defines body for PostApiAccounts for application/json ContentType.
+type PostApiAccountsJSONRequestBody = DefinitionsAccountsAccountCreateRequest
+
+// PostApiAccountsApikeysJSONRequestBody defines body for PostApiAccountsApikeys for application/json ContentType.
+type PostApiAccountsApikeysJSONRequestBody = DefinitionsAccountsAccountApiKeyCreateRequest
+
+// PutApiAccountsUuidJSONRequestBody defines body for PutApiAccountsUuid for application/json ContentType.
+type PutApiAccountsUuidJSONRequestBody = DefinitionsAccountsAccountUpdateRequest
+
+// PutApiActiveupdateJSONRequestBody defines body for PutApiActiveupdate for application/json ContentType.
+type PutApiActiveupdateJSONRequestBody PutApiActiveupdateJSONBody
+
+// PostApiActiveupdateImportMultipartRequestBody defines body for PostApiActiveupdateImport for multipart/form-data ContentType.
+type PostApiActiveupdateImportMultipartRequestBody PostApiActiveupdateImportMultipartBody
+
+// PutApiAdminaccountFormdataRequestBody defines body for PutApiAdminaccount for application/x-www-form-urlencoded ContentType.
+type PutApiAdminaccountFormdataRequestBody PutApiAdminaccountFormdataBody
+
+// PutApiApipolicyJSONRequestBody defines body for PutApiApipolicy for application/json ContentType.
+type PutApiApipolicyJSONRequestBody = DefinitionsAuthPolicyApiKeyPolicy
+
+// PostApiAuthLoginFormdataRequestBody defines body for PostApiAuthLogin for application/x-www-form-urlencoded ContentType.
+type PostApiAuthLoginFormdataRequestBody PostApiAuthLoginFormdataBody
+
+// PutApiAuthpolicyJSONRequestBody defines body for PutApiAuthpolicy for application/json ContentType.
+type PutApiAuthpolicyJSONRequestBody = DefinitionsAuthPolicyPolicy
+
+// PostApiAutobackupJSONRequestBody defines body for PostApiAutobackup for application/json ContentType.
+type PostApiAutobackupJSONRequestBody PostApiAutobackupJSONBody
+
+// PostApiBackupMultipartRequestBody defines body for PostApiBackup for multipart/form-data ContentType.
+type PostApiBackupMultipartRequestBody PostApiBackupMultipartBody
+
+// PostApiBackupDownloadJSONRequestBody defines body for PostApiBackupDownload for application/json ContentType.
+type PostApiBackupDownloadJSONRequestBody = DefinitionsBackupBackupDownloadBody
+
+// PostApiBackupHashJSONRequestBody defines body for PostApiBackupHash for application/json ContentType.
+type PostApiBackupHashJSONRequestBody PostApiBackupHashJSONBody
+
+// PostApiCertificatesJSONRequestBody defines body for PostApiCertificates for application/json ContentType.
+type PostApiCertificatesJSONRequestBody = DefinitionsCertificatesCertificateCreateScep
+
+// PostApiCertificatesMultipartRequestBody defines body for PostApiCertificates for multipart/form-data ContentType.
+type PostApiCertificatesMultipartRequestBody = DefinitionsCertificatesCertificateUpload
+
+// PostApiCertificatesAuthoritiesMultipartRequestBody defines body for PostApiCertificatesAuthorities for multipart/form-data ContentType.
+type PostApiCertificatesAuthoritiesMultipartRequestBody PostApiCertificatesAuthoritiesMultipartBody
+
+// PostApiCertificatesAuthoritiesCrlMultipartRequestBody defines body for PostApiCertificatesAuthoritiesCrl for multipart/form-data ContentType.
+type PostApiCertificatesAuthoritiesCrlMultipartRequestBody PostApiCertificatesAuthoritiesCrlMultipartBody
+
+// PostApiCertificatesAuthoritiesCrlCaUuidMultipartRequestBody defines body for PostApiCertificatesAuthoritiesCrlCaUuid for multipart/form-data ContentType.
+type PostApiCertificatesAuthoritiesCrlCaUuidMultipartRequestBody PostApiCertificatesAuthoritiesCrlCaUuidMultipartBody
+
+// PostApiCertificatesAuthoritiesCaUuidMultipartRequestBody defines body for PostApiCertificatesAuthoritiesCaUuid for multipart/form-data ContentType.
+type PostApiCertificatesAuthoritiesCaUuidMultipartRequestBody PostApiCertificatesAuthoritiesCaUuidMultipartBody
+
+// PutApiCertificatesAuthoritiesCaUuidJSONRequestBody defines body for PutApiCertificatesAuthoritiesCaUuid for application/json ContentType.
+type PutApiCertificatesAuthoritiesCaUuidJSONRequestBody = DefinitionsCertificationAuthoritiesCertificationAuthorityWriteableProps
+
+// PostApiCertificatesGetJSONRequestBody defines body for PostApiCertificatesGet for application/json ContentType.
+type PostApiCertificatesGetJSONRequestBody PostApiCertificatesGetJSONBody
+
+// PostApiCertificatesRenewJSONRequestBody defines body for PostApiCertificatesRenew for application/json ContentType.
+type PostApiCertificatesRenewJSONRequestBody = DefinitionsCertificatesCertificatesRenewList
+
+// PostApiCertificatesUuidJSONRequestBody defines body for PostApiCertificatesUuid for application/json ContentType.
+type PostApiCertificatesUuidJSONRequestBody = DefinitionsCertificatesCertificateCreateScep
+
+// PostApiCertificatesUuidMultipartRequestBody defines body for PostApiCertificatesUuid for multipart/form-data ContentType.
+type PostApiCertificatesUuidMultipartRequestBody = DefinitionsCertificatesCertificateUpload
+
+// PutApiCertificatesUuidJSONRequestBody defines body for PutApiCertificatesUuid for application/json ContentType.
+type PutApiCertificatesUuidJSONRequestBody = DefinitionsCertificatesCertificatePropertiesUpdate
+
+// PutApiConfigInterfacesJSONRequestBody defines body for PutApiConfigInterfaces for application/json ContentType.
+type PutApiConfigInterfacesJSONRequestBody = DefinitionsConfigNetworkInterfacesUpdateList
+
+// PostApiConfigLicenseMultipartRequestBody defines body for PostApiConfigLicense for multipart/form-data ContentType.
+type PostApiConfigLicenseMultipartRequestBody PostApiConfigLicenseMultipartBody
+
+// PostApiConfigNetworkJSONRequestBody defines body for PostApiConfigNetwork for application/json ContentType.
+type PostApiConfigNetworkJSONRequestBody = DefinitionsConfigNetworkConfiguration
+
+// PostApiCustompropertiesJSONRequestBody defines body for PostApiCustomproperties for application/json ContentType.
+type PostApiCustompropertiesJSONRequestBody = DefinitionsCustomPropertiesCustomPropertyWithoutUuid
+
+// PutApiCustompropertiesUuidJSONRequestBody defines body for PutApiCustompropertiesUuid for application/json ContentType.
+type PutApiCustompropertiesUuidJSONRequestBody = DefinitionsCustomPropertiesCustomPropertyWithoutUuid
+
+// PostApiExportSupervisionJSONRequestBody defines body for PostApiExportSupervision for application/json ContentType.
+type PostApiExportSupervisionJSONRequestBody = DefinitionsExportFilteredIds
+
+// PostApiFirewallsUuidPackageJSONRequestBody defines body for PostApiFirewallsUuidPackage for application/json ContentType.
+type PostApiFirewallsUuidPackageJSONRequestBody = DefinitionsMiscInitializationPackageProperties
+
+// PostApiFoldersJSONRequestBody defines body for PostApiFolders for application/json ContentType.
+type PostApiFoldersJSONRequestBody = DefinitionsFoldersFolderPropertiesWithoutUuid
+
+// PutApiFoldersUuidJSONRequestBody defines body for PutApiFoldersUuid for application/json ContentType.
+type PutApiFoldersUuidJSONRequestBody = DefinitionsFoldersFolderProperties
+
+// PostApiLdapMultipartRequestBody defines body for PostApiLdap for multipart/form-data ContentType.
+type PostApiLdapMultipartRequestBody = DefinitionsLdapLdap
+
+// PostApiRadiusJSONRequestBody defines body for PostApiRadius for application/json ContentType.
+type PostApiRadiusJSONRequestBody = DefinitionsRadiusRadius
+
+// PostApiUpdateMultipartRequestBody defines body for PostApiUpdate for multipart/form-data ContentType.
+type PostApiUpdateMultipartRequestBody PostApiUpdateMultipartBody
+
+// PostApiVariablesJSONRequestBody defines body for PostApiVariables for application/json ContentType.
+type PostApiVariablesJSONRequestBody = DefinitionsVariablesVariableWithoutUuid
+
+// PostApiVariablesImportMultipartRequestBody defines body for PostApiVariablesImport for multipart/form-data ContentType.
+type PostApiVariablesImportMultipartRequestBody PostApiVariablesImportMultipartBody
+
+// PutApiVariablesUuidJSONRequestBody defines body for PutApiVariablesUuid for application/json ContentType.
+type PutApiVariablesUuidJSONRequestBody = DefinitionsVariablesVariableWithoutUuid
+
+// PostApiVpnDefaultAddressPoolJSONRequestBody defines body for PostApiVpnDefaultAddressPool for application/json ContentType.
+type PostApiVpnDefaultAddressPoolJSONRequestBody = DefinitionsTopologiesDefaultAddressPool
+
+// PostApiVpnEncryptionProfilesJSONRequestBody defines body for PostApiVpnEncryptionProfiles for application/json ContentType.
+type PostApiVpnEncryptionProfilesJSONRequestBody = DefinitionsEncryptionProfilesEncryptionProfilePropertiesWithoutUuid
+
+// PutApiVpnEncryptionProfilesUuidJSONRequestBody defines body for PutApiVpnEncryptionProfilesUuid for application/json ContentType.
+type PutApiVpnEncryptionProfilesUuidJSONRequestBody = DefinitionsEncryptionProfilesEncryptionProfileProperties
+
+// PostApiVpnTopologiesJSONRequestBody defines body for PostApiVpnTopologies for application/json ContentType.
+type PostApiVpnTopologiesJSONRequestBody = DefinitionsTopologiesTopologyPropertiesWithoutUuid
+
+// PutApiVpnTopologiesUuidJSONRequestBody defines body for PutApiVpnTopologiesUuid for application/json ContentType.
+type PutApiVpnTopologiesUuidJSONRequestBody = DefinitionsTopologiesTopologyPropertiesWithUuid
+
+// AsDefinitionsRadiusRadiusPostResponseResult0 returns the union data inside the DefinitionsRadiusRadiusPostResponse_Result_Item as a DefinitionsRadiusRadiusPostResponseResult0
+func (t DefinitionsRadiusRadiusPostResponse_Result_Item) AsDefinitionsRadiusRadiusPostResponseResult0() (DefinitionsRadiusRadiusPostResponseResult0, error) {
+	var body DefinitionsRadiusRadiusPostResponseResult0
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsRadiusRadiusPostResponseResult0 overwrites any union data inside the DefinitionsRadiusRadiusPostResponse_Result_Item as the provided DefinitionsRadiusRadiusPostResponseResult0
+func (t *DefinitionsRadiusRadiusPostResponse_Result_Item) FromDefinitionsRadiusRadiusPostResponseResult0(v DefinitionsRadiusRadiusPostResponseResult0) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsRadiusRadiusPostResponseResult0 performs a merge with any union data inside the DefinitionsRadiusRadiusPostResponse_Result_Item, using the provided DefinitionsRadiusRadiusPostResponseResult0
+func (t *DefinitionsRadiusRadiusPostResponse_Result_Item) MergeDefinitionsRadiusRadiusPostResponseResult0(v DefinitionsRadiusRadiusPostResponseResult0) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsRadiusRadiusPostResponseResult1 returns the union data inside the DefinitionsRadiusRadiusPostResponse_Result_Item as a DefinitionsRadiusRadiusPostResponseResult1
+func (t DefinitionsRadiusRadiusPostResponse_Result_Item) AsDefinitionsRadiusRadiusPostResponseResult1() (DefinitionsRadiusRadiusPostResponseResult1, error) {
+	var body DefinitionsRadiusRadiusPostResponseResult1
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsRadiusRadiusPostResponseResult1 overwrites any union data inside the DefinitionsRadiusRadiusPostResponse_Result_Item as the provided DefinitionsRadiusRadiusPostResponseResult1
+func (t *DefinitionsRadiusRadiusPostResponse_Result_Item) FromDefinitionsRadiusRadiusPostResponseResult1(v DefinitionsRadiusRadiusPostResponseResult1) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsRadiusRadiusPostResponseResult1 performs a merge with any union data inside the DefinitionsRadiusRadiusPostResponse_Result_Item, using the provided DefinitionsRadiusRadiusPostResponseResult1
+func (t *DefinitionsRadiusRadiusPostResponse_Result_Item) MergeDefinitionsRadiusRadiusPostResponseResult1(v DefinitionsRadiusRadiusPostResponseResult1) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DefinitionsRadiusRadiusPostResponse_Result_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DefinitionsRadiusRadiusPostResponse_Result_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // RequestEditorFn  is the function signature for the RequestEditor callback function
 type RequestEditorFn func(ctx context.Context, req *http.Request) error
@@ -350,6 +2788,6402 @@ func WithRequestEditorFn(fn RequestEditorFn) ClientOption {
 
 // The interface specification for the client above.
 type ClientInterface interface {
+	// GetApiAccounts request
+	GetApiAccounts(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiAccountsWithBody request with any body
+	PostApiAccountsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiAccounts(ctx context.Context, body PostApiAccountsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiAccountsApikeysWithBody request with any body
+	PostApiAccountsApikeysWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiAccountsApikeys(ctx context.Context, body PostApiAccountsApikeysJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiAccountsApikeysRevokeUuid request
+	PostApiAccountsApikeysRevokeUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiAccountsApikeysUuid request
+	GetApiAccountsApikeysUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiAccountsUuid request
+	DeleteApiAccountsUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiAccountsUuid request
+	GetApiAccountsUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiAccountsUuidWithBody request with any body
+	PutApiAccountsUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiAccountsUuid(ctx context.Context, uuid string, body PutApiAccountsUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiActiveupdate request
+	GetApiActiveupdate(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiActiveupdateWithBody request with any body
+	PutApiActiveupdateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiActiveupdate(ctx context.Context, body PutApiActiveupdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiActiveupdateCertificate request
+	GetApiActiveupdateCertificate(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiActiveupdateImportWithBody request with any body
+	PostApiActiveupdateImportWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiActiveupdateInfos request
+	GetApiActiveupdateInfos(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiActiveupdateScript request
+	GetApiActiveupdateScript(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiActiveupdateSync request
+	PostApiActiveupdateSync(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiAdminaccountWithBody request with any body
+	PutApiAdminaccountWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiAdminaccountWithFormdataBody(ctx context.Context, body PutApiAdminaccountFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiApipolicy request
+	GetApiApipolicy(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiApipolicyWithBody request with any body
+	PutApiApipolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiApipolicy(ctx context.Context, body PutApiApipolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiAuthLoginWithBody request with any body
+	PostApiAuthLoginWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiAuthLoginWithFormdataBody(ctx context.Context, body PostApiAuthLoginFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiAuthLogout request
+	PostApiAuthLogout(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiAuthpolicy request
+	GetApiAuthpolicy(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiAuthpolicyWithBody request with any body
+	PutApiAuthpolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiAuthpolicy(ctx context.Context, body PutApiAuthpolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiAutobackup request
+	GetApiAutobackup(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiAutobackupWithBody request with any body
+	PostApiAutobackupWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiAutobackup(ctx context.Context, body PostApiAutobackupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiAutobackupResults request
+	GetApiAutobackupResults(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiAutobackupSmcBackupDate request
+	GetApiAutobackupSmcBackupDate(ctx context.Context, date string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiAutobackupDateArchive request
+	GetApiAutobackupDateArchive(ctx context.Context, date string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiAutobackupDateUuidFirewallBackup request
+	GetApiAutobackupDateUuidFirewallBackup(ctx context.Context, date string, uuidFirewall string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiBackupWithBody request with any body
+	PostApiBackupWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiBackupDownloadWithBody request with any body
+	PostApiBackupDownloadWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiBackupDownload(ctx context.Context, body PostApiBackupDownloadJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiBackupHashWithBody request with any body
+	PostApiBackupHashWithBody(ctx context.Context, hash string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiBackupHash(ctx context.Context, hash string, body PostApiBackupHashJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCertificates request
+	GetApiCertificates(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiCertificatesWithBody request with any body
+	PostApiCertificatesWithBody(ctx context.Context, params *PostApiCertificatesParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiCertificates(ctx context.Context, params *PostApiCertificatesParams, body PostApiCertificatesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCertificatesAuthorities request
+	GetApiCertificatesAuthorities(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiCertificatesAuthoritiesWithBody request with any body
+	PostApiCertificatesAuthoritiesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiCertificatesAuthoritiesCrlWithBody request with any body
+	PostApiCertificatesAuthoritiesCrlWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiCertificatesAuthoritiesCrlCaUuidWithBody request with any body
+	PostApiCertificatesAuthoritiesCrlCaUuidWithBody(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCertificatesAuthoritiesRoot request
+	GetApiCertificatesAuthoritiesRoot(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiCertificatesAuthoritiesCaUuid request
+	DeleteApiCertificatesAuthoritiesCaUuid(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCertificatesAuthoritiesCaUuid request
+	GetApiCertificatesAuthoritiesCaUuid(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiCertificatesAuthoritiesCaUuidWithBody request with any body
+	PostApiCertificatesAuthoritiesCaUuidWithBody(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiCertificatesAuthoritiesCaUuidWithBody request with any body
+	PutApiCertificatesAuthoritiesCaUuidWithBody(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiCertificatesAuthoritiesCaUuid(ctx context.Context, caUuid string, body PutApiCertificatesAuthoritiesCaUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCertificatesAuthoritiesCaUuidCrl request
+	GetApiCertificatesAuthoritiesCaUuidCrl(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiCertificatesGetWithBody request with any body
+	PostApiCertificatesGetWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiCertificatesGet(ctx context.Context, body PostApiCertificatesGetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiCertificatesRenewWithBody request with any body
+	PostApiCertificatesRenewWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiCertificatesRenew(ctx context.Context, body PostApiCertificatesRenewJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiCertificatesUuid request
+	DeleteApiCertificatesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCertificatesUuid request
+	GetApiCertificatesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiCertificatesUuidWithBody request with any body
+	PostApiCertificatesUuidWithBody(ctx context.Context, uuid string, params *PostApiCertificatesUuidParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiCertificatesUuid(ctx context.Context, uuid string, params *PostApiCertificatesUuidParams, body PostApiCertificatesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiCertificatesUuidWithBody request with any body
+	PutApiCertificatesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiCertificatesUuid(ctx context.Context, uuid string, body PutApiCertificatesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCfgcheckActivationDomainName request
+	GetApiCfgcheckActivationDomainName(ctx context.Context, domainName string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiCfgcheckActivationDomainName request
+	PutApiCfgcheckActivationDomainName(ctx context.Context, domainName string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCfgcheckIncoherencies request
+	GetApiCfgcheckIncoherencies(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCfgcheckStatus request
+	GetApiCfgcheckStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCfgdiffArchiveUuid request
+	GetApiCfgdiffArchiveUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCfgdiffDiffUuid request
+	GetApiCfgdiffDiffUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCfgdiffNaUuid request
+	GetApiCfgdiffNaUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCfgdiffStatus request
+	GetApiCfgdiffStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiConfigInterfaces request
+	GetApiConfigInterfaces(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiConfigInterfacesWithBody request with any body
+	PutApiConfigInterfacesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiConfigInterfaces(ctx context.Context, body PutApiConfigInterfacesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiConfigLicense request
+	GetApiConfigLicense(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiConfigLicenseWithBody request with any body
+	PostApiConfigLicenseWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiConfigLicenseVerify request
+	PostApiConfigLicenseVerify(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiConfigNetwork request
+	GetApiConfigNetwork(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiConfigNetworkWithBody request with any body
+	PostApiConfigNetworkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiConfigNetwork(ctx context.Context, body PostApiConfigNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCustomproperties request
+	GetApiCustomproperties(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiCustompropertiesWithBody request with any body
+	PostApiCustompropertiesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiCustomproperties(ctx context.Context, body PostApiCustompropertiesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiCustompropertiesUuid request
+	DeleteApiCustompropertiesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiCustompropertiesUuid request
+	GetApiCustompropertiesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiCustompropertiesUuidWithBody request with any body
+	PutApiCustompropertiesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiCustompropertiesUuid(ctx context.Context, uuid string, body PutApiCustompropertiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiDisclaimer request
+	GetApiDisclaimer(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiExportCustomproperties request
+	GetApiExportCustomproperties(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiExportObjects request
+	GetApiExportObjects(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiExportSdwansupervision request
+	GetApiExportSdwansupervision(ctx context.Context, params *GetApiExportSdwansupervisionParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiExportSupervisionWithBody request with any body
+	PostApiExportSupervisionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiExportSupervision(ctx context.Context, body PostApiExportSupervisionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiExportVariables request
+	GetApiExportVariables(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiFeatureToggling request
+	GetApiFeatureToggling(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiFirewallsUuidPackageWithBody request with any body
+	PostApiFirewallsUuidPackageWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiFirewallsUuidPackage(ctx context.Context, uuid string, body PostApiFirewallsUuidPackageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiFirewallsUuidTopologies request
+	GetApiFirewallsUuidTopologies(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiFolders request
+	GetApiFolders(ctx context.Context, params *GetApiFoldersParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiFoldersWithBody request with any body
+	PostApiFoldersWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiFolders(ctx context.Context, body PostApiFoldersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiFoldersAccountFolders request
+	GetApiFoldersAccountFolders(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiFoldersBynameName request
+	GetApiFoldersBynameName(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiFoldersUuid request
+	DeleteApiFoldersUuid(ctx context.Context, uuid string, params *DeleteApiFoldersUuidParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiFoldersUuid request
+	GetApiFoldersUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiFoldersUuidWithBody request with any body
+	PutApiFoldersUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiFoldersUuid(ctx context.Context, uuid string, body PutApiFoldersUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiLdap request
+	GetApiLdap(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiLdapWithBody request with any body
+	PostApiLdapWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiLock request
+	GetApiLock(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiLogsAuditLast request
+	GetApiLogsAuditLast(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiLogsLast request
+	GetApiLogsLast(ctx context.Context, params *GetApiLogsLastParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiMessageBoxes request
+	GetApiMessageBoxes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiRadius request
+	GetApiRadius(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiRadiusWithBody request with any body
+	PostApiRadiusWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiRadius(ctx context.Context, body PostApiRadiusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiSnsdiffDiffUuid request
+	GetApiSnsdiffDiffUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiUpdateWithBody request with any body
+	PostApiUpdateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiUpdateLaunch request
+	GetApiUpdateLaunch(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiUpdateStatus request
+	GetApiUpdateStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiUsageUuid request
+	GetApiUsageUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVariables request
+	GetApiVariables(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiVariablesWithBody request with any body
+	PostApiVariablesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiVariables(ctx context.Context, body PostApiVariablesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiVariablesImportWithBody request with any body
+	PostApiVariablesImportWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiVariablesUuid request
+	DeleteApiVariablesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVariablesUuid request
+	GetApiVariablesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiVariablesUuidWithBody request with any body
+	PutApiVariablesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiVariablesUuid(ctx context.Context, uuid string, body PutApiVariablesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVpnAlgorithmsAuth request
+	GetApiVpnAlgorithmsAuth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVpnAlgorithmsEnc request
+	GetApiVpnAlgorithmsEnc(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVpnDefaultAddressPool request
+	GetApiVpnDefaultAddressPool(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiVpnDefaultAddressPoolWithBody request with any body
+	PostApiVpnDefaultAddressPoolWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiVpnDefaultAddressPool(ctx context.Context, body PostApiVpnDefaultAddressPoolJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVpnEncryptionProfiles request
+	GetApiVpnEncryptionProfiles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiVpnEncryptionProfilesWithBody request with any body
+	PostApiVpnEncryptionProfilesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiVpnEncryptionProfiles(ctx context.Context, body PostApiVpnEncryptionProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiVpnEncryptionProfilesUuid request
+	DeleteApiVpnEncryptionProfilesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVpnEncryptionProfilesUuid request
+	GetApiVpnEncryptionProfilesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiVpnEncryptionProfilesUuidWithBody request with any body
+	PutApiVpnEncryptionProfilesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiVpnEncryptionProfilesUuid(ctx context.Context, uuid string, body PutApiVpnEncryptionProfilesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVpnTopologies request
+	GetApiVpnTopologies(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiVpnTopologiesWithBody request with any body
+	PostApiVpnTopologiesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiVpnTopologies(ctx context.Context, body PostApiVpnTopologiesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiVpnTopologiesUuid request
+	DeleteApiVpnTopologiesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVpnTopologiesUuid request
+	GetApiVpnTopologiesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiVpnTopologiesUuidWithBody request with any body
+	PutApiVpnTopologiesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiVpnTopologiesUuid(ctx context.Context, uuid string, body PutApiVpnTopologiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVpnTopologiesUuidExport request
+	GetApiVpnTopologiesUuidExport(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiVpnTunnels request
+	GetApiVpnTunnels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+}
+
+func (c *Client) GetApiAccounts(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiAccountsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiAccountsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiAccountsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiAccounts(ctx context.Context, body PostApiAccountsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiAccountsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiAccountsApikeysWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiAccountsApikeysRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiAccountsApikeys(ctx context.Context, body PostApiAccountsApikeysJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiAccountsApikeysRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiAccountsApikeysRevokeUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiAccountsApikeysRevokeUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiAccountsApikeysUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiAccountsApikeysUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiAccountsUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiAccountsUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiAccountsUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiAccountsUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiAccountsUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiAccountsUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiAccountsUuid(ctx context.Context, uuid string, body PutApiAccountsUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiAccountsUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiActiveupdate(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiActiveupdateRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiActiveupdateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiActiveupdateRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiActiveupdate(ctx context.Context, body PutApiActiveupdateJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiActiveupdateRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiActiveupdateCertificate(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiActiveupdateCertificateRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiActiveupdateImportWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiActiveupdateImportRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiActiveupdateInfos(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiActiveupdateInfosRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiActiveupdateScript(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiActiveupdateScriptRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiActiveupdateSync(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiActiveupdateSyncRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiAdminaccountWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiAdminaccountRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiAdminaccountWithFormdataBody(ctx context.Context, body PutApiAdminaccountFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiAdminaccountRequestWithFormdataBody(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiApipolicy(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiApipolicyRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiApipolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiApipolicyRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiApipolicy(ctx context.Context, body PutApiApipolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiApipolicyRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiAuthLoginWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiAuthLoginRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiAuthLoginWithFormdataBody(ctx context.Context, body PostApiAuthLoginFormdataRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiAuthLoginRequestWithFormdataBody(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiAuthLogout(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiAuthLogoutRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiAuthpolicy(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiAuthpolicyRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiAuthpolicyWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiAuthpolicyRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiAuthpolicy(ctx context.Context, body PutApiAuthpolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiAuthpolicyRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiAutobackup(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiAutobackupRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiAutobackupWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiAutobackupRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiAutobackup(ctx context.Context, body PostApiAutobackupJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiAutobackupRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiAutobackupResults(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiAutobackupResultsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiAutobackupSmcBackupDate(ctx context.Context, date string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiAutobackupSmcBackupDateRequest(c.Server, date)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiAutobackupDateArchive(ctx context.Context, date string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiAutobackupDateArchiveRequest(c.Server, date)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiAutobackupDateUuidFirewallBackup(ctx context.Context, date string, uuidFirewall string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiAutobackupDateUuidFirewallBackupRequest(c.Server, date, uuidFirewall)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiBackupWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiBackupRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiBackupDownloadWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiBackupDownloadRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiBackupDownload(ctx context.Context, body PostApiBackupDownloadJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiBackupDownloadRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiBackupHashWithBody(ctx context.Context, hash string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiBackupHashRequestWithBody(c.Server, hash, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiBackupHash(ctx context.Context, hash string, body PostApiBackupHashJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiBackupHashRequest(c.Server, hash, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCertificates(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCertificatesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesWithBody(ctx context.Context, params *PostApiCertificatesParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesRequestWithBody(c.Server, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificates(ctx context.Context, params *PostApiCertificatesParams, body PostApiCertificatesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesRequest(c.Server, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCertificatesAuthorities(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCertificatesAuthoritiesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesAuthoritiesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesAuthoritiesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesAuthoritiesCrlWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesAuthoritiesCrlRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesAuthoritiesCrlCaUuidWithBody(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesAuthoritiesCrlCaUuidRequestWithBody(c.Server, caUuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCertificatesAuthoritiesRoot(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCertificatesAuthoritiesRootRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiCertificatesAuthoritiesCaUuid(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiCertificatesAuthoritiesCaUuidRequest(c.Server, caUuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCertificatesAuthoritiesCaUuid(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCertificatesAuthoritiesCaUuidRequest(c.Server, caUuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesAuthoritiesCaUuidWithBody(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesAuthoritiesCaUuidRequestWithBody(c.Server, caUuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiCertificatesAuthoritiesCaUuidWithBody(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiCertificatesAuthoritiesCaUuidRequestWithBody(c.Server, caUuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiCertificatesAuthoritiesCaUuid(ctx context.Context, caUuid string, body PutApiCertificatesAuthoritiesCaUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiCertificatesAuthoritiesCaUuidRequest(c.Server, caUuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCertificatesAuthoritiesCaUuidCrl(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCertificatesAuthoritiesCaUuidCrlRequest(c.Server, caUuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesGetWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesGetRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesGet(ctx context.Context, body PostApiCertificatesGetJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesGetRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesRenewWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesRenewRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesRenew(ctx context.Context, body PostApiCertificatesRenewJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesRenewRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiCertificatesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiCertificatesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCertificatesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCertificatesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesUuidWithBody(ctx context.Context, uuid string, params *PostApiCertificatesUuidParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesUuidRequestWithBody(c.Server, uuid, params, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCertificatesUuid(ctx context.Context, uuid string, params *PostApiCertificatesUuidParams, body PostApiCertificatesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCertificatesUuidRequest(c.Server, uuid, params, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiCertificatesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiCertificatesUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiCertificatesUuid(ctx context.Context, uuid string, body PutApiCertificatesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiCertificatesUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCfgcheckActivationDomainName(ctx context.Context, domainName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCfgcheckActivationDomainNameRequest(c.Server, domainName)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiCfgcheckActivationDomainName(ctx context.Context, domainName string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiCfgcheckActivationDomainNameRequest(c.Server, domainName)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCfgcheckIncoherencies(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCfgcheckIncoherenciesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCfgcheckStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCfgcheckStatusRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCfgdiffArchiveUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCfgdiffArchiveUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCfgdiffDiffUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCfgdiffDiffUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCfgdiffNaUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCfgdiffNaUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCfgdiffStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCfgdiffStatusRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiConfigInterfaces(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiConfigInterfacesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiConfigInterfacesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiConfigInterfacesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiConfigInterfaces(ctx context.Context, body PutApiConfigInterfacesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiConfigInterfacesRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiConfigLicense(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiConfigLicenseRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiConfigLicenseWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiConfigLicenseRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiConfigLicenseVerify(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiConfigLicenseVerifyRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiConfigNetwork(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiConfigNetworkRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiConfigNetworkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiConfigNetworkRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiConfigNetwork(ctx context.Context, body PostApiConfigNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiConfigNetworkRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCustomproperties(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCustompropertiesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCustompropertiesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCustompropertiesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiCustomproperties(ctx context.Context, body PostApiCustompropertiesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiCustompropertiesRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiCustompropertiesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiCustompropertiesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiCustompropertiesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiCustompropertiesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiCustompropertiesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiCustompropertiesUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiCustompropertiesUuid(ctx context.Context, uuid string, body PutApiCustompropertiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiCustompropertiesUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiDisclaimer(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiDisclaimerRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiExportCustomproperties(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiExportCustompropertiesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiExportObjects(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiExportObjectsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiExportSdwansupervision(ctx context.Context, params *GetApiExportSdwansupervisionParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiExportSdwansupervisionRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiExportSupervisionWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiExportSupervisionRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiExportSupervision(ctx context.Context, body PostApiExportSupervisionJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiExportSupervisionRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiExportVariables(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiExportVariablesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiFeatureToggling(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiFeatureTogglingRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiFirewallsUuidPackageWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiFirewallsUuidPackageRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiFirewallsUuidPackage(ctx context.Context, uuid string, body PostApiFirewallsUuidPackageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiFirewallsUuidPackageRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiFirewallsUuidTopologies(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiFirewallsUuidTopologiesRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiFolders(ctx context.Context, params *GetApiFoldersParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiFoldersRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiFoldersWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiFoldersRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiFolders(ctx context.Context, body PostApiFoldersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiFoldersRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiFoldersAccountFolders(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiFoldersAccountFoldersRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiFoldersBynameName(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiFoldersBynameNameRequest(c.Server, name)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiFoldersUuid(ctx context.Context, uuid string, params *DeleteApiFoldersUuidParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiFoldersUuidRequest(c.Server, uuid, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiFoldersUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiFoldersUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiFoldersUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiFoldersUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiFoldersUuid(ctx context.Context, uuid string, body PutApiFoldersUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiFoldersUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiLdap(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiLdapRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiLdapWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiLdapRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiLock(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiLockRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiLogsAuditLast(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiLogsAuditLastRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiLogsLast(ctx context.Context, params *GetApiLogsLastParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiLogsLastRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiMessageBoxes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiMessageBoxesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiRadius(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiRadiusRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiRadiusWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiRadiusRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiRadius(ctx context.Context, body PostApiRadiusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiRadiusRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiSnsdiffDiffUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiSnsdiffDiffUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiUpdateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiUpdateRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiUpdateLaunch(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiUpdateLaunchRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiUpdateStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiUpdateStatusRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiUsageUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiUsageUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVariables(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVariablesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiVariablesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiVariablesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiVariables(ctx context.Context, body PostApiVariablesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiVariablesRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiVariablesImportWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiVariablesImportRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiVariablesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiVariablesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVariablesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVariablesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiVariablesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiVariablesUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiVariablesUuid(ctx context.Context, uuid string, body PutApiVariablesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiVariablesUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVpnAlgorithmsAuth(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVpnAlgorithmsAuthRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVpnAlgorithmsEnc(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVpnAlgorithmsEncRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVpnDefaultAddressPool(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVpnDefaultAddressPoolRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiVpnDefaultAddressPoolWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiVpnDefaultAddressPoolRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiVpnDefaultAddressPool(ctx context.Context, body PostApiVpnDefaultAddressPoolJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiVpnDefaultAddressPoolRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVpnEncryptionProfiles(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVpnEncryptionProfilesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiVpnEncryptionProfilesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiVpnEncryptionProfilesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiVpnEncryptionProfiles(ctx context.Context, body PostApiVpnEncryptionProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiVpnEncryptionProfilesRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiVpnEncryptionProfilesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiVpnEncryptionProfilesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVpnEncryptionProfilesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVpnEncryptionProfilesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiVpnEncryptionProfilesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiVpnEncryptionProfilesUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiVpnEncryptionProfilesUuid(ctx context.Context, uuid string, body PutApiVpnEncryptionProfilesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiVpnEncryptionProfilesUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVpnTopologies(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVpnTopologiesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiVpnTopologiesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiVpnTopologiesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiVpnTopologies(ctx context.Context, body PostApiVpnTopologiesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiVpnTopologiesRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiVpnTopologiesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiVpnTopologiesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVpnTopologiesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVpnTopologiesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiVpnTopologiesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiVpnTopologiesUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiVpnTopologiesUuid(ctx context.Context, uuid string, body PutApiVpnTopologiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiVpnTopologiesUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVpnTopologiesUuidExport(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVpnTopologiesUuidExportRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiVpnTunnels(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiVpnTunnelsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+// NewGetApiAccountsRequest generates requests for GetApiAccounts
+func NewGetApiAccountsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/accounts")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiAccountsRequest calls the generic PostApiAccounts builder with application/json body
+func NewPostApiAccountsRequest(server string, body PostApiAccountsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiAccountsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiAccountsRequestWithBody generates requests for PostApiAccounts with any type of body
+func NewPostApiAccountsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/accounts")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiAccountsApikeysRequest calls the generic PostApiAccountsApikeys builder with application/json body
+func NewPostApiAccountsApikeysRequest(server string, body PostApiAccountsApikeysJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiAccountsApikeysRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiAccountsApikeysRequestWithBody generates requests for PostApiAccountsApikeys with any type of body
+func NewPostApiAccountsApikeysRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/accounts/apikeys")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiAccountsApikeysRevokeUuidRequest generates requests for PostApiAccountsApikeysRevokeUuid
+func NewPostApiAccountsApikeysRevokeUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/accounts/apikeys/revoke/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiAccountsApikeysUuidRequest generates requests for GetApiAccountsApikeysUuid
+func NewGetApiAccountsApikeysUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/accounts/apikeys/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteApiAccountsUuidRequest generates requests for DeleteApiAccountsUuid
+func NewDeleteApiAccountsUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/accounts/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiAccountsUuidRequest generates requests for GetApiAccountsUuid
+func NewGetApiAccountsUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/accounts/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiAccountsUuidRequest calls the generic PutApiAccountsUuid builder with application/json body
+func NewPutApiAccountsUuidRequest(server string, uuid string, body PutApiAccountsUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiAccountsUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiAccountsUuidRequestWithBody generates requests for PutApiAccountsUuid with any type of body
+func NewPutApiAccountsUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/accounts/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiActiveupdateRequest generates requests for GetApiActiveupdate
+func NewGetApiActiveupdateRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/activeupdate")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiActiveupdateRequest calls the generic PutApiActiveupdate builder with application/json body
+func NewPutApiActiveupdateRequest(server string, body PutApiActiveupdateJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiActiveupdateRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPutApiActiveupdateRequestWithBody generates requests for PutApiActiveupdate with any type of body
+func NewPutApiActiveupdateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/activeupdate")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiActiveupdateCertificateRequest generates requests for GetApiActiveupdateCertificate
+func NewGetApiActiveupdateCertificateRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/activeupdate/certificate")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiActiveupdateImportRequestWithBody generates requests for PostApiActiveupdateImport with any type of body
+func NewPostApiActiveupdateImportRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/activeupdate/import")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiActiveupdateInfosRequest generates requests for GetApiActiveupdateInfos
+func NewGetApiActiveupdateInfosRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/activeupdate/infos")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiActiveupdateScriptRequest generates requests for GetApiActiveupdateScript
+func NewGetApiActiveupdateScriptRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/activeupdate/script")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiActiveupdateSyncRequest generates requests for PostApiActiveupdateSync
+func NewPostApiActiveupdateSyncRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/activeupdate/sync")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiAdminaccountRequestWithFormdataBody calls the generic PutApiAdminaccount builder with application/x-www-form-urlencoded body
+func NewPutApiAdminaccountRequestWithFormdataBody(server string, body PutApiAdminaccountFormdataRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	bodyStr, err := runtime.MarshalForm(body, nil)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = strings.NewReader(bodyStr.Encode())
+	return NewPutApiAdminaccountRequestWithBody(server, "application/x-www-form-urlencoded", bodyReader)
+}
+
+// NewPutApiAdminaccountRequestWithBody generates requests for PutApiAdminaccount with any type of body
+func NewPutApiAdminaccountRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/adminaccount")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiApipolicyRequest generates requests for GetApiApipolicy
+func NewGetApiApipolicyRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apipolicy")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiApipolicyRequest calls the generic PutApiApipolicy builder with application/json body
+func NewPutApiApipolicyRequest(server string, body PutApiApipolicyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiApipolicyRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPutApiApipolicyRequestWithBody generates requests for PutApiApipolicy with any type of body
+func NewPutApiApipolicyRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/apipolicy")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiAuthLoginRequestWithFormdataBody calls the generic PostApiAuthLogin builder with application/x-www-form-urlencoded body
+func NewPostApiAuthLoginRequestWithFormdataBody(server string, body PostApiAuthLoginFormdataRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	bodyStr, err := runtime.MarshalForm(body, nil)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = strings.NewReader(bodyStr.Encode())
+	return NewPostApiAuthLoginRequestWithBody(server, "application/x-www-form-urlencoded", bodyReader)
+}
+
+// NewPostApiAuthLoginRequestWithBody generates requests for PostApiAuthLogin with any type of body
+func NewPostApiAuthLoginRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/auth/login")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiAuthLogoutRequest generates requests for PostApiAuthLogout
+func NewPostApiAuthLogoutRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/auth/logout")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiAuthpolicyRequest generates requests for GetApiAuthpolicy
+func NewGetApiAuthpolicyRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/authpolicy")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiAuthpolicyRequest calls the generic PutApiAuthpolicy builder with application/json body
+func NewPutApiAuthpolicyRequest(server string, body PutApiAuthpolicyJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiAuthpolicyRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPutApiAuthpolicyRequestWithBody generates requests for PutApiAuthpolicy with any type of body
+func NewPutApiAuthpolicyRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/authpolicy")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiAutobackupRequest generates requests for GetApiAutobackup
+func NewGetApiAutobackupRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/autobackup")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiAutobackupRequest calls the generic PostApiAutobackup builder with application/json body
+func NewPostApiAutobackupRequest(server string, body PostApiAutobackupJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiAutobackupRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiAutobackupRequestWithBody generates requests for PostApiAutobackup with any type of body
+func NewPostApiAutobackupRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/autobackup")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiAutobackupResultsRequest generates requests for GetApiAutobackupResults
+func NewGetApiAutobackupResultsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/autobackup/results")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiAutobackupSmcBackupDateRequest generates requests for GetApiAutobackupSmcBackupDate
+func NewGetApiAutobackupSmcBackupDateRequest(server string, date string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "date", runtime.ParamLocationPath, date)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/autobackup/smc/backup/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiAutobackupDateArchiveRequest generates requests for GetApiAutobackupDateArchive
+func NewGetApiAutobackupDateArchiveRequest(server string, date string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "date", runtime.ParamLocationPath, date)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/autobackup/%s/archive", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiAutobackupDateUuidFirewallBackupRequest generates requests for GetApiAutobackupDateUuidFirewallBackup
+func NewGetApiAutobackupDateUuidFirewallBackupRequest(server string, date string, uuidFirewall string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "date", runtime.ParamLocationPath, date)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "uuid-firewall", runtime.ParamLocationPath, uuidFirewall)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/autobackup/%s/%s/backup", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiBackupRequestWithBody generates requests for PostApiBackup with any type of body
+func NewPostApiBackupRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/backup")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiBackupDownloadRequest calls the generic PostApiBackupDownload builder with application/json body
+func NewPostApiBackupDownloadRequest(server string, body PostApiBackupDownloadJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiBackupDownloadRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiBackupDownloadRequestWithBody generates requests for PostApiBackupDownload with any type of body
+func NewPostApiBackupDownloadRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/backup/download")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiBackupHashRequest calls the generic PostApiBackupHash builder with application/json body
+func NewPostApiBackupHashRequest(server string, hash string, body PostApiBackupHashJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiBackupHashRequestWithBody(server, hash, "application/json", bodyReader)
+}
+
+// NewPostApiBackupHashRequestWithBody generates requests for PostApiBackupHash with any type of body
+func NewPostApiBackupHashRequestWithBody(server string, hash string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "hash", runtime.ParamLocationPath, hash)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/backup/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiCertificatesRequest generates requests for GetApiCertificates
+func NewGetApiCertificatesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiCertificatesRequest calls the generic PostApiCertificates builder with application/json body
+func NewPostApiCertificatesRequest(server string, params *PostApiCertificatesParams, body PostApiCertificatesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiCertificatesRequestWithBody(server, params, "application/json", bodyReader)
+}
+
+// NewPostApiCertificatesRequestWithBody generates requests for PostApiCertificates with any type of body
+func NewPostApiCertificatesRequestWithBody(server string, params *PostApiCertificatesParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "destFwUuid", runtime.ParamLocationQuery, params.DestFwUuid); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiCertificatesAuthoritiesRequest generates requests for GetApiCertificatesAuthorities
+func NewGetApiCertificatesAuthoritiesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/authorities")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiCertificatesAuthoritiesRequestWithBody generates requests for PostApiCertificatesAuthorities with any type of body
+func NewPostApiCertificatesAuthoritiesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/authorities")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiCertificatesAuthoritiesCrlRequestWithBody generates requests for PostApiCertificatesAuthoritiesCrl with any type of body
+func NewPostApiCertificatesAuthoritiesCrlRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/authorities/crl")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiCertificatesAuthoritiesCrlCaUuidRequestWithBody generates requests for PostApiCertificatesAuthoritiesCrlCaUuid with any type of body
+func NewPostApiCertificatesAuthoritiesCrlCaUuidRequestWithBody(server string, caUuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "caUuid", runtime.ParamLocationPath, caUuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/authorities/crl/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiCertificatesAuthoritiesRootRequest generates requests for GetApiCertificatesAuthoritiesRoot
+func NewGetApiCertificatesAuthoritiesRootRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/authorities/root")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteApiCertificatesAuthoritiesCaUuidRequest generates requests for DeleteApiCertificatesAuthoritiesCaUuid
+func NewDeleteApiCertificatesAuthoritiesCaUuidRequest(server string, caUuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "caUuid", runtime.ParamLocationPath, caUuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/authorities/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiCertificatesAuthoritiesCaUuidRequest generates requests for GetApiCertificatesAuthoritiesCaUuid
+func NewGetApiCertificatesAuthoritiesCaUuidRequest(server string, caUuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "caUuid", runtime.ParamLocationPath, caUuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/authorities/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiCertificatesAuthoritiesCaUuidRequestWithBody generates requests for PostApiCertificatesAuthoritiesCaUuid with any type of body
+func NewPostApiCertificatesAuthoritiesCaUuidRequestWithBody(server string, caUuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "caUuid", runtime.ParamLocationPath, caUuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/authorities/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPutApiCertificatesAuthoritiesCaUuidRequest calls the generic PutApiCertificatesAuthoritiesCaUuid builder with application/json body
+func NewPutApiCertificatesAuthoritiesCaUuidRequest(server string, caUuid string, body PutApiCertificatesAuthoritiesCaUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiCertificatesAuthoritiesCaUuidRequestWithBody(server, caUuid, "application/json", bodyReader)
+}
+
+// NewPutApiCertificatesAuthoritiesCaUuidRequestWithBody generates requests for PutApiCertificatesAuthoritiesCaUuid with any type of body
+func NewPutApiCertificatesAuthoritiesCaUuidRequestWithBody(server string, caUuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "caUuid", runtime.ParamLocationPath, caUuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/authorities/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiCertificatesAuthoritiesCaUuidCrlRequest generates requests for GetApiCertificatesAuthoritiesCaUuidCrl
+func NewGetApiCertificatesAuthoritiesCaUuidCrlRequest(server string, caUuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "caUuid", runtime.ParamLocationPath, caUuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/authorities/%s.crl", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiCertificatesGetRequest calls the generic PostApiCertificatesGet builder with application/json body
+func NewPostApiCertificatesGetRequest(server string, body PostApiCertificatesGetJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiCertificatesGetRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiCertificatesGetRequestWithBody generates requests for PostApiCertificatesGet with any type of body
+func NewPostApiCertificatesGetRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/get")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiCertificatesRenewRequest calls the generic PostApiCertificatesRenew builder with application/json body
+func NewPostApiCertificatesRenewRequest(server string, body PostApiCertificatesRenewJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiCertificatesRenewRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiCertificatesRenewRequestWithBody generates requests for PostApiCertificatesRenew with any type of body
+func NewPostApiCertificatesRenewRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/renew")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiCertificatesUuidRequest generates requests for DeleteApiCertificatesUuid
+func NewDeleteApiCertificatesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiCertificatesUuidRequest generates requests for GetApiCertificatesUuid
+func NewGetApiCertificatesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiCertificatesUuidRequest calls the generic PostApiCertificatesUuid builder with application/json body
+func NewPostApiCertificatesUuidRequest(server string, uuid string, params *PostApiCertificatesUuidParams, body PostApiCertificatesUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiCertificatesUuidRequestWithBody(server, uuid, params, "application/json", bodyReader)
+}
+
+// NewPostApiCertificatesUuidRequestWithBody generates requests for PostApiCertificatesUuid with any type of body
+func NewPostApiCertificatesUuidRequestWithBody(server string, uuid string, params *PostApiCertificatesUuidParams, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if queryFrag, err := runtime.StyleParamWithLocation("form", true, "destFwUuid", runtime.ParamLocationQuery, params.DestFwUuid); err != nil {
+			return nil, err
+		} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+			return nil, err
+		} else {
+			for k, v := range parsed {
+				for _, v2 := range v {
+					queryValues.Add(k, v2)
+				}
+			}
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPutApiCertificatesUuidRequest calls the generic PutApiCertificatesUuid builder with application/json body
+func NewPutApiCertificatesUuidRequest(server string, uuid string, body PutApiCertificatesUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiCertificatesUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiCertificatesUuidRequestWithBody generates requests for PutApiCertificatesUuid with any type of body
+func NewPutApiCertificatesUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/certificates/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiCfgcheckActivationDomainNameRequest generates requests for GetApiCfgcheckActivationDomainName
+func NewGetApiCfgcheckActivationDomainNameRequest(server string, domainName string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "domainName", runtime.ParamLocationPath, domainName)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cfgcheck/activation/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiCfgcheckActivationDomainNameRequest generates requests for PutApiCfgcheckActivationDomainName
+func NewPutApiCfgcheckActivationDomainNameRequest(server string, domainName string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "domainName", runtime.ParamLocationPath, domainName)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cfgcheck/activation/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiCfgcheckIncoherenciesRequest generates requests for GetApiCfgcheckIncoherencies
+func NewGetApiCfgcheckIncoherenciesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cfgcheck/incoherencies")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiCfgcheckStatusRequest generates requests for GetApiCfgcheckStatus
+func NewGetApiCfgcheckStatusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cfgcheck/status/")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiCfgdiffArchiveUuidRequest generates requests for GetApiCfgdiffArchiveUuid
+func NewGetApiCfgdiffArchiveUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cfgdiff/archive/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiCfgdiffDiffUuidRequest generates requests for GetApiCfgdiffDiffUuid
+func NewGetApiCfgdiffDiffUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cfgdiff/diff/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiCfgdiffNaUuidRequest generates requests for GetApiCfgdiffNaUuid
+func NewGetApiCfgdiffNaUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cfgdiff/na/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiCfgdiffStatusRequest generates requests for GetApiCfgdiffStatus
+func NewGetApiCfgdiffStatusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/cfgdiff/status")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiConfigInterfacesRequest generates requests for GetApiConfigInterfaces
+func NewGetApiConfigInterfacesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/interfaces")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiConfigInterfacesRequest calls the generic PutApiConfigInterfaces builder with application/json body
+func NewPutApiConfigInterfacesRequest(server string, body PutApiConfigInterfacesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiConfigInterfacesRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPutApiConfigInterfacesRequestWithBody generates requests for PutApiConfigInterfaces with any type of body
+func NewPutApiConfigInterfacesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/interfaces")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiConfigLicenseRequest generates requests for GetApiConfigLicense
+func NewGetApiConfigLicenseRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/license")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiConfigLicenseRequestWithBody generates requests for PostApiConfigLicense with any type of body
+func NewPostApiConfigLicenseRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/license")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiConfigLicenseVerifyRequest generates requests for PostApiConfigLicenseVerify
+func NewPostApiConfigLicenseVerifyRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/license/verify")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiConfigNetworkRequest generates requests for GetApiConfigNetwork
+func NewGetApiConfigNetworkRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/network")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiConfigNetworkRequest calls the generic PostApiConfigNetwork builder with application/json body
+func NewPostApiConfigNetworkRequest(server string, body PostApiConfigNetworkJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiConfigNetworkRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiConfigNetworkRequestWithBody generates requests for PostApiConfigNetwork with any type of body
+func NewPostApiConfigNetworkRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/network")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiCustompropertiesRequest generates requests for GetApiCustomproperties
+func NewGetApiCustompropertiesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/customproperties")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiCustompropertiesRequest calls the generic PostApiCustomproperties builder with application/json body
+func NewPostApiCustompropertiesRequest(server string, body PostApiCustompropertiesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiCustompropertiesRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiCustompropertiesRequestWithBody generates requests for PostApiCustomproperties with any type of body
+func NewPostApiCustompropertiesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/customproperties")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiCustompropertiesUuidRequest generates requests for DeleteApiCustompropertiesUuid
+func NewDeleteApiCustompropertiesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/customproperties/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiCustompropertiesUuidRequest generates requests for GetApiCustompropertiesUuid
+func NewGetApiCustompropertiesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/customproperties/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiCustompropertiesUuidRequest calls the generic PutApiCustompropertiesUuid builder with application/json body
+func NewPutApiCustompropertiesUuidRequest(server string, uuid string, body PutApiCustompropertiesUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiCustompropertiesUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiCustompropertiesUuidRequestWithBody generates requests for PutApiCustompropertiesUuid with any type of body
+func NewPutApiCustompropertiesUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/customproperties/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiDisclaimerRequest generates requests for GetApiDisclaimer
+func NewGetApiDisclaimerRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/disclaimer")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiExportCustompropertiesRequest generates requests for GetApiExportCustomproperties
+func NewGetApiExportCustompropertiesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/export/customproperties")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiExportObjectsRequest generates requests for GetApiExportObjects
+func NewGetApiExportObjectsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/export/objects")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiExportSdwansupervisionRequest generates requests for GetApiExportSdwansupervision
+func NewGetApiExportSdwansupervisionRequest(server string, params *GetApiExportSdwansupervisionParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/export/sdwansupervision")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Filter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "filter", runtime.ParamLocationQuery, *params.Filter); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiExportSupervisionRequest calls the generic PostApiExportSupervision builder with application/json body
+func NewPostApiExportSupervisionRequest(server string, body PostApiExportSupervisionJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiExportSupervisionRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiExportSupervisionRequestWithBody generates requests for PostApiExportSupervision with any type of body
+func NewPostApiExportSupervisionRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/export/supervision")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiExportVariablesRequest generates requests for GetApiExportVariables
+func NewGetApiExportVariablesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/export/variables")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiFeatureTogglingRequest generates requests for GetApiFeatureToggling
+func NewGetApiFeatureTogglingRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/feature-toggling")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiFirewallsUuidPackageRequest calls the generic PostApiFirewallsUuidPackage builder with application/json body
+func NewPostApiFirewallsUuidPackageRequest(server string, uuid string, body PostApiFirewallsUuidPackageJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiFirewallsUuidPackageRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPostApiFirewallsUuidPackageRequestWithBody generates requests for PostApiFirewallsUuidPackage with any type of body
+func NewPostApiFirewallsUuidPackageRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/firewalls/%s/package", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiFirewallsUuidTopologiesRequest generates requests for GetApiFirewallsUuidTopologies
+func NewGetApiFirewallsUuidTopologiesRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/firewalls/%s/topologies", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiFoldersRequest generates requests for GetApiFolders
+func NewGetApiFoldersRequest(server string, params *GetApiFoldersParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/folders")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Nested != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "nested", runtime.ParamLocationQuery, *params.Nested); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiFoldersRequest calls the generic PostApiFolders builder with application/json body
+func NewPostApiFoldersRequest(server string, body PostApiFoldersJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiFoldersRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiFoldersRequestWithBody generates requests for PostApiFolders with any type of body
+func NewPostApiFoldersRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/folders")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiFoldersAccountFoldersRequest generates requests for GetApiFoldersAccountFolders
+func NewGetApiFoldersAccountFoldersRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/folders/accountFolders")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiFoldersBynameNameRequest generates requests for GetApiFoldersBynameName
+func NewGetApiFoldersBynameNameRequest(server string, name string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "name", runtime.ParamLocationPath, name)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/folders/byname/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteApiFoldersUuidRequest generates requests for DeleteApiFoldersUuid
+func NewDeleteApiFoldersUuidRequest(server string, uuid string, params *DeleteApiFoldersUuidParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/folders/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.DestinationFolder != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "destinationFolder", runtime.ParamLocationQuery, *params.DestinationFolder); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiFoldersUuidRequest generates requests for GetApiFoldersUuid
+func NewGetApiFoldersUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/folders/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiFoldersUuidRequest calls the generic PutApiFoldersUuid builder with application/json body
+func NewPutApiFoldersUuidRequest(server string, uuid string, body PutApiFoldersUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiFoldersUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiFoldersUuidRequestWithBody generates requests for PutApiFoldersUuid with any type of body
+func NewPutApiFoldersUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/folders/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiLdapRequest generates requests for GetApiLdap
+func NewGetApiLdapRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/ldap")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiLdapRequestWithBody generates requests for PostApiLdap with any type of body
+func NewPostApiLdapRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/ldap")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiLockRequest generates requests for GetApiLock
+func NewGetApiLockRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/lock")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiLogsAuditLastRequest generates requests for GetApiLogsAuditLast
+func NewGetApiLogsAuditLastRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/logs/audit/last")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiLogsLastRequest generates requests for GetApiLogsLast
+func NewGetApiLogsLastRequest(server string, params *GetApiLogsLastParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/logs/last")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Minlevel != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "minlevel", runtime.ParamLocationQuery, *params.Minlevel); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiMessageBoxesRequest generates requests for GetApiMessageBoxes
+func NewGetApiMessageBoxesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/message-boxes")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiRadiusRequest generates requests for GetApiRadius
+func NewGetApiRadiusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/radius")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiRadiusRequest calls the generic PostApiRadius builder with application/json body
+func NewPostApiRadiusRequest(server string, body PostApiRadiusJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiRadiusRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiRadiusRequestWithBody generates requests for PostApiRadius with any type of body
+func NewPostApiRadiusRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/radius")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiSnsdiffDiffUuidRequest generates requests for GetApiSnsdiffDiffUuid
+func NewGetApiSnsdiffDiffUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/snsdiff/diff/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiUpdateRequestWithBody generates requests for PostApiUpdate with any type of body
+func NewPostApiUpdateRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/update")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiUpdateLaunchRequest generates requests for GetApiUpdateLaunch
+func NewGetApiUpdateLaunchRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/update/launch")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiUpdateStatusRequest generates requests for GetApiUpdateStatus
+func NewGetApiUpdateStatusRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/update/status")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiUsageUuidRequest generates requests for GetApiUsageUuid
+func NewGetApiUsageUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/usage/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiVariablesRequest generates requests for GetApiVariables
+func NewGetApiVariablesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/variables")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiVariablesRequest calls the generic PostApiVariables builder with application/json body
+func NewPostApiVariablesRequest(server string, body PostApiVariablesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiVariablesRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiVariablesRequestWithBody generates requests for PostApiVariables with any type of body
+func NewPostApiVariablesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/variables")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiVariablesImportRequestWithBody generates requests for PostApiVariablesImport with any type of body
+func NewPostApiVariablesImportRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/variables/import")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiVariablesUuidRequest generates requests for DeleteApiVariablesUuid
+func NewDeleteApiVariablesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/variables/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiVariablesUuidRequest generates requests for GetApiVariablesUuid
+func NewGetApiVariablesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/variables/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiVariablesUuidRequest calls the generic PutApiVariablesUuid builder with application/json body
+func NewPutApiVariablesUuidRequest(server string, uuid string, body PutApiVariablesUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiVariablesUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiVariablesUuidRequestWithBody generates requests for PutApiVariablesUuid with any type of body
+func NewPutApiVariablesUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/variables/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiVpnAlgorithmsAuthRequest generates requests for GetApiVpnAlgorithmsAuth
+func NewGetApiVpnAlgorithmsAuthRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/algorithms/auth")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiVpnAlgorithmsEncRequest generates requests for GetApiVpnAlgorithmsEnc
+func NewGetApiVpnAlgorithmsEncRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/algorithms/enc")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiVpnDefaultAddressPoolRequest generates requests for GetApiVpnDefaultAddressPool
+func NewGetApiVpnDefaultAddressPoolRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/defaultAddressPool")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiVpnDefaultAddressPoolRequest calls the generic PostApiVpnDefaultAddressPool builder with application/json body
+func NewPostApiVpnDefaultAddressPoolRequest(server string, body PostApiVpnDefaultAddressPoolJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiVpnDefaultAddressPoolRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiVpnDefaultAddressPoolRequestWithBody generates requests for PostApiVpnDefaultAddressPool with any type of body
+func NewPostApiVpnDefaultAddressPoolRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/defaultAddressPool")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiVpnEncryptionProfilesRequest generates requests for GetApiVpnEncryptionProfiles
+func NewGetApiVpnEncryptionProfilesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/encryptionProfiles")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiVpnEncryptionProfilesRequest calls the generic PostApiVpnEncryptionProfiles builder with application/json body
+func NewPostApiVpnEncryptionProfilesRequest(server string, body PostApiVpnEncryptionProfilesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiVpnEncryptionProfilesRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiVpnEncryptionProfilesRequestWithBody generates requests for PostApiVpnEncryptionProfiles with any type of body
+func NewPostApiVpnEncryptionProfilesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/encryptionProfiles")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiVpnEncryptionProfilesUuidRequest generates requests for DeleteApiVpnEncryptionProfilesUuid
+func NewDeleteApiVpnEncryptionProfilesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/encryptionProfiles/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiVpnEncryptionProfilesUuidRequest generates requests for GetApiVpnEncryptionProfilesUuid
+func NewGetApiVpnEncryptionProfilesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/encryptionProfiles/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiVpnEncryptionProfilesUuidRequest calls the generic PutApiVpnEncryptionProfilesUuid builder with application/json body
+func NewPutApiVpnEncryptionProfilesUuidRequest(server string, uuid string, body PutApiVpnEncryptionProfilesUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiVpnEncryptionProfilesUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiVpnEncryptionProfilesUuidRequestWithBody generates requests for PutApiVpnEncryptionProfilesUuid with any type of body
+func NewPutApiVpnEncryptionProfilesUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/encryptionProfiles/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiVpnTopologiesRequest generates requests for GetApiVpnTopologies
+func NewGetApiVpnTopologiesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/topologies")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiVpnTopologiesRequest calls the generic PostApiVpnTopologies builder with application/json body
+func NewPostApiVpnTopologiesRequest(server string, body PostApiVpnTopologiesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiVpnTopologiesRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiVpnTopologiesRequestWithBody generates requests for PostApiVpnTopologies with any type of body
+func NewPostApiVpnTopologiesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/topologies")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiVpnTopologiesUuidRequest generates requests for DeleteApiVpnTopologiesUuid
+func NewDeleteApiVpnTopologiesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/topologies/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiVpnTopologiesUuidRequest generates requests for GetApiVpnTopologiesUuid
+func NewGetApiVpnTopologiesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/topologies/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiVpnTopologiesUuidRequest calls the generic PutApiVpnTopologiesUuid builder with application/json body
+func NewPutApiVpnTopologiesUuidRequest(server string, uuid string, body PutApiVpnTopologiesUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiVpnTopologiesUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiVpnTopologiesUuidRequestWithBody generates requests for PutApiVpnTopologiesUuid with any type of body
+func NewPutApiVpnTopologiesUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/topologies/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiVpnTopologiesUuidExportRequest generates requests for GetApiVpnTopologiesUuidExport
+func NewGetApiVpnTopologiesUuidExportRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/topologies/%s/export", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiVpnTunnelsRequest generates requests for GetApiVpnTunnels
+func NewGetApiVpnTunnelsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/vpn/tunnels")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
 }
 
 func (c *Client) applyEditors(ctx context.Context, req *http.Request, additionalEditors []RequestEditorFn) error {
@@ -395,4 +9229,8996 @@ func WithBaseURL(baseURL string) ClientOption {
 
 // ClientWithResponsesInterface is the interface specification for the client with responses above.
 type ClientWithResponsesInterface interface {
+	// GetApiAccountsWithResponse request
+	GetApiAccountsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiAccountsResponse, error)
+
+	// PostApiAccountsWithBodyWithResponse request with any body
+	PostApiAccountsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiAccountsResponse, error)
+
+	PostApiAccountsWithResponse(ctx context.Context, body PostApiAccountsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiAccountsResponse, error)
+
+	// PostApiAccountsApikeysWithBodyWithResponse request with any body
+	PostApiAccountsApikeysWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiAccountsApikeysResponse, error)
+
+	PostApiAccountsApikeysWithResponse(ctx context.Context, body PostApiAccountsApikeysJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiAccountsApikeysResponse, error)
+
+	// PostApiAccountsApikeysRevokeUuidWithResponse request
+	PostApiAccountsApikeysRevokeUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*PostApiAccountsApikeysRevokeUuidResponse, error)
+
+	// GetApiAccountsApikeysUuidWithResponse request
+	GetApiAccountsApikeysUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiAccountsApikeysUuidResponse, error)
+
+	// DeleteApiAccountsUuidWithResponse request
+	DeleteApiAccountsUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiAccountsUuidResponse, error)
+
+	// GetApiAccountsUuidWithResponse request
+	GetApiAccountsUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiAccountsUuidResponse, error)
+
+	// PutApiAccountsUuidWithBodyWithResponse request with any body
+	PutApiAccountsUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiAccountsUuidResponse, error)
+
+	PutApiAccountsUuidWithResponse(ctx context.Context, uuid string, body PutApiAccountsUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiAccountsUuidResponse, error)
+
+	// GetApiActiveupdateWithResponse request
+	GetApiActiveupdateWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiActiveupdateResponse, error)
+
+	// PutApiActiveupdateWithBodyWithResponse request with any body
+	PutApiActiveupdateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiActiveupdateResponse, error)
+
+	PutApiActiveupdateWithResponse(ctx context.Context, body PutApiActiveupdateJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiActiveupdateResponse, error)
+
+	// GetApiActiveupdateCertificateWithResponse request
+	GetApiActiveupdateCertificateWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiActiveupdateCertificateResponse, error)
+
+	// PostApiActiveupdateImportWithBodyWithResponse request with any body
+	PostApiActiveupdateImportWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiActiveupdateImportResponse, error)
+
+	// GetApiActiveupdateInfosWithResponse request
+	GetApiActiveupdateInfosWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiActiveupdateInfosResponse, error)
+
+	// GetApiActiveupdateScriptWithResponse request
+	GetApiActiveupdateScriptWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiActiveupdateScriptResponse, error)
+
+	// PostApiActiveupdateSyncWithResponse request
+	PostApiActiveupdateSyncWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostApiActiveupdateSyncResponse, error)
+
+	// PutApiAdminaccountWithBodyWithResponse request with any body
+	PutApiAdminaccountWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiAdminaccountResponse, error)
+
+	PutApiAdminaccountWithFormdataBodyWithResponse(ctx context.Context, body PutApiAdminaccountFormdataRequestBody, reqEditors ...RequestEditorFn) (*PutApiAdminaccountResponse, error)
+
+	// GetApiApipolicyWithResponse request
+	GetApiApipolicyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiApipolicyResponse, error)
+
+	// PutApiApipolicyWithBodyWithResponse request with any body
+	PutApiApipolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiApipolicyResponse, error)
+
+	PutApiApipolicyWithResponse(ctx context.Context, body PutApiApipolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiApipolicyResponse, error)
+
+	// PostApiAuthLoginWithBodyWithResponse request with any body
+	PostApiAuthLoginWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiAuthLoginResponse, error)
+
+	PostApiAuthLoginWithFormdataBodyWithResponse(ctx context.Context, body PostApiAuthLoginFormdataRequestBody, reqEditors ...RequestEditorFn) (*PostApiAuthLoginResponse, error)
+
+	// PostApiAuthLogoutWithResponse request
+	PostApiAuthLogoutWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostApiAuthLogoutResponse, error)
+
+	// GetApiAuthpolicyWithResponse request
+	GetApiAuthpolicyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiAuthpolicyResponse, error)
+
+	// PutApiAuthpolicyWithBodyWithResponse request with any body
+	PutApiAuthpolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiAuthpolicyResponse, error)
+
+	PutApiAuthpolicyWithResponse(ctx context.Context, body PutApiAuthpolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiAuthpolicyResponse, error)
+
+	// GetApiAutobackupWithResponse request
+	GetApiAutobackupWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiAutobackupResponse, error)
+
+	// PostApiAutobackupWithBodyWithResponse request with any body
+	PostApiAutobackupWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiAutobackupResponse, error)
+
+	PostApiAutobackupWithResponse(ctx context.Context, body PostApiAutobackupJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiAutobackupResponse, error)
+
+	// GetApiAutobackupResultsWithResponse request
+	GetApiAutobackupResultsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiAutobackupResultsResponse, error)
+
+	// GetApiAutobackupSmcBackupDateWithResponse request
+	GetApiAutobackupSmcBackupDateWithResponse(ctx context.Context, date string, reqEditors ...RequestEditorFn) (*GetApiAutobackupSmcBackupDateResponse, error)
+
+	// GetApiAutobackupDateArchiveWithResponse request
+	GetApiAutobackupDateArchiveWithResponse(ctx context.Context, date string, reqEditors ...RequestEditorFn) (*GetApiAutobackupDateArchiveResponse, error)
+
+	// GetApiAutobackupDateUuidFirewallBackupWithResponse request
+	GetApiAutobackupDateUuidFirewallBackupWithResponse(ctx context.Context, date string, uuidFirewall string, reqEditors ...RequestEditorFn) (*GetApiAutobackupDateUuidFirewallBackupResponse, error)
+
+	// PostApiBackupWithBodyWithResponse request with any body
+	PostApiBackupWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiBackupResponse, error)
+
+	// PostApiBackupDownloadWithBodyWithResponse request with any body
+	PostApiBackupDownloadWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiBackupDownloadResponse, error)
+
+	PostApiBackupDownloadWithResponse(ctx context.Context, body PostApiBackupDownloadJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiBackupDownloadResponse, error)
+
+	// PostApiBackupHashWithBodyWithResponse request with any body
+	PostApiBackupHashWithBodyWithResponse(ctx context.Context, hash string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiBackupHashResponse, error)
+
+	PostApiBackupHashWithResponse(ctx context.Context, hash string, body PostApiBackupHashJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiBackupHashResponse, error)
+
+	// GetApiCertificatesWithResponse request
+	GetApiCertificatesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCertificatesResponse, error)
+
+	// PostApiCertificatesWithBodyWithResponse request with any body
+	PostApiCertificatesWithBodyWithResponse(ctx context.Context, params *PostApiCertificatesParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesResponse, error)
+
+	PostApiCertificatesWithResponse(ctx context.Context, params *PostApiCertificatesParams, body PostApiCertificatesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiCertificatesResponse, error)
+
+	// GetApiCertificatesAuthoritiesWithResponse request
+	GetApiCertificatesAuthoritiesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCertificatesAuthoritiesResponse, error)
+
+	// PostApiCertificatesAuthoritiesWithBodyWithResponse request with any body
+	PostApiCertificatesAuthoritiesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesAuthoritiesResponse, error)
+
+	// PostApiCertificatesAuthoritiesCrlWithBodyWithResponse request with any body
+	PostApiCertificatesAuthoritiesCrlWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesAuthoritiesCrlResponse, error)
+
+	// PostApiCertificatesAuthoritiesCrlCaUuidWithBodyWithResponse request with any body
+	PostApiCertificatesAuthoritiesCrlCaUuidWithBodyWithResponse(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesAuthoritiesCrlCaUuidResponse, error)
+
+	// GetApiCertificatesAuthoritiesRootWithResponse request
+	GetApiCertificatesAuthoritiesRootWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCertificatesAuthoritiesRootResponse, error)
+
+	// DeleteApiCertificatesAuthoritiesCaUuidWithResponse request
+	DeleteApiCertificatesAuthoritiesCaUuidWithResponse(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*DeleteApiCertificatesAuthoritiesCaUuidResponse, error)
+
+	// GetApiCertificatesAuthoritiesCaUuidWithResponse request
+	GetApiCertificatesAuthoritiesCaUuidWithResponse(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*GetApiCertificatesAuthoritiesCaUuidResponse, error)
+
+	// PostApiCertificatesAuthoritiesCaUuidWithBodyWithResponse request with any body
+	PostApiCertificatesAuthoritiesCaUuidWithBodyWithResponse(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesAuthoritiesCaUuidResponse, error)
+
+	// PutApiCertificatesAuthoritiesCaUuidWithBodyWithResponse request with any body
+	PutApiCertificatesAuthoritiesCaUuidWithBodyWithResponse(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiCertificatesAuthoritiesCaUuidResponse, error)
+
+	PutApiCertificatesAuthoritiesCaUuidWithResponse(ctx context.Context, caUuid string, body PutApiCertificatesAuthoritiesCaUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiCertificatesAuthoritiesCaUuidResponse, error)
+
+	// GetApiCertificatesAuthoritiesCaUuidCrlWithResponse request
+	GetApiCertificatesAuthoritiesCaUuidCrlWithResponse(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*GetApiCertificatesAuthoritiesCaUuidCrlResponse, error)
+
+	// PostApiCertificatesGetWithBodyWithResponse request with any body
+	PostApiCertificatesGetWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesGetResponse, error)
+
+	PostApiCertificatesGetWithResponse(ctx context.Context, body PostApiCertificatesGetJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiCertificatesGetResponse, error)
+
+	// PostApiCertificatesRenewWithBodyWithResponse request with any body
+	PostApiCertificatesRenewWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesRenewResponse, error)
+
+	PostApiCertificatesRenewWithResponse(ctx context.Context, body PostApiCertificatesRenewJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiCertificatesRenewResponse, error)
+
+	// DeleteApiCertificatesUuidWithResponse request
+	DeleteApiCertificatesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiCertificatesUuidResponse, error)
+
+	// GetApiCertificatesUuidWithResponse request
+	GetApiCertificatesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiCertificatesUuidResponse, error)
+
+	// PostApiCertificatesUuidWithBodyWithResponse request with any body
+	PostApiCertificatesUuidWithBodyWithResponse(ctx context.Context, uuid string, params *PostApiCertificatesUuidParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesUuidResponse, error)
+
+	PostApiCertificatesUuidWithResponse(ctx context.Context, uuid string, params *PostApiCertificatesUuidParams, body PostApiCertificatesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiCertificatesUuidResponse, error)
+
+	// PutApiCertificatesUuidWithBodyWithResponse request with any body
+	PutApiCertificatesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiCertificatesUuidResponse, error)
+
+	PutApiCertificatesUuidWithResponse(ctx context.Context, uuid string, body PutApiCertificatesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiCertificatesUuidResponse, error)
+
+	// GetApiCfgcheckActivationDomainNameWithResponse request
+	GetApiCfgcheckActivationDomainNameWithResponse(ctx context.Context, domainName string, reqEditors ...RequestEditorFn) (*GetApiCfgcheckActivationDomainNameResponse, error)
+
+	// PutApiCfgcheckActivationDomainNameWithResponse request
+	PutApiCfgcheckActivationDomainNameWithResponse(ctx context.Context, domainName string, reqEditors ...RequestEditorFn) (*PutApiCfgcheckActivationDomainNameResponse, error)
+
+	// GetApiCfgcheckIncoherenciesWithResponse request
+	GetApiCfgcheckIncoherenciesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCfgcheckIncoherenciesResponse, error)
+
+	// GetApiCfgcheckStatusWithResponse request
+	GetApiCfgcheckStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCfgcheckStatusResponse, error)
+
+	// GetApiCfgdiffArchiveUuidWithResponse request
+	GetApiCfgdiffArchiveUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiCfgdiffArchiveUuidResponse, error)
+
+	// GetApiCfgdiffDiffUuidWithResponse request
+	GetApiCfgdiffDiffUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiCfgdiffDiffUuidResponse, error)
+
+	// GetApiCfgdiffNaUuidWithResponse request
+	GetApiCfgdiffNaUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiCfgdiffNaUuidResponse, error)
+
+	// GetApiCfgdiffStatusWithResponse request
+	GetApiCfgdiffStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCfgdiffStatusResponse, error)
+
+	// GetApiConfigInterfacesWithResponse request
+	GetApiConfigInterfacesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigInterfacesResponse, error)
+
+	// PutApiConfigInterfacesWithBodyWithResponse request with any body
+	PutApiConfigInterfacesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiConfigInterfacesResponse, error)
+
+	PutApiConfigInterfacesWithResponse(ctx context.Context, body PutApiConfigInterfacesJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiConfigInterfacesResponse, error)
+
+	// GetApiConfigLicenseWithResponse request
+	GetApiConfigLicenseWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigLicenseResponse, error)
+
+	// PostApiConfigLicenseWithBodyWithResponse request with any body
+	PostApiConfigLicenseWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiConfigLicenseResponse, error)
+
+	// PostApiConfigLicenseVerifyWithResponse request
+	PostApiConfigLicenseVerifyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostApiConfigLicenseVerifyResponse, error)
+
+	// GetApiConfigNetworkWithResponse request
+	GetApiConfigNetworkWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigNetworkResponse, error)
+
+	// PostApiConfigNetworkWithBodyWithResponse request with any body
+	PostApiConfigNetworkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiConfigNetworkResponse, error)
+
+	PostApiConfigNetworkWithResponse(ctx context.Context, body PostApiConfigNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiConfigNetworkResponse, error)
+
+	// GetApiCustompropertiesWithResponse request
+	GetApiCustompropertiesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCustompropertiesResponse, error)
+
+	// PostApiCustompropertiesWithBodyWithResponse request with any body
+	PostApiCustompropertiesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCustompropertiesResponse, error)
+
+	PostApiCustompropertiesWithResponse(ctx context.Context, body PostApiCustompropertiesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiCustompropertiesResponse, error)
+
+	// DeleteApiCustompropertiesUuidWithResponse request
+	DeleteApiCustompropertiesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiCustompropertiesUuidResponse, error)
+
+	// GetApiCustompropertiesUuidWithResponse request
+	GetApiCustompropertiesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiCustompropertiesUuidResponse, error)
+
+	// PutApiCustompropertiesUuidWithBodyWithResponse request with any body
+	PutApiCustompropertiesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiCustompropertiesUuidResponse, error)
+
+	PutApiCustompropertiesUuidWithResponse(ctx context.Context, uuid string, body PutApiCustompropertiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiCustompropertiesUuidResponse, error)
+
+	// GetApiDisclaimerWithResponse request
+	GetApiDisclaimerWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDisclaimerResponse, error)
+
+	// GetApiExportCustompropertiesWithResponse request
+	GetApiExportCustompropertiesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiExportCustompropertiesResponse, error)
+
+	// GetApiExportObjectsWithResponse request
+	GetApiExportObjectsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiExportObjectsResponse, error)
+
+	// GetApiExportSdwansupervisionWithResponse request
+	GetApiExportSdwansupervisionWithResponse(ctx context.Context, params *GetApiExportSdwansupervisionParams, reqEditors ...RequestEditorFn) (*GetApiExportSdwansupervisionResponse, error)
+
+	// PostApiExportSupervisionWithBodyWithResponse request with any body
+	PostApiExportSupervisionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiExportSupervisionResponse, error)
+
+	PostApiExportSupervisionWithResponse(ctx context.Context, body PostApiExportSupervisionJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiExportSupervisionResponse, error)
+
+	// GetApiExportVariablesWithResponse request
+	GetApiExportVariablesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiExportVariablesResponse, error)
+
+	// GetApiFeatureTogglingWithResponse request
+	GetApiFeatureTogglingWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiFeatureTogglingResponse, error)
+
+	// PostApiFirewallsUuidPackageWithBodyWithResponse request with any body
+	PostApiFirewallsUuidPackageWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidPackageResponse, error)
+
+	PostApiFirewallsUuidPackageWithResponse(ctx context.Context, uuid string, body PostApiFirewallsUuidPackageJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidPackageResponse, error)
+
+	// GetApiFirewallsUuidTopologiesWithResponse request
+	GetApiFirewallsUuidTopologiesWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiFirewallsUuidTopologiesResponse, error)
+
+	// GetApiFoldersWithResponse request
+	GetApiFoldersWithResponse(ctx context.Context, params *GetApiFoldersParams, reqEditors ...RequestEditorFn) (*GetApiFoldersResponse, error)
+
+	// PostApiFoldersWithBodyWithResponse request with any body
+	PostApiFoldersWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiFoldersResponse, error)
+
+	PostApiFoldersWithResponse(ctx context.Context, body PostApiFoldersJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiFoldersResponse, error)
+
+	// GetApiFoldersAccountFoldersWithResponse request
+	GetApiFoldersAccountFoldersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiFoldersAccountFoldersResponse, error)
+
+	// GetApiFoldersBynameNameWithResponse request
+	GetApiFoldersBynameNameWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*GetApiFoldersBynameNameResponse, error)
+
+	// DeleteApiFoldersUuidWithResponse request
+	DeleteApiFoldersUuidWithResponse(ctx context.Context, uuid string, params *DeleteApiFoldersUuidParams, reqEditors ...RequestEditorFn) (*DeleteApiFoldersUuidResponse, error)
+
+	// GetApiFoldersUuidWithResponse request
+	GetApiFoldersUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiFoldersUuidResponse, error)
+
+	// PutApiFoldersUuidWithBodyWithResponse request with any body
+	PutApiFoldersUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiFoldersUuidResponse, error)
+
+	PutApiFoldersUuidWithResponse(ctx context.Context, uuid string, body PutApiFoldersUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiFoldersUuidResponse, error)
+
+	// GetApiLdapWithResponse request
+	GetApiLdapWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiLdapResponse, error)
+
+	// PostApiLdapWithBodyWithResponse request with any body
+	PostApiLdapWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiLdapResponse, error)
+
+	// GetApiLockWithResponse request
+	GetApiLockWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiLockResponse, error)
+
+	// GetApiLogsAuditLastWithResponse request
+	GetApiLogsAuditLastWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiLogsAuditLastResponse, error)
+
+	// GetApiLogsLastWithResponse request
+	GetApiLogsLastWithResponse(ctx context.Context, params *GetApiLogsLastParams, reqEditors ...RequestEditorFn) (*GetApiLogsLastResponse, error)
+
+	// GetApiMessageBoxesWithResponse request
+	GetApiMessageBoxesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiMessageBoxesResponse, error)
+
+	// GetApiRadiusWithResponse request
+	GetApiRadiusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiRadiusResponse, error)
+
+	// PostApiRadiusWithBodyWithResponse request with any body
+	PostApiRadiusWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiRadiusResponse, error)
+
+	PostApiRadiusWithResponse(ctx context.Context, body PostApiRadiusJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiRadiusResponse, error)
+
+	// GetApiSnsdiffDiffUuidWithResponse request
+	GetApiSnsdiffDiffUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiSnsdiffDiffUuidResponse, error)
+
+	// PostApiUpdateWithBodyWithResponse request with any body
+	PostApiUpdateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiUpdateResponse, error)
+
+	// GetApiUpdateLaunchWithResponse request
+	GetApiUpdateLaunchWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiUpdateLaunchResponse, error)
+
+	// GetApiUpdateStatusWithResponse request
+	GetApiUpdateStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiUpdateStatusResponse, error)
+
+	// GetApiUsageUuidWithResponse request
+	GetApiUsageUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiUsageUuidResponse, error)
+
+	// GetApiVariablesWithResponse request
+	GetApiVariablesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVariablesResponse, error)
+
+	// PostApiVariablesWithBodyWithResponse request with any body
+	PostApiVariablesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiVariablesResponse, error)
+
+	PostApiVariablesWithResponse(ctx context.Context, body PostApiVariablesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiVariablesResponse, error)
+
+	// PostApiVariablesImportWithBodyWithResponse request with any body
+	PostApiVariablesImportWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiVariablesImportResponse, error)
+
+	// DeleteApiVariablesUuidWithResponse request
+	DeleteApiVariablesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiVariablesUuidResponse, error)
+
+	// GetApiVariablesUuidWithResponse request
+	GetApiVariablesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiVariablesUuidResponse, error)
+
+	// PutApiVariablesUuidWithBodyWithResponse request with any body
+	PutApiVariablesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiVariablesUuidResponse, error)
+
+	PutApiVariablesUuidWithResponse(ctx context.Context, uuid string, body PutApiVariablesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiVariablesUuidResponse, error)
+
+	// GetApiVpnAlgorithmsAuthWithResponse request
+	GetApiVpnAlgorithmsAuthWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnAlgorithmsAuthResponse, error)
+
+	// GetApiVpnAlgorithmsEncWithResponse request
+	GetApiVpnAlgorithmsEncWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnAlgorithmsEncResponse, error)
+
+	// GetApiVpnDefaultAddressPoolWithResponse request
+	GetApiVpnDefaultAddressPoolWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnDefaultAddressPoolResponse, error)
+
+	// PostApiVpnDefaultAddressPoolWithBodyWithResponse request with any body
+	PostApiVpnDefaultAddressPoolWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiVpnDefaultAddressPoolResponse, error)
+
+	PostApiVpnDefaultAddressPoolWithResponse(ctx context.Context, body PostApiVpnDefaultAddressPoolJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiVpnDefaultAddressPoolResponse, error)
+
+	// GetApiVpnEncryptionProfilesWithResponse request
+	GetApiVpnEncryptionProfilesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnEncryptionProfilesResponse, error)
+
+	// PostApiVpnEncryptionProfilesWithBodyWithResponse request with any body
+	PostApiVpnEncryptionProfilesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiVpnEncryptionProfilesResponse, error)
+
+	PostApiVpnEncryptionProfilesWithResponse(ctx context.Context, body PostApiVpnEncryptionProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiVpnEncryptionProfilesResponse, error)
+
+	// DeleteApiVpnEncryptionProfilesUuidWithResponse request
+	DeleteApiVpnEncryptionProfilesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiVpnEncryptionProfilesUuidResponse, error)
+
+	// GetApiVpnEncryptionProfilesUuidWithResponse request
+	GetApiVpnEncryptionProfilesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiVpnEncryptionProfilesUuidResponse, error)
+
+	// PutApiVpnEncryptionProfilesUuidWithBodyWithResponse request with any body
+	PutApiVpnEncryptionProfilesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiVpnEncryptionProfilesUuidResponse, error)
+
+	PutApiVpnEncryptionProfilesUuidWithResponse(ctx context.Context, uuid string, body PutApiVpnEncryptionProfilesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiVpnEncryptionProfilesUuidResponse, error)
+
+	// GetApiVpnTopologiesWithResponse request
+	GetApiVpnTopologiesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnTopologiesResponse, error)
+
+	// PostApiVpnTopologiesWithBodyWithResponse request with any body
+	PostApiVpnTopologiesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiVpnTopologiesResponse, error)
+
+	PostApiVpnTopologiesWithResponse(ctx context.Context, body PostApiVpnTopologiesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiVpnTopologiesResponse, error)
+
+	// DeleteApiVpnTopologiesUuidWithResponse request
+	DeleteApiVpnTopologiesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiVpnTopologiesUuidResponse, error)
+
+	// GetApiVpnTopologiesUuidWithResponse request
+	GetApiVpnTopologiesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiVpnTopologiesUuidResponse, error)
+
+	// PutApiVpnTopologiesUuidWithBodyWithResponse request with any body
+	PutApiVpnTopologiesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiVpnTopologiesUuidResponse, error)
+
+	PutApiVpnTopologiesUuidWithResponse(ctx context.Context, uuid string, body PutApiVpnTopologiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiVpnTopologiesUuidResponse, error)
+
+	// GetApiVpnTopologiesUuidExportWithResponse request
+	GetApiVpnTopologiesUuidExportWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiVpnTopologiesUuidExportResponse, error)
+
+	// GetApiVpnTunnelsWithResponse request
+	GetApiVpnTunnelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnTunnelsResponse, error)
+}
+
+type GetApiAccountsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *[]DefinitionsAccountsAccountPropertiesWithoutPassword `json:"result,omitempty"`
+		Success *bool                                                  `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiAccountsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiAccountsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiAccountsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *struct {
+		Result  *DefinitionsAccountsAccountPropertiesWithoutPassword `json:"result,omitempty"`
+		Success *bool                                                `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiAccountsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiAccountsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiAccountsApikeysResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *struct {
+		Result  *DefinitionsAccountsCreateApiKeyResponse `json:"result,omitempty"`
+		Success *bool                                    `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON403 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiAccountsApikeysResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiAccountsApikeysResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiAccountsApikeysRevokeUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// Result The API key public properties
+		Result  *DefinitionsAccountsApiKeyProperties `json:"result,omitempty"`
+		Success *bool                                `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON403 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiAccountsApikeysRevokeUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiAccountsApikeysRevokeUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiAccountsApikeysUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsAccountsApiKeyProperties
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiAccountsApikeysUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiAccountsApikeysUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiAccountsUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsAccountsAccountPropertiesWithoutPassword `json:"result,omitempty"`
+		Success *bool                                                `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON403 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiAccountsUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiAccountsUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiAccountsUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsAccountsAccountPropertiesWithoutPassword
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiAccountsUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiAccountsUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiAccountsUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsAccountsAccountPropertiesWithoutPassword `json:"result,omitempty"`
+		Success *bool                                                `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON403 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiAccountsUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiAccountsUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiActiveupdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// Interfaces A list of listening network interfaces or an empty array if the service listens on every interface
+		Interfaces *[]string `json:"interfaces,omitempty"`
+
+		// Port a simple port
+		Port *float32 `json:"port,omitempty"`
+
+		// State service state
+		State *bool `json:"state,omitempty"`
+
+		// SyncAutoUpdatePeriod a CRON tab entry representing the sync periodicity
+		SyncAutoUpdatePeriod *string `json:"syncAutoUpdatePeriod,omitempty"`
+
+		// SyncAutoUpdateState true if the autoupdate sync has been activated
+		SyncAutoUpdateState *bool `json:"syncAutoUpdateState,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiActiveupdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiActiveupdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiActiveupdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Errors  *DefinitionsCommonErrorsList `json:"errors,omitempty"`
+		Success *bool                        `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiActiveupdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiActiveupdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiActiveupdateCertificateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiActiveupdateCertificateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiActiveupdateCertificateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiActiveupdateImportResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Errors  *DefinitionsCommonErrorsList `json:"errors,omitempty"`
+		Success *bool                        `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiActiveupdateImportResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiActiveupdateImportResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiActiveupdateInfosResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// CertificateDn Server certificate DN
+		CertificateDn *string `json:"certificateDn,omitempty"`
+
+		// LastSyncEnd last synchronization end time
+		LastSyncEnd *string `json:"lastSyncEnd,omitempty"`
+
+		// LastSyncError last synchronization error
+		LastSyncError *string `json:"lastSyncError,omitempty"`
+
+		// LastSyncStart last synchronization start time
+		LastSyncStart *string `json:"lastSyncStart,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiActiveupdateInfosResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiActiveupdateInfosResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiActiveupdateScriptResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiActiveupdateScriptResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiActiveupdateScriptResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiActiveupdateSyncResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Errors  *DefinitionsCommonErrorsList `json:"errors,omitempty"`
+		Success *bool                        `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiActiveupdateSyncResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiActiveupdateSyncResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiAdminaccountResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsAdminaccountAdminAccountResponse `json:"result,omitempty"`
+		Success *bool                                        `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiAdminaccountResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiAdminaccountResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiApipolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsAuthPolicyApiKeyPolicyResult
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiApipolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiApipolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiApipolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsAuthPolicyApiKeyPolicyResult
+	JSON400      *DefinitionsCommonErrorResponse
+	JSON403      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiApipolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiApipolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiAuthLoginResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsAuthAuthResponse
+	JSON401      *struct {
+		// Success False in case of a bad login / pwd
+		Success bool `json:"success"`
+	}
+	JSON403 *struct {
+		// Delay duration in seconds of the ban time
+		Delay float32 `json:"delay"`
+
+		// Success False in case of a banned IP
+		Success bool `json:"success"`
+	}
+	JSON409 *DefinitionsAuthConflictErrorResponse
+	JSON500 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiAuthLoginResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiAuthLoginResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiAuthLogoutResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiAuthLogoutResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiAuthLogoutResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiAuthpolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsAuthPolicyPolicyResult
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiAuthpolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiAuthpolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiAuthpolicyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsAuthPolicyPolicyResult
+	JSON400      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiAuthpolicyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiAuthpolicyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiAutobackupResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Enabled *bool `json:"enabled,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiAutobackupResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiAutobackupResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiAutobackupResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsCommonSuccessResponse
+	JSON400      *DefinitionsCommonErrorResponse
+	JSON401      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiAutobackupResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiAutobackupResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiAutobackupResultsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *[]DefinitionsAutobackupAutoBackupResult `json:"result,omitempty"`
+		Success *bool                                    `json:"success,omitempty"`
+	}
+	JSON401 *DefinitionsCommonErrorResponse
+	JSON500 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiAutobackupResultsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiAutobackupResultsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiAutobackupSmcBackupDateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *DefinitionsCommonErrorResponse
+	JSON404      *DefinitionsCommonErrorResponse
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiAutobackupSmcBackupDateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiAutobackupSmcBackupDateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiAutobackupDateArchiveResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON404      *DefinitionsCommonErrorResponse
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiAutobackupDateArchiveResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiAutobackupDateArchiveResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiAutobackupDateUuidFirewallBackupResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *DefinitionsCommonErrorResponse
+	JSON404      *DefinitionsCommonErrorResponse
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiAutobackupDateUuidFirewallBackupResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiAutobackupDateUuidFirewallBackupResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiBackupResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// ConfirmationToken md5 hash of the archive
+		ConfirmationToken *string `json:"confirmationToken,omitempty"`
+
+		// NewIp info ip address
+		NewIp   *string `json:"newIp,omitempty"`
+		Success *bool   `json:"success,omitempty"`
+	}
+	JSON500 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiBackupResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiBackupResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiBackupDownloadResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiBackupDownloadResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiBackupDownloadResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiBackupHashResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiBackupHashResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiBackupHashResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCertificatesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsCertificatesCertificatesList `json:"result,omitempty"`
+		Success *bool                                    `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCertificatesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCertificatesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiCertificatesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *struct {
+		Result *struct {
+			// Output output of the serverd commands triggered by the API call
+			Output *[]string `json:"output,omitempty"`
+
+			// Secured whether the certificate has been installed on firewall's TPM
+			Secured *bool `json:"secured,omitempty"`
+		} `json:"result,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiCertificatesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiCertificatesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCertificatesAuthoritiesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsCertificationAuthoritiesCertificationAuthoritiesList `json:"result,omitempty"`
+		Success *bool                                                            `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCertificatesAuthoritiesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCertificatesAuthoritiesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiCertificatesAuthoritiesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *struct {
+		Success *bool `json:"success,omitempty"`
+
+		// Uuids All the CAs persisted in the unified config. The first uuid of this array is the leaf of the trust chain (lowest ca)
+		Uuids *[]string `json:"uuids,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON409 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiCertificatesAuthoritiesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiCertificatesAuthoritiesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiCertificatesAuthoritiesCrlResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *[]DefinitionsMiscCrlProperty `json:"result,omitempty"`
+		Success *bool                         `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiCertificatesAuthoritiesCrlResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiCertificatesAuthoritiesCrlResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiCertificatesAuthoritiesCrlCaUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsMiscCrlProperty `json:"result,omitempty"`
+		Success *bool                       `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiCertificatesAuthoritiesCrlCaUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiCertificatesAuthoritiesCrlCaUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCertificatesAuthoritiesRootResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsCertificationAuthoritiesCertificationAuthoritiesTree `json:"result,omitempty"`
+		Success *bool                                                            `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCertificatesAuthoritiesRootResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCertificatesAuthoritiesRootResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiCertificatesAuthoritiesCaUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiCertificatesAuthoritiesCaUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiCertificatesAuthoritiesCaUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCertificatesAuthoritiesCaUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsCertificationAuthoritiesCertificationAuthority `json:"result,omitempty"`
+		Success *bool                                                      `json:"success,omitempty"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCertificatesAuthoritiesCaUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCertificatesAuthoritiesCaUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiCertificatesAuthoritiesCaUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool   `json:"success,omitempty"`
+		Uuid    *string `json:"uuid,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON409 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiCertificatesAuthoritiesCaUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiCertificatesAuthoritiesCaUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiCertificatesAuthoritiesCaUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON409 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiCertificatesAuthoritiesCaUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiCertificatesAuthoritiesCaUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCertificatesAuthoritiesCaUuidCrlResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *openapi_types.File
+	JSON400      *DefinitionsCommonErrorResponse
+	JSON404      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCertificatesAuthoritiesCaUuidCrlResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCertificatesAuthoritiesCaUuidCrlResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiCertificatesGetResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsCertificatesCertificate
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiCertificatesGetResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiCertificatesGetResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiCertificatesRenewResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsCertificatesCertificatesRenewRequestResults
+	JSON400      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiCertificatesRenewResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiCertificatesRenewResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiCertificatesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsCertificatesCertificate `json:"result,omitempty"`
+		Success *bool                               `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiCertificatesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiCertificatesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCertificatesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsCertificatesCertificate `json:"result,omitempty"`
+		Success *bool                               `json:"success,omitempty"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCertificatesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCertificatesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiCertificatesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsCertificatesCertificate `json:"result,omitempty"`
+		Success *bool                               `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiCertificatesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiCertificatesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiCertificatesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsCertificatesCertificate `json:"result,omitempty"`
+		Success *bool                               `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiCertificatesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiCertificatesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCfgcheckActivationDomainNameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Status  *bool `json:"status,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCfgcheckActivationDomainNameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCfgcheckActivationDomainNameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiCfgcheckActivationDomainNameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiCfgcheckActivationDomainNameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiCfgcheckActivationDomainNameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCfgcheckIncoherenciesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsCfgcheckIncoherencies
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCfgcheckIncoherenciesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCfgcheckIncoherenciesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCfgcheckStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Running *bool `json:"running,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCfgcheckStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCfgcheckStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCfgdiffArchiveUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON404      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCfgdiffArchiveUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCfgdiffArchiveUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCfgdiffDiffUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsCfgdiffCfgDiffResult
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCfgdiffDiffUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCfgdiffDiffUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCfgdiffNaUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON404      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCfgdiffNaUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCfgdiffNaUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCfgdiffStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsCfgdiffCfgDiffStatusResult
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCfgdiffStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCfgdiffStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiConfigInterfacesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigNetworkInterfacesListResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiConfigInterfacesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiConfigInterfacesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiConfigInterfacesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsConfigNetworkInterfacesUpdateList `json:"result,omitempty"`
+		Success *bool                                         `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiConfigInterfacesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiConfigInterfacesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiConfigLicenseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// ClientContact customer contact name
+		ClientContact *string `json:"clientContact,omitempty"`
+
+		// ClientEmail customer contact email
+		ClientEmail *string `json:"clientEmail,omitempty"`
+
+		// ClientOrganization customer company name
+		ClientOrganization *string `json:"clientOrganization,omitempty"`
+
+		// Comment comment on license from ERP
+		Comment *string `json:"comment,omitempty"`
+
+		// DateNotAfter end validity date of license (ISO 8601 format, "YYYY-MM-DD")
+		DateNotAfter *string `json:"dateNotAfter,omitempty"`
+
+		// DateNotBefore start validity date of license (ISO 8601 format, "YYYY-MM-DD")
+		DateNotBefore *string `json:"dateNotBefore,omitempty"`
+
+		// DateUpdate validity date of maintenance contract (ISO 8601 format, "YYYY-MM-DD")
+		DateUpdate *string `json:"dateUpdate,omitempty"`
+
+		// FirewallsMax maximum numbers of firewalls allowed
+		FirewallsMax *string `json:"firewallsMax,omitempty"`
+
+		// Serial unique number generated by ERP to identify the license ("SMC" followed by 8 random hexa digits)
+		Serial *string `json:"serial,omitempty"`
+
+		// Version version number of licensing system in SMC
+		Version *string `json:"version,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiConfigLicenseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiConfigLicenseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiConfigLicenseResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Errors  *DefinitionsCommonErrorsList `json:"errors,omitempty"`
+		Success *bool                        `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiConfigLicenseResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiConfigLicenseResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiConfigLicenseVerifyResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiConfigLicenseVerifyResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiConfigLicenseVerifyResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiConfigNetworkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigNetworkConfiguration
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiConfigNetworkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiConfigNetworkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiConfigNetworkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiConfigNetworkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiConfigNetworkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCustompropertiesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsCustomPropertiesMultipleCustomPropertiesResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCustompropertiesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCustompropertiesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiCustompropertiesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DefinitionsCustomPropertiesSingleCustomPropertyResponse
+	JSON400      *DefinitionsCommonErrorResponse
+	JSON409      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiCustompropertiesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiCustompropertiesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiCustompropertiesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiCustompropertiesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiCustompropertiesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiCustompropertiesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsCustomPropertiesSingleCustomPropertyResponse
+	JSON404      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiCustompropertiesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiCustompropertiesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiCustompropertiesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsCustomPropertiesSingleCustomPropertyResponse
+	JSON400      *DefinitionsCommonErrorResponse
+	JSON404      *DefinitionsCommonErrorResponse
+	JSON409      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiCustompropertiesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiCustompropertiesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiDisclaimerResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiDisclaimerResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiDisclaimerResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiExportCustompropertiesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON404      *DefinitionsCommonErrorResponse
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiExportCustompropertiesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiExportCustompropertiesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiExportObjectsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiExportObjectsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiExportObjectsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiExportSdwansupervisionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON404      *DefinitionsCommonErrorResponse
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiExportSdwansupervisionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiExportSdwansupervisionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiExportSupervisionResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON404      *DefinitionsCommonErrorResponse
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiExportSupervisionResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiExportSupervisionResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiExportVariablesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON404      *DefinitionsCommonErrorResponse
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiExportVariablesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiExportVariablesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiFeatureTogglingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// Result Feature toggles statuses
+		Result *[]struct {
+			IsEnabled *bool   `json:"isEnabled,omitempty"`
+			Name      *string `json:"name,omitempty"`
+		} `json:"result,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiFeatureTogglingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiFeatureTogglingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiFirewallsUuidPackageResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON500 *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiFirewallsUuidPackageResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiFirewallsUuidPackageResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiFirewallsUuidTopologiesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsTopologiesTopologiesListResponse `json:"result,omitempty"`
+		Success *bool                                        `json:"success,omitempty"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiFirewallsUuidTopologiesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiFirewallsUuidTopologiesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiFoldersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsFoldersFoldersTreeResponse
+	JSONDefault  *DefinitionsFoldersFoldersListResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiFoldersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiFoldersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiFoldersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *struct {
+		Result  DefinitionsFoldersRawFolderProperties `json:"result"`
+		Success bool                                  `json:"success"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiFoldersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiFoldersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiFoldersAccountFoldersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsFoldersAccountFoldersProps
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiFoldersAccountFoldersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiFoldersAccountFoldersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiFoldersBynameNameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  DefinitionsFoldersRawFolderProperties `json:"result"`
+		Success bool                                  `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiFoldersBynameNameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiFoldersBynameNameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiFoldersUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *map[string]interface{} `json:"result,omitempty"`
+		Success bool                    `json:"success"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiFoldersUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiFoldersUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiFoldersUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  DefinitionsFoldersRawFolderProperties `json:"result"`
+		Success bool                                  `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiFoldersUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiFoldersUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiFoldersUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  DefinitionsFoldersRawFolderProperties `json:"result"`
+		Success bool                                  `json:"success"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiFoldersUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiFoldersUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiLdapResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsLdapLdapResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiLdapResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiLdapResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiLdapResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsLdapLdapResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiLdapResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiLdapResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiLockResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsLockLockResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiLockResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiLockResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiLogsAuditLastResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsAuditlogsLogsResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiLogsAuditLastResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiLogsAuditLastResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiLogsLastResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsLogsLogsResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiLogsLastResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiLogsLastResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiMessageBoxesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *[]struct {
+		// Body The message"s body
+		Body *string `json:"body,omitempty"`
+
+		// Date Message\"s datetime (ISO 8601 format, \"YYYY-MM-DD\")
+		Date *string `json:"date,omitempty"`
+
+		// Fwid The UUID of the firewall concerned by this message
+		Fwid *string `json:"fwid,omitempty"`
+
+		// SendAttemptsCount Send attempts count
+		SendAttemptsCount *float32 `json:"sendAttemptsCount,omitempty"`
+
+		// Type Message"s type
+		Type *string `json:"type,omitempty"`
+
+		// User The user responsible of the creation of this message
+		User *string `json:"user,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiMessageBoxesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiMessageBoxesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiRadiusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsRadiusRadiusResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiRadiusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiRadiusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiRadiusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsRadiusRadiusPostResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiRadiusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiRadiusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiSnsdiffDiffUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsSnsdiffSnsDiffResult
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiSnsdiffDiffUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiSnsdiffDiffUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiUpdateResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON400 *struct {
+		Errors *[]struct {
+			Code    *string `json:"code,omitempty"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON423 *struct {
+		Errors *[]struct {
+			Code    *string `json:"code,omitempty"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiUpdateResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiUpdateResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiUpdateLaunchResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON400 *struct {
+		Errors *[]struct {
+			Code    *string `json:"code,omitempty"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON423 *struct {
+		Errors *[]struct {
+			Code    *string `json:"code,omitempty"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON500 *struct {
+		Errors *[]struct {
+			Code    *string `json:"code,omitempty"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiUpdateLaunchResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiUpdateLaunchResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiUpdateStatusResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Locked  *bool `json:"locked,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiUpdateStatusResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiUpdateStatusResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiUsageUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsObjectsCheckUsageResponse
+	JSON404      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiUsageUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiUsageUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVariablesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsVariablesMultipleVariablesResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVariablesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVariablesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiVariablesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DefinitionsVariablesSingleVariableResponse
+	JSON400      *DefinitionsCommonErrorResponse
+	JSON409      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiVariablesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiVariablesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiVariablesImportResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsVariablesVariablesImportListResponse
+	JSON400      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiVariablesImportResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiVariablesImportResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiVariablesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiVariablesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiVariablesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVariablesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsVariablesSingleVariableResponse
+	JSON404      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVariablesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVariablesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiVariablesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsVariablesSingleVariableResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiVariablesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiVariablesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVpnAlgorithmsAuthResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsAlgorithmsAuthAlgorithmsList
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVpnAlgorithmsAuthResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVpnAlgorithmsAuthResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVpnAlgorithmsEncResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsAlgorithmsEncAlgorithmsList
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVpnAlgorithmsEncResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVpnAlgorithmsEncResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVpnDefaultAddressPoolResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsTopologiesDefaultAddressPool `json:"result,omitempty"`
+		Success *bool                                    `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVpnDefaultAddressPoolResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVpnDefaultAddressPoolResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiVpnDefaultAddressPoolResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsTopologiesDefaultAddressPool `json:"result,omitempty"`
+		Success *bool                                    `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiVpnDefaultAddressPoolResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiVpnDefaultAddressPoolResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVpnEncryptionProfilesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsEncryptionProfilesEncryptionProfileList
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVpnEncryptionProfilesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVpnEncryptionProfilesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiVpnEncryptionProfilesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DefinitionsEncryptionProfilesEncryptionProfileProperties
+	JSON409      *DefinitionsCommonErrorResponse
+	JSON422      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiVpnEncryptionProfilesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiVpnEncryptionProfilesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiVpnEncryptionProfilesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON422 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiVpnEncryptionProfilesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiVpnEncryptionProfilesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVpnEncryptionProfilesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsEncryptionProfilesEncryptionProfileProperties `json:"result,omitempty"`
+		Success *bool                                                     `json:"success,omitempty"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVpnEncryptionProfilesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVpnEncryptionProfilesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiVpnEncryptionProfilesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsEncryptionProfilesEncryptionProfileProperties `json:"result,omitempty"`
+		Success *bool                                                     `json:"success,omitempty"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON409 *DefinitionsCommonErrorResponse
+	JSON422 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiVpnEncryptionProfilesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiVpnEncryptionProfilesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVpnTopologiesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsTopologiesTopologiesListResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVpnTopologiesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVpnTopologiesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiVpnTopologiesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsTopologiesTopologyPropertiesWithUuid `json:"result,omitempty"`
+		Success *bool                                            `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON401 *DefinitionsCommonForbiddenBecauseOfUserScopeResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiVpnTopologiesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiVpnTopologiesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiVpnTopologiesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON401 *DefinitionsCommonForbiddenBecauseOfUserScopeResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiVpnTopologiesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiVpnTopologiesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVpnTopologiesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsTopologiesTopologyPropertiesWithUuid `json:"result,omitempty"`
+		Success *bool                                            `json:"success,omitempty"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVpnTopologiesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVpnTopologiesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiVpnTopologiesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsTopologiesTopologyPropertiesWithUuid `json:"result,omitempty"`
+		Success *bool                                            `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON401 *DefinitionsCommonForbiddenBecauseOfUserScopeResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiVpnTopologiesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiVpnTopologiesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVpnTopologiesUuidExportResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON404      *DefinitionsCommonErrorResponse
+	JSON500      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVpnTopologiesUuidExportResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVpnTopologiesUuidExportResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiVpnTunnelsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsTunnelsTunnelsListResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiVpnTunnelsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiVpnTunnelsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+// GetApiAccountsWithResponse request returning *GetApiAccountsResponse
+func (c *ClientWithResponses) GetApiAccountsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiAccountsResponse, error) {
+	rsp, err := c.GetApiAccounts(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiAccountsResponse(rsp)
+}
+
+// PostApiAccountsWithBodyWithResponse request with arbitrary body returning *PostApiAccountsResponse
+func (c *ClientWithResponses) PostApiAccountsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiAccountsResponse, error) {
+	rsp, err := c.PostApiAccountsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiAccountsResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiAccountsWithResponse(ctx context.Context, body PostApiAccountsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiAccountsResponse, error) {
+	rsp, err := c.PostApiAccounts(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiAccountsResponse(rsp)
+}
+
+// PostApiAccountsApikeysWithBodyWithResponse request with arbitrary body returning *PostApiAccountsApikeysResponse
+func (c *ClientWithResponses) PostApiAccountsApikeysWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiAccountsApikeysResponse, error) {
+	rsp, err := c.PostApiAccountsApikeysWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiAccountsApikeysResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiAccountsApikeysWithResponse(ctx context.Context, body PostApiAccountsApikeysJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiAccountsApikeysResponse, error) {
+	rsp, err := c.PostApiAccountsApikeys(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiAccountsApikeysResponse(rsp)
+}
+
+// PostApiAccountsApikeysRevokeUuidWithResponse request returning *PostApiAccountsApikeysRevokeUuidResponse
+func (c *ClientWithResponses) PostApiAccountsApikeysRevokeUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*PostApiAccountsApikeysRevokeUuidResponse, error) {
+	rsp, err := c.PostApiAccountsApikeysRevokeUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiAccountsApikeysRevokeUuidResponse(rsp)
+}
+
+// GetApiAccountsApikeysUuidWithResponse request returning *GetApiAccountsApikeysUuidResponse
+func (c *ClientWithResponses) GetApiAccountsApikeysUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiAccountsApikeysUuidResponse, error) {
+	rsp, err := c.GetApiAccountsApikeysUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiAccountsApikeysUuidResponse(rsp)
+}
+
+// DeleteApiAccountsUuidWithResponse request returning *DeleteApiAccountsUuidResponse
+func (c *ClientWithResponses) DeleteApiAccountsUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiAccountsUuidResponse, error) {
+	rsp, err := c.DeleteApiAccountsUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiAccountsUuidResponse(rsp)
+}
+
+// GetApiAccountsUuidWithResponse request returning *GetApiAccountsUuidResponse
+func (c *ClientWithResponses) GetApiAccountsUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiAccountsUuidResponse, error) {
+	rsp, err := c.GetApiAccountsUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiAccountsUuidResponse(rsp)
+}
+
+// PutApiAccountsUuidWithBodyWithResponse request with arbitrary body returning *PutApiAccountsUuidResponse
+func (c *ClientWithResponses) PutApiAccountsUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiAccountsUuidResponse, error) {
+	rsp, err := c.PutApiAccountsUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiAccountsUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiAccountsUuidWithResponse(ctx context.Context, uuid string, body PutApiAccountsUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiAccountsUuidResponse, error) {
+	rsp, err := c.PutApiAccountsUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiAccountsUuidResponse(rsp)
+}
+
+// GetApiActiveupdateWithResponse request returning *GetApiActiveupdateResponse
+func (c *ClientWithResponses) GetApiActiveupdateWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiActiveupdateResponse, error) {
+	rsp, err := c.GetApiActiveupdate(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiActiveupdateResponse(rsp)
+}
+
+// PutApiActiveupdateWithBodyWithResponse request with arbitrary body returning *PutApiActiveupdateResponse
+func (c *ClientWithResponses) PutApiActiveupdateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiActiveupdateResponse, error) {
+	rsp, err := c.PutApiActiveupdateWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiActiveupdateResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiActiveupdateWithResponse(ctx context.Context, body PutApiActiveupdateJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiActiveupdateResponse, error) {
+	rsp, err := c.PutApiActiveupdate(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiActiveupdateResponse(rsp)
+}
+
+// GetApiActiveupdateCertificateWithResponse request returning *GetApiActiveupdateCertificateResponse
+func (c *ClientWithResponses) GetApiActiveupdateCertificateWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiActiveupdateCertificateResponse, error) {
+	rsp, err := c.GetApiActiveupdateCertificate(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiActiveupdateCertificateResponse(rsp)
+}
+
+// PostApiActiveupdateImportWithBodyWithResponse request with arbitrary body returning *PostApiActiveupdateImportResponse
+func (c *ClientWithResponses) PostApiActiveupdateImportWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiActiveupdateImportResponse, error) {
+	rsp, err := c.PostApiActiveupdateImportWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiActiveupdateImportResponse(rsp)
+}
+
+// GetApiActiveupdateInfosWithResponse request returning *GetApiActiveupdateInfosResponse
+func (c *ClientWithResponses) GetApiActiveupdateInfosWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiActiveupdateInfosResponse, error) {
+	rsp, err := c.GetApiActiveupdateInfos(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiActiveupdateInfosResponse(rsp)
+}
+
+// GetApiActiveupdateScriptWithResponse request returning *GetApiActiveupdateScriptResponse
+func (c *ClientWithResponses) GetApiActiveupdateScriptWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiActiveupdateScriptResponse, error) {
+	rsp, err := c.GetApiActiveupdateScript(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiActiveupdateScriptResponse(rsp)
+}
+
+// PostApiActiveupdateSyncWithResponse request returning *PostApiActiveupdateSyncResponse
+func (c *ClientWithResponses) PostApiActiveupdateSyncWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostApiActiveupdateSyncResponse, error) {
+	rsp, err := c.PostApiActiveupdateSync(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiActiveupdateSyncResponse(rsp)
+}
+
+// PutApiAdminaccountWithBodyWithResponse request with arbitrary body returning *PutApiAdminaccountResponse
+func (c *ClientWithResponses) PutApiAdminaccountWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiAdminaccountResponse, error) {
+	rsp, err := c.PutApiAdminaccountWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiAdminaccountResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiAdminaccountWithFormdataBodyWithResponse(ctx context.Context, body PutApiAdminaccountFormdataRequestBody, reqEditors ...RequestEditorFn) (*PutApiAdminaccountResponse, error) {
+	rsp, err := c.PutApiAdminaccountWithFormdataBody(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiAdminaccountResponse(rsp)
+}
+
+// GetApiApipolicyWithResponse request returning *GetApiApipolicyResponse
+func (c *ClientWithResponses) GetApiApipolicyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiApipolicyResponse, error) {
+	rsp, err := c.GetApiApipolicy(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiApipolicyResponse(rsp)
+}
+
+// PutApiApipolicyWithBodyWithResponse request with arbitrary body returning *PutApiApipolicyResponse
+func (c *ClientWithResponses) PutApiApipolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiApipolicyResponse, error) {
+	rsp, err := c.PutApiApipolicyWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiApipolicyResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiApipolicyWithResponse(ctx context.Context, body PutApiApipolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiApipolicyResponse, error) {
+	rsp, err := c.PutApiApipolicy(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiApipolicyResponse(rsp)
+}
+
+// PostApiAuthLoginWithBodyWithResponse request with arbitrary body returning *PostApiAuthLoginResponse
+func (c *ClientWithResponses) PostApiAuthLoginWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiAuthLoginResponse, error) {
+	rsp, err := c.PostApiAuthLoginWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiAuthLoginResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiAuthLoginWithFormdataBodyWithResponse(ctx context.Context, body PostApiAuthLoginFormdataRequestBody, reqEditors ...RequestEditorFn) (*PostApiAuthLoginResponse, error) {
+	rsp, err := c.PostApiAuthLoginWithFormdataBody(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiAuthLoginResponse(rsp)
+}
+
+// PostApiAuthLogoutWithResponse request returning *PostApiAuthLogoutResponse
+func (c *ClientWithResponses) PostApiAuthLogoutWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostApiAuthLogoutResponse, error) {
+	rsp, err := c.PostApiAuthLogout(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiAuthLogoutResponse(rsp)
+}
+
+// GetApiAuthpolicyWithResponse request returning *GetApiAuthpolicyResponse
+func (c *ClientWithResponses) GetApiAuthpolicyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiAuthpolicyResponse, error) {
+	rsp, err := c.GetApiAuthpolicy(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiAuthpolicyResponse(rsp)
+}
+
+// PutApiAuthpolicyWithBodyWithResponse request with arbitrary body returning *PutApiAuthpolicyResponse
+func (c *ClientWithResponses) PutApiAuthpolicyWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiAuthpolicyResponse, error) {
+	rsp, err := c.PutApiAuthpolicyWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiAuthpolicyResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiAuthpolicyWithResponse(ctx context.Context, body PutApiAuthpolicyJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiAuthpolicyResponse, error) {
+	rsp, err := c.PutApiAuthpolicy(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiAuthpolicyResponse(rsp)
+}
+
+// GetApiAutobackupWithResponse request returning *GetApiAutobackupResponse
+func (c *ClientWithResponses) GetApiAutobackupWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiAutobackupResponse, error) {
+	rsp, err := c.GetApiAutobackup(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiAutobackupResponse(rsp)
+}
+
+// PostApiAutobackupWithBodyWithResponse request with arbitrary body returning *PostApiAutobackupResponse
+func (c *ClientWithResponses) PostApiAutobackupWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiAutobackupResponse, error) {
+	rsp, err := c.PostApiAutobackupWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiAutobackupResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiAutobackupWithResponse(ctx context.Context, body PostApiAutobackupJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiAutobackupResponse, error) {
+	rsp, err := c.PostApiAutobackup(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiAutobackupResponse(rsp)
+}
+
+// GetApiAutobackupResultsWithResponse request returning *GetApiAutobackupResultsResponse
+func (c *ClientWithResponses) GetApiAutobackupResultsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiAutobackupResultsResponse, error) {
+	rsp, err := c.GetApiAutobackupResults(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiAutobackupResultsResponse(rsp)
+}
+
+// GetApiAutobackupSmcBackupDateWithResponse request returning *GetApiAutobackupSmcBackupDateResponse
+func (c *ClientWithResponses) GetApiAutobackupSmcBackupDateWithResponse(ctx context.Context, date string, reqEditors ...RequestEditorFn) (*GetApiAutobackupSmcBackupDateResponse, error) {
+	rsp, err := c.GetApiAutobackupSmcBackupDate(ctx, date, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiAutobackupSmcBackupDateResponse(rsp)
+}
+
+// GetApiAutobackupDateArchiveWithResponse request returning *GetApiAutobackupDateArchiveResponse
+func (c *ClientWithResponses) GetApiAutobackupDateArchiveWithResponse(ctx context.Context, date string, reqEditors ...RequestEditorFn) (*GetApiAutobackupDateArchiveResponse, error) {
+	rsp, err := c.GetApiAutobackupDateArchive(ctx, date, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiAutobackupDateArchiveResponse(rsp)
+}
+
+// GetApiAutobackupDateUuidFirewallBackupWithResponse request returning *GetApiAutobackupDateUuidFirewallBackupResponse
+func (c *ClientWithResponses) GetApiAutobackupDateUuidFirewallBackupWithResponse(ctx context.Context, date string, uuidFirewall string, reqEditors ...RequestEditorFn) (*GetApiAutobackupDateUuidFirewallBackupResponse, error) {
+	rsp, err := c.GetApiAutobackupDateUuidFirewallBackup(ctx, date, uuidFirewall, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiAutobackupDateUuidFirewallBackupResponse(rsp)
+}
+
+// PostApiBackupWithBodyWithResponse request with arbitrary body returning *PostApiBackupResponse
+func (c *ClientWithResponses) PostApiBackupWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiBackupResponse, error) {
+	rsp, err := c.PostApiBackupWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiBackupResponse(rsp)
+}
+
+// PostApiBackupDownloadWithBodyWithResponse request with arbitrary body returning *PostApiBackupDownloadResponse
+func (c *ClientWithResponses) PostApiBackupDownloadWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiBackupDownloadResponse, error) {
+	rsp, err := c.PostApiBackupDownloadWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiBackupDownloadResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiBackupDownloadWithResponse(ctx context.Context, body PostApiBackupDownloadJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiBackupDownloadResponse, error) {
+	rsp, err := c.PostApiBackupDownload(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiBackupDownloadResponse(rsp)
+}
+
+// PostApiBackupHashWithBodyWithResponse request with arbitrary body returning *PostApiBackupHashResponse
+func (c *ClientWithResponses) PostApiBackupHashWithBodyWithResponse(ctx context.Context, hash string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiBackupHashResponse, error) {
+	rsp, err := c.PostApiBackupHashWithBody(ctx, hash, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiBackupHashResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiBackupHashWithResponse(ctx context.Context, hash string, body PostApiBackupHashJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiBackupHashResponse, error) {
+	rsp, err := c.PostApiBackupHash(ctx, hash, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiBackupHashResponse(rsp)
+}
+
+// GetApiCertificatesWithResponse request returning *GetApiCertificatesResponse
+func (c *ClientWithResponses) GetApiCertificatesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCertificatesResponse, error) {
+	rsp, err := c.GetApiCertificates(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCertificatesResponse(rsp)
+}
+
+// PostApiCertificatesWithBodyWithResponse request with arbitrary body returning *PostApiCertificatesResponse
+func (c *ClientWithResponses) PostApiCertificatesWithBodyWithResponse(ctx context.Context, params *PostApiCertificatesParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesResponse, error) {
+	rsp, err := c.PostApiCertificatesWithBody(ctx, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiCertificatesWithResponse(ctx context.Context, params *PostApiCertificatesParams, body PostApiCertificatesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiCertificatesResponse, error) {
+	rsp, err := c.PostApiCertificates(ctx, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesResponse(rsp)
+}
+
+// GetApiCertificatesAuthoritiesWithResponse request returning *GetApiCertificatesAuthoritiesResponse
+func (c *ClientWithResponses) GetApiCertificatesAuthoritiesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCertificatesAuthoritiesResponse, error) {
+	rsp, err := c.GetApiCertificatesAuthorities(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCertificatesAuthoritiesResponse(rsp)
+}
+
+// PostApiCertificatesAuthoritiesWithBodyWithResponse request with arbitrary body returning *PostApiCertificatesAuthoritiesResponse
+func (c *ClientWithResponses) PostApiCertificatesAuthoritiesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesAuthoritiesResponse, error) {
+	rsp, err := c.PostApiCertificatesAuthoritiesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesAuthoritiesResponse(rsp)
+}
+
+// PostApiCertificatesAuthoritiesCrlWithBodyWithResponse request with arbitrary body returning *PostApiCertificatesAuthoritiesCrlResponse
+func (c *ClientWithResponses) PostApiCertificatesAuthoritiesCrlWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesAuthoritiesCrlResponse, error) {
+	rsp, err := c.PostApiCertificatesAuthoritiesCrlWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesAuthoritiesCrlResponse(rsp)
+}
+
+// PostApiCertificatesAuthoritiesCrlCaUuidWithBodyWithResponse request with arbitrary body returning *PostApiCertificatesAuthoritiesCrlCaUuidResponse
+func (c *ClientWithResponses) PostApiCertificatesAuthoritiesCrlCaUuidWithBodyWithResponse(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesAuthoritiesCrlCaUuidResponse, error) {
+	rsp, err := c.PostApiCertificatesAuthoritiesCrlCaUuidWithBody(ctx, caUuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesAuthoritiesCrlCaUuidResponse(rsp)
+}
+
+// GetApiCertificatesAuthoritiesRootWithResponse request returning *GetApiCertificatesAuthoritiesRootResponse
+func (c *ClientWithResponses) GetApiCertificatesAuthoritiesRootWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCertificatesAuthoritiesRootResponse, error) {
+	rsp, err := c.GetApiCertificatesAuthoritiesRoot(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCertificatesAuthoritiesRootResponse(rsp)
+}
+
+// DeleteApiCertificatesAuthoritiesCaUuidWithResponse request returning *DeleteApiCertificatesAuthoritiesCaUuidResponse
+func (c *ClientWithResponses) DeleteApiCertificatesAuthoritiesCaUuidWithResponse(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*DeleteApiCertificatesAuthoritiesCaUuidResponse, error) {
+	rsp, err := c.DeleteApiCertificatesAuthoritiesCaUuid(ctx, caUuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiCertificatesAuthoritiesCaUuidResponse(rsp)
+}
+
+// GetApiCertificatesAuthoritiesCaUuidWithResponse request returning *GetApiCertificatesAuthoritiesCaUuidResponse
+func (c *ClientWithResponses) GetApiCertificatesAuthoritiesCaUuidWithResponse(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*GetApiCertificatesAuthoritiesCaUuidResponse, error) {
+	rsp, err := c.GetApiCertificatesAuthoritiesCaUuid(ctx, caUuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCertificatesAuthoritiesCaUuidResponse(rsp)
+}
+
+// PostApiCertificatesAuthoritiesCaUuidWithBodyWithResponse request with arbitrary body returning *PostApiCertificatesAuthoritiesCaUuidResponse
+func (c *ClientWithResponses) PostApiCertificatesAuthoritiesCaUuidWithBodyWithResponse(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesAuthoritiesCaUuidResponse, error) {
+	rsp, err := c.PostApiCertificatesAuthoritiesCaUuidWithBody(ctx, caUuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesAuthoritiesCaUuidResponse(rsp)
+}
+
+// PutApiCertificatesAuthoritiesCaUuidWithBodyWithResponse request with arbitrary body returning *PutApiCertificatesAuthoritiesCaUuidResponse
+func (c *ClientWithResponses) PutApiCertificatesAuthoritiesCaUuidWithBodyWithResponse(ctx context.Context, caUuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiCertificatesAuthoritiesCaUuidResponse, error) {
+	rsp, err := c.PutApiCertificatesAuthoritiesCaUuidWithBody(ctx, caUuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiCertificatesAuthoritiesCaUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiCertificatesAuthoritiesCaUuidWithResponse(ctx context.Context, caUuid string, body PutApiCertificatesAuthoritiesCaUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiCertificatesAuthoritiesCaUuidResponse, error) {
+	rsp, err := c.PutApiCertificatesAuthoritiesCaUuid(ctx, caUuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiCertificatesAuthoritiesCaUuidResponse(rsp)
+}
+
+// GetApiCertificatesAuthoritiesCaUuidCrlWithResponse request returning *GetApiCertificatesAuthoritiesCaUuidCrlResponse
+func (c *ClientWithResponses) GetApiCertificatesAuthoritiesCaUuidCrlWithResponse(ctx context.Context, caUuid string, reqEditors ...RequestEditorFn) (*GetApiCertificatesAuthoritiesCaUuidCrlResponse, error) {
+	rsp, err := c.GetApiCertificatesAuthoritiesCaUuidCrl(ctx, caUuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCertificatesAuthoritiesCaUuidCrlResponse(rsp)
+}
+
+// PostApiCertificatesGetWithBodyWithResponse request with arbitrary body returning *PostApiCertificatesGetResponse
+func (c *ClientWithResponses) PostApiCertificatesGetWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesGetResponse, error) {
+	rsp, err := c.PostApiCertificatesGetWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesGetResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiCertificatesGetWithResponse(ctx context.Context, body PostApiCertificatesGetJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiCertificatesGetResponse, error) {
+	rsp, err := c.PostApiCertificatesGet(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesGetResponse(rsp)
+}
+
+// PostApiCertificatesRenewWithBodyWithResponse request with arbitrary body returning *PostApiCertificatesRenewResponse
+func (c *ClientWithResponses) PostApiCertificatesRenewWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesRenewResponse, error) {
+	rsp, err := c.PostApiCertificatesRenewWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesRenewResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiCertificatesRenewWithResponse(ctx context.Context, body PostApiCertificatesRenewJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiCertificatesRenewResponse, error) {
+	rsp, err := c.PostApiCertificatesRenew(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesRenewResponse(rsp)
+}
+
+// DeleteApiCertificatesUuidWithResponse request returning *DeleteApiCertificatesUuidResponse
+func (c *ClientWithResponses) DeleteApiCertificatesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiCertificatesUuidResponse, error) {
+	rsp, err := c.DeleteApiCertificatesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiCertificatesUuidResponse(rsp)
+}
+
+// GetApiCertificatesUuidWithResponse request returning *GetApiCertificatesUuidResponse
+func (c *ClientWithResponses) GetApiCertificatesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiCertificatesUuidResponse, error) {
+	rsp, err := c.GetApiCertificatesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCertificatesUuidResponse(rsp)
+}
+
+// PostApiCertificatesUuidWithBodyWithResponse request with arbitrary body returning *PostApiCertificatesUuidResponse
+func (c *ClientWithResponses) PostApiCertificatesUuidWithBodyWithResponse(ctx context.Context, uuid string, params *PostApiCertificatesUuidParams, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCertificatesUuidResponse, error) {
+	rsp, err := c.PostApiCertificatesUuidWithBody(ctx, uuid, params, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiCertificatesUuidWithResponse(ctx context.Context, uuid string, params *PostApiCertificatesUuidParams, body PostApiCertificatesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiCertificatesUuidResponse, error) {
+	rsp, err := c.PostApiCertificatesUuid(ctx, uuid, params, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCertificatesUuidResponse(rsp)
+}
+
+// PutApiCertificatesUuidWithBodyWithResponse request with arbitrary body returning *PutApiCertificatesUuidResponse
+func (c *ClientWithResponses) PutApiCertificatesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiCertificatesUuidResponse, error) {
+	rsp, err := c.PutApiCertificatesUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiCertificatesUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiCertificatesUuidWithResponse(ctx context.Context, uuid string, body PutApiCertificatesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiCertificatesUuidResponse, error) {
+	rsp, err := c.PutApiCertificatesUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiCertificatesUuidResponse(rsp)
+}
+
+// GetApiCfgcheckActivationDomainNameWithResponse request returning *GetApiCfgcheckActivationDomainNameResponse
+func (c *ClientWithResponses) GetApiCfgcheckActivationDomainNameWithResponse(ctx context.Context, domainName string, reqEditors ...RequestEditorFn) (*GetApiCfgcheckActivationDomainNameResponse, error) {
+	rsp, err := c.GetApiCfgcheckActivationDomainName(ctx, domainName, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCfgcheckActivationDomainNameResponse(rsp)
+}
+
+// PutApiCfgcheckActivationDomainNameWithResponse request returning *PutApiCfgcheckActivationDomainNameResponse
+func (c *ClientWithResponses) PutApiCfgcheckActivationDomainNameWithResponse(ctx context.Context, domainName string, reqEditors ...RequestEditorFn) (*PutApiCfgcheckActivationDomainNameResponse, error) {
+	rsp, err := c.PutApiCfgcheckActivationDomainName(ctx, domainName, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiCfgcheckActivationDomainNameResponse(rsp)
+}
+
+// GetApiCfgcheckIncoherenciesWithResponse request returning *GetApiCfgcheckIncoherenciesResponse
+func (c *ClientWithResponses) GetApiCfgcheckIncoherenciesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCfgcheckIncoherenciesResponse, error) {
+	rsp, err := c.GetApiCfgcheckIncoherencies(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCfgcheckIncoherenciesResponse(rsp)
+}
+
+// GetApiCfgcheckStatusWithResponse request returning *GetApiCfgcheckStatusResponse
+func (c *ClientWithResponses) GetApiCfgcheckStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCfgcheckStatusResponse, error) {
+	rsp, err := c.GetApiCfgcheckStatus(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCfgcheckStatusResponse(rsp)
+}
+
+// GetApiCfgdiffArchiveUuidWithResponse request returning *GetApiCfgdiffArchiveUuidResponse
+func (c *ClientWithResponses) GetApiCfgdiffArchiveUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiCfgdiffArchiveUuidResponse, error) {
+	rsp, err := c.GetApiCfgdiffArchiveUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCfgdiffArchiveUuidResponse(rsp)
+}
+
+// GetApiCfgdiffDiffUuidWithResponse request returning *GetApiCfgdiffDiffUuidResponse
+func (c *ClientWithResponses) GetApiCfgdiffDiffUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiCfgdiffDiffUuidResponse, error) {
+	rsp, err := c.GetApiCfgdiffDiffUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCfgdiffDiffUuidResponse(rsp)
+}
+
+// GetApiCfgdiffNaUuidWithResponse request returning *GetApiCfgdiffNaUuidResponse
+func (c *ClientWithResponses) GetApiCfgdiffNaUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiCfgdiffNaUuidResponse, error) {
+	rsp, err := c.GetApiCfgdiffNaUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCfgdiffNaUuidResponse(rsp)
+}
+
+// GetApiCfgdiffStatusWithResponse request returning *GetApiCfgdiffStatusResponse
+func (c *ClientWithResponses) GetApiCfgdiffStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCfgdiffStatusResponse, error) {
+	rsp, err := c.GetApiCfgdiffStatus(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCfgdiffStatusResponse(rsp)
+}
+
+// GetApiConfigInterfacesWithResponse request returning *GetApiConfigInterfacesResponse
+func (c *ClientWithResponses) GetApiConfigInterfacesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigInterfacesResponse, error) {
+	rsp, err := c.GetApiConfigInterfaces(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiConfigInterfacesResponse(rsp)
+}
+
+// PutApiConfigInterfacesWithBodyWithResponse request with arbitrary body returning *PutApiConfigInterfacesResponse
+func (c *ClientWithResponses) PutApiConfigInterfacesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiConfigInterfacesResponse, error) {
+	rsp, err := c.PutApiConfigInterfacesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiConfigInterfacesResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiConfigInterfacesWithResponse(ctx context.Context, body PutApiConfigInterfacesJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiConfigInterfacesResponse, error) {
+	rsp, err := c.PutApiConfigInterfaces(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiConfigInterfacesResponse(rsp)
+}
+
+// GetApiConfigLicenseWithResponse request returning *GetApiConfigLicenseResponse
+func (c *ClientWithResponses) GetApiConfigLicenseWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigLicenseResponse, error) {
+	rsp, err := c.GetApiConfigLicense(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiConfigLicenseResponse(rsp)
+}
+
+// PostApiConfigLicenseWithBodyWithResponse request with arbitrary body returning *PostApiConfigLicenseResponse
+func (c *ClientWithResponses) PostApiConfigLicenseWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiConfigLicenseResponse, error) {
+	rsp, err := c.PostApiConfigLicenseWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiConfigLicenseResponse(rsp)
+}
+
+// PostApiConfigLicenseVerifyWithResponse request returning *PostApiConfigLicenseVerifyResponse
+func (c *ClientWithResponses) PostApiConfigLicenseVerifyWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostApiConfigLicenseVerifyResponse, error) {
+	rsp, err := c.PostApiConfigLicenseVerify(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiConfigLicenseVerifyResponse(rsp)
+}
+
+// GetApiConfigNetworkWithResponse request returning *GetApiConfigNetworkResponse
+func (c *ClientWithResponses) GetApiConfigNetworkWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigNetworkResponse, error) {
+	rsp, err := c.GetApiConfigNetwork(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiConfigNetworkResponse(rsp)
+}
+
+// PostApiConfigNetworkWithBodyWithResponse request with arbitrary body returning *PostApiConfigNetworkResponse
+func (c *ClientWithResponses) PostApiConfigNetworkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiConfigNetworkResponse, error) {
+	rsp, err := c.PostApiConfigNetworkWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiConfigNetworkResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiConfigNetworkWithResponse(ctx context.Context, body PostApiConfigNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiConfigNetworkResponse, error) {
+	rsp, err := c.PostApiConfigNetwork(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiConfigNetworkResponse(rsp)
+}
+
+// GetApiCustompropertiesWithResponse request returning *GetApiCustompropertiesResponse
+func (c *ClientWithResponses) GetApiCustompropertiesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCustompropertiesResponse, error) {
+	rsp, err := c.GetApiCustomproperties(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCustompropertiesResponse(rsp)
+}
+
+// PostApiCustompropertiesWithBodyWithResponse request with arbitrary body returning *PostApiCustompropertiesResponse
+func (c *ClientWithResponses) PostApiCustompropertiesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiCustompropertiesResponse, error) {
+	rsp, err := c.PostApiCustompropertiesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCustompropertiesResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiCustompropertiesWithResponse(ctx context.Context, body PostApiCustompropertiesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiCustompropertiesResponse, error) {
+	rsp, err := c.PostApiCustomproperties(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiCustompropertiesResponse(rsp)
+}
+
+// DeleteApiCustompropertiesUuidWithResponse request returning *DeleteApiCustompropertiesUuidResponse
+func (c *ClientWithResponses) DeleteApiCustompropertiesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiCustompropertiesUuidResponse, error) {
+	rsp, err := c.DeleteApiCustompropertiesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiCustompropertiesUuidResponse(rsp)
+}
+
+// GetApiCustompropertiesUuidWithResponse request returning *GetApiCustompropertiesUuidResponse
+func (c *ClientWithResponses) GetApiCustompropertiesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiCustompropertiesUuidResponse, error) {
+	rsp, err := c.GetApiCustompropertiesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiCustompropertiesUuidResponse(rsp)
+}
+
+// PutApiCustompropertiesUuidWithBodyWithResponse request with arbitrary body returning *PutApiCustompropertiesUuidResponse
+func (c *ClientWithResponses) PutApiCustompropertiesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiCustompropertiesUuidResponse, error) {
+	rsp, err := c.PutApiCustompropertiesUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiCustompropertiesUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiCustompropertiesUuidWithResponse(ctx context.Context, uuid string, body PutApiCustompropertiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiCustompropertiesUuidResponse, error) {
+	rsp, err := c.PutApiCustompropertiesUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiCustompropertiesUuidResponse(rsp)
+}
+
+// GetApiDisclaimerWithResponse request returning *GetApiDisclaimerResponse
+func (c *ClientWithResponses) GetApiDisclaimerWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDisclaimerResponse, error) {
+	rsp, err := c.GetApiDisclaimer(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiDisclaimerResponse(rsp)
+}
+
+// GetApiExportCustompropertiesWithResponse request returning *GetApiExportCustompropertiesResponse
+func (c *ClientWithResponses) GetApiExportCustompropertiesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiExportCustompropertiesResponse, error) {
+	rsp, err := c.GetApiExportCustomproperties(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiExportCustompropertiesResponse(rsp)
+}
+
+// GetApiExportObjectsWithResponse request returning *GetApiExportObjectsResponse
+func (c *ClientWithResponses) GetApiExportObjectsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiExportObjectsResponse, error) {
+	rsp, err := c.GetApiExportObjects(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiExportObjectsResponse(rsp)
+}
+
+// GetApiExportSdwansupervisionWithResponse request returning *GetApiExportSdwansupervisionResponse
+func (c *ClientWithResponses) GetApiExportSdwansupervisionWithResponse(ctx context.Context, params *GetApiExportSdwansupervisionParams, reqEditors ...RequestEditorFn) (*GetApiExportSdwansupervisionResponse, error) {
+	rsp, err := c.GetApiExportSdwansupervision(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiExportSdwansupervisionResponse(rsp)
+}
+
+// PostApiExportSupervisionWithBodyWithResponse request with arbitrary body returning *PostApiExportSupervisionResponse
+func (c *ClientWithResponses) PostApiExportSupervisionWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiExportSupervisionResponse, error) {
+	rsp, err := c.PostApiExportSupervisionWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiExportSupervisionResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiExportSupervisionWithResponse(ctx context.Context, body PostApiExportSupervisionJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiExportSupervisionResponse, error) {
+	rsp, err := c.PostApiExportSupervision(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiExportSupervisionResponse(rsp)
+}
+
+// GetApiExportVariablesWithResponse request returning *GetApiExportVariablesResponse
+func (c *ClientWithResponses) GetApiExportVariablesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiExportVariablesResponse, error) {
+	rsp, err := c.GetApiExportVariables(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiExportVariablesResponse(rsp)
+}
+
+// GetApiFeatureTogglingWithResponse request returning *GetApiFeatureTogglingResponse
+func (c *ClientWithResponses) GetApiFeatureTogglingWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiFeatureTogglingResponse, error) {
+	rsp, err := c.GetApiFeatureToggling(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiFeatureTogglingResponse(rsp)
+}
+
+// PostApiFirewallsUuidPackageWithBodyWithResponse request with arbitrary body returning *PostApiFirewallsUuidPackageResponse
+func (c *ClientWithResponses) PostApiFirewallsUuidPackageWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidPackageResponse, error) {
+	rsp, err := c.PostApiFirewallsUuidPackageWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiFirewallsUuidPackageResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiFirewallsUuidPackageWithResponse(ctx context.Context, uuid string, body PostApiFirewallsUuidPackageJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidPackageResponse, error) {
+	rsp, err := c.PostApiFirewallsUuidPackage(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiFirewallsUuidPackageResponse(rsp)
+}
+
+// GetApiFirewallsUuidTopologiesWithResponse request returning *GetApiFirewallsUuidTopologiesResponse
+func (c *ClientWithResponses) GetApiFirewallsUuidTopologiesWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiFirewallsUuidTopologiesResponse, error) {
+	rsp, err := c.GetApiFirewallsUuidTopologies(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiFirewallsUuidTopologiesResponse(rsp)
+}
+
+// GetApiFoldersWithResponse request returning *GetApiFoldersResponse
+func (c *ClientWithResponses) GetApiFoldersWithResponse(ctx context.Context, params *GetApiFoldersParams, reqEditors ...RequestEditorFn) (*GetApiFoldersResponse, error) {
+	rsp, err := c.GetApiFolders(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiFoldersResponse(rsp)
+}
+
+// PostApiFoldersWithBodyWithResponse request with arbitrary body returning *PostApiFoldersResponse
+func (c *ClientWithResponses) PostApiFoldersWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiFoldersResponse, error) {
+	rsp, err := c.PostApiFoldersWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiFoldersResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiFoldersWithResponse(ctx context.Context, body PostApiFoldersJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiFoldersResponse, error) {
+	rsp, err := c.PostApiFolders(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiFoldersResponse(rsp)
+}
+
+// GetApiFoldersAccountFoldersWithResponse request returning *GetApiFoldersAccountFoldersResponse
+func (c *ClientWithResponses) GetApiFoldersAccountFoldersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiFoldersAccountFoldersResponse, error) {
+	rsp, err := c.GetApiFoldersAccountFolders(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiFoldersAccountFoldersResponse(rsp)
+}
+
+// GetApiFoldersBynameNameWithResponse request returning *GetApiFoldersBynameNameResponse
+func (c *ClientWithResponses) GetApiFoldersBynameNameWithResponse(ctx context.Context, name string, reqEditors ...RequestEditorFn) (*GetApiFoldersBynameNameResponse, error) {
+	rsp, err := c.GetApiFoldersBynameName(ctx, name, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiFoldersBynameNameResponse(rsp)
+}
+
+// DeleteApiFoldersUuidWithResponse request returning *DeleteApiFoldersUuidResponse
+func (c *ClientWithResponses) DeleteApiFoldersUuidWithResponse(ctx context.Context, uuid string, params *DeleteApiFoldersUuidParams, reqEditors ...RequestEditorFn) (*DeleteApiFoldersUuidResponse, error) {
+	rsp, err := c.DeleteApiFoldersUuid(ctx, uuid, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiFoldersUuidResponse(rsp)
+}
+
+// GetApiFoldersUuidWithResponse request returning *GetApiFoldersUuidResponse
+func (c *ClientWithResponses) GetApiFoldersUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiFoldersUuidResponse, error) {
+	rsp, err := c.GetApiFoldersUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiFoldersUuidResponse(rsp)
+}
+
+// PutApiFoldersUuidWithBodyWithResponse request with arbitrary body returning *PutApiFoldersUuidResponse
+func (c *ClientWithResponses) PutApiFoldersUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiFoldersUuidResponse, error) {
+	rsp, err := c.PutApiFoldersUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiFoldersUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiFoldersUuidWithResponse(ctx context.Context, uuid string, body PutApiFoldersUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiFoldersUuidResponse, error) {
+	rsp, err := c.PutApiFoldersUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiFoldersUuidResponse(rsp)
+}
+
+// GetApiLdapWithResponse request returning *GetApiLdapResponse
+func (c *ClientWithResponses) GetApiLdapWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiLdapResponse, error) {
+	rsp, err := c.GetApiLdap(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiLdapResponse(rsp)
+}
+
+// PostApiLdapWithBodyWithResponse request with arbitrary body returning *PostApiLdapResponse
+func (c *ClientWithResponses) PostApiLdapWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiLdapResponse, error) {
+	rsp, err := c.PostApiLdapWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiLdapResponse(rsp)
+}
+
+// GetApiLockWithResponse request returning *GetApiLockResponse
+func (c *ClientWithResponses) GetApiLockWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiLockResponse, error) {
+	rsp, err := c.GetApiLock(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiLockResponse(rsp)
+}
+
+// GetApiLogsAuditLastWithResponse request returning *GetApiLogsAuditLastResponse
+func (c *ClientWithResponses) GetApiLogsAuditLastWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiLogsAuditLastResponse, error) {
+	rsp, err := c.GetApiLogsAuditLast(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiLogsAuditLastResponse(rsp)
+}
+
+// GetApiLogsLastWithResponse request returning *GetApiLogsLastResponse
+func (c *ClientWithResponses) GetApiLogsLastWithResponse(ctx context.Context, params *GetApiLogsLastParams, reqEditors ...RequestEditorFn) (*GetApiLogsLastResponse, error) {
+	rsp, err := c.GetApiLogsLast(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiLogsLastResponse(rsp)
+}
+
+// GetApiMessageBoxesWithResponse request returning *GetApiMessageBoxesResponse
+func (c *ClientWithResponses) GetApiMessageBoxesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiMessageBoxesResponse, error) {
+	rsp, err := c.GetApiMessageBoxes(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiMessageBoxesResponse(rsp)
+}
+
+// GetApiRadiusWithResponse request returning *GetApiRadiusResponse
+func (c *ClientWithResponses) GetApiRadiusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiRadiusResponse, error) {
+	rsp, err := c.GetApiRadius(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiRadiusResponse(rsp)
+}
+
+// PostApiRadiusWithBodyWithResponse request with arbitrary body returning *PostApiRadiusResponse
+func (c *ClientWithResponses) PostApiRadiusWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiRadiusResponse, error) {
+	rsp, err := c.PostApiRadiusWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiRadiusResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiRadiusWithResponse(ctx context.Context, body PostApiRadiusJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiRadiusResponse, error) {
+	rsp, err := c.PostApiRadius(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiRadiusResponse(rsp)
+}
+
+// GetApiSnsdiffDiffUuidWithResponse request returning *GetApiSnsdiffDiffUuidResponse
+func (c *ClientWithResponses) GetApiSnsdiffDiffUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiSnsdiffDiffUuidResponse, error) {
+	rsp, err := c.GetApiSnsdiffDiffUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiSnsdiffDiffUuidResponse(rsp)
+}
+
+// PostApiUpdateWithBodyWithResponse request with arbitrary body returning *PostApiUpdateResponse
+func (c *ClientWithResponses) PostApiUpdateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiUpdateResponse, error) {
+	rsp, err := c.PostApiUpdateWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiUpdateResponse(rsp)
+}
+
+// GetApiUpdateLaunchWithResponse request returning *GetApiUpdateLaunchResponse
+func (c *ClientWithResponses) GetApiUpdateLaunchWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiUpdateLaunchResponse, error) {
+	rsp, err := c.GetApiUpdateLaunch(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiUpdateLaunchResponse(rsp)
+}
+
+// GetApiUpdateStatusWithResponse request returning *GetApiUpdateStatusResponse
+func (c *ClientWithResponses) GetApiUpdateStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiUpdateStatusResponse, error) {
+	rsp, err := c.GetApiUpdateStatus(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiUpdateStatusResponse(rsp)
+}
+
+// GetApiUsageUuidWithResponse request returning *GetApiUsageUuidResponse
+func (c *ClientWithResponses) GetApiUsageUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiUsageUuidResponse, error) {
+	rsp, err := c.GetApiUsageUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiUsageUuidResponse(rsp)
+}
+
+// GetApiVariablesWithResponse request returning *GetApiVariablesResponse
+func (c *ClientWithResponses) GetApiVariablesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVariablesResponse, error) {
+	rsp, err := c.GetApiVariables(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVariablesResponse(rsp)
+}
+
+// PostApiVariablesWithBodyWithResponse request with arbitrary body returning *PostApiVariablesResponse
+func (c *ClientWithResponses) PostApiVariablesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiVariablesResponse, error) {
+	rsp, err := c.PostApiVariablesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiVariablesResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiVariablesWithResponse(ctx context.Context, body PostApiVariablesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiVariablesResponse, error) {
+	rsp, err := c.PostApiVariables(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiVariablesResponse(rsp)
+}
+
+// PostApiVariablesImportWithBodyWithResponse request with arbitrary body returning *PostApiVariablesImportResponse
+func (c *ClientWithResponses) PostApiVariablesImportWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiVariablesImportResponse, error) {
+	rsp, err := c.PostApiVariablesImportWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiVariablesImportResponse(rsp)
+}
+
+// DeleteApiVariablesUuidWithResponse request returning *DeleteApiVariablesUuidResponse
+func (c *ClientWithResponses) DeleteApiVariablesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiVariablesUuidResponse, error) {
+	rsp, err := c.DeleteApiVariablesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiVariablesUuidResponse(rsp)
+}
+
+// GetApiVariablesUuidWithResponse request returning *GetApiVariablesUuidResponse
+func (c *ClientWithResponses) GetApiVariablesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiVariablesUuidResponse, error) {
+	rsp, err := c.GetApiVariablesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVariablesUuidResponse(rsp)
+}
+
+// PutApiVariablesUuidWithBodyWithResponse request with arbitrary body returning *PutApiVariablesUuidResponse
+func (c *ClientWithResponses) PutApiVariablesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiVariablesUuidResponse, error) {
+	rsp, err := c.PutApiVariablesUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiVariablesUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiVariablesUuidWithResponse(ctx context.Context, uuid string, body PutApiVariablesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiVariablesUuidResponse, error) {
+	rsp, err := c.PutApiVariablesUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiVariablesUuidResponse(rsp)
+}
+
+// GetApiVpnAlgorithmsAuthWithResponse request returning *GetApiVpnAlgorithmsAuthResponse
+func (c *ClientWithResponses) GetApiVpnAlgorithmsAuthWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnAlgorithmsAuthResponse, error) {
+	rsp, err := c.GetApiVpnAlgorithmsAuth(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVpnAlgorithmsAuthResponse(rsp)
+}
+
+// GetApiVpnAlgorithmsEncWithResponse request returning *GetApiVpnAlgorithmsEncResponse
+func (c *ClientWithResponses) GetApiVpnAlgorithmsEncWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnAlgorithmsEncResponse, error) {
+	rsp, err := c.GetApiVpnAlgorithmsEnc(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVpnAlgorithmsEncResponse(rsp)
+}
+
+// GetApiVpnDefaultAddressPoolWithResponse request returning *GetApiVpnDefaultAddressPoolResponse
+func (c *ClientWithResponses) GetApiVpnDefaultAddressPoolWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnDefaultAddressPoolResponse, error) {
+	rsp, err := c.GetApiVpnDefaultAddressPool(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVpnDefaultAddressPoolResponse(rsp)
+}
+
+// PostApiVpnDefaultAddressPoolWithBodyWithResponse request with arbitrary body returning *PostApiVpnDefaultAddressPoolResponse
+func (c *ClientWithResponses) PostApiVpnDefaultAddressPoolWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiVpnDefaultAddressPoolResponse, error) {
+	rsp, err := c.PostApiVpnDefaultAddressPoolWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiVpnDefaultAddressPoolResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiVpnDefaultAddressPoolWithResponse(ctx context.Context, body PostApiVpnDefaultAddressPoolJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiVpnDefaultAddressPoolResponse, error) {
+	rsp, err := c.PostApiVpnDefaultAddressPool(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiVpnDefaultAddressPoolResponse(rsp)
+}
+
+// GetApiVpnEncryptionProfilesWithResponse request returning *GetApiVpnEncryptionProfilesResponse
+func (c *ClientWithResponses) GetApiVpnEncryptionProfilesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnEncryptionProfilesResponse, error) {
+	rsp, err := c.GetApiVpnEncryptionProfiles(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVpnEncryptionProfilesResponse(rsp)
+}
+
+// PostApiVpnEncryptionProfilesWithBodyWithResponse request with arbitrary body returning *PostApiVpnEncryptionProfilesResponse
+func (c *ClientWithResponses) PostApiVpnEncryptionProfilesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiVpnEncryptionProfilesResponse, error) {
+	rsp, err := c.PostApiVpnEncryptionProfilesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiVpnEncryptionProfilesResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiVpnEncryptionProfilesWithResponse(ctx context.Context, body PostApiVpnEncryptionProfilesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiVpnEncryptionProfilesResponse, error) {
+	rsp, err := c.PostApiVpnEncryptionProfiles(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiVpnEncryptionProfilesResponse(rsp)
+}
+
+// DeleteApiVpnEncryptionProfilesUuidWithResponse request returning *DeleteApiVpnEncryptionProfilesUuidResponse
+func (c *ClientWithResponses) DeleteApiVpnEncryptionProfilesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiVpnEncryptionProfilesUuidResponse, error) {
+	rsp, err := c.DeleteApiVpnEncryptionProfilesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiVpnEncryptionProfilesUuidResponse(rsp)
+}
+
+// GetApiVpnEncryptionProfilesUuidWithResponse request returning *GetApiVpnEncryptionProfilesUuidResponse
+func (c *ClientWithResponses) GetApiVpnEncryptionProfilesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiVpnEncryptionProfilesUuidResponse, error) {
+	rsp, err := c.GetApiVpnEncryptionProfilesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVpnEncryptionProfilesUuidResponse(rsp)
+}
+
+// PutApiVpnEncryptionProfilesUuidWithBodyWithResponse request with arbitrary body returning *PutApiVpnEncryptionProfilesUuidResponse
+func (c *ClientWithResponses) PutApiVpnEncryptionProfilesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiVpnEncryptionProfilesUuidResponse, error) {
+	rsp, err := c.PutApiVpnEncryptionProfilesUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiVpnEncryptionProfilesUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiVpnEncryptionProfilesUuidWithResponse(ctx context.Context, uuid string, body PutApiVpnEncryptionProfilesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiVpnEncryptionProfilesUuidResponse, error) {
+	rsp, err := c.PutApiVpnEncryptionProfilesUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiVpnEncryptionProfilesUuidResponse(rsp)
+}
+
+// GetApiVpnTopologiesWithResponse request returning *GetApiVpnTopologiesResponse
+func (c *ClientWithResponses) GetApiVpnTopologiesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnTopologiesResponse, error) {
+	rsp, err := c.GetApiVpnTopologies(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVpnTopologiesResponse(rsp)
+}
+
+// PostApiVpnTopologiesWithBodyWithResponse request with arbitrary body returning *PostApiVpnTopologiesResponse
+func (c *ClientWithResponses) PostApiVpnTopologiesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiVpnTopologiesResponse, error) {
+	rsp, err := c.PostApiVpnTopologiesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiVpnTopologiesResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiVpnTopologiesWithResponse(ctx context.Context, body PostApiVpnTopologiesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiVpnTopologiesResponse, error) {
+	rsp, err := c.PostApiVpnTopologies(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiVpnTopologiesResponse(rsp)
+}
+
+// DeleteApiVpnTopologiesUuidWithResponse request returning *DeleteApiVpnTopologiesUuidResponse
+func (c *ClientWithResponses) DeleteApiVpnTopologiesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiVpnTopologiesUuidResponse, error) {
+	rsp, err := c.DeleteApiVpnTopologiesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiVpnTopologiesUuidResponse(rsp)
+}
+
+// GetApiVpnTopologiesUuidWithResponse request returning *GetApiVpnTopologiesUuidResponse
+func (c *ClientWithResponses) GetApiVpnTopologiesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiVpnTopologiesUuidResponse, error) {
+	rsp, err := c.GetApiVpnTopologiesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVpnTopologiesUuidResponse(rsp)
+}
+
+// PutApiVpnTopologiesUuidWithBodyWithResponse request with arbitrary body returning *PutApiVpnTopologiesUuidResponse
+func (c *ClientWithResponses) PutApiVpnTopologiesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiVpnTopologiesUuidResponse, error) {
+	rsp, err := c.PutApiVpnTopologiesUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiVpnTopologiesUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiVpnTopologiesUuidWithResponse(ctx context.Context, uuid string, body PutApiVpnTopologiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiVpnTopologiesUuidResponse, error) {
+	rsp, err := c.PutApiVpnTopologiesUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiVpnTopologiesUuidResponse(rsp)
+}
+
+// GetApiVpnTopologiesUuidExportWithResponse request returning *GetApiVpnTopologiesUuidExportResponse
+func (c *ClientWithResponses) GetApiVpnTopologiesUuidExportWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiVpnTopologiesUuidExportResponse, error) {
+	rsp, err := c.GetApiVpnTopologiesUuidExport(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVpnTopologiesUuidExportResponse(rsp)
+}
+
+// GetApiVpnTunnelsWithResponse request returning *GetApiVpnTunnelsResponse
+func (c *ClientWithResponses) GetApiVpnTunnelsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiVpnTunnelsResponse, error) {
+	rsp, err := c.GetApiVpnTunnels(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiVpnTunnelsResponse(rsp)
+}
+
+// ParseGetApiAccountsResponse parses an HTTP response from a GetApiAccountsWithResponse call
+func ParseGetApiAccountsResponse(rsp *http.Response) (*GetApiAccountsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiAccountsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *[]DefinitionsAccountsAccountPropertiesWithoutPassword `json:"result,omitempty"`
+			Success *bool                                                  `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiAccountsResponse parses an HTTP response from a PostApiAccountsWithResponse call
+func ParsePostApiAccountsResponse(rsp *http.Response) (*PostApiAccountsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiAccountsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest struct {
+			Result  *DefinitionsAccountsAccountPropertiesWithoutPassword `json:"result,omitempty"`
+			Success *bool                                                `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiAccountsApikeysResponse parses an HTTP response from a PostApiAccountsApikeysWithResponse call
+func ParsePostApiAccountsApikeysResponse(rsp *http.Response) (*PostApiAccountsApikeysResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiAccountsApikeysResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest struct {
+			Result  *DefinitionsAccountsCreateApiKeyResponse `json:"result,omitempty"`
+			Success *bool                                    `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiAccountsApikeysRevokeUuidResponse parses an HTTP response from a PostApiAccountsApikeysRevokeUuidWithResponse call
+func ParsePostApiAccountsApikeysRevokeUuidResponse(rsp *http.Response) (*PostApiAccountsApikeysRevokeUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiAccountsApikeysRevokeUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// Result The API key public properties
+			Result  *DefinitionsAccountsApiKeyProperties `json:"result,omitempty"`
+			Success *bool                                `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiAccountsApikeysUuidResponse parses an HTTP response from a GetApiAccountsApikeysUuidWithResponse call
+func ParseGetApiAccountsApikeysUuidResponse(rsp *http.Response) (*GetApiAccountsApikeysUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiAccountsApikeysUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsAccountsApiKeyProperties
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiAccountsUuidResponse parses an HTTP response from a DeleteApiAccountsUuidWithResponse call
+func ParseDeleteApiAccountsUuidResponse(rsp *http.Response) (*DeleteApiAccountsUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiAccountsUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsAccountsAccountPropertiesWithoutPassword `json:"result,omitempty"`
+			Success *bool                                                `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiAccountsUuidResponse parses an HTTP response from a GetApiAccountsUuidWithResponse call
+func ParseGetApiAccountsUuidResponse(rsp *http.Response) (*GetApiAccountsUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiAccountsUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsAccountsAccountPropertiesWithoutPassword
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiAccountsUuidResponse parses an HTTP response from a PutApiAccountsUuidWithResponse call
+func ParsePutApiAccountsUuidResponse(rsp *http.Response) (*PutApiAccountsUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiAccountsUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsAccountsAccountPropertiesWithoutPassword `json:"result,omitempty"`
+			Success *bool                                                `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiActiveupdateResponse parses an HTTP response from a GetApiActiveupdateWithResponse call
+func ParseGetApiActiveupdateResponse(rsp *http.Response) (*GetApiActiveupdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiActiveupdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// Interfaces A list of listening network interfaces or an empty array if the service listens on every interface
+			Interfaces *[]string `json:"interfaces,omitempty"`
+
+			// Port a simple port
+			Port *float32 `json:"port,omitempty"`
+
+			// State service state
+			State *bool `json:"state,omitempty"`
+
+			// SyncAutoUpdatePeriod a CRON tab entry representing the sync periodicity
+			SyncAutoUpdatePeriod *string `json:"syncAutoUpdatePeriod,omitempty"`
+
+			// SyncAutoUpdateState true if the autoupdate sync has been activated
+			SyncAutoUpdateState *bool `json:"syncAutoUpdateState,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiActiveupdateResponse parses an HTTP response from a PutApiActiveupdateWithResponse call
+func ParsePutApiActiveupdateResponse(rsp *http.Response) (*PutApiActiveupdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiActiveupdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Errors  *DefinitionsCommonErrorsList `json:"errors,omitempty"`
+			Success *bool                        `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiActiveupdateCertificateResponse parses an HTTP response from a GetApiActiveupdateCertificateWithResponse call
+func ParseGetApiActiveupdateCertificateResponse(rsp *http.Response) (*GetApiActiveupdateCertificateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiActiveupdateCertificateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParsePostApiActiveupdateImportResponse parses an HTTP response from a PostApiActiveupdateImportWithResponse call
+func ParsePostApiActiveupdateImportResponse(rsp *http.Response) (*PostApiActiveupdateImportResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiActiveupdateImportResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Errors  *DefinitionsCommonErrorsList `json:"errors,omitempty"`
+			Success *bool                        `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiActiveupdateInfosResponse parses an HTTP response from a GetApiActiveupdateInfosWithResponse call
+func ParseGetApiActiveupdateInfosResponse(rsp *http.Response) (*GetApiActiveupdateInfosResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiActiveupdateInfosResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// CertificateDn Server certificate DN
+			CertificateDn *string `json:"certificateDn,omitempty"`
+
+			// LastSyncEnd last synchronization end time
+			LastSyncEnd *string `json:"lastSyncEnd,omitempty"`
+
+			// LastSyncError last synchronization error
+			LastSyncError *string `json:"lastSyncError,omitempty"`
+
+			// LastSyncStart last synchronization start time
+			LastSyncStart *string `json:"lastSyncStart,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiActiveupdateScriptResponse parses an HTTP response from a GetApiActiveupdateScriptWithResponse call
+func ParseGetApiActiveupdateScriptResponse(rsp *http.Response) (*GetApiActiveupdateScriptResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiActiveupdateScriptResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParsePostApiActiveupdateSyncResponse parses an HTTP response from a PostApiActiveupdateSyncWithResponse call
+func ParsePostApiActiveupdateSyncResponse(rsp *http.Response) (*PostApiActiveupdateSyncResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiActiveupdateSyncResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Errors  *DefinitionsCommonErrorsList `json:"errors,omitempty"`
+			Success *bool                        `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiAdminaccountResponse parses an HTTP response from a PutApiAdminaccountWithResponse call
+func ParsePutApiAdminaccountResponse(rsp *http.Response) (*PutApiAdminaccountResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiAdminaccountResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsAdminaccountAdminAccountResponse `json:"result,omitempty"`
+			Success *bool                                        `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiApipolicyResponse parses an HTTP response from a GetApiApipolicyWithResponse call
+func ParseGetApiApipolicyResponse(rsp *http.Response) (*GetApiApipolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiApipolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsAuthPolicyApiKeyPolicyResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiApipolicyResponse parses an HTTP response from a PutApiApipolicyWithResponse call
+func ParsePutApiApipolicyResponse(rsp *http.Response) (*PutApiApipolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiApipolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsAuthPolicyApiKeyPolicyResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiAuthLoginResponse parses an HTTP response from a PostApiAuthLoginWithResponse call
+func ParsePostApiAuthLoginResponse(rsp *http.Response) (*PostApiAuthLoginResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiAuthLoginResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsAuthAuthResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			// Success False in case of a bad login / pwd
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest struct {
+			// Delay duration in seconds of the ban time
+			Delay float32 `json:"delay"`
+
+			// Success False in case of a banned IP
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsAuthConflictErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiAuthLogoutResponse parses an HTTP response from a PostApiAuthLogoutWithResponse call
+func ParsePostApiAuthLogoutResponse(rsp *http.Response) (*PostApiAuthLogoutResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiAuthLogoutResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiAuthpolicyResponse parses an HTTP response from a GetApiAuthpolicyWithResponse call
+func ParseGetApiAuthpolicyResponse(rsp *http.Response) (*GetApiAuthpolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiAuthpolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsAuthPolicyPolicyResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiAuthpolicyResponse parses an HTTP response from a PutApiAuthpolicyWithResponse call
+func ParsePutApiAuthpolicyResponse(rsp *http.Response) (*PutApiAuthpolicyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiAuthpolicyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsAuthPolicyPolicyResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiAutobackupResponse parses an HTTP response from a GetApiAutobackupWithResponse call
+func ParseGetApiAutobackupResponse(rsp *http.Response) (*GetApiAutobackupResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiAutobackupResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Enabled *bool `json:"enabled,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiAutobackupResponse parses an HTTP response from a PostApiAutobackupWithResponse call
+func ParsePostApiAutobackupResponse(rsp *http.Response) (*PostApiAutobackupResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiAutobackupResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsCommonSuccessResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiAutobackupResultsResponse parses an HTTP response from a GetApiAutobackupResultsWithResponse call
+func ParseGetApiAutobackupResultsResponse(rsp *http.Response) (*GetApiAutobackupResultsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiAutobackupResultsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *[]DefinitionsAutobackupAutoBackupResult `json:"result,omitempty"`
+			Success *bool                                    `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiAutobackupSmcBackupDateResponse parses an HTTP response from a GetApiAutobackupSmcBackupDateWithResponse call
+func ParseGetApiAutobackupSmcBackupDateResponse(rsp *http.Response) (*GetApiAutobackupSmcBackupDateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiAutobackupSmcBackupDateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiAutobackupDateArchiveResponse parses an HTTP response from a GetApiAutobackupDateArchiveWithResponse call
+func ParseGetApiAutobackupDateArchiveResponse(rsp *http.Response) (*GetApiAutobackupDateArchiveResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiAutobackupDateArchiveResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiAutobackupDateUuidFirewallBackupResponse parses an HTTP response from a GetApiAutobackupDateUuidFirewallBackupWithResponse call
+func ParseGetApiAutobackupDateUuidFirewallBackupResponse(rsp *http.Response) (*GetApiAutobackupDateUuidFirewallBackupResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiAutobackupDateUuidFirewallBackupResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiBackupResponse parses an HTTP response from a PostApiBackupWithResponse call
+func ParsePostApiBackupResponse(rsp *http.Response) (*PostApiBackupResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiBackupResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// ConfirmationToken md5 hash of the archive
+			ConfirmationToken *string `json:"confirmationToken,omitempty"`
+
+			// NewIp info ip address
+			NewIp   *string `json:"newIp,omitempty"`
+			Success *bool   `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiBackupDownloadResponse parses an HTTP response from a PostApiBackupDownloadWithResponse call
+func ParsePostApiBackupDownloadResponse(rsp *http.Response) (*PostApiBackupDownloadResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiBackupDownloadResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiBackupHashResponse parses an HTTP response from a PostApiBackupHashWithResponse call
+func ParsePostApiBackupHashResponse(rsp *http.Response) (*PostApiBackupHashResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiBackupHashResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCertificatesResponse parses an HTTP response from a GetApiCertificatesWithResponse call
+func ParseGetApiCertificatesResponse(rsp *http.Response) (*GetApiCertificatesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCertificatesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsCertificatesCertificatesList `json:"result,omitempty"`
+			Success *bool                                    `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiCertificatesResponse parses an HTTP response from a PostApiCertificatesWithResponse call
+func ParsePostApiCertificatesResponse(rsp *http.Response) (*PostApiCertificatesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiCertificatesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest struct {
+			Result *struct {
+				// Output output of the serverd commands triggered by the API call
+				Output *[]string `json:"output,omitempty"`
+
+				// Secured whether the certificate has been installed on firewall's TPM
+				Secured *bool `json:"secured,omitempty"`
+			} `json:"result,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCertificatesAuthoritiesResponse parses an HTTP response from a GetApiCertificatesAuthoritiesWithResponse call
+func ParseGetApiCertificatesAuthoritiesResponse(rsp *http.Response) (*GetApiCertificatesAuthoritiesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCertificatesAuthoritiesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsCertificationAuthoritiesCertificationAuthoritiesList `json:"result,omitempty"`
+			Success *bool                                                            `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiCertificatesAuthoritiesResponse parses an HTTP response from a PostApiCertificatesAuthoritiesWithResponse call
+func ParsePostApiCertificatesAuthoritiesResponse(rsp *http.Response) (*PostApiCertificatesAuthoritiesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiCertificatesAuthoritiesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+
+			// Uuids All the CAs persisted in the unified config. The first uuid of this array is the leaf of the trust chain (lowest ca)
+			Uuids *[]string `json:"uuids,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiCertificatesAuthoritiesCrlResponse parses an HTTP response from a PostApiCertificatesAuthoritiesCrlWithResponse call
+func ParsePostApiCertificatesAuthoritiesCrlResponse(rsp *http.Response) (*PostApiCertificatesAuthoritiesCrlResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiCertificatesAuthoritiesCrlResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *[]DefinitionsMiscCrlProperty `json:"result,omitempty"`
+			Success *bool                         `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiCertificatesAuthoritiesCrlCaUuidResponse parses an HTTP response from a PostApiCertificatesAuthoritiesCrlCaUuidWithResponse call
+func ParsePostApiCertificatesAuthoritiesCrlCaUuidResponse(rsp *http.Response) (*PostApiCertificatesAuthoritiesCrlCaUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiCertificatesAuthoritiesCrlCaUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsMiscCrlProperty `json:"result,omitempty"`
+			Success *bool                       `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCertificatesAuthoritiesRootResponse parses an HTTP response from a GetApiCertificatesAuthoritiesRootWithResponse call
+func ParseGetApiCertificatesAuthoritiesRootResponse(rsp *http.Response) (*GetApiCertificatesAuthoritiesRootResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCertificatesAuthoritiesRootResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsCertificationAuthoritiesCertificationAuthoritiesTree `json:"result,omitempty"`
+			Success *bool                                                            `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiCertificatesAuthoritiesCaUuidResponse parses an HTTP response from a DeleteApiCertificatesAuthoritiesCaUuidWithResponse call
+func ParseDeleteApiCertificatesAuthoritiesCaUuidResponse(rsp *http.Response) (*DeleteApiCertificatesAuthoritiesCaUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiCertificatesAuthoritiesCaUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCertificatesAuthoritiesCaUuidResponse parses an HTTP response from a GetApiCertificatesAuthoritiesCaUuidWithResponse call
+func ParseGetApiCertificatesAuthoritiesCaUuidResponse(rsp *http.Response) (*GetApiCertificatesAuthoritiesCaUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCertificatesAuthoritiesCaUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsCertificationAuthoritiesCertificationAuthority `json:"result,omitempty"`
+			Success *bool                                                      `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiCertificatesAuthoritiesCaUuidResponse parses an HTTP response from a PostApiCertificatesAuthoritiesCaUuidWithResponse call
+func ParsePostApiCertificatesAuthoritiesCaUuidResponse(rsp *http.Response) (*PostApiCertificatesAuthoritiesCaUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiCertificatesAuthoritiesCaUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool   `json:"success,omitempty"`
+			Uuid    *string `json:"uuid,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiCertificatesAuthoritiesCaUuidResponse parses an HTTP response from a PutApiCertificatesAuthoritiesCaUuidWithResponse call
+func ParsePutApiCertificatesAuthoritiesCaUuidResponse(rsp *http.Response) (*PutApiCertificatesAuthoritiesCaUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiCertificatesAuthoritiesCaUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCertificatesAuthoritiesCaUuidCrlResponse parses an HTTP response from a GetApiCertificatesAuthoritiesCaUuidCrlWithResponse call
+func ParseGetApiCertificatesAuthoritiesCaUuidCrlResponse(rsp *http.Response) (*GetApiCertificatesAuthoritiesCaUuidCrlResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCertificatesAuthoritiesCaUuidCrlResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest openapi_types.File
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiCertificatesGetResponse parses an HTTP response from a PostApiCertificatesGetWithResponse call
+func ParsePostApiCertificatesGetResponse(rsp *http.Response) (*PostApiCertificatesGetResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiCertificatesGetResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsCertificatesCertificate
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiCertificatesRenewResponse parses an HTTP response from a PostApiCertificatesRenewWithResponse call
+func ParsePostApiCertificatesRenewResponse(rsp *http.Response) (*PostApiCertificatesRenewResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiCertificatesRenewResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsCertificatesCertificatesRenewRequestResults
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiCertificatesUuidResponse parses an HTTP response from a DeleteApiCertificatesUuidWithResponse call
+func ParseDeleteApiCertificatesUuidResponse(rsp *http.Response) (*DeleteApiCertificatesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiCertificatesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsCertificatesCertificate `json:"result,omitempty"`
+			Success *bool                               `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCertificatesUuidResponse parses an HTTP response from a GetApiCertificatesUuidWithResponse call
+func ParseGetApiCertificatesUuidResponse(rsp *http.Response) (*GetApiCertificatesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCertificatesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsCertificatesCertificate `json:"result,omitempty"`
+			Success *bool                               `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiCertificatesUuidResponse parses an HTTP response from a PostApiCertificatesUuidWithResponse call
+func ParsePostApiCertificatesUuidResponse(rsp *http.Response) (*PostApiCertificatesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiCertificatesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsCertificatesCertificate `json:"result,omitempty"`
+			Success *bool                               `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiCertificatesUuidResponse parses an HTTP response from a PutApiCertificatesUuidWithResponse call
+func ParsePutApiCertificatesUuidResponse(rsp *http.Response) (*PutApiCertificatesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiCertificatesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsCertificatesCertificate `json:"result,omitempty"`
+			Success *bool                               `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCfgcheckActivationDomainNameResponse parses an HTTP response from a GetApiCfgcheckActivationDomainNameWithResponse call
+func ParseGetApiCfgcheckActivationDomainNameResponse(rsp *http.Response) (*GetApiCfgcheckActivationDomainNameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCfgcheckActivationDomainNameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Status  *bool `json:"status,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiCfgcheckActivationDomainNameResponse parses an HTTP response from a PutApiCfgcheckActivationDomainNameWithResponse call
+func ParsePutApiCfgcheckActivationDomainNameResponse(rsp *http.Response) (*PutApiCfgcheckActivationDomainNameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiCfgcheckActivationDomainNameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCfgcheckIncoherenciesResponse parses an HTTP response from a GetApiCfgcheckIncoherenciesWithResponse call
+func ParseGetApiCfgcheckIncoherenciesResponse(rsp *http.Response) (*GetApiCfgcheckIncoherenciesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCfgcheckIncoherenciesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsCfgcheckIncoherencies
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCfgcheckStatusResponse parses an HTTP response from a GetApiCfgcheckStatusWithResponse call
+func ParseGetApiCfgcheckStatusResponse(rsp *http.Response) (*GetApiCfgcheckStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCfgcheckStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Running *bool `json:"running,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCfgdiffArchiveUuidResponse parses an HTTP response from a GetApiCfgdiffArchiveUuidWithResponse call
+func ParseGetApiCfgdiffArchiveUuidResponse(rsp *http.Response) (*GetApiCfgdiffArchiveUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCfgdiffArchiveUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCfgdiffDiffUuidResponse parses an HTTP response from a GetApiCfgdiffDiffUuidWithResponse call
+func ParseGetApiCfgdiffDiffUuidResponse(rsp *http.Response) (*GetApiCfgdiffDiffUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCfgdiffDiffUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsCfgdiffCfgDiffResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCfgdiffNaUuidResponse parses an HTTP response from a GetApiCfgdiffNaUuidWithResponse call
+func ParseGetApiCfgdiffNaUuidResponse(rsp *http.Response) (*GetApiCfgdiffNaUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCfgdiffNaUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCfgdiffStatusResponse parses an HTTP response from a GetApiCfgdiffStatusWithResponse call
+func ParseGetApiCfgdiffStatusResponse(rsp *http.Response) (*GetApiCfgdiffStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCfgdiffStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsCfgdiffCfgDiffStatusResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiConfigInterfacesResponse parses an HTTP response from a GetApiConfigInterfacesWithResponse call
+func ParseGetApiConfigInterfacesResponse(rsp *http.Response) (*GetApiConfigInterfacesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiConfigInterfacesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigNetworkInterfacesListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiConfigInterfacesResponse parses an HTTP response from a PutApiConfigInterfacesWithResponse call
+func ParsePutApiConfigInterfacesResponse(rsp *http.Response) (*PutApiConfigInterfacesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiConfigInterfacesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsConfigNetworkInterfacesUpdateList `json:"result,omitempty"`
+			Success *bool                                         `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiConfigLicenseResponse parses an HTTP response from a GetApiConfigLicenseWithResponse call
+func ParseGetApiConfigLicenseResponse(rsp *http.Response) (*GetApiConfigLicenseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiConfigLicenseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// ClientContact customer contact name
+			ClientContact *string `json:"clientContact,omitempty"`
+
+			// ClientEmail customer contact email
+			ClientEmail *string `json:"clientEmail,omitempty"`
+
+			// ClientOrganization customer company name
+			ClientOrganization *string `json:"clientOrganization,omitempty"`
+
+			// Comment comment on license from ERP
+			Comment *string `json:"comment,omitempty"`
+
+			// DateNotAfter end validity date of license (ISO 8601 format, "YYYY-MM-DD")
+			DateNotAfter *string `json:"dateNotAfter,omitempty"`
+
+			// DateNotBefore start validity date of license (ISO 8601 format, "YYYY-MM-DD")
+			DateNotBefore *string `json:"dateNotBefore,omitempty"`
+
+			// DateUpdate validity date of maintenance contract (ISO 8601 format, "YYYY-MM-DD")
+			DateUpdate *string `json:"dateUpdate,omitempty"`
+
+			// FirewallsMax maximum numbers of firewalls allowed
+			FirewallsMax *string `json:"firewallsMax,omitempty"`
+
+			// Serial unique number generated by ERP to identify the license ("SMC" followed by 8 random hexa digits)
+			Serial *string `json:"serial,omitempty"`
+
+			// Version version number of licensing system in SMC
+			Version *string `json:"version,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiConfigLicenseResponse parses an HTTP response from a PostApiConfigLicenseWithResponse call
+func ParsePostApiConfigLicenseResponse(rsp *http.Response) (*PostApiConfigLicenseResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiConfigLicenseResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Errors  *DefinitionsCommonErrorsList `json:"errors,omitempty"`
+			Success *bool                        `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiConfigLicenseVerifyResponse parses an HTTP response from a PostApiConfigLicenseVerifyWithResponse call
+func ParsePostApiConfigLicenseVerifyResponse(rsp *http.Response) (*PostApiConfigLicenseVerifyResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiConfigLicenseVerifyResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiConfigNetworkResponse parses an HTTP response from a GetApiConfigNetworkWithResponse call
+func ParseGetApiConfigNetworkResponse(rsp *http.Response) (*GetApiConfigNetworkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiConfigNetworkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigNetworkConfiguration
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiConfigNetworkResponse parses an HTTP response from a PostApiConfigNetworkWithResponse call
+func ParsePostApiConfigNetworkResponse(rsp *http.Response) (*PostApiConfigNetworkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiConfigNetworkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCustompropertiesResponse parses an HTTP response from a GetApiCustompropertiesWithResponse call
+func ParseGetApiCustompropertiesResponse(rsp *http.Response) (*GetApiCustompropertiesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCustompropertiesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsCustomPropertiesMultipleCustomPropertiesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiCustompropertiesResponse parses an HTTP response from a PostApiCustompropertiesWithResponse call
+func ParsePostApiCustompropertiesResponse(rsp *http.Response) (*PostApiCustompropertiesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiCustompropertiesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DefinitionsCustomPropertiesSingleCustomPropertyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiCustompropertiesUuidResponse parses an HTTP response from a DeleteApiCustompropertiesUuidWithResponse call
+func ParseDeleteApiCustompropertiesUuidResponse(rsp *http.Response) (*DeleteApiCustompropertiesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiCustompropertiesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiCustompropertiesUuidResponse parses an HTTP response from a GetApiCustompropertiesUuidWithResponse call
+func ParseGetApiCustompropertiesUuidResponse(rsp *http.Response) (*GetApiCustompropertiesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiCustompropertiesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsCustomPropertiesSingleCustomPropertyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiCustompropertiesUuidResponse parses an HTTP response from a PutApiCustompropertiesUuidWithResponse call
+func ParsePutApiCustompropertiesUuidResponse(rsp *http.Response) (*PutApiCustompropertiesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiCustompropertiesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsCustomPropertiesSingleCustomPropertyResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiDisclaimerResponse parses an HTTP response from a GetApiDisclaimerWithResponse call
+func ParseGetApiDisclaimerResponse(rsp *http.Response) (*GetApiDisclaimerResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiDisclaimerResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseGetApiExportCustompropertiesResponse parses an HTTP response from a GetApiExportCustompropertiesWithResponse call
+func ParseGetApiExportCustompropertiesResponse(rsp *http.Response) (*GetApiExportCustompropertiesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiExportCustompropertiesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiExportObjectsResponse parses an HTTP response from a GetApiExportObjectsWithResponse call
+func ParseGetApiExportObjectsResponse(rsp *http.Response) (*GetApiExportObjectsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiExportObjectsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiExportSdwansupervisionResponse parses an HTTP response from a GetApiExportSdwansupervisionWithResponse call
+func ParseGetApiExportSdwansupervisionResponse(rsp *http.Response) (*GetApiExportSdwansupervisionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiExportSdwansupervisionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiExportSupervisionResponse parses an HTTP response from a PostApiExportSupervisionWithResponse call
+func ParsePostApiExportSupervisionResponse(rsp *http.Response) (*PostApiExportSupervisionResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiExportSupervisionResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiExportVariablesResponse parses an HTTP response from a GetApiExportVariablesWithResponse call
+func ParseGetApiExportVariablesResponse(rsp *http.Response) (*GetApiExportVariablesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiExportVariablesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiFeatureTogglingResponse parses an HTTP response from a GetApiFeatureTogglingWithResponse call
+func ParseGetApiFeatureTogglingResponse(rsp *http.Response) (*GetApiFeatureTogglingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiFeatureTogglingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// Result Feature toggles statuses
+			Result *[]struct {
+				IsEnabled *bool   `json:"isEnabled,omitempty"`
+				Name      *string `json:"name,omitempty"`
+			} `json:"result,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiFirewallsUuidPackageResponse parses an HTTP response from a PostApiFirewallsUuidPackageWithResponse call
+func ParsePostApiFirewallsUuidPackageResponse(rsp *http.Response) (*PostApiFirewallsUuidPackageResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiFirewallsUuidPackageResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiFirewallsUuidTopologiesResponse parses an HTTP response from a GetApiFirewallsUuidTopologiesWithResponse call
+func ParseGetApiFirewallsUuidTopologiesResponse(rsp *http.Response) (*GetApiFirewallsUuidTopologiesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiFirewallsUuidTopologiesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsTopologiesTopologiesListResponse `json:"result,omitempty"`
+			Success *bool                                        `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiFoldersResponse parses an HTTP response from a GetApiFoldersWithResponse call
+func ParseGetApiFoldersResponse(rsp *http.Response) (*GetApiFoldersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiFoldersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsFoldersFoldersTreeResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && true:
+		var dest DefinitionsFoldersFoldersListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSONDefault = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiFoldersResponse parses an HTTP response from a PostApiFoldersWithResponse call
+func ParsePostApiFoldersResponse(rsp *http.Response) (*PostApiFoldersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiFoldersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest struct {
+			Result  DefinitionsFoldersRawFolderProperties `json:"result"`
+			Success bool                                  `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiFoldersAccountFoldersResponse parses an HTTP response from a GetApiFoldersAccountFoldersWithResponse call
+func ParseGetApiFoldersAccountFoldersResponse(rsp *http.Response) (*GetApiFoldersAccountFoldersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiFoldersAccountFoldersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsFoldersAccountFoldersProps
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiFoldersBynameNameResponse parses an HTTP response from a GetApiFoldersBynameNameWithResponse call
+func ParseGetApiFoldersBynameNameResponse(rsp *http.Response) (*GetApiFoldersBynameNameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiFoldersBynameNameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  DefinitionsFoldersRawFolderProperties `json:"result"`
+			Success bool                                  `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiFoldersUuidResponse parses an HTTP response from a DeleteApiFoldersUuidWithResponse call
+func ParseDeleteApiFoldersUuidResponse(rsp *http.Response) (*DeleteApiFoldersUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiFoldersUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *map[string]interface{} `json:"result,omitempty"`
+			Success bool                    `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiFoldersUuidResponse parses an HTTP response from a GetApiFoldersUuidWithResponse call
+func ParseGetApiFoldersUuidResponse(rsp *http.Response) (*GetApiFoldersUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiFoldersUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  DefinitionsFoldersRawFolderProperties `json:"result"`
+			Success bool                                  `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiFoldersUuidResponse parses an HTTP response from a PutApiFoldersUuidWithResponse call
+func ParsePutApiFoldersUuidResponse(rsp *http.Response) (*PutApiFoldersUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiFoldersUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  DefinitionsFoldersRawFolderProperties `json:"result"`
+			Success bool                                  `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiLdapResponse parses an HTTP response from a GetApiLdapWithResponse call
+func ParseGetApiLdapResponse(rsp *http.Response) (*GetApiLdapResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiLdapResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsLdapLdapResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiLdapResponse parses an HTTP response from a PostApiLdapWithResponse call
+func ParsePostApiLdapResponse(rsp *http.Response) (*PostApiLdapResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiLdapResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsLdapLdapResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiLockResponse parses an HTTP response from a GetApiLockWithResponse call
+func ParseGetApiLockResponse(rsp *http.Response) (*GetApiLockResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiLockResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsLockLockResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiLogsAuditLastResponse parses an HTTP response from a GetApiLogsAuditLastWithResponse call
+func ParseGetApiLogsAuditLastResponse(rsp *http.Response) (*GetApiLogsAuditLastResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiLogsAuditLastResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsAuditlogsLogsResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiLogsLastResponse parses an HTTP response from a GetApiLogsLastWithResponse call
+func ParseGetApiLogsLastResponse(rsp *http.Response) (*GetApiLogsLastResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiLogsLastResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsLogsLogsResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiMessageBoxesResponse parses an HTTP response from a GetApiMessageBoxesWithResponse call
+func ParseGetApiMessageBoxesResponse(rsp *http.Response) (*GetApiMessageBoxesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiMessageBoxesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest []struct {
+			// Body The message"s body
+			Body *string `json:"body,omitempty"`
+
+			// Date Message\"s datetime (ISO 8601 format, \"YYYY-MM-DD\")
+			Date *string `json:"date,omitempty"`
+
+			// Fwid The UUID of the firewall concerned by this message
+			Fwid *string `json:"fwid,omitempty"`
+
+			// SendAttemptsCount Send attempts count
+			SendAttemptsCount *float32 `json:"sendAttemptsCount,omitempty"`
+
+			// Type Message"s type
+			Type *string `json:"type,omitempty"`
+
+			// User The user responsible of the creation of this message
+			User *string `json:"user,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiRadiusResponse parses an HTTP response from a GetApiRadiusWithResponse call
+func ParseGetApiRadiusResponse(rsp *http.Response) (*GetApiRadiusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiRadiusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsRadiusRadiusResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiRadiusResponse parses an HTTP response from a PostApiRadiusWithResponse call
+func ParsePostApiRadiusResponse(rsp *http.Response) (*PostApiRadiusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiRadiusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsRadiusRadiusPostResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiSnsdiffDiffUuidResponse parses an HTTP response from a GetApiSnsdiffDiffUuidWithResponse call
+func ParseGetApiSnsdiffDiffUuidResponse(rsp *http.Response) (*GetApiSnsdiffDiffUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiSnsdiffDiffUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsSnsdiffSnsDiffResult
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiUpdateResponse parses an HTTP response from a PostApiUpdateWithResponse call
+func ParsePostApiUpdateResponse(rsp *http.Response) (*PostApiUpdateResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiUpdateResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Errors *[]struct {
+				Code    *string `json:"code,omitempty"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest struct {
+			Errors *[]struct {
+				Code    *string `json:"code,omitempty"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiUpdateLaunchResponse parses an HTTP response from a GetApiUpdateLaunchWithResponse call
+func ParseGetApiUpdateLaunchResponse(rsp *http.Response) (*GetApiUpdateLaunchResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiUpdateLaunchResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Errors *[]struct {
+				Code    *string `json:"code,omitempty"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest struct {
+			Errors *[]struct {
+				Code    *string `json:"code,omitempty"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Errors *[]struct {
+				Code    *string `json:"code,omitempty"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiUpdateStatusResponse parses an HTTP response from a GetApiUpdateStatusWithResponse call
+func ParseGetApiUpdateStatusResponse(rsp *http.Response) (*GetApiUpdateStatusResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiUpdateStatusResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Locked  *bool `json:"locked,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiUsageUuidResponse parses an HTTP response from a GetApiUsageUuidWithResponse call
+func ParseGetApiUsageUuidResponse(rsp *http.Response) (*GetApiUsageUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiUsageUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsObjectsCheckUsageResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVariablesResponse parses an HTTP response from a GetApiVariablesWithResponse call
+func ParseGetApiVariablesResponse(rsp *http.Response) (*GetApiVariablesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVariablesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsVariablesMultipleVariablesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiVariablesResponse parses an HTTP response from a PostApiVariablesWithResponse call
+func ParsePostApiVariablesResponse(rsp *http.Response) (*PostApiVariablesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiVariablesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DefinitionsVariablesSingleVariableResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiVariablesImportResponse parses an HTTP response from a PostApiVariablesImportWithResponse call
+func ParsePostApiVariablesImportResponse(rsp *http.Response) (*PostApiVariablesImportResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiVariablesImportResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsVariablesVariablesImportListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiVariablesUuidResponse parses an HTTP response from a DeleteApiVariablesUuidWithResponse call
+func ParseDeleteApiVariablesUuidResponse(rsp *http.Response) (*DeleteApiVariablesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiVariablesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVariablesUuidResponse parses an HTTP response from a GetApiVariablesUuidWithResponse call
+func ParseGetApiVariablesUuidResponse(rsp *http.Response) (*GetApiVariablesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVariablesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsVariablesSingleVariableResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiVariablesUuidResponse parses an HTTP response from a PutApiVariablesUuidWithResponse call
+func ParsePutApiVariablesUuidResponse(rsp *http.Response) (*PutApiVariablesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiVariablesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsVariablesSingleVariableResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVpnAlgorithmsAuthResponse parses an HTTP response from a GetApiVpnAlgorithmsAuthWithResponse call
+func ParseGetApiVpnAlgorithmsAuthResponse(rsp *http.Response) (*GetApiVpnAlgorithmsAuthResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVpnAlgorithmsAuthResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsAlgorithmsAuthAlgorithmsList
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVpnAlgorithmsEncResponse parses an HTTP response from a GetApiVpnAlgorithmsEncWithResponse call
+func ParseGetApiVpnAlgorithmsEncResponse(rsp *http.Response) (*GetApiVpnAlgorithmsEncResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVpnAlgorithmsEncResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsAlgorithmsEncAlgorithmsList
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVpnDefaultAddressPoolResponse parses an HTTP response from a GetApiVpnDefaultAddressPoolWithResponse call
+func ParseGetApiVpnDefaultAddressPoolResponse(rsp *http.Response) (*GetApiVpnDefaultAddressPoolResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVpnDefaultAddressPoolResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsTopologiesDefaultAddressPool `json:"result,omitempty"`
+			Success *bool                                    `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiVpnDefaultAddressPoolResponse parses an HTTP response from a PostApiVpnDefaultAddressPoolWithResponse call
+func ParsePostApiVpnDefaultAddressPoolResponse(rsp *http.Response) (*PostApiVpnDefaultAddressPoolResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiVpnDefaultAddressPoolResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsTopologiesDefaultAddressPool `json:"result,omitempty"`
+			Success *bool                                    `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVpnEncryptionProfilesResponse parses an HTTP response from a GetApiVpnEncryptionProfilesWithResponse call
+func ParseGetApiVpnEncryptionProfilesResponse(rsp *http.Response) (*GetApiVpnEncryptionProfilesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVpnEncryptionProfilesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsEncryptionProfilesEncryptionProfileList
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiVpnEncryptionProfilesResponse parses an HTTP response from a PostApiVpnEncryptionProfilesWithResponse call
+func ParsePostApiVpnEncryptionProfilesResponse(rsp *http.Response) (*PostApiVpnEncryptionProfilesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiVpnEncryptionProfilesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DefinitionsEncryptionProfilesEncryptionProfileProperties
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiVpnEncryptionProfilesUuidResponse parses an HTTP response from a DeleteApiVpnEncryptionProfilesUuidWithResponse call
+func ParseDeleteApiVpnEncryptionProfilesUuidResponse(rsp *http.Response) (*DeleteApiVpnEncryptionProfilesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiVpnEncryptionProfilesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVpnEncryptionProfilesUuidResponse parses an HTTP response from a GetApiVpnEncryptionProfilesUuidWithResponse call
+func ParseGetApiVpnEncryptionProfilesUuidResponse(rsp *http.Response) (*GetApiVpnEncryptionProfilesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVpnEncryptionProfilesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsEncryptionProfilesEncryptionProfileProperties `json:"result,omitempty"`
+			Success *bool                                                     `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiVpnEncryptionProfilesUuidResponse parses an HTTP response from a PutApiVpnEncryptionProfilesUuidWithResponse call
+func ParsePutApiVpnEncryptionProfilesUuidResponse(rsp *http.Response) (*PutApiVpnEncryptionProfilesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiVpnEncryptionProfilesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsEncryptionProfilesEncryptionProfileProperties `json:"result,omitempty"`
+			Success *bool                                                     `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 422:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON422 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVpnTopologiesResponse parses an HTTP response from a GetApiVpnTopologiesWithResponse call
+func ParseGetApiVpnTopologiesResponse(rsp *http.Response) (*GetApiVpnTopologiesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVpnTopologiesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsTopologiesTopologiesListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiVpnTopologiesResponse parses an HTTP response from a PostApiVpnTopologiesWithResponse call
+func ParsePostApiVpnTopologiesResponse(rsp *http.Response) (*PostApiVpnTopologiesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiVpnTopologiesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsTopologiesTopologyPropertiesWithUuid `json:"result,omitempty"`
+			Success *bool                                            `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest DefinitionsCommonForbiddenBecauseOfUserScopeResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiVpnTopologiesUuidResponse parses an HTTP response from a DeleteApiVpnTopologiesUuidWithResponse call
+func ParseDeleteApiVpnTopologiesUuidResponse(rsp *http.Response) (*DeleteApiVpnTopologiesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiVpnTopologiesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest DefinitionsCommonForbiddenBecauseOfUserScopeResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVpnTopologiesUuidResponse parses an HTTP response from a GetApiVpnTopologiesUuidWithResponse call
+func ParseGetApiVpnTopologiesUuidResponse(rsp *http.Response) (*GetApiVpnTopologiesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVpnTopologiesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsTopologiesTopologyPropertiesWithUuid `json:"result,omitempty"`
+			Success *bool                                            `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiVpnTopologiesUuidResponse parses an HTTP response from a PutApiVpnTopologiesUuidWithResponse call
+func ParsePutApiVpnTopologiesUuidResponse(rsp *http.Response) (*PutApiVpnTopologiesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiVpnTopologiesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsTopologiesTopologyPropertiesWithUuid `json:"result,omitempty"`
+			Success *bool                                            `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest DefinitionsCommonForbiddenBecauseOfUserScopeResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVpnTopologiesUuidExportResponse parses an HTTP response from a GetApiVpnTopologiesUuidExportWithResponse call
+func ParseGetApiVpnTopologiesUuidExportResponse(rsp *http.Response) (*GetApiVpnTopologiesUuidExportResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVpnTopologiesUuidExportResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiVpnTunnelsResponse parses an HTTP response from a GetApiVpnTunnelsWithResponse call
+func ParseGetApiVpnTunnelsResponse(rsp *http.Response) (*GetApiVpnTunnelsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiVpnTunnelsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsTunnelsTunnelsListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
 }
