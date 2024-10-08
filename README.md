@@ -35,7 +35,7 @@ import (
 )
 
 func main() {
-    client, err := smc.NewSMCClientWithResponses("d22a93be6094d3f7421f37895c0d3646b6741753")
+    client, err := smc.NewSMCClientWithResponses("https://w.x.y.z/papi/v1", "d22a93be6094d3f7421f37895c0d3646b6741753")
     if err != nil {
         log.Fatal(err)
     }
