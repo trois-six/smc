@@ -69,4 +69,4 @@ make generate
 
 # Documentation
 
-If you need to check the spec, you can use the [Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/trois-six/smc/refs/heads/main/generator/swagger_flat.yaml) with the spec in `generator/swagger_flat.yaml`.
+If you need to check the spec, you can use the [Swagger Editor](https://editor.swagger.io/?url=https://raw.githubusercontent.com/trois-six/smc/refs/heads/main/generator/swagger_flat.yaml) with the spec in [swagger_flat.yaml](generator/swagger_flat.yaml).
