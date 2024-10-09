@@ -297,7 +297,28 @@ const (
 
 // Defines values for DefinitionsCommonSuccessResponseSuccess.
 const (
-	True DefinitionsCommonSuccessResponseSuccess = true
+	DefinitionsCommonSuccessResponseSuccessTrue DefinitionsCommonSuccessResponseSuccess = true
+)
+
+// Defines values for DefinitionsConfigInitialResultStatus.
+const (
+	DefinitionsConfigInitialResultStatusDhcp     DefinitionsConfigInitialResultStatus = "dhcp"
+	DefinitionsConfigInitialResultStatusDisabled DefinitionsConfigInitialResultStatus = "disabled"
+	DefinitionsConfigInitialResultStatusStatic   DefinitionsConfigInitialResultStatus = "static"
+)
+
+// Defines values for DefinitionsConfigInitialConfigurationStatus.
+const (
+	DefinitionsConfigInitialConfigurationStatusDhcp     DefinitionsConfigInitialConfigurationStatus = "dhcp"
+	DefinitionsConfigInitialConfigurationStatusDisabled DefinitionsConfigInitialConfigurationStatus = "disabled"
+	DefinitionsConfigInitialConfigurationStatusStatic   DefinitionsConfigInitialConfigurationStatus = "static"
+)
+
+// Defines values for DefinitionsConfigInitializedStateSmcOnCloud.
+const (
+	Aws      DefinitionsConfigInitializedStateSmcOnCloud = "aws"
+	Empty    DefinitionsConfigInitializedStateSmcOnCloud = ""
+	Outscale DefinitionsConfigInitializedStateSmcOnCloud = "outscale"
 )
 
 // Defines values for DefinitionsConfigNetworkConfigurationInterfacesStatus.
@@ -316,9 +337,31 @@ const (
 
 // Defines values for DefinitionsConfigNetworkInterfacesUpdateListStatus.
 const (
-	Dhcp     DefinitionsConfigNetworkInterfacesUpdateListStatus = "dhcp"
-	Disabled DefinitionsConfigNetworkInterfacesUpdateListStatus = "disabled"
-	Static   DefinitionsConfigNetworkInterfacesUpdateListStatus = "static"
+	DefinitionsConfigNetworkInterfacesUpdateListStatusDhcp     DefinitionsConfigNetworkInterfacesUpdateListStatus = "dhcp"
+	DefinitionsConfigNetworkInterfacesUpdateListStatusDisabled DefinitionsConfigNetworkInterfacesUpdateListStatus = "disabled"
+	DefinitionsConfigNetworkInterfacesUpdateListStatusStatic   DefinitionsConfigNetworkInterfacesUpdateListStatus = "static"
+)
+
+// Defines values for DefinitionsDeployDeploymentMonitoringResponseFirewallsStep.
+const (
+	DefinitionsDeployDeploymentMonitoringResponseFirewallsStepN0 DefinitionsDeployDeploymentMonitoringResponseFirewallsStep = 0
+	DefinitionsDeployDeploymentMonitoringResponseFirewallsStepN1 DefinitionsDeployDeploymentMonitoringResponseFirewallsStep = 1
+	DefinitionsDeployDeploymentMonitoringResponseFirewallsStepN2 DefinitionsDeployDeploymentMonitoringResponseFirewallsStep = 2
+	DefinitionsDeployDeploymentMonitoringResponseFirewallsStepN3 DefinitionsDeployDeploymentMonitoringResponseFirewallsStep = 3
+	DefinitionsDeployDeploymentMonitoringResponseFirewallsStepN4 DefinitionsDeployDeploymentMonitoringResponseFirewallsStep = 4
+)
+
+// Defines values for DefinitionsDeployDeploymentMonitoringResponseFirewallsTotal.
+const (
+	DefinitionsDeployDeploymentMonitoringResponseFirewallsTotalN1 DefinitionsDeployDeploymentMonitoringResponseFirewallsTotal = 1
+	DefinitionsDeployDeploymentMonitoringResponseFirewallsTotalN2 DefinitionsDeployDeploymentMonitoringResponseFirewallsTotal = 2
+	DefinitionsDeployDeploymentMonitoringResponseFirewallsTotalN3 DefinitionsDeployDeploymentMonitoringResponseFirewallsTotal = 3
+	DefinitionsDeployDeploymentMonitoringResponseFirewallsTotalN4 DefinitionsDeployDeploymentMonitoringResponseFirewallsTotal = 4
+)
+
+// Defines values for DefinitionsDeployDeploymentMonitoringResponseSuccess.
+const (
+	DefinitionsDeployDeploymentMonitoringResponseSuccessTrue DefinitionsDeployDeploymentMonitoringResponseSuccess = true
 )
 
 // Defines values for DefinitionsEncryptionProfilesPh1ProfileDefaultdh.
@@ -364,6 +407,250 @@ const (
 	DefinitionsMiscImportResponseLogsLevelError   DefinitionsMiscImportResponseLogsLevel = "error"
 	DefinitionsMiscImportResponseLogsLevelInfo    DefinitionsMiscImportResponseLogsLevel = "info"
 	DefinitionsMiscImportResponseLogsLevelWarning DefinitionsMiscImportResponseLogsLevel = "warning"
+)
+
+// Defines values for DefinitionsMiscProtocolListIpProto.
+const (
+	Tcp DefinitionsMiscProtocolListIpProto = "tcp"
+	Udp DefinitionsMiscProtocolListIpProto = "udp"
+)
+
+// Defines values for DefinitionsNetworkInterfacesAggInterfacePropertiesAggregateMode.
+const (
+	DefinitionsNetworkInterfacesAggInterfacePropertiesAggregateModeFailover DefinitionsNetworkInterfacesAggInterfacePropertiesAggregateMode = "failover"
+	DefinitionsNetworkInterfacesAggInterfacePropertiesAggregateModeLacp     DefinitionsNetworkInterfacesAggInterfacePropertiesAggregateMode = "lacp"
+)
+
+// Defines values for DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceType.
+const (
+	DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceTypeAggregate DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceType = "Aggregate"
+	DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceTypeBridge    DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceType = "Bridge"
+	DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceTypeEthernet  DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceType = "Ethernet"
+	DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceTypeVLAN      DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceType = "VLAN"
+)
+
+// Defines values for DefinitionsNetworkInterfacesAggInterfaceWithChildrenAggregateMode.
+const (
+	DefinitionsNetworkInterfacesAggInterfaceWithChildrenAggregateModeFailover DefinitionsNetworkInterfacesAggInterfaceWithChildrenAggregateMode = "failover"
+	DefinitionsNetworkInterfacesAggInterfaceWithChildrenAggregateModeLacp     DefinitionsNetworkInterfacesAggInterfaceWithChildrenAggregateMode = "lacp"
+)
+
+// Defines values for DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceType.
+const (
+	DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceTypeAggregate DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceType = "Aggregate"
+	DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceTypeBridge    DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceType = "Bridge"
+	DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceTypeEthernet  DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceType = "Ethernet"
+	DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceTypeVLAN      DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceType = "VLAN"
+)
+
+// Defines values for DefinitionsNetworkInterfacesBridgeInterfacePropertiesAggregateMode.
+const (
+	DefinitionsNetworkInterfacesBridgeInterfacePropertiesAggregateModeFailover DefinitionsNetworkInterfacesBridgeInterfacePropertiesAggregateMode = "failover"
+	DefinitionsNetworkInterfacesBridgeInterfacePropertiesAggregateModeLacp     DefinitionsNetworkInterfacesBridgeInterfacePropertiesAggregateMode = "lacp"
+)
+
+// Defines values for DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceType.
+const (
+	DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceTypeAggregate DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceType = "Aggregate"
+	DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceTypeBridge    DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceType = "Bridge"
+	DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceTypeEthernet  DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceType = "Ethernet"
+	DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceTypeVLAN      DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceType = "VLAN"
+)
+
+// Defines values for DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenAggregateMode.
+const (
+	DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenAggregateModeFailover DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenAggregateMode = "failover"
+	DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenAggregateModeLacp     DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenAggregateMode = "lacp"
+)
+
+// Defines values for DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceType.
+const (
+	DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceTypeAggregate DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceType = "Aggregate"
+	DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceTypeBridge    DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceType = "Bridge"
+	DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceTypeEthernet  DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceType = "Ethernet"
+	DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceTypeVLAN      DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceType = "VLAN"
+)
+
+// Defines values for DefinitionsNetworkInterfacesEthernetInterfacePropertiesAggregateMode.
+const (
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesAggregateModeFailover DefinitionsNetworkInterfacesEthernetInterfacePropertiesAggregateMode = "failover"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesAggregateModeLacp     DefinitionsNetworkInterfacesEthernetInterfacePropertiesAggregateMode = "lacp"
+)
+
+// Defines values for DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceType.
+const (
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceTypeAggregate DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceType = "Aggregate"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceTypeBridge    DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceType = "Bridge"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceTypeEthernet  DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceType = "Ethernet"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceTypeVLAN      DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceType = "VLAN"
+)
+
+// Defines values for DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia.
+const (
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesMediaAutoselect DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia = "autoselect"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesMediaN100mbfull DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia = "100mbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesMediaN100mbhalf DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia = "100mbhalf"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesMediaN10gbfull  DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia = "10gbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesMediaN10mbfull  DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia = "10mbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesMediaN10mbhalf  DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia = "10mbhalf"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesMediaN1gbfull   DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia = "1gbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesMediaN20gbfull  DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia = "20gbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesMediaN25gbfull  DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia = "25gbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesMediaN40gbfull  DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia = "40gbfull"
+)
+
+// Defines values for DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia.
+const (
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMediaAutoselect DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia = "autoselect"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMediaN100mbfull DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia = "100mbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMediaN100mbhalf DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia = "100mbhalf"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMediaN10gbfull  DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia = "10gbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMediaN10mbfull  DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia = "10mbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMediaN10mbhalf  DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia = "10mbhalf"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMediaN1gbfull   DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia = "1gbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMediaN20gbfull  DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia = "20gbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMediaN25gbfull  DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia = "25gbfull"
+	DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMediaN40gbfull  DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia = "40gbfull"
+)
+
+// Defines values for DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenAggregateMode.
+const (
+	DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenAggregateModeFailover DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenAggregateMode = "failover"
+	DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenAggregateModeLacp     DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenAggregateMode = "lacp"
+)
+
+// Defines values for DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceType.
+const (
+	DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceTypeAggregate DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceType = "Aggregate"
+	DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceTypeBridge    DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceType = "Bridge"
+	DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceTypeEthernet  DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceType = "Ethernet"
+	DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceTypeVLAN      DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceType = "VLAN"
+)
+
+// Defines values for DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia.
+const (
+	Autoselect DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia = "autoselect"
+	N100mbfull DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia = "100mbfull"
+	N100mbhalf DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia = "100mbhalf"
+	N10gbfull  DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia = "10gbfull"
+	N10mbfull  DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia = "10mbfull"
+	N10mbhalf  DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia = "10mbhalf"
+	N1gbfull   DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia = "1gbfull"
+	N20gbfull  DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia = "20gbfull"
+	N25gbfull  DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia = "25gbfull"
+	N40gbfull  DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia = "40gbfull"
+)
+
+// Defines values for DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidAggregateMode.
+const (
+	DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidAggregateModeFailover DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidAggregateMode = "failover"
+	DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidAggregateModeLacp     DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidAggregateMode = "lacp"
+)
+
+// Defines values for DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceType.
+const (
+	DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceTypeAggregate DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceType = "Aggregate"
+	DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceTypeBridge    DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceType = "Bridge"
+	DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceTypeEthernet  DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceType = "Ethernet"
+	DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceTypeVLAN      DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceType = "VLAN"
+)
+
+// Defines values for DefinitionsNetworkInterfacesVlanInterfacePropertiesAggregateMode.
+const (
+	DefinitionsNetworkInterfacesVlanInterfacePropertiesAggregateModeFailover DefinitionsNetworkInterfacesVlanInterfacePropertiesAggregateMode = "failover"
+	DefinitionsNetworkInterfacesVlanInterfacePropertiesAggregateModeLacp     DefinitionsNetworkInterfacesVlanInterfacePropertiesAggregateMode = "lacp"
+)
+
+// Defines values for DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceType.
+const (
+	DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceTypeAggregate DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceType = "Aggregate"
+	DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceTypeBridge    DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceType = "Bridge"
+	DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceTypeEthernet  DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceType = "Ethernet"
+	DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceTypeVLAN      DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceType = "VLAN"
+)
+
+// Defines values for DefinitionsNetworkInterfacesVlanInterfaceWithChildrenAggregateMode.
+const (
+	Failover DefinitionsNetworkInterfacesVlanInterfaceWithChildrenAggregateMode = "failover"
+	Lacp     DefinitionsNetworkInterfacesVlanInterfaceWithChildrenAggregateMode = "lacp"
+)
+
+// Defines values for DefinitionsNetworkInterfacesVlanInterfaceWithChildrenInterfaceType.
+const (
+	Aggregate DefinitionsNetworkInterfacesVlanInterfaceWithChildrenInterfaceType = "Aggregate"
+	Bridge    DefinitionsNetworkInterfacesVlanInterfaceWithChildrenInterfaceType = "Bridge"
+	Ethernet  DefinitionsNetworkInterfacesVlanInterfaceWithChildrenInterfaceType = "Ethernet"
+	VLAN      DefinitionsNetworkInterfacesVlanInterfaceWithChildrenInterfaceType = "VLAN"
+)
+
+// Defines values for DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStep.
+const (
+	DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStepN0 DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStep = 0
+	DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStepN1 DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStep = 1
+	DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStepN2 DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStep = 2
+	DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStepN3 DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStep = 3
+)
+
+// Defines values for DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsTotal.
+const (
+	DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsTotalN1 DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsTotal = 1
+	DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsTotalN2 DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsTotal = 2
+	DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsTotalN3 DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsTotal = 3
+)
+
+// Defines values for DefinitionsNsrpcNsrpcStateExecutionResponseSuccess.
+const (
+	True DefinitionsNsrpcNsrpcStateExecutionResponseSuccess = true
+)
+
+// Defines values for DefinitionsObjectsObjectPropertiesDeploymentMode.
+const (
+	DefinitionsObjectsObjectPropertiesDeploymentModeALL     DefinitionsObjectsObjectPropertiesDeploymentMode = "ALL"
+	DefinitionsObjectsObjectPropertiesDeploymentModeDEFAULT DefinitionsObjectsObjectPropertiesDeploymentMode = "DEFAULT"
+)
+
+// Defines values for DefinitionsObjectsObjectPropertiesWithoutUuidDeploymentMode.
+const (
+	DefinitionsObjectsObjectPropertiesWithoutUuidDeploymentModeALL     DefinitionsObjectsObjectPropertiesWithoutUuidDeploymentMode = "ALL"
+	DefinitionsObjectsObjectPropertiesWithoutUuidDeploymentModeDEFAULT DefinitionsObjectsObjectPropertiesWithoutUuidDeploymentMode = "DEFAULT"
+)
+
+// Defines values for DefinitionsQueueQueueType.
+const (
+	DefinitionsQueueQueueTypeCBQ  DefinitionsQueueQueueType = "CBQ"
+	DefinitionsQueueQueueTypeMONQ DefinitionsQueueQueueType = "MONQ"
+	DefinitionsQueueQueueTypePRIQ DefinitionsQueueQueueType = "PRIQ"
+)
+
+// Defines values for DefinitionsQueueQueueWithoutUuidType.
+const (
+	DefinitionsQueueQueueWithoutUuidTypeCBQ  DefinitionsQueueQueueWithoutUuidType = "CBQ"
+	DefinitionsQueueQueueWithoutUuidTypeMONQ DefinitionsQueueQueueWithoutUuidType = "MONQ"
+	DefinitionsQueueQueueWithoutUuidTypePRIQ DefinitionsQueueQueueWithoutUuidType = "PRIQ"
+)
+
+// Defines values for DefinitionsRoutingRouteAddUpdateBodyRouteType.
+const (
+	DefinitionsRoutingRouteAddUpdateBodyRouteTypeDefault DefinitionsRoutingRouteAddUpdateBodyRouteType = "default"
+	DefinitionsRoutingRouteAddUpdateBodyRouteTypeDynamic DefinitionsRoutingRouteAddUpdateBodyRouteType = "dynamic"
+	DefinitionsRoutingRouteAddUpdateBodyRouteTypeReturn  DefinitionsRoutingRouteAddUpdateBodyRouteType = "return"
+	DefinitionsRoutingRouteAddUpdateBodyRouteTypeStatic  DefinitionsRoutingRouteAddUpdateBodyRouteType = "static"
+)
+
+// Defines values for DefinitionsRoutingRouteInfoRouteType.
+const (
+	DefinitionsRoutingRouteInfoRouteTypeDefault DefinitionsRoutingRouteInfoRouteType = "default"
+	DefinitionsRoutingRouteInfoRouteTypeDynamic DefinitionsRoutingRouteInfoRouteType = "dynamic"
+	DefinitionsRoutingRouteInfoRouteTypeReturn  DefinitionsRoutingRouteInfoRouteType = "return"
+	DefinitionsRoutingRouteInfoRouteTypeStatic  DefinitionsRoutingRouteInfoRouteType = "static"
+)
+
+// Defines values for DefinitionsRoutingRoutePropertiesRouteType.
+const (
+	DefinitionsRoutingRoutePropertiesRouteTypeDefault DefinitionsRoutingRoutePropertiesRouteType = "default"
+	DefinitionsRoutingRoutePropertiesRouteTypeDynamic DefinitionsRoutingRoutePropertiesRouteType = "dynamic"
+	DefinitionsRoutingRoutePropertiesRouteTypeReturn  DefinitionsRoutingRoutePropertiesRouteType = "return"
+	DefinitionsRoutingRoutePropertiesRouteTypeStatic  DefinitionsRoutingRoutePropertiesRouteType = "static"
 )
 
 // Defines values for DefinitionsRulesParentType.
@@ -1471,6 +1758,89 @@ type DefinitionsCommonSuccessResponseSuccess bool
 // DefinitionsCommonUuid An uuid
 type DefinitionsCommonUuid = string
 
+// DefinitionsConfigDRActivation defines model for definitions_config_DRActivation.
+type DefinitionsConfigDRActivation struct {
+	// Result DR Mode status
+	Result *bool `json:"result,omitempty"`
+
+	// Success Action success
+	Success *bool `json:"success,omitempty"`
+}
+
+// DefinitionsConfigInitial defines model for definitions_config_Initial.
+type DefinitionsConfigInitial struct {
+	Result *struct {
+		// Gateway Gateway IP of the initial configuration
+		Gateway *string `json:"gateway,omitempty"`
+
+		// Ip IP of the initial configuration
+		Ip *string `json:"ip,omitempty"`
+
+		// Mask IP mask of the initial configuration
+		Mask *string `json:"mask,omitempty"`
+
+		// Status initial interface configuration status
+		Status *DefinitionsConfigInitialResultStatus `json:"status,omitempty"`
+	} `json:"result,omitempty"`
+
+	// Success Action success
+	Success *bool `json:"success,omitempty"`
+}
+
+// DefinitionsConfigInitialResultStatus initial interface configuration status
+type DefinitionsConfigInitialResultStatus string
+
+// DefinitionsConfigInitialCloudConfiguration defines model for definitions_config_InitialCloudConfiguration.
+type DefinitionsConfigInitialCloudConfiguration struct {
+	// Adminpassword SMC administrator password
+	Adminpassword *string `json:"adminpassword,omitempty"`
+
+	// AwsInstanceId The cloud instance id on which SMC is launching
+	AwsInstanceId *string `json:"awsInstanceId,omitempty"`
+}
+
+// DefinitionsConfigInitialConfiguration defines model for definitions_config_InitialConfiguration.
+type DefinitionsConfigInitialConfiguration struct {
+	// Adminpassword SMC administrator password
+	Adminpassword *string `json:"adminpassword,omitempty"`
+
+	// Dns DNS address
+	Dns *string `json:"dns,omitempty"`
+
+	// Gateway configured gateway for this interface
+	Gateway *string `json:"gateway,omitempty"`
+
+	// Hostname Name of the host
+	Hostname *string `json:"hostname,omitempty"`
+
+	// Ip interface IPV4 address
+	Ip *string `json:"ip,omitempty"`
+
+	// KeyboardLayout Keyboard layout
+	KeyboardLayout *string `json:"keyboardLayout,omitempty"`
+
+	// Mask the configured IP mask for this interface
+	Mask *string `json:"mask,omitempty"`
+
+	// Status initial interface configuration status
+	Status *DefinitionsConfigInitialConfigurationStatus `json:"status,omitempty"`
+}
+
+// DefinitionsConfigInitialConfigurationStatus initial interface configuration status
+type DefinitionsConfigInitialConfigurationStatus string
+
+// DefinitionsConfigInitializedState defines model for definitions_config_InitializedState.
+type DefinitionsConfigInitializedState struct {
+	// SmcOnCloud Specify if SMC is running on an cloud environment. If not, it is empty
+	SmcOnCloud *DefinitionsConfigInitializedStateSmcOnCloud `json:"smcOnCloud,omitempty"`
+
+	// Status Whether SMC has been already initialized or not
+	Status *bool `json:"status,omitempty"`
+}
+
+// DefinitionsConfigInitializedStateSmcOnCloud Specify if SMC is running on an cloud environment. If not, it is empty
+type DefinitionsConfigInitializedStateSmcOnCloud string
+
 // DefinitionsConfigNetworkConfiguration defines model for definitions_config_NetworkConfiguration.
 type DefinitionsConfigNetworkConfiguration struct {
 	// Dns DNS address
@@ -1567,6 +1937,35 @@ type DefinitionsConfigNetworkInterfacesUpdateList = []struct {
 // DefinitionsConfigNetworkInterfacesUpdateListStatus interface current configuration status
 type DefinitionsConfigNetworkInterfacesUpdateListStatus string
 
+// DefinitionsConfigPAPIActivation defines model for definitions_config_PAPIActivation.
+type DefinitionsConfigPAPIActivation struct {
+	Result *struct {
+		// IsPapiActive Public API activation status
+		IsPapiActive *bool `json:"isPapiActive,omitempty"`
+	} `json:"result,omitempty"`
+
+	// Success Action success
+	Success *bool `json:"success,omitempty"`
+}
+
+// DefinitionsConfigSls defines model for definitions_config_Sls.
+type DefinitionsConfigSls struct {
+	// Result IP or Fqdn of the SLS server
+	Result *string `json:"result,omitempty"`
+
+	// Success Action success
+	Success *bool `json:"success,omitempty"`
+}
+
+// DefinitionsConfigVpnCrlRequired defines model for definitions_config_VpnCrlRequired.
+type DefinitionsConfigVpnCrlRequired struct {
+	// Result VPN CRL REQUIRED status
+	Result *bool `json:"result,omitempty"`
+
+	// Success Action success
+	Success *bool `json:"success,omitempty"`
+}
+
 // DefinitionsCustomPropertiesCustomProperty defines model for definitions_custom-properties_CustomProperty.
 type DefinitionsCustomPropertiesCustomProperty struct {
 	Name string `json:"name"`
@@ -1589,6 +1988,83 @@ type DefinitionsCustomPropertiesSingleCustomPropertyResponse struct {
 	// Result A custom property
 	Result  *DefinitionsCustomPropertiesCustomProperty `json:"result,omitempty"`
 	Success *bool                                      `json:"success,omitempty"`
+}
+
+// DefinitionsDeployDeployBody deploy request body
+type DefinitionsDeployDeployBody struct {
+	// ByNames if truthy, the target field will be interpreted as an array of firewall names
+	ByNames *bool `json:"byNames,omitempty"`
+
+	// Comment The comment that will be attached to the deployment
+	Comment *string `json:"comment,omitempty"`
+
+	// Redeploy if truthy, it's a redeployment request for one firewall. Else, it's a deployment request
+	Redeploy *bool `json:"redeploy,omitempty"`
+
+	// Target can also be "all" to run the deployment on every firewall
+	Target []string `json:"target"`
+}
+
+// DefinitionsDeployDeploymentMonitoringResponse defines model for definitions_deploy_DeploymentMonitoringResponse.
+type DefinitionsDeployDeploymentMonitoringResponse struct {
+	// Date Start execution date
+	Date      *openapi_types.Date `json:"date,omitempty"`
+	Firewalls *[]struct {
+		// Code Current deployment code (similar to state)
+		Code *string `json:"code,omitempty"`
+
+		// Name Firewall's name
+		Name *string `json:"name,omitempty"`
+
+		// Postponed true if the target firewall was initially disconnected when this deployment started
+		Postponed *bool `json:"postponed,omitempty"`
+
+		// Revision Revision of the config that is currently deployed on this firewall
+		Revision *string `json:"revision,omitempty"`
+
+		// State Current deployment state
+		State *string `json:"state,omitempty"`
+
+		// Step Current deployment step on this firewall
+		Step *DefinitionsDeployDeploymentMonitoringResponseFirewallsStep `json:"step,omitempty"`
+
+		// Total Total number of deployment steps on this firewall. Usefull to know if the deployment is finished
+		Total *DefinitionsDeployDeploymentMonitoringResponseFirewallsTotal `json:"total,omitempty"`
+
+		// Uuid Firewall's UUID
+		Uuid *string `json:"uuid,omitempty"`
+	} `json:"firewalls,omitempty"`
+
+	// Revision the revision number of the deployment
+	Revision *string                                               `json:"revision,omitempty"`
+	Success  *DefinitionsDeployDeploymentMonitoringResponseSuccess `json:"success,omitempty"`
+
+	// User Login of the user who launched the deployment operation
+	User *string `json:"user,omitempty"`
+}
+
+// DefinitionsDeployDeploymentMonitoringResponseFirewallsStep Current deployment step on this firewall
+type DefinitionsDeployDeploymentMonitoringResponseFirewallsStep int
+
+// DefinitionsDeployDeploymentMonitoringResponseFirewallsTotal Total number of deployment steps on this firewall. Usefull to know if the deployment is finished
+type DefinitionsDeployDeploymentMonitoringResponseFirewallsTotal int
+
+// DefinitionsDeployDeploymentMonitoringResponseSuccess defines model for DefinitionsDeployDeploymentMonitoringResponse.Success.
+type DefinitionsDeployDeploymentMonitoringResponseSuccess bool
+
+// DefinitionsDeploymentWarningsConfigEditors defines model for definitions_deployment-warnings_ConfigEditors.
+type DefinitionsDeploymentWarningsConfigEditors = []struct {
+	// EditorIdentifier The user identifier
+	EditorIdentifier *string `json:"editorIdentifier,omitempty"`
+
+	// EditorName The user name of the editor. This name can come from Database or from ldap/radius server
+	EditorName *string `json:"editorName,omitempty"`
+
+	// EditorUuid An uuid
+	EditorUuid *DefinitionsCommonUuid `json:"editorUuid,omitempty"`
+
+	// IsDeleted This value is true if the user is no longer present on SMC
+	IsDeleted *bool `json:"isDeleted,omitempty"`
 }
 
 // DefinitionsEncryptionProfilesEncryptionProfileList defines model for definitions_encryptionProfiles_EncryptionProfileList.
@@ -1782,6 +2258,34 @@ type DefinitionsFoldersRawFolderProperties struct {
 	Uuid string `json:"uuid"`
 }
 
+// DefinitionsIfacesAssignationsIfaceAssignation defines model for definitions_ifaces-assignations_IfaceAssignation.
+type DefinitionsIfacesAssignationsIfaceAssignation struct {
+	DefaultACKQueue string `json:"defaultACKQueue"`
+	DefaultQueue    string `json:"defaultQueue"`
+	Iface           string `json:"iface"`
+	TrafficShaper   string `json:"trafficShaper"`
+}
+
+// DefinitionsIfacesAssignationsIfaceAssignationWithoutIface A custom iface assignation
+type DefinitionsIfacesAssignationsIfaceAssignationWithoutIface struct {
+	DefaultACKQueue string `json:"defaultACKQueue"`
+	DefaultQueue    string `json:"defaultQueue"`
+	TrafficShaper   string `json:"trafficShaper"`
+}
+
+// DefinitionsIfacesAssignationsMultipleIfacesAssignationsResponse defines model for definitions_ifaces-assignations_MultipleIfacesAssignationsResponse.
+type DefinitionsIfacesAssignationsMultipleIfacesAssignationsResponse struct {
+	Result  *[]DefinitionsIfacesAssignationsIfaceAssignation `json:"result,omitempty"`
+	Success *bool                                            `json:"success,omitempty"`
+}
+
+// DefinitionsIfacesAssignationsSingleIfaceAssignationResponse defines model for definitions_ifaces-assignations_SingleIfaceAssignationResponse.
+type DefinitionsIfacesAssignationsSingleIfaceAssignationResponse struct {
+	// Result An iface assignation
+	Result  *DefinitionsIfacesAssignationsIfaceAssignation `json:"result,omitempty"`
+	Success *bool                                          `json:"success,omitempty"`
+}
+
 // DefinitionsLdapLdap defines model for definitions_ldap_ldap.
 type DefinitionsLdapLdap struct {
 	BaseDn           string              `json:"baseDn"`
@@ -1924,6 +2428,1193 @@ type DefinitionsMiscInitializationPackageProperties struct {
 	StorePublicIpAndPort *bool `json:"storePublicIpAndPort,omitempty"`
 }
 
+// DefinitionsMiscProtocolList defines model for definitions_misc_ProtocolList.
+type DefinitionsMiscProtocolList = []struct {
+	// IpProto list of supported ip protocols for filtering
+	IpProto *[]DefinitionsMiscProtocolListIpProto `json:"ipProto,omitempty"`
+
+	// Name protocol name
+	Name *string `json:"name,omitempty"`
+}
+
+// DefinitionsMiscProtocolListIpProto defines model for DefinitionsMiscProtocolList.IpProto.
+type DefinitionsMiscProtocolListIpProto string
+
+// DefinitionsNetworkInterfacesAggInterfaceProperties defines model for definitions_network-interfaces_AggInterfaceProperties.
+type DefinitionsNetworkInterfacesAggInterfaceProperties struct {
+	// AggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+	AggregateMode *DefinitionsNetworkInterfacesAggInterfacePropertiesAggregateMode `json:"aggregateMode,omitempty"`
+
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Dhcp4 Is DHCP activated for IPv4
+	Dhcp4 bool `json:"dhcp4"`
+
+	// DhcpHostname DNS name
+	DhcpHostname *string `json:"dhcpHostname,omitempty"`
+
+	// DhcpLeaseTime Requested lease time (seconds)
+	DhcpLeaseTime *int `json:"dhcpLeaseTime,omitempty"`
+
+	// Enabled Activation state of the interface - must be true to create a bridge
+	Enabled bool `json:"enabled"`
+
+	// FailoverMaster Define a failover interface which is the master
+	FailoverMaster *string `json:"failoverMaster,omitempty"`
+
+	// FastRoute Routing by interface: keep initial routing, only if parentInterface refers to a bridge interface
+	FastRoute *bool `json:"fastRoute,omitempty"`
+
+	// Forward Routing without analysis, only if parentInterface refers to a bridge interface
+	Forward *struct {
+		AppleTalk *bool `json:"appleTalk,omitempty"`
+		Ipv6      *bool `json:"ipv6,omitempty"`
+		Ipx       *bool `json:"ipx,omitempty"`
+		NetBios   *bool `json:"netBios,omitempty"`
+		Pppoe     *bool `json:"pppoe,omitempty"`
+	} `json:"forward,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid string `json:"fwid"`
+
+	// InterfaceType Type of the interface
+	InterfaceType DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceType `json:"interfaceType"`
+
+	// Ipv4Addresses IPv4 addresses array of the interface
+	Ipv4Addresses []struct {
+		// Address IPv4 address without mask
+		Address *string `json:"address,omitempty"`
+
+		// Comment Comment for the IPv4 address
+		Comment *string `json:"comment,omitempty"`
+
+		// Mask Mask in CIDR or IP address format
+		Mask *string `json:"mask,omitempty"`
+	} `json:"ipv4Addresses"`
+
+	// KeepVlanId Routing by interface: keep VLAN IDs, only if parentInterface refers to a bridge interface
+	KeepVlanId *bool `json:"keepVlanId,omitempty"`
+
+	// MacAddress Mac address of the interface
+	MacAddress *string `json:"macAddress,omitempty"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the interface
+	Name string `json:"name"`
+
+	// ParentInterface The uuid of the parent interface
+	ParentInterface *string `json:"parentInterface,omitempty"`
+
+	// PhysicalMacAddress Physical MAC address of the interface
+	PhysicalMacAddress *string `json:"physicalMacAddress,omitempty"`
+
+	// PhysicalName The interface's physical name
+	PhysicalName *string `json:"physicalName,omitempty"`
+
+	// Protected Is the interface protected
+	Protected bool `json:"protected"`
+
+	// RequestDns Request domain name servers from the DHCP server and create host objects
+	RequestDns *bool `json:"requestDns,omitempty"`
+
+	// Uuid NetworkInterface uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsNetworkInterfacesAggInterfacePropertiesAggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+type DefinitionsNetworkInterfacesAggInterfacePropertiesAggregateMode string
+
+// DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceType Type of the interface
+type DefinitionsNetworkInterfacesAggInterfacePropertiesInterfaceType string
+
+// DefinitionsNetworkInterfacesAggInterfacePropertiesWithoutUuid defines model for definitions_network-interfaces_AggInterfacePropertiesWithoutUuid.
+type DefinitionsNetworkInterfacesAggInterfacePropertiesWithoutUuid struct {
+	// MacAddress Mac address of the interface
+	MacAddress *string `json:"macAddress,omitempty"`
+
+	// ParentInterface The uuid of the parent interface
+	ParentInterface *string `json:"parentInterface,omitempty"`
+
+	// PhysicalMacAddress Physical MAC address of the interface
+	PhysicalMacAddress *string `json:"physicalMacAddress,omitempty"`
+
+	// Protected Is the interface protected
+	Protected bool `json:"protected"`
+}
+
+// DefinitionsNetworkInterfacesAggInterfaceWithChildren defines model for definitions_network-interfaces_AggInterfaceWithChildren.
+type DefinitionsNetworkInterfacesAggInterfaceWithChildren struct {
+	// AggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+	AggregateMode *DefinitionsNetworkInterfacesAggInterfaceWithChildrenAggregateMode    `json:"aggregateMode,omitempty"`
+	Children      *[]DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item `json:"children,omitempty"`
+
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Dhcp4 Is DHCP activated for IPv4
+	Dhcp4 bool `json:"dhcp4"`
+
+	// DhcpHostname DNS name
+	DhcpHostname *string `json:"dhcpHostname,omitempty"`
+
+	// DhcpLeaseTime Requested lease time (seconds)
+	DhcpLeaseTime *int `json:"dhcpLeaseTime,omitempty"`
+
+	// Enabled Activation state of the interface - must be true to create a bridge
+	Enabled bool `json:"enabled"`
+
+	// FailoverMaster Define a failover interface which is the master
+	FailoverMaster *string `json:"failoverMaster,omitempty"`
+
+	// FastRoute Routing by interface: keep initial routing, only if parentInterface refers to a bridge interface
+	FastRoute *bool `json:"fastRoute,omitempty"`
+
+	// Forward Routing without analysis, only if parentInterface refers to a bridge interface
+	Forward *struct {
+		AppleTalk *bool `json:"appleTalk,omitempty"`
+		Ipv6      *bool `json:"ipv6,omitempty"`
+		Ipx       *bool `json:"ipx,omitempty"`
+		NetBios   *bool `json:"netBios,omitempty"`
+		Pppoe     *bool `json:"pppoe,omitempty"`
+	} `json:"forward,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid string `json:"fwid"`
+
+	// InterfaceType Type of the interface
+	InterfaceType DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceType `json:"interfaceType"`
+
+	// Ipv4Addresses IPv4 addresses array of the interface
+	Ipv4Addresses []struct {
+		// Address IPv4 address without mask
+		Address *string `json:"address,omitempty"`
+
+		// Comment Comment for the IPv4 address
+		Comment *string `json:"comment,omitempty"`
+
+		// Mask Mask in CIDR or IP address format
+		Mask *string `json:"mask,omitempty"`
+	} `json:"ipv4Addresses"`
+
+	// KeepVlanId Routing by interface: keep VLAN IDs, only if parentInterface refers to a bridge interface
+	KeepVlanId *bool `json:"keepVlanId,omitempty"`
+
+	// MacAddress Mac address of the interface
+	MacAddress *string `json:"macAddress,omitempty"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the interface
+	Name string `json:"name"`
+
+	// ParentInterface The uuid of the parent interface
+	ParentInterface *string `json:"parentInterface,omitempty"`
+
+	// PhysicalMacAddress Physical MAC address of the interface
+	PhysicalMacAddress *string `json:"physicalMacAddress,omitempty"`
+
+	// PhysicalName The interface's physical name
+	PhysicalName *string `json:"physicalName,omitempty"`
+
+	// Protected Is the interface protected
+	Protected bool `json:"protected"`
+
+	// RequestDns Request domain name servers from the DHCP server and create host objects
+	RequestDns *bool `json:"requestDns,omitempty"`
+
+	// Uuid NetworkInterface uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsNetworkInterfacesAggInterfaceWithChildrenAggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+type DefinitionsNetworkInterfacesAggInterfaceWithChildrenAggregateMode string
+
+// DefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2 defines model for .
+type DefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2 = map[string]interface{}
+
+// DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item defines model for definitions_network-interfaces_AggInterfaceWithChildren.children.Item.
+type DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item struct {
+	union json.RawMessage
+}
+
+// DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceType Type of the interface
+type DefinitionsNetworkInterfacesAggInterfaceWithChildrenInterfaceType string
+
+// DefinitionsNetworkInterfacesBridgeInterfaceProperties defines model for definitions_network-interfaces_BridgeInterfaceProperties.
+type DefinitionsNetworkInterfacesBridgeInterfaceProperties struct {
+	// AggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+	AggregateMode *DefinitionsNetworkInterfacesBridgeInterfacePropertiesAggregateMode `json:"aggregateMode,omitempty"`
+
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Dhcp4 Is DHCP activated for IPv4
+	Dhcp4 bool `json:"dhcp4"`
+
+	// DhcpHostname DNS name
+	DhcpHostname *string `json:"dhcpHostname,omitempty"`
+
+	// DhcpLeaseTime Requested lease time (seconds)
+	DhcpLeaseTime *int `json:"dhcpLeaseTime,omitempty"`
+
+	// Enabled Activation state of the interface - must be true to create a bridge
+	Enabled bool `json:"enabled"`
+
+	// FailoverMaster Define a failover interface which is the master
+	FailoverMaster *string `json:"failoverMaster,omitempty"`
+
+	// FastRoute Routing by interface: keep initial routing, only if parentInterface refers to a bridge interface
+	FastRoute *bool `json:"fastRoute,omitempty"`
+
+	// Forward Routing without analysis, only if parentInterface refers to a bridge interface
+	Forward *struct {
+		AppleTalk *bool `json:"appleTalk,omitempty"`
+		Ipv6      *bool `json:"ipv6,omitempty"`
+		Ipx       *bool `json:"ipx,omitempty"`
+		NetBios   *bool `json:"netBios,omitempty"`
+		Pppoe     *bool `json:"pppoe,omitempty"`
+	} `json:"forward,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid string `json:"fwid"`
+
+	// InterfaceType Type of the interface
+	InterfaceType DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceType `json:"interfaceType"`
+
+	// Ipv4Addresses IPv4 addresses array of the interface
+	Ipv4Addresses []struct {
+		// Address IPv4 address without mask
+		Address *string `json:"address,omitempty"`
+
+		// Comment Comment for the IPv4 address
+		Comment *string `json:"comment,omitempty"`
+
+		// Mask Mask in CIDR or IP address format
+		Mask *string `json:"mask,omitempty"`
+	} `json:"ipv4Addresses"`
+
+	// KeepVlanId Routing by interface: keep VLAN IDs, only if parentInterface refers to a bridge interface
+	KeepVlanId *bool `json:"keepVlanId,omitempty"`
+
+	// MacAddress Mac address of the interface
+	MacAddress *string `json:"macAddress,omitempty"`
+
+	// MstConfigIdFormatSelector MSTP format selector
+	MstConfigIdFormatSelector *int `json:"mstConfigIdFormatSelector,omitempty"`
+
+	// MstConfigName MSTP region name
+	MstConfigName *string `json:"mstConfigName,omitempty"`
+
+	// MstConfigRevision MSTP revision number
+	MstConfigRevision *int `json:"mstConfigRevision,omitempty"`
+
+	// MstpInstances MSTP instances array of the interface
+	MstpInstances *[]struct {
+		// Priority MSTP instance priority
+		Priority *int `json:"priority,omitempty"`
+
+		// VlanIds List of VLAN IDs of the MSTP instance
+		VlanIds *string `json:"vlanIds,omitempty"`
+	} `json:"mstpInstances,omitempty"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the interface
+	Name string `json:"name"`
+
+	// PhysicalMacAddress Physical MAC address of the interface
+	PhysicalMacAddress *string `json:"physicalMacAddress,omitempty"`
+
+	// PhysicalName The interface's physical name
+	PhysicalName *string `json:"physicalName,omitempty"`
+
+	// RequestDns Request domain name servers from the DHCP server and create host objects
+	RequestDns *bool `json:"requestDns,omitempty"`
+
+	// StpPriority Common and Internal Spanning Tree (CIST)
+	StpPriority *int `json:"stpPriority,omitempty"`
+
+	// UseStp The loop detection type
+	UseStp *int `json:"useStp,omitempty"`
+
+	// Uuid NetworkInterface uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsNetworkInterfacesBridgeInterfacePropertiesAggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+type DefinitionsNetworkInterfacesBridgeInterfacePropertiesAggregateMode string
+
+// DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceType Type of the interface
+type DefinitionsNetworkInterfacesBridgeInterfacePropertiesInterfaceType string
+
+// DefinitionsNetworkInterfacesBridgeInterfacePropertiesWithoutUuid defines model for definitions_network-interfaces_BridgeInterfacePropertiesWithoutUuid.
+type DefinitionsNetworkInterfacesBridgeInterfacePropertiesWithoutUuid struct {
+	// MacAddress Mac address of the interface
+	MacAddress *string `json:"macAddress,omitempty"`
+
+	// MstConfigIdFormatSelector MSTP format selector
+	MstConfigIdFormatSelector *int `json:"mstConfigIdFormatSelector,omitempty"`
+
+	// MstConfigName MSTP region name
+	MstConfigName *string `json:"mstConfigName,omitempty"`
+
+	// MstConfigRevision MSTP revision number
+	MstConfigRevision *int `json:"mstConfigRevision,omitempty"`
+
+	// MstpInstances MSTP instances array of the interface
+	MstpInstances *[]struct {
+		// Priority MSTP instance priority
+		Priority *int `json:"priority,omitempty"`
+
+		// VlanIds List of VLAN IDs of the MSTP instance
+		VlanIds *string `json:"vlanIds,omitempty"`
+	} `json:"mstpInstances,omitempty"`
+
+	// PhysicalMacAddress Physical MAC address of the interface
+	PhysicalMacAddress *string `json:"physicalMacAddress,omitempty"`
+
+	// StpPriority Common and Internal Spanning Tree (CIST)
+	StpPriority *int `json:"stpPriority,omitempty"`
+
+	// UseStp The loop detection type
+	UseStp *int `json:"useStp,omitempty"`
+}
+
+// DefinitionsNetworkInterfacesBridgeInterfaceWithChildren defines model for definitions_network-interfaces_BridgeInterfaceWithChildren.
+type DefinitionsNetworkInterfacesBridgeInterfaceWithChildren struct {
+	// AggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+	AggregateMode *DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenAggregateMode    `json:"aggregateMode,omitempty"`
+	Children      *[]DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item `json:"children,omitempty"`
+
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Dhcp4 Is DHCP activated for IPv4
+	Dhcp4 bool `json:"dhcp4"`
+
+	// DhcpHostname DNS name
+	DhcpHostname *string `json:"dhcpHostname,omitempty"`
+
+	// DhcpLeaseTime Requested lease time (seconds)
+	DhcpLeaseTime *int `json:"dhcpLeaseTime,omitempty"`
+
+	// Enabled Activation state of the interface - must be true to create a bridge
+	Enabled bool `json:"enabled"`
+
+	// FailoverMaster Define a failover interface which is the master
+	FailoverMaster *string `json:"failoverMaster,omitempty"`
+
+	// FastRoute Routing by interface: keep initial routing, only if parentInterface refers to a bridge interface
+	FastRoute *bool `json:"fastRoute,omitempty"`
+
+	// Forward Routing without analysis, only if parentInterface refers to a bridge interface
+	Forward *struct {
+		AppleTalk *bool `json:"appleTalk,omitempty"`
+		Ipv6      *bool `json:"ipv6,omitempty"`
+		Ipx       *bool `json:"ipx,omitempty"`
+		NetBios   *bool `json:"netBios,omitempty"`
+		Pppoe     *bool `json:"pppoe,omitempty"`
+	} `json:"forward,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid string `json:"fwid"`
+
+	// InterfaceType Type of the interface
+	InterfaceType DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceType `json:"interfaceType"`
+
+	// Ipv4Addresses IPv4 addresses array of the interface
+	Ipv4Addresses []struct {
+		// Address IPv4 address without mask
+		Address *string `json:"address,omitempty"`
+
+		// Comment Comment for the IPv4 address
+		Comment *string `json:"comment,omitempty"`
+
+		// Mask Mask in CIDR or IP address format
+		Mask *string `json:"mask,omitempty"`
+	} `json:"ipv4Addresses"`
+
+	// KeepVlanId Routing by interface: keep VLAN IDs, only if parentInterface refers to a bridge interface
+	KeepVlanId *bool `json:"keepVlanId,omitempty"`
+
+	// MacAddress Mac address of the interface
+	MacAddress *string `json:"macAddress,omitempty"`
+
+	// MstConfigIdFormatSelector MSTP format selector
+	MstConfigIdFormatSelector *int `json:"mstConfigIdFormatSelector,omitempty"`
+
+	// MstConfigName MSTP region name
+	MstConfigName *string `json:"mstConfigName,omitempty"`
+
+	// MstConfigRevision MSTP revision number
+	MstConfigRevision *int `json:"mstConfigRevision,omitempty"`
+
+	// MstpInstances MSTP instances array of the interface
+	MstpInstances *[]struct {
+		// Priority MSTP instance priority
+		Priority *int `json:"priority,omitempty"`
+
+		// VlanIds List of VLAN IDs of the MSTP instance
+		VlanIds *string `json:"vlanIds,omitempty"`
+	} `json:"mstpInstances,omitempty"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the interface
+	Name string `json:"name"`
+
+	// PhysicalMacAddress Physical MAC address of the interface
+	PhysicalMacAddress *string `json:"physicalMacAddress,omitempty"`
+
+	// PhysicalName The interface's physical name
+	PhysicalName *string `json:"physicalName,omitempty"`
+
+	// RequestDns Request domain name servers from the DHCP server and create host objects
+	RequestDns *bool `json:"requestDns,omitempty"`
+
+	// StpPriority Common and Internal Spanning Tree (CIST)
+	StpPriority *int `json:"stpPriority,omitempty"`
+
+	// UseStp The loop detection type
+	UseStp *int `json:"useStp,omitempty"`
+
+	// Uuid NetworkInterface uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenAggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+type DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenAggregateMode string
+
+// DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3 defines model for .
+type DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3 = map[string]interface{}
+
+// DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item defines model for definitions_network-interfaces_BridgeInterfaceWithChildren.children.Item.
+type DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item struct {
+	union json.RawMessage
+}
+
+// DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceType Type of the interface
+type DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenInterfaceType string
+
+// DefinitionsNetworkInterfacesEthernetInterfaceProperties defines model for definitions_network-interfaces_EthernetInterfaceProperties.
+type DefinitionsNetworkInterfacesEthernetInterfaceProperties struct {
+	// AggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+	AggregateMode *DefinitionsNetworkInterfacesEthernetInterfacePropertiesAggregateMode `json:"aggregateMode,omitempty"`
+
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Dhcp4 Is DHCP activated for IPv4
+	Dhcp4 bool `json:"dhcp4"`
+
+	// DhcpHostname DNS name
+	DhcpHostname *string `json:"dhcpHostname,omitempty"`
+
+	// DhcpLeaseTime Requested lease time (seconds)
+	DhcpLeaseTime *int `json:"dhcpLeaseTime,omitempty"`
+
+	// Enabled Activation state of the interface - must be true to create a bridge
+	Enabled bool `json:"enabled"`
+
+	// FailoverMaster Define a failover interface which is the master
+	FailoverMaster *string `json:"failoverMaster,omitempty"`
+
+	// FastRoute Routing by interface: keep initial routing, only if parentInterface refers to a bridge interface
+	FastRoute *bool `json:"fastRoute,omitempty"`
+
+	// Forward Routing without analysis, only if parentInterface refers to a bridge interface
+	Forward *struct {
+		AppleTalk *bool `json:"appleTalk,omitempty"`
+		Ipv6      *bool `json:"ipv6,omitempty"`
+		Ipx       *bool `json:"ipx,omitempty"`
+		NetBios   *bool `json:"netBios,omitempty"`
+		Pppoe     *bool `json:"pppoe,omitempty"`
+	} `json:"forward,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid string `json:"fwid"`
+
+	// Ha Is the interface used for the HA link
+	Ha *bool `json:"ha,omitempty"`
+
+	// InterfaceType Type of the interface
+	InterfaceType DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceType `json:"interfaceType"`
+
+	// Ipv4Addresses IPv4 addresses array of the interface
+	Ipv4Addresses []struct {
+		// Address IPv4 address without mask
+		Address *string `json:"address,omitempty"`
+
+		// Comment Comment for the IPv4 address
+		Comment *string `json:"comment,omitempty"`
+
+		// Mask Mask in CIDR or IP address format
+		Mask *string `json:"mask,omitempty"`
+	} `json:"ipv4Addresses"`
+
+	// KeepVlanId Routing by interface: keep VLAN IDs, only if parentInterface refers to a bridge interface
+	KeepVlanId *bool `json:"keepVlanId,omitempty"`
+
+	// MacAddress Mac address of the interface
+	MacAddress *string `json:"macAddress,omitempty"`
+
+	// Media Media type of the interface
+	Media DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia `json:"media"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the interface
+	Name string `json:"name"`
+
+	// ParentInterface The uuid of the parent interface
+	ParentInterface *string `json:"parentInterface,omitempty"`
+
+	// PhysicalMacAddress Physical MAC address of the interface
+	PhysicalMacAddress *string `json:"physicalMacAddress,omitempty"`
+
+	// PhysicalName The interface's physical name
+	PhysicalName *string `json:"physicalName,omitempty"`
+
+	// Port Physical port of the interface
+	Port *int `json:"port,omitempty"`
+
+	// Protected Is the interface protected
+	Protected bool `json:"protected"`
+
+	// RequestDns Request domain name servers from the DHCP server and create host objects
+	RequestDns *bool `json:"requestDns,omitempty"`
+
+	// Uuid NetworkInterface uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsNetworkInterfacesEthernetInterfacePropertiesAggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+type DefinitionsNetworkInterfacesEthernetInterfacePropertiesAggregateMode string
+
+// DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceType Type of the interface
+type DefinitionsNetworkInterfacesEthernetInterfacePropertiesInterfaceType string
+
+// DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia Media type of the interface
+type DefinitionsNetworkInterfacesEthernetInterfacePropertiesMedia string
+
+// DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuid defines model for definitions_network-interfaces_EthernetInterfacePropertiesWithoutUuid.
+type DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuid struct {
+	// Ha Is the interface used for the HA link
+	Ha *bool `json:"ha,omitempty"`
+
+	// MacAddress Mac address of the interface
+	MacAddress *string `json:"macAddress,omitempty"`
+
+	// Media Media type of the interface
+	Media DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia `json:"media"`
+
+	// ParentInterface The uuid of the parent interface
+	ParentInterface *string `json:"parentInterface,omitempty"`
+
+	// PhysicalMacAddress Physical MAC address of the interface
+	PhysicalMacAddress *string `json:"physicalMacAddress,omitempty"`
+
+	// Port Physical port of the interface
+	Port *int `json:"port,omitempty"`
+
+	// Protected Is the interface protected
+	Protected bool `json:"protected"`
+}
+
+// DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia Media type of the interface
+type DefinitionsNetworkInterfacesEthernetInterfacePropertiesWithoutUuidMedia string
+
+// DefinitionsNetworkInterfacesEthernetInterfaceWithChildren defines model for definitions_network-interfaces_EthernetInterfaceWithChildren.
+type DefinitionsNetworkInterfacesEthernetInterfaceWithChildren struct {
+	// AggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+	AggregateMode *DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenAggregateMode `json:"aggregateMode,omitempty"`
+	Children      *[]map[string]interface{}                                               `json:"children,omitempty"`
+
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Dhcp4 Is DHCP activated for IPv4
+	Dhcp4 bool `json:"dhcp4"`
+
+	// DhcpHostname DNS name
+	DhcpHostname *string `json:"dhcpHostname,omitempty"`
+
+	// DhcpLeaseTime Requested lease time (seconds)
+	DhcpLeaseTime *int `json:"dhcpLeaseTime,omitempty"`
+
+	// Enabled Activation state of the interface - must be true to create a bridge
+	Enabled bool `json:"enabled"`
+
+	// FailoverMaster Define a failover interface which is the master
+	FailoverMaster *string `json:"failoverMaster,omitempty"`
+
+	// FastRoute Routing by interface: keep initial routing, only if parentInterface refers to a bridge interface
+	FastRoute *bool `json:"fastRoute,omitempty"`
+
+	// Forward Routing without analysis, only if parentInterface refers to a bridge interface
+	Forward *struct {
+		AppleTalk *bool `json:"appleTalk,omitempty"`
+		Ipv6      *bool `json:"ipv6,omitempty"`
+		Ipx       *bool `json:"ipx,omitempty"`
+		NetBios   *bool `json:"netBios,omitempty"`
+		Pppoe     *bool `json:"pppoe,omitempty"`
+	} `json:"forward,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid string `json:"fwid"`
+
+	// Ha Is the interface used for the HA link
+	Ha *bool `json:"ha,omitempty"`
+
+	// InterfaceType Type of the interface
+	InterfaceType DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceType `json:"interfaceType"`
+
+	// Ipv4Addresses IPv4 addresses array of the interface
+	Ipv4Addresses []struct {
+		// Address IPv4 address without mask
+		Address *string `json:"address,omitempty"`
+
+		// Comment Comment for the IPv4 address
+		Comment *string `json:"comment,omitempty"`
+
+		// Mask Mask in CIDR or IP address format
+		Mask *string `json:"mask,omitempty"`
+	} `json:"ipv4Addresses"`
+
+	// KeepVlanId Routing by interface: keep VLAN IDs, only if parentInterface refers to a bridge interface
+	KeepVlanId *bool `json:"keepVlanId,omitempty"`
+
+	// MacAddress Mac address of the interface
+	MacAddress *string `json:"macAddress,omitempty"`
+
+	// Media Media type of the interface
+	Media DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia `json:"media"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the interface
+	Name string `json:"name"`
+
+	// ParentInterface The uuid of the parent interface
+	ParentInterface *string `json:"parentInterface,omitempty"`
+
+	// PhysicalMacAddress Physical MAC address of the interface
+	PhysicalMacAddress *string `json:"physicalMacAddress,omitempty"`
+
+	// PhysicalName The interface's physical name
+	PhysicalName *string `json:"physicalName,omitempty"`
+
+	// Port Physical port of the interface
+	Port *int `json:"port,omitempty"`
+
+	// Protected Is the interface protected
+	Protected bool `json:"protected"`
+
+	// RequestDns Request domain name servers from the DHCP server and create host objects
+	RequestDns *bool `json:"requestDns,omitempty"`
+
+	// Uuid NetworkInterface uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenAggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+type DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenAggregateMode string
+
+// DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceType Type of the interface
+type DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenInterfaceType string
+
+// DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia Media type of the interface
+type DefinitionsNetworkInterfacesEthernetInterfaceWithChildrenMedia string
+
+// DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuid defines model for definitions_network-interfaces_NetworkInterfaceCommonPropertiesWithoutUuid.
+type DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuid struct {
+	// AggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+	AggregateMode *DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidAggregateMode `json:"aggregateMode,omitempty"`
+
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Dhcp4 Is DHCP activated for IPv4
+	Dhcp4 bool `json:"dhcp4"`
+
+	// DhcpHostname DNS name
+	DhcpHostname *string `json:"dhcpHostname,omitempty"`
+
+	// DhcpLeaseTime Requested lease time (seconds)
+	DhcpLeaseTime *int `json:"dhcpLeaseTime,omitempty"`
+
+	// Enabled Activation state of the interface - must be true to create a bridge
+	Enabled bool `json:"enabled"`
+
+	// FailoverMaster Define a failover interface which is the master
+	FailoverMaster *string `json:"failoverMaster,omitempty"`
+
+	// FastRoute Routing by interface: keep initial routing, only if parentInterface refers to a bridge interface
+	FastRoute *bool `json:"fastRoute,omitempty"`
+
+	// Forward Routing without analysis, only if parentInterface refers to a bridge interface
+	Forward *struct {
+		AppleTalk *bool `json:"appleTalk,omitempty"`
+		Ipv6      *bool `json:"ipv6,omitempty"`
+		Ipx       *bool `json:"ipx,omitempty"`
+		NetBios   *bool `json:"netBios,omitempty"`
+		Pppoe     *bool `json:"pppoe,omitempty"`
+	} `json:"forward,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid string `json:"fwid"`
+
+	// InterfaceType Type of the interface
+	InterfaceType DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceType `json:"interfaceType"`
+
+	// Ipv4Addresses IPv4 addresses array of the interface
+	Ipv4Addresses []struct {
+		// Address IPv4 address without mask
+		Address *string `json:"address,omitempty"`
+
+		// Comment Comment for the IPv4 address
+		Comment *string `json:"comment,omitempty"`
+
+		// Mask Mask in CIDR or IP address format
+		Mask *string `json:"mask,omitempty"`
+	} `json:"ipv4Addresses"`
+
+	// KeepVlanId Routing by interface: keep VLAN IDs, only if parentInterface refers to a bridge interface
+	KeepVlanId *bool `json:"keepVlanId,omitempty"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the interface
+	Name string `json:"name"`
+
+	// PhysicalName The interface's physical name
+	PhysicalName *string `json:"physicalName,omitempty"`
+
+	// RequestDns Request domain name servers from the DHCP server and create host objects
+	RequestDns *bool `json:"requestDns,omitempty"`
+}
+
+// DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidAggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+type DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidAggregateMode string
+
+// DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceType Type of the interface
+type DefinitionsNetworkInterfacesNetworkInterfaceCommonPropertiesWithoutUuidInterfaceType string
+
+// DefinitionsNetworkInterfacesNetworkInterfaceUuid defines model for definitions_network-interfaces_NetworkInterfaceUuid.
+type DefinitionsNetworkInterfacesNetworkInterfaceUuid struct {
+	// Uuid NetworkInterface uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsNetworkInterfacesNetworkInterfacesListResponse defines model for definitions_network-interfaces_NetworkInterfacesListResponse.
+type DefinitionsNetworkInterfacesNetworkInterfacesListResponse struct {
+	Result  *[]DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item `json:"result,omitempty"`
+	Success *bool                                                                    `json:"success,omitempty"`
+	Total   *float32                                                                 `json:"total,omitempty"`
+}
+
+// DefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5 defines model for .
+type DefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5 = map[string]interface{}
+
+// DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item defines model for definitions_network-interfaces_NetworkInterfacesListResponse.result.Item.
+type DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item struct {
+	union json.RawMessage
+}
+
+// DefinitionsNetworkInterfacesNetworkInterfacesTree defines model for definitions_network-interfaces_NetworkInterfacesTree.
+type DefinitionsNetworkInterfacesNetworkInterfacesTree = []DefinitionsNetworkInterfacesNetworkInterfacesTree_Item
+
+// DefinitionsNetworkInterfacesNetworkInterfacesTree4 defines model for .
+type DefinitionsNetworkInterfacesNetworkInterfacesTree4 = map[string]interface{}
+
+// DefinitionsNetworkInterfacesNetworkInterfacesTree_Item defines model for definitions_network-interfaces_NetworkInterfacesTree.Item.
+type DefinitionsNetworkInterfacesNetworkInterfacesTree_Item struct {
+	union json.RawMessage
+}
+
+// DefinitionsNetworkInterfacesVirtualInterfaceProperties defines model for definitions_network-interfaces_VirtualInterfaceProperties.
+type DefinitionsNetworkInterfacesVirtualInterfaceProperties struct {
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Enabled Activation state of the virtual interface
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid *string `json:"fwid,omitempty"`
+
+	// InterfaceType Type of the interface
+	InterfaceType *string `json:"interfaceType,omitempty"`
+
+	// Ipv4Address IPV4 address of the virtual interface
+	Ipv4Address *string `json:"ipv4Address,omitempty"`
+
+	// Mask Mask address of the virtual interface
+	Mask *string `json:"mask,omitempty"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the virtual interface
+	Name         *string `json:"name,omitempty"`
+	PeerName     *string `json:"peerName,omitempty"`
+	TopologyName *int    `json:"topologyName,omitempty"`
+
+	// Uuid NetworkInterface uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsNetworkInterfacesVirtualInterfacePropertiesWithoutUuid defines model for definitions_network-interfaces_VirtualInterfacePropertiesWithoutUuid.
+type DefinitionsNetworkInterfacesVirtualInterfacePropertiesWithoutUuid struct {
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Enabled Activation state of the virtual interface
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid *string `json:"fwid,omitempty"`
+
+	// InterfaceType Type of the interface
+	InterfaceType *string `json:"interfaceType,omitempty"`
+
+	// Ipv4Address IPV4 address of the virtual interface
+	Ipv4Address *string `json:"ipv4Address,omitempty"`
+
+	// Mask Mask address of the virtual interface
+	Mask *string `json:"mask,omitempty"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the virtual interface
+	Name         *string `json:"name,omitempty"`
+	PeerName     *string `json:"peerName,omitempty"`
+	TopologyName *int    `json:"topologyName,omitempty"`
+}
+
+// DefinitionsNetworkInterfacesVlanInterfaceProperties defines model for definitions_network-interfaces_VlanInterfaceProperties.
+type DefinitionsNetworkInterfacesVlanInterfaceProperties struct {
+	// AggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+	AggregateMode *DefinitionsNetworkInterfacesVlanInterfacePropertiesAggregateMode `json:"aggregateMode,omitempty"`
+
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Dhcp4 Is DHCP activated for IPv4
+	Dhcp4 bool `json:"dhcp4"`
+
+	// DhcpHostname DNS name
+	DhcpHostname *string `json:"dhcpHostname,omitempty"`
+
+	// DhcpLeaseTime Requested lease time (seconds)
+	DhcpLeaseTime *int `json:"dhcpLeaseTime,omitempty"`
+
+	// Enabled Activation state of the interface - must be true to create a bridge
+	Enabled bool `json:"enabled"`
+
+	// FailoverMaster Define a failover interface which is the master
+	FailoverMaster *string `json:"failoverMaster,omitempty"`
+
+	// FastRoute Routing by interface: keep initial routing, only if parentInterface refers to a bridge interface
+	FastRoute *bool `json:"fastRoute,omitempty"`
+
+	// Forward Routing without analysis, only if parentInterface refers to a bridge interface
+	Forward *struct {
+		AppleTalk *bool `json:"appleTalk,omitempty"`
+		Ipv6      *bool `json:"ipv6,omitempty"`
+		Ipx       *bool `json:"ipx,omitempty"`
+		NetBios   *bool `json:"netBios,omitempty"`
+		Pppoe     *bool `json:"pppoe,omitempty"`
+	} `json:"forward,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid string `json:"fwid"`
+
+	// InterfaceType Type of the interface
+	InterfaceType DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceType `json:"interfaceType"`
+
+	// Ipv4Addresses IPv4 addresses array of the interface
+	Ipv4Addresses []struct {
+		// Address IPv4 address without mask
+		Address *string `json:"address,omitempty"`
+
+		// Comment Comment for the IPv4 address
+		Comment *string `json:"comment,omitempty"`
+
+		// Mask Mask in CIDR or IP address format
+		Mask *string `json:"mask,omitempty"`
+	} `json:"ipv4Addresses"`
+
+	// KeepVlanId Routing by interface: keep VLAN IDs, only if parentInterface refers to a bridge interface
+	KeepVlanId *bool `json:"keepVlanId,omitempty"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the interface
+	Name string `json:"name"`
+
+	// ParentInterface The uuid of the parent interface
+	ParentInterface *string `json:"parentInterface,omitempty"`
+
+	// Physical The uuid of the ethernet parent interface
+	Physical string `json:"physical"`
+
+	// PhysicalName The interface's physical name
+	PhysicalName *string `json:"physicalName,omitempty"`
+
+	// Priority The priority of the vlan (CoS)
+	Priority int `json:"priority"`
+
+	// Protected Is the interface protected
+	Protected bool `json:"protected"`
+
+	// RequestDns Request domain name servers from the DHCP server and create host objects
+	RequestDns *bool `json:"requestDns,omitempty"`
+
+	// Uuid NetworkInterface uuid
+	Uuid string `json:"uuid"`
+
+	// VlanId The ID of the vlan
+	VlanId int `json:"vlanId"`
+}
+
+// DefinitionsNetworkInterfacesVlanInterfacePropertiesAggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+type DefinitionsNetworkInterfacesVlanInterfacePropertiesAggregateMode string
+
+// DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceType Type of the interface
+type DefinitionsNetworkInterfacesVlanInterfacePropertiesInterfaceType string
+
+// DefinitionsNetworkInterfacesVlanInterfacePropertiesWithoutUuid defines model for definitions_network-interfaces_VlanInterfacePropertiesWithoutUuid.
+type DefinitionsNetworkInterfacesVlanInterfacePropertiesWithoutUuid struct {
+	// ParentInterface The uuid of the parent interface
+	ParentInterface *string `json:"parentInterface,omitempty"`
+
+	// Physical The uuid of the ethernet parent interface
+	Physical string `json:"physical"`
+
+	// Priority The priority of the vlan (CoS)
+	Priority int `json:"priority"`
+
+	// Protected Is the interface protected
+	Protected bool `json:"protected"`
+
+	// VlanId The ID of the vlan
+	VlanId int `json:"vlanId"`
+}
+
+// DefinitionsNetworkInterfacesVlanInterfaceWithChildren defines model for definitions_network-interfaces_VlanInterfaceWithChildren.
+type DefinitionsNetworkInterfacesVlanInterfaceWithChildren struct {
+	// AggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+	AggregateMode *DefinitionsNetworkInterfacesVlanInterfaceWithChildrenAggregateMode `json:"aggregateMode,omitempty"`
+	Children      *[]map[string]interface{}                                           `json:"children,omitempty"`
+
+	// Comment Comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Dhcp4 Is DHCP activated for IPv4
+	Dhcp4 bool `json:"dhcp4"`
+
+	// DhcpHostname DNS name
+	DhcpHostname *string `json:"dhcpHostname,omitempty"`
+
+	// DhcpLeaseTime Requested lease time (seconds)
+	DhcpLeaseTime *int `json:"dhcpLeaseTime,omitempty"`
+
+	// Enabled Activation state of the interface - must be true to create a bridge
+	Enabled bool `json:"enabled"`
+
+	// FailoverMaster Define a failover interface which is the master
+	FailoverMaster *string `json:"failoverMaster,omitempty"`
+
+	// FastRoute Routing by interface: keep initial routing, only if parentInterface refers to a bridge interface
+	FastRoute *bool `json:"fastRoute,omitempty"`
+
+	// Forward Routing without analysis, only if parentInterface refers to a bridge interface
+	Forward *struct {
+		AppleTalk *bool `json:"appleTalk,omitempty"`
+		Ipv6      *bool `json:"ipv6,omitempty"`
+		Ipx       *bool `json:"ipx,omitempty"`
+		NetBios   *bool `json:"netBios,omitempty"`
+		Pppoe     *bool `json:"pppoe,omitempty"`
+	} `json:"forward,omitempty"`
+
+	// Fwid The id of the firewall it belongs to
+	Fwid string `json:"fwid"`
+
+	// InterfaceType Type of the interface
+	InterfaceType DefinitionsNetworkInterfacesVlanInterfaceWithChildrenInterfaceType `json:"interfaceType"`
+
+	// Ipv4Addresses IPv4 addresses array of the interface
+	Ipv4Addresses []struct {
+		// Address IPv4 address without mask
+		Address *string `json:"address,omitempty"`
+
+		// Comment Comment for the IPv4 address
+		Comment *string `json:"comment,omitempty"`
+
+		// Mask Mask in CIDR or IP address format
+		Mask *string `json:"mask,omitempty"`
+	} `json:"ipv4Addresses"`
+
+	// KeepVlanId Routing by interface: keep VLAN IDs, only if parentInterface refers to a bridge interface
+	KeepVlanId *bool `json:"keepVlanId,omitempty"`
+
+	// Mtu Maximum Transmission Unit of the interface
+	Mtu *int `json:"mtu,omitempty"`
+
+	// Name Name of the interface
+	Name string `json:"name"`
+
+	// ParentInterface The uuid of the parent interface
+	ParentInterface *string `json:"parentInterface,omitempty"`
+
+	// Physical The uuid of the ethernet parent interface
+	Physical string `json:"physical"`
+
+	// PhysicalName The interface's physical name
+	PhysicalName *string `json:"physicalName,omitempty"`
+
+	// Priority The priority of the vlan (CoS)
+	Priority int `json:"priority"`
+
+	// Protected Is the interface protected
+	Protected bool `json:"protected"`
+
+	// RequestDns Request domain name servers from the DHCP server and create host objects
+	RequestDns *bool `json:"requestDns,omitempty"`
+
+	// Uuid NetworkInterface uuid
+	Uuid string `json:"uuid"`
+
+	// VlanId The ID of the vlan
+	VlanId int `json:"vlanId"`
+}
+
+// DefinitionsNetworkInterfacesVlanInterfaceWithChildrenAggregateMode Allow to use the aggregated interface with a failover mode (master/backup) or not
+type DefinitionsNetworkInterfacesVlanInterfaceWithChildrenAggregateMode string
+
+// DefinitionsNetworkInterfacesVlanInterfaceWithChildrenInterfaceType Type of the interface
+type DefinitionsNetworkInterfacesVlanInterfaceWithChildrenInterfaceType string
+
+// DefinitionsNsrpcNsrpcAttachmentResponse defines model for definitions_nsrpc_NsrpcAttachmentResponse.
+type DefinitionsNsrpcNsrpcAttachmentResponse struct {
+	// Result Firewall's attachment files
+	Result  *[]string `json:"result,omitempty"`
+	Success *bool     `json:"success,omitempty"`
+}
+
+// DefinitionsNsrpcNsrpcDeleteResponse defines model for definitions_nsrpc_NsrpcDeleteResponse.
+type DefinitionsNsrpcNsrpcDeleteResponse struct {
+	Message *string `json:"message,omitempty"`
+	Success *bool   `json:"success,omitempty"`
+}
+
+// DefinitionsNsrpcNsrpcExecuteBody nsrpc execute body
+type DefinitionsNsrpcNsrpcExecuteBody struct {
+	// ByNames if truthy, the target field will be interpreted as an array of firewall names
+	ByNames *bool `json:"byNames,omitempty"`
+
+	// Target can also be "all" to let the script be run on each firewall
+	Target []string `json:"target"`
+}
+
+// DefinitionsNsrpcNsrpcListResponse defines model for definitions_nsrpc_NsrpcListResponse.
+type DefinitionsNsrpcNsrpcListResponse struct {
+	Result *struct {
+		Content *[]struct {
+			// FirewallsInError Firewall's UUIDs array that has encountered an error during preprocessing
+			FirewallsInError *[]string `json:"firewallsInError,omitempty"`
+			Name             *string   `json:"name,omitempty"`
+		} `json:"content,omitempty"`
+	} `json:"result,omitempty"`
+	Success *bool `json:"success,omitempty"`
+}
+
+// DefinitionsNsrpcNsrpcResponse defines model for definitions_nsrpc_NsrpcResponse.
+type DefinitionsNsrpcNsrpcResponse struct {
+	Conflicts  *string `json:"conflicts,omitempty"`
+	ScriptPath *string `json:"scriptPath,omitempty"`
+	Success    *bool   `json:"success,omitempty"`
+}
+
+// DefinitionsNsrpcNsrpcScheduleBody nsrpc scheduling request body
+type DefinitionsNsrpcNsrpcScheduleBody struct {
+	// ByNames if truthy, the target field will be interpreted as an array of firewall names
+	ByNames *bool `json:"byNames,omitempty"`
+
+	// Schedule script's execution date
+	Schedule *string `json:"schedule,omitempty"`
+
+	// Target can also be "all" to let the script be run on each firewall
+	Target []string `json:"target"`
+}
+
+// DefinitionsNsrpcNsrpcScriptContentResponse defines model for definitions_nsrpc_NsrpcScriptContentResponse.
+type DefinitionsNsrpcNsrpcScriptContentResponse struct {
+	// Content The nsrpcScript content preprocessed for this firewall
+	Content *string `json:"content,omitempty"`
+
+	// Errors Only present if there are some errors during preprocessing
+	Errors *[]struct {
+		Code *string `json:"code,omitempty"`
+
+		// Line Line number on which the error occurs
+		Line *int      `json:"line,omitempty"`
+		Msg  *string   `json:"msg,omitempty"`
+		Vars *[]string `json:"vars,omitempty"`
+	} `json:"errors,omitempty"`
+	Success *bool `json:"success,omitempty"`
+}
+
+// DefinitionsNsrpcNsrpcStateExecutionResponse defines model for definitions_nsrpc_NsrpcStateExecutionResponse.
+type DefinitionsNsrpcNsrpcStateExecutionResponse struct {
+	// Date Start execution date
+	Date      *openapi_types.Date `json:"date,omitempty"`
+	Firewalls *[]struct {
+		// Code Current execution code (similar to state)
+		Code *string `json:"code,omitempty"`
+
+		// Fwid Firewall's UUID
+		Fwid *string `json:"fwid,omitempty"`
+
+		// Name Firewall's name
+		Name *string `json:"name,omitempty"`
+
+		// State Current execution state
+		State *string `json:"state,omitempty"`
+
+		// Step Current execution step on this firewall
+		Step *DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStep `json:"step,omitempty"`
+
+		// Total Total number of execution steps on this firewall. Usefull to know if the execution is finished
+		Total *DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsTotal `json:"total,omitempty"`
+	} `json:"firewalls,omitempty"`
+	Success *DefinitionsNsrpcNsrpcStateExecutionResponseSuccess `json:"success,omitempty"`
+
+	// User Login of the user who launched the nsrpc execution
+	User *string `json:"user,omitempty"`
+}
+
+// DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStep Current execution step on this firewall
+type DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsStep int
+
+// DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsTotal Total number of execution steps on this firewall. Usefull to know if the execution is finished
+type DefinitionsNsrpcNsrpcStateExecutionResponseFirewallsTotal int
+
+// DefinitionsNsrpcNsrpcStateExecutionResponseSuccess defines model for DefinitionsNsrpcNsrpcStateExecutionResponse.Success.
+type DefinitionsNsrpcNsrpcStateExecutionResponseSuccess bool
+
 // DefinitionsObjectsCheckUsageResponse defines model for definitions_objects_CheckUsageResponse.
 type DefinitionsObjectsCheckUsageResponse struct {
 	Result *[]struct {
@@ -1951,10 +3642,99 @@ type DefinitionsObjectsCheckUsageResponse struct {
 	Success *bool `json:"success,omitempty"`
 }
 
+// DefinitionsObjectsObjectProperties defines model for definitions_objects_ObjectProperties.
+type DefinitionsObjectsObjectProperties struct {
+	// Type Object type
+	Type string `json:"_type"`
+
+	// Comment Object description/comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Deployment Deployment mode
+	Deployment *struct {
+		Force *[]string                                         `json:"force,omitempty"`
+		Mode  *DefinitionsObjectsObjectPropertiesDeploymentMode `json:"mode,omitempty"`
+	} `json:"deployment,omitempty"`
+
+	// Name Object name
+	Name string `json:"name"`
+
+	// Uuid Object uuid
+	Uuid string `json:"uuid"`
+}
+
+// DefinitionsObjectsObjectPropertiesDeploymentMode defines model for DefinitionsObjectsObjectProperties.Deployment.Mode.
+type DefinitionsObjectsObjectPropertiesDeploymentMode string
+
+// DefinitionsObjectsObjectPropertiesWithoutUuid defines model for definitions_objects_ObjectPropertiesWithoutUuid.
+type DefinitionsObjectsObjectPropertiesWithoutUuid struct {
+	// Type Object type
+	Type string `json:"_type"`
+
+	// Comment Object description/comment
+	Comment *string `json:"comment,omitempty"`
+
+	// Deployment Deployment mode
+	Deployment *struct {
+		Force *[]string                                                    `json:"force,omitempty"`
+		Mode  *DefinitionsObjectsObjectPropertiesWithoutUuidDeploymentMode `json:"mode,omitempty"`
+	} `json:"deployment,omitempty"`
+
+	// Name Object name
+	Name string `json:"name"`
+}
+
+// DefinitionsObjectsObjectPropertiesWithoutUuidDeploymentMode defines model for DefinitionsObjectsObjectPropertiesWithoutUuid.Deployment.Mode.
+type DefinitionsObjectsObjectPropertiesWithoutUuidDeploymentMode string
+
 // DefinitionsObjectsObjectUuid defines model for definitions_objects_ObjectUuid.
 type DefinitionsObjectsObjectUuid struct {
 	// Uuid Object uuid
 	Uuid string `json:"uuid"`
+}
+
+// DefinitionsQueueMultipleQueuesResponse defines model for definitions_queue_MultipleQueuesResponse.
+type DefinitionsQueueMultipleQueuesResponse struct {
+	Result  *[]DefinitionsQueueQueue `json:"result,omitempty"`
+	Success *bool                    `json:"success,omitempty"`
+}
+
+// DefinitionsQueueQueue defines model for definitions_queue_Queue.
+type DefinitionsQueueQueue struct {
+	Comment             *string                   `json:"comment,omitempty"`
+	MaxBandwidth        *float32                  `json:"maxBandwidth,omitempty"`
+	MaxReverseBandwidth *float32                  `json:"maxReverseBandwidth,omitempty"`
+	MinBandwidth        *float32                  `json:"minBandwidth,omitempty"`
+	MinReverseBandwidth *float32                  `json:"minReverseBandwidth,omitempty"`
+	Name                string                    `json:"name"`
+	Priority            *float32                  `json:"priority,omitempty"`
+	Type                DefinitionsQueueQueueType `json:"type"`
+	Uuid                string                    `json:"uuid"`
+}
+
+// DefinitionsQueueQueueType defines model for DefinitionsQueueQueue.Type.
+type DefinitionsQueueQueueType string
+
+// DefinitionsQueueQueueWithoutUuid A custom queue
+type DefinitionsQueueQueueWithoutUuid struct {
+	Comment             *string                              `json:"comment,omitempty"`
+	MaxBandwidth        *float32                             `json:"maxBandwidth,omitempty"`
+	MaxReverseBandwidth *float32                             `json:"maxReverseBandwidth,omitempty"`
+	MinBandwidth        *float32                             `json:"minBandwidth,omitempty"`
+	MinReverseBandwidth *float32                             `json:"minReverseBandwidth,omitempty"`
+	Name                string                               `json:"name"`
+	Priority            *float32                             `json:"priority,omitempty"`
+	Type                DefinitionsQueueQueueWithoutUuidType `json:"type"`
+}
+
+// DefinitionsQueueQueueWithoutUuidType defines model for DefinitionsQueueQueueWithoutUuid.Type.
+type DefinitionsQueueQueueWithoutUuidType string
+
+// DefinitionsQueueSingleQueueResponse defines model for definitions_queue_SingleQueueResponse.
+type DefinitionsQueueSingleQueueResponse struct {
+	// Result A queue
+	Result  *DefinitionsQueueQueue `json:"result,omitempty"`
+	Success *bool                  `json:"success,omitempty"`
 }
 
 // DefinitionsRadiusRadius defines model for definitions_radius_radius.
@@ -1999,6 +3779,121 @@ type DefinitionsRadiusRadiusPostResponse_Result_Item struct {
 type DefinitionsRadiusRadiusResponse struct {
 	Result  *[]DefinitionsRadiusRadius `json:"result,omitempty"`
 	Success *bool                      `json:"success,omitempty"`
+}
+
+// DefinitionsRoutingRouteAddUpdateBody defines model for definitions_routing_RouteAddUpdateBody.
+type DefinitionsRoutingRouteAddUpdateBody struct {
+	// AddNetwork Add IPv4 networks distributed via dynamic routing to the table of protected networks. Only for dynamic routeType
+	AddNetwork *bool `json:"addNetwork,omitempty"`
+
+	// Bird Bird config file content
+	Bird *string `json:"bird,omitempty"`
+
+	// Comment Host  or router uuid
+	Comment *string `json:"comment,omitempty"`
+
+	// Destination Host or network or group uuid
+	Destination *string `json:"destination,omitempty"`
+
+	// Enabled If the route is activated or not
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Gateway Host or router uuid
+	Gateway *string `json:"gateway,omitempty"`
+
+	// Iface interface uuid
+	Iface *string `json:"iface,omitempty"`
+
+	// Restart Restart dynamic routing when the firewall becomes active (high availability). Only for dynamic routeType
+	Restart *bool `json:"restart,omitempty"`
+
+	// RouteType Route type
+	RouteType *DefinitionsRoutingRouteAddUpdateBodyRouteType `json:"routeType,omitempty"`
+
+	// Uuid route uuid
+	Uuid *string `json:"uuid,omitempty"`
+}
+
+// DefinitionsRoutingRouteAddUpdateBodyRouteType Route type
+type DefinitionsRoutingRouteAddUpdateBodyRouteType string
+
+// DefinitionsRoutingRouteInfo defines model for definitions_routing_RouteInfo.
+type DefinitionsRoutingRouteInfo struct {
+	// AddNetwork Add IPv4 networks distributed via dynamic routing to the table of protected networks. Only for dynamic routeType
+	AddNetwork *bool `json:"addNetwork,omitempty"`
+
+	// Bird Bird config file content
+	Bird *string `json:"bird,omitempty"`
+
+	// Comment Host  or router uuid
+	Comment *string `json:"comment,omitempty"`
+
+	// Destination Host or network or group uuid
+	Destination *string `json:"destination,omitempty"`
+
+	// Enabled If the route is activated or not
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Fwid Firewall uuid
+	Fwid *string `json:"fwid,omitempty"`
+
+	// Gateway Host or router uuid
+	Gateway *string `json:"gateway,omitempty"`
+
+	// Iface interface uuid
+	Iface *string `json:"iface,omitempty"`
+
+	// Restart Restart dynamic routing when the firewall becomes active (high availability). Only for dynamic routeType
+	Restart *bool `json:"restart,omitempty"`
+
+	// RouteType Route type
+	RouteType *DefinitionsRoutingRouteInfoRouteType `json:"routeType,omitempty"`
+
+	// Uuid Route uuid
+	Uuid *string `json:"uuid,omitempty"`
+}
+
+// DefinitionsRoutingRouteInfoRouteType Route type
+type DefinitionsRoutingRouteInfoRouteType string
+
+// DefinitionsRoutingRouteProperties defines model for definitions_routing_RouteProperties.
+type DefinitionsRoutingRouteProperties struct {
+	// AddNetwork Add IPv4 networks distributed via dynamic routing to the table of protected networks. Only for dynamic routeType
+	AddNetwork *bool `json:"addNetwork,omitempty"`
+
+	// Bird Bird config file content
+	Bird *string `json:"bird,omitempty"`
+
+	// Comment Host  or router uuid
+	Comment *string `json:"comment,omitempty"`
+
+	// Destination Host or network or group uuid
+	Destination *string `json:"destination,omitempty"`
+
+	// Enabled If the route is activated or not
+	Enabled *bool `json:"enabled,omitempty"`
+
+	// Gateway Host or router uuid
+	Gateway *string `json:"gateway,omitempty"`
+
+	// Iface interface uuid
+	Iface *string `json:"iface,omitempty"`
+
+	// Restart Restart dynamic routing when the firewall becomes active (high availability). Only for dynamic routeType
+	Restart *bool `json:"restart,omitempty"`
+
+	// RouteType Route type
+	RouteType *DefinitionsRoutingRoutePropertiesRouteType `json:"routeType,omitempty"`
+}
+
+// DefinitionsRoutingRoutePropertiesRouteType Route type
+type DefinitionsRoutingRoutePropertiesRouteType string
+
+// DefinitionsRoutingRouting defines model for definitions_routing_Routing.
+type DefinitionsRoutingRouting struct {
+	// Result Routes list
+	Result  *[]DefinitionsRoutingRouteInfo `json:"result,omitempty"`
+	Success *bool                          `json:"success,omitempty"`
 }
 
 // DefinitionsRulesParentType defines model for definitions_rules_ParentType.
@@ -2236,6 +4131,34 @@ type DefinitionsTopologiesTopologyPropertiesWithoutUuidShape string
 
 // DefinitionsTopologiesTopologyPropertiesWithoutUuidType Topology type
 type DefinitionsTopologiesTopologyPropertiesWithoutUuidType string
+
+// DefinitionsTrafficShaperMultipleTrafficShapersResponse defines model for definitions_traffic-shaper_MultipleTrafficShapersResponse.
+type DefinitionsTrafficShaperMultipleTrafficShapersResponse struct {
+	Result  *[]DefinitionsTrafficShaperTrafficShaper `json:"result,omitempty"`
+	Success *bool                                    `json:"success,omitempty"`
+}
+
+// DefinitionsTrafficShaperSingleTrafficShaperResponse defines model for definitions_traffic-shaper_SingleTrafficShaperResponse.
+type DefinitionsTrafficShaperSingleTrafficShaperResponse struct {
+	// Result A traffic shaper
+	Result  *DefinitionsTrafficShaperTrafficShaper `json:"result,omitempty"`
+	Success *bool                                  `json:"success,omitempty"`
+}
+
+// DefinitionsTrafficShaperTrafficShaper defines model for definitions_traffic-shaper_TrafficShaper.
+type DefinitionsTrafficShaperTrafficShaper struct {
+	IncomingBandwidth float32 `json:"incomingBandwidth"`
+	Name              string  `json:"name"`
+	OutgoingBandwidth float32 `json:"outgoingBandwidth"`
+	Uuid              string  `json:"uuid"`
+}
+
+// DefinitionsTrafficShaperTrafficShaperWithoutUuid A custom traffic shaper
+type DefinitionsTrafficShaperTrafficShaperWithoutUuid struct {
+	IncomingBandwidth float32 `json:"incomingBandwidth"`
+	Name              string  `json:"name"`
+	OutgoingBandwidth float32 `json:"outgoingBandwidth"`
+}
 
 // DefinitionsTunnelsTunnelEndpoint defines model for definitions_tunnels_TunnelEndpoint.
 type DefinitionsTunnelsTunnelEndpoint struct {
@@ -2479,9 +4402,29 @@ type PostApiCertificatesUuidParams struct {
 	DestFwUuid string `form:"destFwUuid" json:"destFwUuid"`
 }
 
+// PostApiConfigDrJSONBody defines parameters for PostApiConfigDr.
+type PostApiConfigDrJSONBody struct {
+	Dr *bool `json:"dr,omitempty"`
+}
+
 // PostApiConfigLicenseMultipartBody defines parameters for PostApiConfigLicense.
 type PostApiConfigLicenseMultipartBody struct {
 	License *openapi_types.File `json:"license,omitempty"`
+}
+
+// PutApiConfigPapiJSONBody defines parameters for PutApiConfigPapi.
+type PutApiConfigPapiJSONBody struct {
+	IsPapiActive *bool `json:"isPapiActive,omitempty"`
+}
+
+// PutApiConfigSlsJSONBody defines parameters for PutApiConfigSls.
+type PutApiConfigSlsJSONBody struct {
+	SlsUrl *string `json:"slsUrl,omitempty"`
+}
+
+// PutApiConfigVpncrlrequiredJSONBody defines parameters for PutApiConfigVpncrlrequired.
+type PutApiConfigVpncrlrequiredJSONBody struct {
+	VpnCrlRequired *bool `json:"vpnCrlRequired,omitempty"`
 }
 
 // GetApiExportSdwansupervisionParams defines parameters for GetApiExportSdwansupervision.
@@ -2506,6 +4449,120 @@ type DeleteApiFoldersUuidParams struct {
 type GetApiLogsLastParams struct {
 	// Minlevel Minimum log level name
 	Minlevel *string `form:"minlevel,omitempty" json:"minlevel,omitempty"`
+}
+
+// GetApiNetworkInterfacesParams defines parameters for GetApiNetworkInterfaces.
+type GetApiNetworkInterfacesParams struct {
+	// Fwid Firewall UUID
+	Fwid *string `form:"fwid,omitempty" json:"fwid,omitempty"`
+
+	// Types The interface types of the records
+	Types *string `form:"types,omitempty" json:"types,omitempty"`
+
+	// Start The index of the first record to get
+	Start *float32 `form:"start,omitempty" json:"start,omitempty"`
+
+	// Limit The maximum count of records to get
+	Limit *float32 `form:"limit,omitempty" json:"limit,omitempty"`
+
+	// Filter An ExtJS filters JSON array
+	Filter *string `form:"filter,omitempty" json:"filter,omitempty"`
+
+	// Sort An ExtJS sorters JSON array
+	Sort *string `form:"sort,omitempty" json:"sort,omitempty"`
+}
+
+// PostApiNetworkInterfacesJSONBody defines parameters for PostApiNetworkInterfaces.
+type PostApiNetworkInterfacesJSONBody struct {
+	union json.RawMessage
+}
+
+// DeleteApiNetworkInterfacesBulkJSONBody defines parameters for DeleteApiNetworkInterfacesBulk.
+type DeleteApiNetworkInterfacesBulkJSONBody = []DeleteApiNetworkInterfacesBulkJSONBody_Item
+
+// DeleteApiNetworkInterfacesBulkJSONBody_Item defines parameters for DeleteApiNetworkInterfacesBulk.
+type DeleteApiNetworkInterfacesBulkJSONBody_Item struct {
+	union json.RawMessage
+}
+
+// GetApiNetworkInterfacesRootParams defines parameters for GetApiNetworkInterfacesRoot.
+type GetApiNetworkInterfacesRootParams struct {
+	// Fwid Firewall UUID
+	Fwid *string `form:"fwid,omitempty" json:"fwid,omitempty"`
+}
+
+// PutApiNetworkInterfacesUuidJSONBody defines parameters for PutApiNetworkInterfacesUuid.
+type PutApiNetworkInterfacesUuidJSONBody struct {
+	union json.RawMessage
+}
+
+// PutApiNetworkInterfacesUuidMembersJSONBody defines parameters for PutApiNetworkInterfacesUuidMembers.
+type PutApiNetworkInterfacesUuidMembersJSONBody struct {
+	// Members list of the interface's members
+	Members *[]string `json:"members,omitempty"`
+}
+
+// PostApiNsrpcAttachMultipartBody defines parameters for PostApiNsrpcAttach.
+type PostApiNsrpcAttachMultipartBody = openapi_types.File
+
+// PostApiNsrpcCsvDryRunScriptnameMultipartBody defines parameters for PostApiNsrpcCsvDryRunScriptname.
+type PostApiNsrpcCsvDryRunScriptnameMultipartBody struct {
+	CsvFile *openapi_types.File `json:"csvFile,omitempty"`
+
+	// Target Firewall's UUIDs on which to run the script, if not defined, use UUIDs defined in the CSV file
+	Target *[]string `json:"target,omitempty"`
+}
+
+// PostApiNsrpcCsvScriptnameMultipartBody defines parameters for PostApiNsrpcCsvScriptname.
+type PostApiNsrpcCsvScriptnameMultipartBody struct {
+	CsvFile *openapi_types.File `json:"csvFile,omitempty"`
+
+	// Target Firewall's UUIDs on which to run the script, if not defined, use UUIDs defined in the CSV file
+	Target *[]string `json:"target,omitempty"`
+}
+
+// GetApiNsrpcScriptScriptnameParams defines parameters for GetApiNsrpcScriptScriptname.
+type GetApiNsrpcScriptScriptnameParams struct {
+	// Download if passed, the response will be the raw asked script file
+	Download *bool `form:"download,omitempty" json:"download,omitempty"`
+}
+
+// PostApiNsrpcScriptScriptnameMultipartBody defines parameters for PostApiNsrpcScriptScriptname.
+type PostApiNsrpcScriptScriptnameMultipartBody struct {
+	// Force set to true to overwrite file with the same on the server
+	Force *bool `json:"force,omitempty"`
+
+	// NsrpcScript Must have a .script extension and a proper caracter encoding
+	NsrpcScript *openapi_types.File `json:"nsrpcScript,omitempty"`
+}
+
+// PostApiNsrpcUsebackupscriptJSONBody defines parameters for PostApiNsrpcUsebackupscript.
+type PostApiNsrpcUsebackupscriptJSONBody struct {
+	// Password Password that will be use to encrypt the SNS backup
+	Password *string `json:"password,omitempty"`
+}
+
+// DeleteApiQosIfacesAssignationsBulkJSONBody defines parameters for DeleteApiQosIfacesAssignationsBulk.
+type DeleteApiQosIfacesAssignationsBulkJSONBody = []DefinitionsIfacesAssignationsIfaceAssignation
+
+// DeleteApiQosQueuesBulkJSONBody defines parameters for DeleteApiQosQueuesBulk.
+type DeleteApiQosQueuesBulkJSONBody = []DefinitionsQueueQueue
+
+// DeleteApiQosTrafficShapersBulkJSONBody defines parameters for DeleteApiQosTrafficShapersBulk.
+type DeleteApiQosTrafficShapersBulkJSONBody = []DefinitionsTrafficShaperTrafficShaper
+
+// PostApiRoutingGetbirdconfigerrorJSONBody defines parameters for PostApiRoutingGetbirdconfigerror.
+type PostApiRoutingGetbirdconfigerrorJSONBody struct {
+	// Bird The bird config file content
+	Bird *string `json:"bird,omitempty"`
+
+	// BirdVersion Bird version (allowed values are "v1" and "v2")
+	BirdVersion *string `json:"birdVersion,omitempty"`
+}
+
+// PostApiRoutingImportMultipartBody defines parameters for PostApiRoutingImport.
+type PostApiRoutingImportMultipartBody struct {
+	Routes *openapi_types.File `json:"routes,omitempty"`
 }
 
 // PostApiUpdateMultipartBody defines parameters for PostApiUpdate.
@@ -2593,6 +4650,15 @@ type PostApiCertificatesUuidMultipartRequestBody = DefinitionsCertificatesCertif
 // PutApiCertificatesUuidJSONRequestBody defines body for PutApiCertificatesUuid for application/json ContentType.
 type PutApiCertificatesUuidJSONRequestBody = DefinitionsCertificatesCertificatePropertiesUpdate
 
+// PostApiConfigDrJSONRequestBody defines body for PostApiConfigDr for application/json ContentType.
+type PostApiConfigDrJSONRequestBody PostApiConfigDrJSONBody
+
+// PostApiConfigInitialJSONRequestBody defines body for PostApiConfigInitial for application/json ContentType.
+type PostApiConfigInitialJSONRequestBody = DefinitionsConfigInitialConfiguration
+
+// PostApiConfigInitialCloudCloudNameJSONRequestBody defines body for PostApiConfigInitialCloudCloudName for application/json ContentType.
+type PostApiConfigInitialCloudCloudNameJSONRequestBody = DefinitionsConfigInitialCloudConfiguration
+
 // PutApiConfigInterfacesJSONRequestBody defines body for PutApiConfigInterfaces for application/json ContentType.
 type PutApiConfigInterfacesJSONRequestBody = DefinitionsConfigNetworkInterfacesUpdateList
 
@@ -2601,6 +4667,15 @@ type PostApiConfigLicenseMultipartRequestBody PostApiConfigLicenseMultipartBody
 
 // PostApiConfigNetworkJSONRequestBody defines body for PostApiConfigNetwork for application/json ContentType.
 type PostApiConfigNetworkJSONRequestBody = DefinitionsConfigNetworkConfiguration
+
+// PutApiConfigPapiJSONRequestBody defines body for PutApiConfigPapi for application/json ContentType.
+type PutApiConfigPapiJSONRequestBody PutApiConfigPapiJSONBody
+
+// PutApiConfigSlsJSONRequestBody defines body for PutApiConfigSls for application/json ContentType.
+type PutApiConfigSlsJSONRequestBody PutApiConfigSlsJSONBody
+
+// PutApiConfigVpncrlrequiredJSONRequestBody defines body for PutApiConfigVpncrlrequired for application/json ContentType.
+type PutApiConfigVpncrlrequiredJSONRequestBody PutApiConfigVpncrlrequiredJSONBody
 
 // PostApiCustompropertiesJSONRequestBody defines body for PostApiCustomproperties for application/json ContentType.
 type PostApiCustompropertiesJSONRequestBody = DefinitionsCustomPropertiesCustomPropertyWithoutUuid
@@ -2614,6 +4689,9 @@ type PostApiExportSupervisionJSONRequestBody = DefinitionsExportFilteredIds
 // PostApiFirewallsUuidPackageJSONRequestBody defines body for PostApiFirewallsUuidPackage for application/json ContentType.
 type PostApiFirewallsUuidPackageJSONRequestBody = DefinitionsMiscInitializationPackageProperties
 
+// PostApiFirewallsUuidRoutingJSONRequestBody defines body for PostApiFirewallsUuidRouting for application/json ContentType.
+type PostApiFirewallsUuidRoutingJSONRequestBody = DefinitionsRoutingRouteAddUpdateBody
+
 // PostApiFoldersJSONRequestBody defines body for PostApiFolders for application/json ContentType.
 type PostApiFoldersJSONRequestBody = DefinitionsFoldersFolderPropertiesWithoutUuid
 
@@ -2623,8 +4701,83 @@ type PutApiFoldersUuidJSONRequestBody = DefinitionsFoldersFolderProperties
 // PostApiLdapMultipartRequestBody defines body for PostApiLdap for multipart/form-data ContentType.
 type PostApiLdapMultipartRequestBody = DefinitionsLdapLdap
 
+// PostApiNetworkInterfacesJSONRequestBody defines body for PostApiNetworkInterfaces for application/json ContentType.
+type PostApiNetworkInterfacesJSONRequestBody PostApiNetworkInterfacesJSONBody
+
+// DeleteApiNetworkInterfacesBulkJSONRequestBody defines body for DeleteApiNetworkInterfacesBulk for application/json ContentType.
+type DeleteApiNetworkInterfacesBulkJSONRequestBody = DeleteApiNetworkInterfacesBulkJSONBody
+
+// PutApiNetworkInterfacesUuidJSONRequestBody defines body for PutApiNetworkInterfacesUuid for application/json ContentType.
+type PutApiNetworkInterfacesUuidJSONRequestBody PutApiNetworkInterfacesUuidJSONBody
+
+// PutApiNetworkInterfacesUuidMembersJSONRequestBody defines body for PutApiNetworkInterfacesUuidMembers for application/json ContentType.
+type PutApiNetworkInterfacesUuidMembersJSONRequestBody PutApiNetworkInterfacesUuidMembersJSONBody
+
+// PostApiNsrpcAttachMultipartRequestBody defines body for PostApiNsrpcAttach for multipart/form-data ContentType.
+type PostApiNsrpcAttachMultipartRequestBody = PostApiNsrpcAttachMultipartBody
+
+// PostApiNsrpcCsvDryRunScriptnameMultipartRequestBody defines body for PostApiNsrpcCsvDryRunScriptname for multipart/form-data ContentType.
+type PostApiNsrpcCsvDryRunScriptnameMultipartRequestBody PostApiNsrpcCsvDryRunScriptnameMultipartBody
+
+// PostApiNsrpcCsvScriptnameMultipartRequestBody defines body for PostApiNsrpcCsvScriptname for multipart/form-data ContentType.
+type PostApiNsrpcCsvScriptnameMultipartRequestBody PostApiNsrpcCsvScriptnameMultipartBody
+
+// PostApiNsrpcDryRunScriptnameJSONRequestBody defines body for PostApiNsrpcDryRunScriptname for application/json ContentType.
+type PostApiNsrpcDryRunScriptnameJSONRequestBody = DefinitionsNsrpcNsrpcExecuteBody
+
+// PostApiNsrpcExecuteScriptnameJSONRequestBody defines body for PostApiNsrpcExecuteScriptname for application/json ContentType.
+type PostApiNsrpcExecuteScriptnameJSONRequestBody = DefinitionsNsrpcNsrpcExecuteBody
+
+// PutApiNsrpcScheduleScriptnameJSONRequestBody defines body for PutApiNsrpcScheduleScriptname for application/json ContentType.
+type PutApiNsrpcScheduleScriptnameJSONRequestBody = DefinitionsNsrpcNsrpcScheduleBody
+
+// PostApiNsrpcScriptScriptnameMultipartRequestBody defines body for PostApiNsrpcScriptScriptname for multipart/form-data ContentType.
+type PostApiNsrpcScriptScriptnameMultipartRequestBody PostApiNsrpcScriptScriptnameMultipartBody
+
+// PostApiNsrpcUsebackupscriptJSONRequestBody defines body for PostApiNsrpcUsebackupscript for application/json ContentType.
+type PostApiNsrpcUsebackupscriptJSONRequestBody PostApiNsrpcUsebackupscriptJSONBody
+
+// PostApiQosIfacesAssignationsJSONRequestBody defines body for PostApiQosIfacesAssignations for application/json ContentType.
+type PostApiQosIfacesAssignationsJSONRequestBody = DefinitionsIfacesAssignationsIfaceAssignation
+
+// DeleteApiQosIfacesAssignationsBulkJSONRequestBody defines body for DeleteApiQosIfacesAssignationsBulk for application/json ContentType.
+type DeleteApiQosIfacesAssignationsBulkJSONRequestBody = DeleteApiQosIfacesAssignationsBulkJSONBody
+
+// PutApiQosIfacesAssignationsUuidJSONRequestBody defines body for PutApiQosIfacesAssignationsUuid for application/json ContentType.
+type PutApiQosIfacesAssignationsUuidJSONRequestBody = DefinitionsIfacesAssignationsIfaceAssignationWithoutIface
+
+// PostApiQosQueuesJSONRequestBody defines body for PostApiQosQueues for application/json ContentType.
+type PostApiQosQueuesJSONRequestBody = DefinitionsQueueQueueWithoutUuid
+
+// DeleteApiQosQueuesBulkJSONRequestBody defines body for DeleteApiQosQueuesBulk for application/json ContentType.
+type DeleteApiQosQueuesBulkJSONRequestBody = DeleteApiQosQueuesBulkJSONBody
+
+// PutApiQosQueuesUuidJSONRequestBody defines body for PutApiQosQueuesUuid for application/json ContentType.
+type PutApiQosQueuesUuidJSONRequestBody = DefinitionsQueueQueueWithoutUuid
+
+// PostApiQosTrafficShapersJSONRequestBody defines body for PostApiQosTrafficShapers for application/json ContentType.
+type PostApiQosTrafficShapersJSONRequestBody = DefinitionsTrafficShaperTrafficShaperWithoutUuid
+
+// DeleteApiQosTrafficShapersBulkJSONRequestBody defines body for DeleteApiQosTrafficShapersBulk for application/json ContentType.
+type DeleteApiQosTrafficShapersBulkJSONRequestBody = DeleteApiQosTrafficShapersBulkJSONBody
+
+// PutApiQosTrafficShapersUuidJSONRequestBody defines body for PutApiQosTrafficShapersUuid for application/json ContentType.
+type PutApiQosTrafficShapersUuidJSONRequestBody = DefinitionsTrafficShaperTrafficShaperWithoutUuid
+
 // PostApiRadiusJSONRequestBody defines body for PostApiRadius for application/json ContentType.
 type PostApiRadiusJSONRequestBody = DefinitionsRadiusRadius
+
+// PostApiRoutingGetbirdconfigerrorJSONRequestBody defines body for PostApiRoutingGetbirdconfigerror for application/json ContentType.
+type PostApiRoutingGetbirdconfigerrorJSONRequestBody PostApiRoutingGetbirdconfigerrorJSONBody
+
+// PostApiRoutingImportMultipartRequestBody defines body for PostApiRoutingImport for multipart/form-data ContentType.
+type PostApiRoutingImportMultipartRequestBody PostApiRoutingImportMultipartBody
+
+// PutApiRoutingUuidJSONRequestBody defines body for PutApiRoutingUuid for application/json ContentType.
+type PutApiRoutingUuidJSONRequestBody = DefinitionsRoutingRouteAddUpdateBody
+
+// PostApiUnifiedconfigDeployJSONRequestBody defines body for PostApiUnifiedconfigDeploy for application/json ContentType.
+type PostApiUnifiedconfigDeployJSONRequestBody = DefinitionsDeployDeployBody
 
 // PostApiUpdateMultipartRequestBody defines body for PostApiUpdate for multipart/form-data ContentType.
 type PostApiUpdateMultipartRequestBody PostApiUpdateMultipartBody
@@ -2652,6 +4805,514 @@ type PostApiVpnTopologiesJSONRequestBody = DefinitionsTopologiesTopologyProperti
 
 // PutApiVpnTopologiesUuidJSONRequestBody defines body for PutApiVpnTopologiesUuid for application/json ContentType.
 type PutApiVpnTopologiesUuidJSONRequestBody = DefinitionsTopologiesTopologyPropertiesWithUuid
+
+// AsDefinitionsNetworkInterfacesEthernetInterfaceProperties returns the union data inside the DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item as a DefinitionsNetworkInterfacesEthernetInterfaceProperties
+func (t DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) AsDefinitionsNetworkInterfacesEthernetInterfaceProperties() (DefinitionsNetworkInterfacesEthernetInterfaceProperties, error) {
+	var body DefinitionsNetworkInterfacesEthernetInterfaceProperties
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesEthernetInterfaceProperties overwrites any union data inside the DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item as the provided DefinitionsNetworkInterfacesEthernetInterfaceProperties
+func (t *DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) FromDefinitionsNetworkInterfacesEthernetInterfaceProperties(v DefinitionsNetworkInterfacesEthernetInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesEthernetInterfaceProperties performs a merge with any union data inside the DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item, using the provided DefinitionsNetworkInterfacesEthernetInterfaceProperties
+func (t *DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) MergeDefinitionsNetworkInterfacesEthernetInterfaceProperties(v DefinitionsNetworkInterfacesEthernetInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesVlanInterfaceProperties returns the union data inside the DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item as a DefinitionsNetworkInterfacesVlanInterfaceProperties
+func (t DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) AsDefinitionsNetworkInterfacesVlanInterfaceProperties() (DefinitionsNetworkInterfacesVlanInterfaceProperties, error) {
+	var body DefinitionsNetworkInterfacesVlanInterfaceProperties
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesVlanInterfaceProperties overwrites any union data inside the DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item as the provided DefinitionsNetworkInterfacesVlanInterfaceProperties
+func (t *DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) FromDefinitionsNetworkInterfacesVlanInterfaceProperties(v DefinitionsNetworkInterfacesVlanInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesVlanInterfaceProperties performs a merge with any union data inside the DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item, using the provided DefinitionsNetworkInterfacesVlanInterfaceProperties
+func (t *DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) MergeDefinitionsNetworkInterfacesVlanInterfaceProperties(v DefinitionsNetworkInterfacesVlanInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2 returns the union data inside the DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item as a DefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2
+func (t DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) AsDefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2() (DefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2, error) {
+	var body DefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2 overwrites any union data inside the DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item as the provided DefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2
+func (t *DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) FromDefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2(v DefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2 performs a merge with any union data inside the DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item, using the provided DefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2
+func (t *DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) MergeDefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2(v DefinitionsNetworkInterfacesAggInterfaceWithChildrenChildren2) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DefinitionsNetworkInterfacesAggInterfaceWithChildren_Children_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesEthernetInterfaceProperties returns the union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item as a DefinitionsNetworkInterfacesEthernetInterfaceProperties
+func (t DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) AsDefinitionsNetworkInterfacesEthernetInterfaceProperties() (DefinitionsNetworkInterfacesEthernetInterfaceProperties, error) {
+	var body DefinitionsNetworkInterfacesEthernetInterfaceProperties
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesEthernetInterfaceProperties overwrites any union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item as the provided DefinitionsNetworkInterfacesEthernetInterfaceProperties
+func (t *DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) FromDefinitionsNetworkInterfacesEthernetInterfaceProperties(v DefinitionsNetworkInterfacesEthernetInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesEthernetInterfaceProperties performs a merge with any union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item, using the provided DefinitionsNetworkInterfacesEthernetInterfaceProperties
+func (t *DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) MergeDefinitionsNetworkInterfacesEthernetInterfaceProperties(v DefinitionsNetworkInterfacesEthernetInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesVlanInterfaceProperties returns the union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item as a DefinitionsNetworkInterfacesVlanInterfaceProperties
+func (t DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) AsDefinitionsNetworkInterfacesVlanInterfaceProperties() (DefinitionsNetworkInterfacesVlanInterfaceProperties, error) {
+	var body DefinitionsNetworkInterfacesVlanInterfaceProperties
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesVlanInterfaceProperties overwrites any union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item as the provided DefinitionsNetworkInterfacesVlanInterfaceProperties
+func (t *DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) FromDefinitionsNetworkInterfacesVlanInterfaceProperties(v DefinitionsNetworkInterfacesVlanInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesVlanInterfaceProperties performs a merge with any union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item, using the provided DefinitionsNetworkInterfacesVlanInterfaceProperties
+func (t *DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) MergeDefinitionsNetworkInterfacesVlanInterfaceProperties(v DefinitionsNetworkInterfacesVlanInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesAggInterfaceProperties returns the union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item as a DefinitionsNetworkInterfacesAggInterfaceProperties
+func (t DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) AsDefinitionsNetworkInterfacesAggInterfaceProperties() (DefinitionsNetworkInterfacesAggInterfaceProperties, error) {
+	var body DefinitionsNetworkInterfacesAggInterfaceProperties
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesAggInterfaceProperties overwrites any union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item as the provided DefinitionsNetworkInterfacesAggInterfaceProperties
+func (t *DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) FromDefinitionsNetworkInterfacesAggInterfaceProperties(v DefinitionsNetworkInterfacesAggInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesAggInterfaceProperties performs a merge with any union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item, using the provided DefinitionsNetworkInterfacesAggInterfaceProperties
+func (t *DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) MergeDefinitionsNetworkInterfacesAggInterfaceProperties(v DefinitionsNetworkInterfacesAggInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3 returns the union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item as a DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3
+func (t DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) AsDefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3() (DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3, error) {
+	var body DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3 overwrites any union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item as the provided DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3
+func (t *DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) FromDefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3(v DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3 performs a merge with any union data inside the DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item, using the provided DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3
+func (t *DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) MergeDefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3(v DefinitionsNetworkInterfacesBridgeInterfaceWithChildrenChildren3) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DefinitionsNetworkInterfacesBridgeInterfaceWithChildren_Children_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesEthernetInterfaceProperties returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as a DefinitionsNetworkInterfacesEthernetInterfaceProperties
+func (t DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) AsDefinitionsNetworkInterfacesEthernetInterfaceProperties() (DefinitionsNetworkInterfacesEthernetInterfaceProperties, error) {
+	var body DefinitionsNetworkInterfacesEthernetInterfaceProperties
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesEthernetInterfaceProperties overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as the provided DefinitionsNetworkInterfacesEthernetInterfaceProperties
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) FromDefinitionsNetworkInterfacesEthernetInterfaceProperties(v DefinitionsNetworkInterfacesEthernetInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesEthernetInterfaceProperties performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item, using the provided DefinitionsNetworkInterfacesEthernetInterfaceProperties
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) MergeDefinitionsNetworkInterfacesEthernetInterfaceProperties(v DefinitionsNetworkInterfacesEthernetInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesVlanInterfaceProperties returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as a DefinitionsNetworkInterfacesVlanInterfaceProperties
+func (t DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) AsDefinitionsNetworkInterfacesVlanInterfaceProperties() (DefinitionsNetworkInterfacesVlanInterfaceProperties, error) {
+	var body DefinitionsNetworkInterfacesVlanInterfaceProperties
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesVlanInterfaceProperties overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as the provided DefinitionsNetworkInterfacesVlanInterfaceProperties
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) FromDefinitionsNetworkInterfacesVlanInterfaceProperties(v DefinitionsNetworkInterfacesVlanInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesVlanInterfaceProperties performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item, using the provided DefinitionsNetworkInterfacesVlanInterfaceProperties
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) MergeDefinitionsNetworkInterfacesVlanInterfaceProperties(v DefinitionsNetworkInterfacesVlanInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesAggInterfaceProperties returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as a DefinitionsNetworkInterfacesAggInterfaceProperties
+func (t DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) AsDefinitionsNetworkInterfacesAggInterfaceProperties() (DefinitionsNetworkInterfacesAggInterfaceProperties, error) {
+	var body DefinitionsNetworkInterfacesAggInterfaceProperties
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesAggInterfaceProperties overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as the provided DefinitionsNetworkInterfacesAggInterfaceProperties
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) FromDefinitionsNetworkInterfacesAggInterfaceProperties(v DefinitionsNetworkInterfacesAggInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesAggInterfaceProperties performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item, using the provided DefinitionsNetworkInterfacesAggInterfaceProperties
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) MergeDefinitionsNetworkInterfacesAggInterfaceProperties(v DefinitionsNetworkInterfacesAggInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesBridgeInterfaceProperties returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as a DefinitionsNetworkInterfacesBridgeInterfaceProperties
+func (t DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) AsDefinitionsNetworkInterfacesBridgeInterfaceProperties() (DefinitionsNetworkInterfacesBridgeInterfaceProperties, error) {
+	var body DefinitionsNetworkInterfacesBridgeInterfaceProperties
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesBridgeInterfaceProperties overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as the provided DefinitionsNetworkInterfacesBridgeInterfaceProperties
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) FromDefinitionsNetworkInterfacesBridgeInterfaceProperties(v DefinitionsNetworkInterfacesBridgeInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesBridgeInterfaceProperties performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item, using the provided DefinitionsNetworkInterfacesBridgeInterfaceProperties
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) MergeDefinitionsNetworkInterfacesBridgeInterfaceProperties(v DefinitionsNetworkInterfacesBridgeInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesVirtualInterfaceProperties returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as a DefinitionsNetworkInterfacesVirtualInterfaceProperties
+func (t DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) AsDefinitionsNetworkInterfacesVirtualInterfaceProperties() (DefinitionsNetworkInterfacesVirtualInterfaceProperties, error) {
+	var body DefinitionsNetworkInterfacesVirtualInterfaceProperties
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesVirtualInterfaceProperties overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as the provided DefinitionsNetworkInterfacesVirtualInterfaceProperties
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) FromDefinitionsNetworkInterfacesVirtualInterfaceProperties(v DefinitionsNetworkInterfacesVirtualInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesVirtualInterfaceProperties performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item, using the provided DefinitionsNetworkInterfacesVirtualInterfaceProperties
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) MergeDefinitionsNetworkInterfacesVirtualInterfaceProperties(v DefinitionsNetworkInterfacesVirtualInterfaceProperties) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5 returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as a DefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5
+func (t DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) AsDefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5() (DefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5, error) {
+	var body DefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5 overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item as the provided DefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) FromDefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5(v DefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5 performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item, using the provided DefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) MergeDefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5(v DefinitionsNetworkInterfacesNetworkInterfacesListResponseResult5) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesListResponse_Result_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesEthernetInterfaceWithChildren returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item as a DefinitionsNetworkInterfacesEthernetInterfaceWithChildren
+func (t DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) AsDefinitionsNetworkInterfacesEthernetInterfaceWithChildren() (DefinitionsNetworkInterfacesEthernetInterfaceWithChildren, error) {
+	var body DefinitionsNetworkInterfacesEthernetInterfaceWithChildren
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesEthernetInterfaceWithChildren overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item as the provided DefinitionsNetworkInterfacesEthernetInterfaceWithChildren
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) FromDefinitionsNetworkInterfacesEthernetInterfaceWithChildren(v DefinitionsNetworkInterfacesEthernetInterfaceWithChildren) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesEthernetInterfaceWithChildren performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item, using the provided DefinitionsNetworkInterfacesEthernetInterfaceWithChildren
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) MergeDefinitionsNetworkInterfacesEthernetInterfaceWithChildren(v DefinitionsNetworkInterfacesEthernetInterfaceWithChildren) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesVlanInterfaceWithChildren returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item as a DefinitionsNetworkInterfacesVlanInterfaceWithChildren
+func (t DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) AsDefinitionsNetworkInterfacesVlanInterfaceWithChildren() (DefinitionsNetworkInterfacesVlanInterfaceWithChildren, error) {
+	var body DefinitionsNetworkInterfacesVlanInterfaceWithChildren
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesVlanInterfaceWithChildren overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item as the provided DefinitionsNetworkInterfacesVlanInterfaceWithChildren
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) FromDefinitionsNetworkInterfacesVlanInterfaceWithChildren(v DefinitionsNetworkInterfacesVlanInterfaceWithChildren) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesVlanInterfaceWithChildren performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item, using the provided DefinitionsNetworkInterfacesVlanInterfaceWithChildren
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) MergeDefinitionsNetworkInterfacesVlanInterfaceWithChildren(v DefinitionsNetworkInterfacesVlanInterfaceWithChildren) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesAggInterfaceWithChildren returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item as a DefinitionsNetworkInterfacesAggInterfaceWithChildren
+func (t DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) AsDefinitionsNetworkInterfacesAggInterfaceWithChildren() (DefinitionsNetworkInterfacesAggInterfaceWithChildren, error) {
+	var body DefinitionsNetworkInterfacesAggInterfaceWithChildren
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesAggInterfaceWithChildren overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item as the provided DefinitionsNetworkInterfacesAggInterfaceWithChildren
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) FromDefinitionsNetworkInterfacesAggInterfaceWithChildren(v DefinitionsNetworkInterfacesAggInterfaceWithChildren) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesAggInterfaceWithChildren performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item, using the provided DefinitionsNetworkInterfacesAggInterfaceWithChildren
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) MergeDefinitionsNetworkInterfacesAggInterfaceWithChildren(v DefinitionsNetworkInterfacesAggInterfaceWithChildren) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesBridgeInterfaceWithChildren returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item as a DefinitionsNetworkInterfacesBridgeInterfaceWithChildren
+func (t DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) AsDefinitionsNetworkInterfacesBridgeInterfaceWithChildren() (DefinitionsNetworkInterfacesBridgeInterfaceWithChildren, error) {
+	var body DefinitionsNetworkInterfacesBridgeInterfaceWithChildren
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesBridgeInterfaceWithChildren overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item as the provided DefinitionsNetworkInterfacesBridgeInterfaceWithChildren
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) FromDefinitionsNetworkInterfacesBridgeInterfaceWithChildren(v DefinitionsNetworkInterfacesBridgeInterfaceWithChildren) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesBridgeInterfaceWithChildren performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item, using the provided DefinitionsNetworkInterfacesBridgeInterfaceWithChildren
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) MergeDefinitionsNetworkInterfacesBridgeInterfaceWithChildren(v DefinitionsNetworkInterfacesBridgeInterfaceWithChildren) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+// AsDefinitionsNetworkInterfacesNetworkInterfacesTree4 returns the union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item as a DefinitionsNetworkInterfacesNetworkInterfacesTree4
+func (t DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) AsDefinitionsNetworkInterfacesNetworkInterfacesTree4() (DefinitionsNetworkInterfacesNetworkInterfacesTree4, error) {
+	var body DefinitionsNetworkInterfacesNetworkInterfacesTree4
+	err := json.Unmarshal(t.union, &body)
+	return body, err
+}
+
+// FromDefinitionsNetworkInterfacesNetworkInterfacesTree4 overwrites any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item as the provided DefinitionsNetworkInterfacesNetworkInterfacesTree4
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) FromDefinitionsNetworkInterfacesNetworkInterfacesTree4(v DefinitionsNetworkInterfacesNetworkInterfacesTree4) error {
+	b, err := json.Marshal(v)
+	t.union = b
+	return err
+}
+
+// MergeDefinitionsNetworkInterfacesNetworkInterfacesTree4 performs a merge with any union data inside the DefinitionsNetworkInterfacesNetworkInterfacesTree_Item, using the provided DefinitionsNetworkInterfacesNetworkInterfacesTree4
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) MergeDefinitionsNetworkInterfacesNetworkInterfacesTree4(v DefinitionsNetworkInterfacesNetworkInterfacesTree4) error {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return err
+	}
+
+	merged, err := runtime.JSONMerge(t.union, b)
+	t.union = merged
+	return err
+}
+
+func (t DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) MarshalJSON() ([]byte, error) {
+	b, err := t.union.MarshalJSON()
+	return b, err
+}
+
+func (t *DefinitionsNetworkInterfacesNetworkInterfacesTree_Item) UnmarshalJSON(b []byte) error {
+	err := t.union.UnmarshalJSON(b)
+	return err
+}
 
 // AsDefinitionsRadiusRadiusPostResponseResult0 returns the union data inside the DefinitionsRadiusRadiusPostResponse_Result_Item as a DefinitionsRadiusRadiusPostResponseResult0
 func (t DefinitionsRadiusRadiusPostResponse_Result_Item) AsDefinitionsRadiusRadiusPostResponseResult0() (DefinitionsRadiusRadiusPostResponseResult0, error) {
@@ -2993,6 +5654,30 @@ type ClientInterface interface {
 	// GetApiCfgdiffStatus request
 	GetApiCfgdiffStatus(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetApiConfigDr request
+	GetApiConfigDr(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiConfigDrWithBody request with any body
+	PostApiConfigDrWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiConfigDr(ctx context.Context, body PostApiConfigDrJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiConfigInitial request
+	GetApiConfigInitial(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiConfigInitialWithBody request with any body
+	PostApiConfigInitialWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiConfigInitial(ctx context.Context, body PostApiConfigInitialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiConfigInitialCloudCloudNameWithBody request with any body
+	PostApiConfigInitialCloudCloudNameWithBody(ctx context.Context, cloudName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiConfigInitialCloudCloudName(ctx context.Context, cloudName string, body PostApiConfigInitialCloudCloudNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiConfigInitialized request
+	GetApiConfigInitialized(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetApiConfigInterfaces request
 	GetApiConfigInterfaces(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3018,6 +5703,30 @@ type ClientInterface interface {
 
 	PostApiConfigNetwork(ctx context.Context, body PostApiConfigNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetApiConfigPapi request
+	GetApiConfigPapi(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiConfigPapiWithBody request with any body
+	PutApiConfigPapiWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiConfigPapi(ctx context.Context, body PutApiConfigPapiJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiConfigSls request
+	GetApiConfigSls(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiConfigSlsWithBody request with any body
+	PutApiConfigSlsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiConfigSls(ctx context.Context, body PutApiConfigSlsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiConfigVpncrlrequired request
+	GetApiConfigVpncrlrequired(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiConfigVpncrlrequiredWithBody request with any body
+	PutApiConfigVpncrlrequiredWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiConfigVpncrlrequired(ctx context.Context, body PutApiConfigVpncrlrequiredJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetApiCustomproperties request
 	GetApiCustomproperties(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3036,6 +5745,21 @@ type ClientInterface interface {
 	PutApiCustompropertiesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PutApiCustompropertiesUuid(ctx context.Context, uuid string, body PutApiCustompropertiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiDefinitionsEthernetprotocols request
+	GetApiDefinitionsEthernetprotocols(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiDefinitionsIcmpcodes request
+	GetApiDefinitionsIcmpcodes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiDefinitionsIpprotocols request
+	GetApiDefinitionsIpprotocols(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiDefinitionsProtocols request
+	GetApiDefinitionsProtocols(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiDeploymentWarningsEditors request
+	GetApiDeploymentWarningsEditors(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetApiDisclaimer request
 	GetApiDisclaimer(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3060,10 +5784,27 @@ type ClientInterface interface {
 	// GetApiFeatureToggling request
 	GetApiFeatureToggling(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// PostApiFirewallsUuidNetworkRefresh request
+	PostApiFirewallsUuidNetworkRefresh(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// PostApiFirewallsUuidPackageWithBody request with any body
 	PostApiFirewallsUuidPackageWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	PostApiFirewallsUuidPackage(ctx context.Context, uuid string, body PostApiFirewallsUuidPackageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiFirewallsUuidQosRefresh request
+	PostApiFirewallsUuidQosRefresh(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiFirewallsUuidRouting request
+	GetApiFirewallsUuidRouting(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiFirewallsUuidRoutingWithBody request with any body
+	PostApiFirewallsUuidRoutingWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiFirewallsUuidRouting(ctx context.Context, uuid string, body PostApiFirewallsUuidRoutingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiFirewallsUuidRoutingLocal request
+	GetApiFirewallsUuidRoutingLocal(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// GetApiFirewallsUuidTopologies request
 	GetApiFirewallsUuidTopologies(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -3111,6 +5852,175 @@ type ClientInterface interface {
 	// GetApiMessageBoxes request
 	GetApiMessageBoxes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// GetApiNetworkInterfaces request
+	GetApiNetworkInterfaces(ctx context.Context, params *GetApiNetworkInterfacesParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiNetworkInterfacesWithBody request with any body
+	PostApiNetworkInterfacesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiNetworkInterfaces(ctx context.Context, body PostApiNetworkInterfacesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiNetworkInterfacesBulkWithBody request with any body
+	DeleteApiNetworkInterfacesBulkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DeleteApiNetworkInterfacesBulk(ctx context.Context, body DeleteApiNetworkInterfacesBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNetworkInterfacesRoot request
+	GetApiNetworkInterfacesRoot(ctx context.Context, params *GetApiNetworkInterfacesRootParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiNetworkInterfacesUuid request
+	DeleteApiNetworkInterfacesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNetworkInterfacesUuid request
+	GetApiNetworkInterfacesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiNetworkInterfacesUuidWithBody request with any body
+	PutApiNetworkInterfacesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiNetworkInterfacesUuid(ctx context.Context, uuid string, body PutApiNetworkInterfacesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiNetworkInterfacesUuidMembersWithBody request with any body
+	PutApiNetworkInterfacesUuidMembersWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiNetworkInterfacesUuidMembers(ctx context.Context, uuid string, body PutApiNetworkInterfacesUuidMembersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNsrpcArchive request
+	GetApiNsrpcArchive(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNsrpcArchiveFwid request
+	GetApiNsrpcArchiveFwid(ctx context.Context, fwid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNsrpcAttach request
+	GetApiNsrpcAttach(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiNsrpcAttachWithBody request with any body
+	PostApiNsrpcAttachWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiNsrpcCsvDryRunScriptnameWithBody request with any body
+	PostApiNsrpcCsvDryRunScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiNsrpcCsvScriptnameWithBody request with any body
+	PostApiNsrpcCsvScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiNsrpcDryRunScriptnameWithBody request with any body
+	PostApiNsrpcDryRunScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiNsrpcDryRunScriptname(ctx context.Context, scriptname string, body PostApiNsrpcDryRunScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiNsrpcExecuteScriptnameWithBody request with any body
+	PostApiNsrpcExecuteScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiNsrpcExecuteScriptname(ctx context.Context, scriptname string, body PostApiNsrpcExecuteScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNsrpcLogFwid request
+	GetApiNsrpcLogFwid(ctx context.Context, fwid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNsrpcPending request
+	GetApiNsrpcPending(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiNsrpcPendingCancel request
+	PostApiNsrpcPendingCancel(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNsrpcProgress request
+	GetApiNsrpcProgress(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiNsrpcScheduleScriptnameWithBody request with any body
+	PutApiNsrpcScheduleScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiNsrpcScheduleScriptname(ctx context.Context, scriptname string, body PutApiNsrpcScheduleScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNsrpcScript request
+	GetApiNsrpcScript(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiNsrpcScriptScriptname request
+	DeleteApiNsrpcScriptScriptname(ctx context.Context, scriptname string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNsrpcScriptScriptname request
+	GetApiNsrpcScriptScriptname(ctx context.Context, scriptname string, params *GetApiNsrpcScriptScriptnameParams, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiNsrpcScriptScriptnameWithBody request with any body
+	PostApiNsrpcScriptScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiNsrpcScriptScriptnameFwid request
+	GetApiNsrpcScriptScriptnameFwid(ctx context.Context, scriptname string, fwid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiNsrpcUsebackupscriptWithBody request with any body
+	PostApiNsrpcUsebackupscriptWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiNsrpcUsebackupscript(ctx context.Context, body PostApiNsrpcUsebackupscriptJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiQosIfacesAssignations request
+	GetApiQosIfacesAssignations(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiQosIfacesAssignationsWithBody request with any body
+	PostApiQosIfacesAssignationsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiQosIfacesAssignations(ctx context.Context, body PostApiQosIfacesAssignationsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiQosIfacesAssignationsBulkWithBody request with any body
+	DeleteApiQosIfacesAssignationsBulkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DeleteApiQosIfacesAssignationsBulk(ctx context.Context, body DeleteApiQosIfacesAssignationsBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiQosIfacesAssignationsUuid request
+	DeleteApiQosIfacesAssignationsUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiQosIfacesAssignationsUuid request
+	GetApiQosIfacesAssignationsUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiQosIfacesAssignationsUuidWithBody request with any body
+	PutApiQosIfacesAssignationsUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiQosIfacesAssignationsUuid(ctx context.Context, uuid string, body PutApiQosIfacesAssignationsUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiQosQueues request
+	GetApiQosQueues(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiQosQueuesWithBody request with any body
+	PostApiQosQueuesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiQosQueues(ctx context.Context, body PostApiQosQueuesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiQosQueuesBulkWithBody request with any body
+	DeleteApiQosQueuesBulkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DeleteApiQosQueuesBulk(ctx context.Context, body DeleteApiQosQueuesBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiQosQueuesUuid request
+	DeleteApiQosQueuesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiQosQueuesUuid request
+	GetApiQosQueuesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiQosQueuesUuidWithBody request with any body
+	PutApiQosQueuesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiQosQueuesUuid(ctx context.Context, uuid string, body PutApiQosQueuesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiQosTrafficShapers request
+	GetApiQosTrafficShapers(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiQosTrafficShapersWithBody request with any body
+	PostApiQosTrafficShapersWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiQosTrafficShapers(ctx context.Context, body PostApiQosTrafficShapersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiQosTrafficShapersBulkWithBody request with any body
+	DeleteApiQosTrafficShapersBulkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	DeleteApiQosTrafficShapersBulk(ctx context.Context, body DeleteApiQosTrafficShapersBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiQosTrafficShapersUuid request
+	DeleteApiQosTrafficShapersUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiQosTrafficShapersUuid request
+	GetApiQosTrafficShapersUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiQosTrafficShapersUuidWithBody request with any body
+	PutApiQosTrafficShapersUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiQosTrafficShapersUuid(ctx context.Context, uuid string, body PutApiQosTrafficShapersUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetApiRadius request
 	GetApiRadius(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
 
@@ -3119,8 +6029,35 @@ type ClientInterface interface {
 
 	PostApiRadius(ctx context.Context, body PostApiRadiusJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
+	// PostApiRoutingGetbirdconfigerrorWithBody request with any body
+	PostApiRoutingGetbirdconfigerrorWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiRoutingGetbirdconfigerror(ctx context.Context, body PostApiRoutingGetbirdconfigerrorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiRoutingImportWithBody request with any body
+	PostApiRoutingImportWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// DeleteApiRoutingUuid request
+	DeleteApiRoutingUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiRoutingUuid request
+	GetApiRoutingUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PutApiRoutingUuidWithBody request with any body
+	PutApiRoutingUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PutApiRoutingUuid(ctx context.Context, uuid string, body PutApiRoutingUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
+
 	// GetApiSnsdiffDiffUuid request
 	GetApiSnsdiffDiffUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// GetApiUnifiedconfigDeploy request
+	GetApiUnifiedconfigDeploy(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	// PostApiUnifiedconfigDeployWithBody request with any body
+	PostApiUnifiedconfigDeployWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
+
+	PostApiUnifiedconfigDeploy(ctx context.Context, body PostApiUnifiedconfigDeployJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error)
 
 	// PostApiUpdateWithBody request with any body
 	PostApiUpdateWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error)
@@ -4103,6 +7040,114 @@ func (c *Client) GetApiCfgdiffStatus(ctx context.Context, reqEditors ...RequestE
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetApiConfigDr(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiConfigDrRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiConfigDrWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiConfigDrRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiConfigDr(ctx context.Context, body PostApiConfigDrJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiConfigDrRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiConfigInitial(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiConfigInitialRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiConfigInitialWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiConfigInitialRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiConfigInitial(ctx context.Context, body PostApiConfigInitialJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiConfigInitialRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiConfigInitialCloudCloudNameWithBody(ctx context.Context, cloudName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiConfigInitialCloudCloudNameRequestWithBody(c.Server, cloudName, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiConfigInitialCloudCloudName(ctx context.Context, cloudName string, body PostApiConfigInitialCloudCloudNameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiConfigInitialCloudCloudNameRequest(c.Server, cloudName, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiConfigInitialized(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiConfigInitializedRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetApiConfigInterfaces(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetApiConfigInterfacesRequest(c.Server)
 	if err != nil {
@@ -4211,6 +7256,114 @@ func (c *Client) PostApiConfigNetwork(ctx context.Context, body PostApiConfigNet
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetApiConfigPapi(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiConfigPapiRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiConfigPapiWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiConfigPapiRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiConfigPapi(ctx context.Context, body PutApiConfigPapiJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiConfigPapiRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiConfigSls(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiConfigSlsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiConfigSlsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiConfigSlsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiConfigSls(ctx context.Context, body PutApiConfigSlsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiConfigSlsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiConfigVpncrlrequired(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiConfigVpncrlrequiredRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiConfigVpncrlrequiredWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiConfigVpncrlrequiredRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiConfigVpncrlrequired(ctx context.Context, body PutApiConfigVpncrlrequiredJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiConfigVpncrlrequiredRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetApiCustomproperties(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetApiCustompropertiesRequest(c.Server)
 	if err != nil {
@@ -4285,6 +7438,66 @@ func (c *Client) PutApiCustompropertiesUuidWithBody(ctx context.Context, uuid st
 
 func (c *Client) PutApiCustompropertiesUuid(ctx context.Context, uuid string, body PutApiCustompropertiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPutApiCustompropertiesUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiDefinitionsEthernetprotocols(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiDefinitionsEthernetprotocolsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiDefinitionsIcmpcodes(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiDefinitionsIcmpcodesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiDefinitionsIpprotocols(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiDefinitionsIpprotocolsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiDefinitionsProtocols(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiDefinitionsProtocolsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiDeploymentWarningsEditors(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiDeploymentWarningsEditorsRequest(c.Server)
 	if err != nil {
 		return nil, err
 	}
@@ -4391,6 +7604,18 @@ func (c *Client) GetApiFeatureToggling(ctx context.Context, reqEditors ...Reques
 	return c.Client.Do(req)
 }
 
+func (c *Client) PostApiFirewallsUuidNetworkRefresh(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiFirewallsUuidNetworkRefreshRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) PostApiFirewallsUuidPackageWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostApiFirewallsUuidPackageRequestWithBody(c.Server, uuid, contentType, body)
 	if err != nil {
@@ -4405,6 +7630,66 @@ func (c *Client) PostApiFirewallsUuidPackageWithBody(ctx context.Context, uuid s
 
 func (c *Client) PostApiFirewallsUuidPackage(ctx context.Context, uuid string, body PostApiFirewallsUuidPackageJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewPostApiFirewallsUuidPackageRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiFirewallsUuidQosRefresh(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiFirewallsUuidQosRefreshRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiFirewallsUuidRouting(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiFirewallsUuidRoutingRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiFirewallsUuidRoutingWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiFirewallsUuidRoutingRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiFirewallsUuidRouting(ctx context.Context, uuid string, body PostApiFirewallsUuidRoutingJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiFirewallsUuidRoutingRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiFirewallsUuidRoutingLocal(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiFirewallsUuidRoutingLocalRequest(c.Server, uuid)
 	if err != nil {
 		return nil, err
 	}
@@ -4607,6 +7892,750 @@ func (c *Client) GetApiMessageBoxes(ctx context.Context, reqEditors ...RequestEd
 	return c.Client.Do(req)
 }
 
+func (c *Client) GetApiNetworkInterfaces(ctx context.Context, params *GetApiNetworkInterfacesParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNetworkInterfacesRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNetworkInterfacesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNetworkInterfacesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNetworkInterfaces(ctx context.Context, body PostApiNetworkInterfacesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNetworkInterfacesRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiNetworkInterfacesBulkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiNetworkInterfacesBulkRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiNetworkInterfacesBulk(ctx context.Context, body DeleteApiNetworkInterfacesBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiNetworkInterfacesBulkRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNetworkInterfacesRoot(ctx context.Context, params *GetApiNetworkInterfacesRootParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNetworkInterfacesRootRequest(c.Server, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiNetworkInterfacesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiNetworkInterfacesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNetworkInterfacesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNetworkInterfacesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiNetworkInterfacesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiNetworkInterfacesUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiNetworkInterfacesUuid(ctx context.Context, uuid string, body PutApiNetworkInterfacesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiNetworkInterfacesUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiNetworkInterfacesUuidMembersWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiNetworkInterfacesUuidMembersRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiNetworkInterfacesUuidMembers(ctx context.Context, uuid string, body PutApiNetworkInterfacesUuidMembersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiNetworkInterfacesUuidMembersRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNsrpcArchive(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNsrpcArchiveRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNsrpcArchiveFwid(ctx context.Context, fwid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNsrpcArchiveFwidRequest(c.Server, fwid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNsrpcAttach(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNsrpcAttachRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcAttachWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcAttachRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcCsvDryRunScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcCsvDryRunScriptnameRequestWithBody(c.Server, scriptname, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcCsvScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcCsvScriptnameRequestWithBody(c.Server, scriptname, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcDryRunScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcDryRunScriptnameRequestWithBody(c.Server, scriptname, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcDryRunScriptname(ctx context.Context, scriptname string, body PostApiNsrpcDryRunScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcDryRunScriptnameRequest(c.Server, scriptname, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcExecuteScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcExecuteScriptnameRequestWithBody(c.Server, scriptname, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcExecuteScriptname(ctx context.Context, scriptname string, body PostApiNsrpcExecuteScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcExecuteScriptnameRequest(c.Server, scriptname, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNsrpcLogFwid(ctx context.Context, fwid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNsrpcLogFwidRequest(c.Server, fwid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNsrpcPending(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNsrpcPendingRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcPendingCancel(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcPendingCancelRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNsrpcProgress(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNsrpcProgressRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiNsrpcScheduleScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiNsrpcScheduleScriptnameRequestWithBody(c.Server, scriptname, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiNsrpcScheduleScriptname(ctx context.Context, scriptname string, body PutApiNsrpcScheduleScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiNsrpcScheduleScriptnameRequest(c.Server, scriptname, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNsrpcScript(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNsrpcScriptRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiNsrpcScriptScriptname(ctx context.Context, scriptname string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiNsrpcScriptScriptnameRequest(c.Server, scriptname)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNsrpcScriptScriptname(ctx context.Context, scriptname string, params *GetApiNsrpcScriptScriptnameParams, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNsrpcScriptScriptnameRequest(c.Server, scriptname, params)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcScriptScriptnameWithBody(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcScriptScriptnameRequestWithBody(c.Server, scriptname, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiNsrpcScriptScriptnameFwid(ctx context.Context, scriptname string, fwid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiNsrpcScriptScriptnameFwidRequest(c.Server, scriptname, fwid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcUsebackupscriptWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcUsebackupscriptRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiNsrpcUsebackupscript(ctx context.Context, body PostApiNsrpcUsebackupscriptJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiNsrpcUsebackupscriptRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiQosIfacesAssignations(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiQosIfacesAssignationsRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiQosIfacesAssignationsWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiQosIfacesAssignationsRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiQosIfacesAssignations(ctx context.Context, body PostApiQosIfacesAssignationsJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiQosIfacesAssignationsRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiQosIfacesAssignationsBulkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiQosIfacesAssignationsBulkRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiQosIfacesAssignationsBulk(ctx context.Context, body DeleteApiQosIfacesAssignationsBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiQosIfacesAssignationsBulkRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiQosIfacesAssignationsUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiQosIfacesAssignationsUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiQosIfacesAssignationsUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiQosIfacesAssignationsUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiQosIfacesAssignationsUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiQosIfacesAssignationsUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiQosIfacesAssignationsUuid(ctx context.Context, uuid string, body PutApiQosIfacesAssignationsUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiQosIfacesAssignationsUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiQosQueues(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiQosQueuesRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiQosQueuesWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiQosQueuesRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiQosQueues(ctx context.Context, body PostApiQosQueuesJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiQosQueuesRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiQosQueuesBulkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiQosQueuesBulkRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiQosQueuesBulk(ctx context.Context, body DeleteApiQosQueuesBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiQosQueuesBulkRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiQosQueuesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiQosQueuesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiQosQueuesUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiQosQueuesUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiQosQueuesUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiQosQueuesUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiQosQueuesUuid(ctx context.Context, uuid string, body PutApiQosQueuesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiQosQueuesUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiQosTrafficShapers(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiQosTrafficShapersRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiQosTrafficShapersWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiQosTrafficShapersRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiQosTrafficShapers(ctx context.Context, body PostApiQosTrafficShapersJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiQosTrafficShapersRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiQosTrafficShapersBulkWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiQosTrafficShapersBulkRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiQosTrafficShapersBulk(ctx context.Context, body DeleteApiQosTrafficShapersBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiQosTrafficShapersBulkRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiQosTrafficShapersUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiQosTrafficShapersUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiQosTrafficShapersUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiQosTrafficShapersUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiQosTrafficShapersUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiQosTrafficShapersUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiQosTrafficShapersUuid(ctx context.Context, uuid string, body PutApiQosTrafficShapersUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiQosTrafficShapersUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetApiRadius(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetApiRadiusRequest(c.Server)
 	if err != nil {
@@ -4643,8 +8672,128 @@ func (c *Client) PostApiRadius(ctx context.Context, body PostApiRadiusJSONReques
 	return c.Client.Do(req)
 }
 
+func (c *Client) PostApiRoutingGetbirdconfigerrorWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiRoutingGetbirdconfigerrorRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiRoutingGetbirdconfigerror(ctx context.Context, body PostApiRoutingGetbirdconfigerrorJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiRoutingGetbirdconfigerrorRequest(c.Server, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiRoutingImportWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiRoutingImportRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) DeleteApiRoutingUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewDeleteApiRoutingUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiRoutingUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiRoutingUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiRoutingUuidWithBody(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiRoutingUuidRequestWithBody(c.Server, uuid, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PutApiRoutingUuid(ctx context.Context, uuid string, body PutApiRoutingUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPutApiRoutingUuidRequest(c.Server, uuid, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
 func (c *Client) GetApiSnsdiffDiffUuid(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*http.Response, error) {
 	req, err := NewGetApiSnsdiffDiffUuidRequest(c.Server, uuid)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) GetApiUnifiedconfigDeploy(ctx context.Context, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewGetApiUnifiedconfigDeployRequest(c.Server)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiUnifiedconfigDeployWithBody(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiUnifiedconfigDeployRequestWithBody(c.Server, contentType, body)
+	if err != nil {
+		return nil, err
+	}
+	req = req.WithContext(ctx)
+	if err := c.applyEditors(ctx, req, reqEditors); err != nil {
+		return nil, err
+	}
+	return c.Client.Do(req)
+}
+
+func (c *Client) PostApiUnifiedconfigDeploy(ctx context.Context, body PostApiUnifiedconfigDeployJSONRequestBody, reqEditors ...RequestEditorFn) (*http.Response, error) {
+	req, err := NewPostApiUnifiedconfigDeployRequest(c.Server, body)
 	if err != nil {
 		return nil, err
 	}
@@ -7034,6 +11183,214 @@ func NewGetApiCfgdiffStatusRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewGetApiConfigDrRequest generates requests for GetApiConfigDr
+func NewGetApiConfigDrRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/dr")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiConfigDrRequest calls the generic PostApiConfigDr builder with application/json body
+func NewPostApiConfigDrRequest(server string, body PostApiConfigDrJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiConfigDrRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiConfigDrRequestWithBody generates requests for PostApiConfigDr with any type of body
+func NewPostApiConfigDrRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/dr")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiConfigInitialRequest generates requests for GetApiConfigInitial
+func NewGetApiConfigInitialRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/initial")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiConfigInitialRequest calls the generic PostApiConfigInitial builder with application/json body
+func NewPostApiConfigInitialRequest(server string, body PostApiConfigInitialJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiConfigInitialRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiConfigInitialRequestWithBody generates requests for PostApiConfigInitial with any type of body
+func NewPostApiConfigInitialRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/initial")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiConfigInitialCloudCloudNameRequest calls the generic PostApiConfigInitialCloudCloudName builder with application/json body
+func NewPostApiConfigInitialCloudCloudNameRequest(server string, cloudName string, body PostApiConfigInitialCloudCloudNameJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiConfigInitialCloudCloudNameRequestWithBody(server, cloudName, "application/json", bodyReader)
+}
+
+// NewPostApiConfigInitialCloudCloudNameRequestWithBody generates requests for PostApiConfigInitialCloudCloudName with any type of body
+func NewPostApiConfigInitialCloudCloudNameRequestWithBody(server string, cloudName string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "cloudName", runtime.ParamLocationPath, cloudName)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/initial/cloud/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiConfigInitializedRequest generates requests for GetApiConfigInitialized
+func NewGetApiConfigInitializedRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/initialized")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewGetApiConfigInterfacesRequest generates requests for GetApiConfigInterfaces
 func NewGetApiConfigInterfacesRequest(server string) (*http.Request, error) {
 	var err error
@@ -7251,6 +11608,207 @@ func NewPostApiConfigNetworkRequestWithBody(server string, contentType string, b
 	return req, nil
 }
 
+// NewGetApiConfigPapiRequest generates requests for GetApiConfigPapi
+func NewGetApiConfigPapiRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/papi")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiConfigPapiRequest calls the generic PutApiConfigPapi builder with application/json body
+func NewPutApiConfigPapiRequest(server string, body PutApiConfigPapiJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiConfigPapiRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPutApiConfigPapiRequestWithBody generates requests for PutApiConfigPapi with any type of body
+func NewPutApiConfigPapiRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/papi")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiConfigSlsRequest generates requests for GetApiConfigSls
+func NewGetApiConfigSlsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/sls")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiConfigSlsRequest calls the generic PutApiConfigSls builder with application/json body
+func NewPutApiConfigSlsRequest(server string, body PutApiConfigSlsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiConfigSlsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPutApiConfigSlsRequestWithBody generates requests for PutApiConfigSls with any type of body
+func NewPutApiConfigSlsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/sls")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiConfigVpncrlrequiredRequest generates requests for GetApiConfigVpncrlrequired
+func NewGetApiConfigVpncrlrequiredRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/vpncrlrequired")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiConfigVpncrlrequiredRequest calls the generic PutApiConfigVpncrlrequired builder with application/json body
+func NewPutApiConfigVpncrlrequiredRequest(server string, body PutApiConfigVpncrlrequiredJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiConfigVpncrlrequiredRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPutApiConfigVpncrlrequiredRequestWithBody generates requests for PutApiConfigVpncrlrequired with any type of body
+func NewPutApiConfigVpncrlrequiredRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/config/vpncrlrequired")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetApiCustompropertiesRequest generates requests for GetApiCustomproperties
 func NewGetApiCustompropertiesRequest(server string) (*http.Request, error) {
 	var err error
@@ -7429,6 +11987,141 @@ func NewPutApiCustompropertiesUuidRequestWithBody(server string, uuid string, co
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiDefinitionsEthernetprotocolsRequest generates requests for GetApiDefinitionsEthernetprotocols
+func NewGetApiDefinitionsEthernetprotocolsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/definitions/ethernetprotocols")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiDefinitionsIcmpcodesRequest generates requests for GetApiDefinitionsIcmpcodes
+func NewGetApiDefinitionsIcmpcodesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/definitions/icmpcodes")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiDefinitionsIpprotocolsRequest generates requests for GetApiDefinitionsIpprotocols
+func NewGetApiDefinitionsIpprotocolsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/definitions/ipprotocols")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiDefinitionsProtocolsRequest generates requests for GetApiDefinitionsProtocols
+func NewGetApiDefinitionsProtocolsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/definitions/protocols")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiDeploymentWarningsEditorsRequest generates requests for GetApiDeploymentWarningsEditors
+func NewGetApiDeploymentWarningsEditorsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/deployment-warnings/editors")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -7657,6 +12350,40 @@ func NewGetApiFeatureTogglingRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewPostApiFirewallsUuidNetworkRefreshRequest generates requests for PostApiFirewallsUuidNetworkRefresh
+func NewPostApiFirewallsUuidNetworkRefreshRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/firewalls/%s/network/refresh", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
 // NewPostApiFirewallsUuidPackageRequest calls the generic PostApiFirewallsUuidPackage builder with application/json body
 func NewPostApiFirewallsUuidPackageRequest(server string, uuid string, body PostApiFirewallsUuidPackageJSONRequestBody) (*http.Request, error) {
 	var bodyReader io.Reader
@@ -7700,6 +12427,155 @@ func NewPostApiFirewallsUuidPackageRequestWithBody(server string, uuid string, c
 	}
 
 	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiFirewallsUuidQosRefreshRequest generates requests for PostApiFirewallsUuidQosRefresh
+func NewPostApiFirewallsUuidQosRefreshRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/firewalls/%s/qos/refresh", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiFirewallsUuidRoutingRequest generates requests for GetApiFirewallsUuidRouting
+func NewGetApiFirewallsUuidRoutingRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/firewalls/%s/routing", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiFirewallsUuidRoutingRequest calls the generic PostApiFirewallsUuidRouting builder with application/json body
+func NewPostApiFirewallsUuidRoutingRequest(server string, uuid string, body PostApiFirewallsUuidRoutingJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiFirewallsUuidRoutingRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPostApiFirewallsUuidRoutingRequestWithBody generates requests for PostApiFirewallsUuidRouting with any type of body
+func NewPostApiFirewallsUuidRoutingRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/firewalls/%s/routing", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiFirewallsUuidRoutingLocalRequest generates requests for GetApiFirewallsUuidRoutingLocal
+func NewGetApiFirewallsUuidRoutingLocalRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/firewalls/%s/routing/local", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
 
 	return req, nil
 }
@@ -8211,6 +13087,1771 @@ func NewGetApiMessageBoxesRequest(server string) (*http.Request, error) {
 	return req, nil
 }
 
+// NewGetApiNetworkInterfacesRequest generates requests for GetApiNetworkInterfaces
+func NewGetApiNetworkInterfacesRequest(server string, params *GetApiNetworkInterfacesParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/network/interfaces")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Fwid != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "fwid", runtime.ParamLocationQuery, *params.Fwid); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Types != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "types", runtime.ParamLocationQuery, *params.Types); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Start != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "start", runtime.ParamLocationQuery, *params.Start); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Limit != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "limit", runtime.ParamLocationQuery, *params.Limit); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Filter != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "filter", runtime.ParamLocationQuery, *params.Filter); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		if params.Sort != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "sort", runtime.ParamLocationQuery, *params.Sort); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiNetworkInterfacesRequest calls the generic PostApiNetworkInterfaces builder with application/json body
+func NewPostApiNetworkInterfacesRequest(server string, body PostApiNetworkInterfacesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiNetworkInterfacesRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiNetworkInterfacesRequestWithBody generates requests for PostApiNetworkInterfaces with any type of body
+func NewPostApiNetworkInterfacesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/network/interfaces")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiNetworkInterfacesBulkRequest calls the generic DeleteApiNetworkInterfacesBulk builder with application/json body
+func NewDeleteApiNetworkInterfacesBulkRequest(server string, body DeleteApiNetworkInterfacesBulkJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDeleteApiNetworkInterfacesBulkRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewDeleteApiNetworkInterfacesBulkRequestWithBody generates requests for DeleteApiNetworkInterfacesBulk with any type of body
+func NewDeleteApiNetworkInterfacesBulkRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/network/interfaces/bulk")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiNetworkInterfacesRootRequest generates requests for GetApiNetworkInterfacesRoot
+func NewGetApiNetworkInterfacesRootRequest(server string, params *GetApiNetworkInterfacesRootParams) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/network/interfaces/root")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Fwid != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "fwid", runtime.ParamLocationQuery, *params.Fwid); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteApiNetworkInterfacesUuidRequest generates requests for DeleteApiNetworkInterfacesUuid
+func NewDeleteApiNetworkInterfacesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/network/interfaces/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiNetworkInterfacesUuidRequest generates requests for GetApiNetworkInterfacesUuid
+func NewGetApiNetworkInterfacesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/network/interfaces/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiNetworkInterfacesUuidRequest calls the generic PutApiNetworkInterfacesUuid builder with application/json body
+func NewPutApiNetworkInterfacesUuidRequest(server string, uuid string, body PutApiNetworkInterfacesUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiNetworkInterfacesUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiNetworkInterfacesUuidRequestWithBody generates requests for PutApiNetworkInterfacesUuid with any type of body
+func NewPutApiNetworkInterfacesUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/network/interfaces/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPutApiNetworkInterfacesUuidMembersRequest calls the generic PutApiNetworkInterfacesUuidMembers builder with application/json body
+func NewPutApiNetworkInterfacesUuidMembersRequest(server string, uuid string, body PutApiNetworkInterfacesUuidMembersJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiNetworkInterfacesUuidMembersRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiNetworkInterfacesUuidMembersRequestWithBody generates requests for PutApiNetworkInterfacesUuidMembers with any type of body
+func NewPutApiNetworkInterfacesUuidMembersRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/network/interfaces/%s/members", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiNsrpcArchiveRequest generates requests for GetApiNsrpcArchive
+func NewGetApiNsrpcArchiveRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/archive")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiNsrpcArchiveFwidRequest generates requests for GetApiNsrpcArchiveFwid
+func NewGetApiNsrpcArchiveFwidRequest(server string, fwid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "fwid", runtime.ParamLocationPath, fwid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/archive/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiNsrpcAttachRequest generates requests for GetApiNsrpcAttach
+func NewGetApiNsrpcAttachRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/attach")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiNsrpcAttachRequestWithBody generates requests for PostApiNsrpcAttach with any type of body
+func NewPostApiNsrpcAttachRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/attach")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiNsrpcCsvDryRunScriptnameRequestWithBody generates requests for PostApiNsrpcCsvDryRunScriptname with any type of body
+func NewPostApiNsrpcCsvDryRunScriptnameRequestWithBody(server string, scriptname string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "scriptname", runtime.ParamLocationPath, scriptname)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/csv/dry-run/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiNsrpcCsvScriptnameRequestWithBody generates requests for PostApiNsrpcCsvScriptname with any type of body
+func NewPostApiNsrpcCsvScriptnameRequestWithBody(server string, scriptname string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "scriptname", runtime.ParamLocationPath, scriptname)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/csv/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiNsrpcDryRunScriptnameRequest calls the generic PostApiNsrpcDryRunScriptname builder with application/json body
+func NewPostApiNsrpcDryRunScriptnameRequest(server string, scriptname string, body PostApiNsrpcDryRunScriptnameJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiNsrpcDryRunScriptnameRequestWithBody(server, scriptname, "application/json", bodyReader)
+}
+
+// NewPostApiNsrpcDryRunScriptnameRequestWithBody generates requests for PostApiNsrpcDryRunScriptname with any type of body
+func NewPostApiNsrpcDryRunScriptnameRequestWithBody(server string, scriptname string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "scriptname", runtime.ParamLocationPath, scriptname)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/dry-run/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiNsrpcExecuteScriptnameRequest calls the generic PostApiNsrpcExecuteScriptname builder with application/json body
+func NewPostApiNsrpcExecuteScriptnameRequest(server string, scriptname string, body PostApiNsrpcExecuteScriptnameJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiNsrpcExecuteScriptnameRequestWithBody(server, scriptname, "application/json", bodyReader)
+}
+
+// NewPostApiNsrpcExecuteScriptnameRequestWithBody generates requests for PostApiNsrpcExecuteScriptname with any type of body
+func NewPostApiNsrpcExecuteScriptnameRequestWithBody(server string, scriptname string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "scriptname", runtime.ParamLocationPath, scriptname)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/execute/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiNsrpcLogFwidRequest generates requests for GetApiNsrpcLogFwid
+func NewGetApiNsrpcLogFwidRequest(server string, fwid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "fwid", runtime.ParamLocationPath, fwid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/log/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiNsrpcPendingRequest generates requests for GetApiNsrpcPending
+func NewGetApiNsrpcPendingRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/pending")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiNsrpcPendingCancelRequest generates requests for PostApiNsrpcPendingCancel
+func NewPostApiNsrpcPendingCancelRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/pending/cancel")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiNsrpcProgressRequest generates requests for GetApiNsrpcProgress
+func NewGetApiNsrpcProgressRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/progress")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiNsrpcScheduleScriptnameRequest calls the generic PutApiNsrpcScheduleScriptname builder with application/json body
+func NewPutApiNsrpcScheduleScriptnameRequest(server string, scriptname string, body PutApiNsrpcScheduleScriptnameJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiNsrpcScheduleScriptnameRequestWithBody(server, scriptname, "application/json", bodyReader)
+}
+
+// NewPutApiNsrpcScheduleScriptnameRequestWithBody generates requests for PutApiNsrpcScheduleScriptname with any type of body
+func NewPutApiNsrpcScheduleScriptnameRequestWithBody(server string, scriptname string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "scriptname", runtime.ParamLocationPath, scriptname)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/schedule/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiNsrpcScriptRequest generates requests for GetApiNsrpcScript
+func NewGetApiNsrpcScriptRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/script")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewDeleteApiNsrpcScriptScriptnameRequest generates requests for DeleteApiNsrpcScriptScriptname
+func NewDeleteApiNsrpcScriptScriptnameRequest(server string, scriptname string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "scriptname", runtime.ParamLocationPath, scriptname)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/script/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiNsrpcScriptScriptnameRequest generates requests for GetApiNsrpcScriptScriptname
+func NewGetApiNsrpcScriptScriptnameRequest(server string, scriptname string, params *GetApiNsrpcScriptScriptnameParams) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "scriptname", runtime.ParamLocationPath, scriptname)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/script/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	if params != nil {
+		queryValues := queryURL.Query()
+
+		if params.Download != nil {
+
+			if queryFrag, err := runtime.StyleParamWithLocation("form", true, "download", runtime.ParamLocationQuery, *params.Download); err != nil {
+				return nil, err
+			} else if parsed, err := url.ParseQuery(queryFrag); err != nil {
+				return nil, err
+			} else {
+				for k, v := range parsed {
+					for _, v2 := range v {
+						queryValues.Add(k, v2)
+					}
+				}
+			}
+
+		}
+
+		queryURL.RawQuery = queryValues.Encode()
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiNsrpcScriptScriptnameRequestWithBody generates requests for PostApiNsrpcScriptScriptname with any type of body
+func NewPostApiNsrpcScriptScriptnameRequestWithBody(server string, scriptname string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "scriptname", runtime.ParamLocationPath, scriptname)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/script/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiNsrpcScriptScriptnameFwidRequest generates requests for GetApiNsrpcScriptScriptnameFwid
+func NewGetApiNsrpcScriptScriptnameFwidRequest(server string, scriptname string, fwid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "scriptname", runtime.ParamLocationPath, scriptname)
+	if err != nil {
+		return nil, err
+	}
+
+	var pathParam1 string
+
+	pathParam1, err = runtime.StyleParamWithLocation("simple", false, "fwid", runtime.ParamLocationPath, fwid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/script/%s/%s", pathParam0, pathParam1)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiNsrpcUsebackupscriptRequest calls the generic PostApiNsrpcUsebackupscript builder with application/json body
+func NewPostApiNsrpcUsebackupscriptRequest(server string, body PostApiNsrpcUsebackupscriptJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiNsrpcUsebackupscriptRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiNsrpcUsebackupscriptRequestWithBody generates requests for PostApiNsrpcUsebackupscript with any type of body
+func NewPostApiNsrpcUsebackupscriptRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/nsrpc/usebackupscript")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiQosIfacesAssignationsRequest generates requests for GetApiQosIfacesAssignations
+func NewGetApiQosIfacesAssignationsRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/ifaces-assignations")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiQosIfacesAssignationsRequest calls the generic PostApiQosIfacesAssignations builder with application/json body
+func NewPostApiQosIfacesAssignationsRequest(server string, body PostApiQosIfacesAssignationsJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiQosIfacesAssignationsRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiQosIfacesAssignationsRequestWithBody generates requests for PostApiQosIfacesAssignations with any type of body
+func NewPostApiQosIfacesAssignationsRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/ifaces-assignations")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiQosIfacesAssignationsBulkRequest calls the generic DeleteApiQosIfacesAssignationsBulk builder with application/json body
+func NewDeleteApiQosIfacesAssignationsBulkRequest(server string, body DeleteApiQosIfacesAssignationsBulkJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDeleteApiQosIfacesAssignationsBulkRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewDeleteApiQosIfacesAssignationsBulkRequestWithBody generates requests for DeleteApiQosIfacesAssignationsBulk with any type of body
+func NewDeleteApiQosIfacesAssignationsBulkRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/ifaces-assignations/bulk")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiQosIfacesAssignationsUuidRequest generates requests for DeleteApiQosIfacesAssignationsUuid
+func NewDeleteApiQosIfacesAssignationsUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/ifaces-assignations/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiQosIfacesAssignationsUuidRequest generates requests for GetApiQosIfacesAssignationsUuid
+func NewGetApiQosIfacesAssignationsUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/ifaces-assignations/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiQosIfacesAssignationsUuidRequest calls the generic PutApiQosIfacesAssignationsUuid builder with application/json body
+func NewPutApiQosIfacesAssignationsUuidRequest(server string, uuid string, body PutApiQosIfacesAssignationsUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiQosIfacesAssignationsUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiQosIfacesAssignationsUuidRequestWithBody generates requests for PutApiQosIfacesAssignationsUuid with any type of body
+func NewPutApiQosIfacesAssignationsUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/ifaces-assignations/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiQosQueuesRequest generates requests for GetApiQosQueues
+func NewGetApiQosQueuesRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/queues")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiQosQueuesRequest calls the generic PostApiQosQueues builder with application/json body
+func NewPostApiQosQueuesRequest(server string, body PostApiQosQueuesJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiQosQueuesRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiQosQueuesRequestWithBody generates requests for PostApiQosQueues with any type of body
+func NewPostApiQosQueuesRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/queues")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiQosQueuesBulkRequest calls the generic DeleteApiQosQueuesBulk builder with application/json body
+func NewDeleteApiQosQueuesBulkRequest(server string, body DeleteApiQosQueuesBulkJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDeleteApiQosQueuesBulkRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewDeleteApiQosQueuesBulkRequestWithBody generates requests for DeleteApiQosQueuesBulk with any type of body
+func NewDeleteApiQosQueuesBulkRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/queues/bulk")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiQosQueuesUuidRequest generates requests for DeleteApiQosQueuesUuid
+func NewDeleteApiQosQueuesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/queues/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiQosQueuesUuidRequest generates requests for GetApiQosQueuesUuid
+func NewGetApiQosQueuesUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/queues/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiQosQueuesUuidRequest calls the generic PutApiQosQueuesUuid builder with application/json body
+func NewPutApiQosQueuesUuidRequest(server string, uuid string, body PutApiQosQueuesUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiQosQueuesUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiQosQueuesUuidRequestWithBody generates requests for PutApiQosQueuesUuid with any type of body
+func NewPutApiQosQueuesUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/queues/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewGetApiQosTrafficShapersRequest generates requests for GetApiQosTrafficShapers
+func NewGetApiQosTrafficShapersRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/traffic-shapers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiQosTrafficShapersRequest calls the generic PostApiQosTrafficShapers builder with application/json body
+func NewPostApiQosTrafficShapersRequest(server string, body PostApiQosTrafficShapersJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiQosTrafficShapersRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiQosTrafficShapersRequestWithBody generates requests for PostApiQosTrafficShapers with any type of body
+func NewPostApiQosTrafficShapersRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/traffic-shapers")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiQosTrafficShapersBulkRequest calls the generic DeleteApiQosTrafficShapersBulk builder with application/json body
+func NewDeleteApiQosTrafficShapersBulkRequest(server string, body DeleteApiQosTrafficShapersBulkJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewDeleteApiQosTrafficShapersBulkRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewDeleteApiQosTrafficShapersBulkRequestWithBody generates requests for DeleteApiQosTrafficShapersBulk with any type of body
+func NewDeleteApiQosTrafficShapersBulkRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/traffic-shapers/bulk")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiQosTrafficShapersUuidRequest generates requests for DeleteApiQosTrafficShapersUuid
+func NewDeleteApiQosTrafficShapersUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/traffic-shapers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiQosTrafficShapersUuidRequest generates requests for GetApiQosTrafficShapersUuid
+func NewGetApiQosTrafficShapersUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/traffic-shapers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiQosTrafficShapersUuidRequest calls the generic PutApiQosTrafficShapersUuid builder with application/json body
+func NewPutApiQosTrafficShapersUuidRequest(server string, uuid string, body PutApiQosTrafficShapersUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiQosTrafficShapersUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiQosTrafficShapersUuidRequestWithBody generates requests for PutApiQosTrafficShapersUuid with any type of body
+func NewPutApiQosTrafficShapersUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/qos/traffic-shapers/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetApiRadiusRequest generates requests for GetApiRadius
 func NewGetApiRadiusRequest(server string) (*http.Request, error) {
 	var err error
@@ -8278,6 +14919,190 @@ func NewPostApiRadiusRequestWithBody(server string, contentType string, body io.
 	return req, nil
 }
 
+// NewPostApiRoutingGetbirdconfigerrorRequest calls the generic PostApiRoutingGetbirdconfigerror builder with application/json body
+func NewPostApiRoutingGetbirdconfigerrorRequest(server string, body PostApiRoutingGetbirdconfigerrorJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiRoutingGetbirdconfigerrorRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiRoutingGetbirdconfigerrorRequestWithBody generates requests for PostApiRoutingGetbirdconfigerror with any type of body
+func NewPostApiRoutingGetbirdconfigerrorRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/routing/getbirdconfigerror")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewPostApiRoutingImportRequestWithBody generates requests for PostApiRoutingImport with any type of body
+func NewPostApiRoutingImportRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/routing/import")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
+// NewDeleteApiRoutingUuidRequest generates requests for DeleteApiRoutingUuid
+func NewDeleteApiRoutingUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/routing/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("DELETE", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewGetApiRoutingUuidRequest generates requests for GetApiRoutingUuid
+func NewGetApiRoutingUuidRequest(server string, uuid string) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/routing/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPutApiRoutingUuidRequest calls the generic PutApiRoutingUuid builder with application/json body
+func NewPutApiRoutingUuidRequest(server string, uuid string, body PutApiRoutingUuidJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPutApiRoutingUuidRequestWithBody(server, uuid, "application/json", bodyReader)
+}
+
+// NewPutApiRoutingUuidRequestWithBody generates requests for PutApiRoutingUuid with any type of body
+func NewPutApiRoutingUuidRequestWithBody(server string, uuid string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	var pathParam0 string
+
+	pathParam0, err = runtime.StyleParamWithLocation("simple", false, "uuid", runtime.ParamLocationPath, uuid)
+	if err != nil {
+		return nil, err
+	}
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/routing/%s", pathParam0)
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("PUT", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
+
+	return req, nil
+}
+
 // NewGetApiSnsdiffDiffUuidRequest generates requests for GetApiSnsdiffDiffUuid
 func NewGetApiSnsdiffDiffUuidRequest(server string, uuid string) (*http.Request, error) {
 	var err error
@@ -8308,6 +15133,73 @@ func NewGetApiSnsdiffDiffUuidRequest(server string, uuid string) (*http.Request,
 	if err != nil {
 		return nil, err
 	}
+
+	return req, nil
+}
+
+// NewGetApiUnifiedconfigDeployRequest generates requests for GetApiUnifiedconfigDeploy
+func NewGetApiUnifiedconfigDeployRequest(server string) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/unifiedconfig/deploy")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("GET", queryURL.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+
+	return req, nil
+}
+
+// NewPostApiUnifiedconfigDeployRequest calls the generic PostApiUnifiedconfigDeploy builder with application/json body
+func NewPostApiUnifiedconfigDeployRequest(server string, body PostApiUnifiedconfigDeployJSONRequestBody) (*http.Request, error) {
+	var bodyReader io.Reader
+	buf, err := json.Marshal(body)
+	if err != nil {
+		return nil, err
+	}
+	bodyReader = bytes.NewReader(buf)
+	return NewPostApiUnifiedconfigDeployRequestWithBody(server, "application/json", bodyReader)
+}
+
+// NewPostApiUnifiedconfigDeployRequestWithBody generates requests for PostApiUnifiedconfigDeploy with any type of body
+func NewPostApiUnifiedconfigDeployRequestWithBody(server string, contentType string, body io.Reader) (*http.Request, error) {
+	var err error
+
+	serverURL, err := url.Parse(server)
+	if err != nil {
+		return nil, err
+	}
+
+	operationPath := fmt.Sprintf("/api/unifiedconfig/deploy")
+	if operationPath[0] == '/' {
+		operationPath = "." + operationPath
+	}
+
+	queryURL, err := serverURL.Parse(operationPath)
+	if err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", queryURL.String(), body)
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Content-Type", contentType)
 
 	return req, nil
 }
@@ -9434,6 +16326,30 @@ type ClientWithResponsesInterface interface {
 	// GetApiCfgdiffStatusWithResponse request
 	GetApiCfgdiffStatusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCfgdiffStatusResponse, error)
 
+	// GetApiConfigDrWithResponse request
+	GetApiConfigDrWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigDrResponse, error)
+
+	// PostApiConfigDrWithBodyWithResponse request with any body
+	PostApiConfigDrWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiConfigDrResponse, error)
+
+	PostApiConfigDrWithResponse(ctx context.Context, body PostApiConfigDrJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiConfigDrResponse, error)
+
+	// GetApiConfigInitialWithResponse request
+	GetApiConfigInitialWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigInitialResponse, error)
+
+	// PostApiConfigInitialWithBodyWithResponse request with any body
+	PostApiConfigInitialWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiConfigInitialResponse, error)
+
+	PostApiConfigInitialWithResponse(ctx context.Context, body PostApiConfigInitialJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiConfigInitialResponse, error)
+
+	// PostApiConfigInitialCloudCloudNameWithBodyWithResponse request with any body
+	PostApiConfigInitialCloudCloudNameWithBodyWithResponse(ctx context.Context, cloudName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiConfigInitialCloudCloudNameResponse, error)
+
+	PostApiConfigInitialCloudCloudNameWithResponse(ctx context.Context, cloudName string, body PostApiConfigInitialCloudCloudNameJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiConfigInitialCloudCloudNameResponse, error)
+
+	// GetApiConfigInitializedWithResponse request
+	GetApiConfigInitializedWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigInitializedResponse, error)
+
 	// GetApiConfigInterfacesWithResponse request
 	GetApiConfigInterfacesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigInterfacesResponse, error)
 
@@ -9459,6 +16375,30 @@ type ClientWithResponsesInterface interface {
 
 	PostApiConfigNetworkWithResponse(ctx context.Context, body PostApiConfigNetworkJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiConfigNetworkResponse, error)
 
+	// GetApiConfigPapiWithResponse request
+	GetApiConfigPapiWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigPapiResponse, error)
+
+	// PutApiConfigPapiWithBodyWithResponse request with any body
+	PutApiConfigPapiWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiConfigPapiResponse, error)
+
+	PutApiConfigPapiWithResponse(ctx context.Context, body PutApiConfigPapiJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiConfigPapiResponse, error)
+
+	// GetApiConfigSlsWithResponse request
+	GetApiConfigSlsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigSlsResponse, error)
+
+	// PutApiConfigSlsWithBodyWithResponse request with any body
+	PutApiConfigSlsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiConfigSlsResponse, error)
+
+	PutApiConfigSlsWithResponse(ctx context.Context, body PutApiConfigSlsJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiConfigSlsResponse, error)
+
+	// GetApiConfigVpncrlrequiredWithResponse request
+	GetApiConfigVpncrlrequiredWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigVpncrlrequiredResponse, error)
+
+	// PutApiConfigVpncrlrequiredWithBodyWithResponse request with any body
+	PutApiConfigVpncrlrequiredWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiConfigVpncrlrequiredResponse, error)
+
+	PutApiConfigVpncrlrequiredWithResponse(ctx context.Context, body PutApiConfigVpncrlrequiredJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiConfigVpncrlrequiredResponse, error)
+
 	// GetApiCustompropertiesWithResponse request
 	GetApiCustompropertiesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCustompropertiesResponse, error)
 
@@ -9477,6 +16417,21 @@ type ClientWithResponsesInterface interface {
 	PutApiCustompropertiesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiCustompropertiesUuidResponse, error)
 
 	PutApiCustompropertiesUuidWithResponse(ctx context.Context, uuid string, body PutApiCustompropertiesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiCustompropertiesUuidResponse, error)
+
+	// GetApiDefinitionsEthernetprotocolsWithResponse request
+	GetApiDefinitionsEthernetprotocolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDefinitionsEthernetprotocolsResponse, error)
+
+	// GetApiDefinitionsIcmpcodesWithResponse request
+	GetApiDefinitionsIcmpcodesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDefinitionsIcmpcodesResponse, error)
+
+	// GetApiDefinitionsIpprotocolsWithResponse request
+	GetApiDefinitionsIpprotocolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDefinitionsIpprotocolsResponse, error)
+
+	// GetApiDefinitionsProtocolsWithResponse request
+	GetApiDefinitionsProtocolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDefinitionsProtocolsResponse, error)
+
+	// GetApiDeploymentWarningsEditorsWithResponse request
+	GetApiDeploymentWarningsEditorsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDeploymentWarningsEditorsResponse, error)
 
 	// GetApiDisclaimerWithResponse request
 	GetApiDisclaimerWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDisclaimerResponse, error)
@@ -9501,10 +16456,27 @@ type ClientWithResponsesInterface interface {
 	// GetApiFeatureTogglingWithResponse request
 	GetApiFeatureTogglingWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiFeatureTogglingResponse, error)
 
+	// PostApiFirewallsUuidNetworkRefreshWithResponse request
+	PostApiFirewallsUuidNetworkRefreshWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidNetworkRefreshResponse, error)
+
 	// PostApiFirewallsUuidPackageWithBodyWithResponse request with any body
 	PostApiFirewallsUuidPackageWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidPackageResponse, error)
 
 	PostApiFirewallsUuidPackageWithResponse(ctx context.Context, uuid string, body PostApiFirewallsUuidPackageJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidPackageResponse, error)
+
+	// PostApiFirewallsUuidQosRefreshWithResponse request
+	PostApiFirewallsUuidQosRefreshWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidQosRefreshResponse, error)
+
+	// GetApiFirewallsUuidRoutingWithResponse request
+	GetApiFirewallsUuidRoutingWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiFirewallsUuidRoutingResponse, error)
+
+	// PostApiFirewallsUuidRoutingWithBodyWithResponse request with any body
+	PostApiFirewallsUuidRoutingWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidRoutingResponse, error)
+
+	PostApiFirewallsUuidRoutingWithResponse(ctx context.Context, uuid string, body PostApiFirewallsUuidRoutingJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidRoutingResponse, error)
+
+	// GetApiFirewallsUuidRoutingLocalWithResponse request
+	GetApiFirewallsUuidRoutingLocalWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiFirewallsUuidRoutingLocalResponse, error)
 
 	// GetApiFirewallsUuidTopologiesWithResponse request
 	GetApiFirewallsUuidTopologiesWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiFirewallsUuidTopologiesResponse, error)
@@ -9552,6 +16524,175 @@ type ClientWithResponsesInterface interface {
 	// GetApiMessageBoxesWithResponse request
 	GetApiMessageBoxesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiMessageBoxesResponse, error)
 
+	// GetApiNetworkInterfacesWithResponse request
+	GetApiNetworkInterfacesWithResponse(ctx context.Context, params *GetApiNetworkInterfacesParams, reqEditors ...RequestEditorFn) (*GetApiNetworkInterfacesResponse, error)
+
+	// PostApiNetworkInterfacesWithBodyWithResponse request with any body
+	PostApiNetworkInterfacesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNetworkInterfacesResponse, error)
+
+	PostApiNetworkInterfacesWithResponse(ctx context.Context, body PostApiNetworkInterfacesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiNetworkInterfacesResponse, error)
+
+	// DeleteApiNetworkInterfacesBulkWithBodyWithResponse request with any body
+	DeleteApiNetworkInterfacesBulkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteApiNetworkInterfacesBulkResponse, error)
+
+	DeleteApiNetworkInterfacesBulkWithResponse(ctx context.Context, body DeleteApiNetworkInterfacesBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteApiNetworkInterfacesBulkResponse, error)
+
+	// GetApiNetworkInterfacesRootWithResponse request
+	GetApiNetworkInterfacesRootWithResponse(ctx context.Context, params *GetApiNetworkInterfacesRootParams, reqEditors ...RequestEditorFn) (*GetApiNetworkInterfacesRootResponse, error)
+
+	// DeleteApiNetworkInterfacesUuidWithResponse request
+	DeleteApiNetworkInterfacesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiNetworkInterfacesUuidResponse, error)
+
+	// GetApiNetworkInterfacesUuidWithResponse request
+	GetApiNetworkInterfacesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiNetworkInterfacesUuidResponse, error)
+
+	// PutApiNetworkInterfacesUuidWithBodyWithResponse request with any body
+	PutApiNetworkInterfacesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiNetworkInterfacesUuidResponse, error)
+
+	PutApiNetworkInterfacesUuidWithResponse(ctx context.Context, uuid string, body PutApiNetworkInterfacesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiNetworkInterfacesUuidResponse, error)
+
+	// PutApiNetworkInterfacesUuidMembersWithBodyWithResponse request with any body
+	PutApiNetworkInterfacesUuidMembersWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiNetworkInterfacesUuidMembersResponse, error)
+
+	PutApiNetworkInterfacesUuidMembersWithResponse(ctx context.Context, uuid string, body PutApiNetworkInterfacesUuidMembersJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiNetworkInterfacesUuidMembersResponse, error)
+
+	// GetApiNsrpcArchiveWithResponse request
+	GetApiNsrpcArchiveWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiNsrpcArchiveResponse, error)
+
+	// GetApiNsrpcArchiveFwidWithResponse request
+	GetApiNsrpcArchiveFwidWithResponse(ctx context.Context, fwid string, reqEditors ...RequestEditorFn) (*GetApiNsrpcArchiveFwidResponse, error)
+
+	// GetApiNsrpcAttachWithResponse request
+	GetApiNsrpcAttachWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiNsrpcAttachResponse, error)
+
+	// PostApiNsrpcAttachWithBodyWithResponse request with any body
+	PostApiNsrpcAttachWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcAttachResponse, error)
+
+	// PostApiNsrpcCsvDryRunScriptnameWithBodyWithResponse request with any body
+	PostApiNsrpcCsvDryRunScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcCsvDryRunScriptnameResponse, error)
+
+	// PostApiNsrpcCsvScriptnameWithBodyWithResponse request with any body
+	PostApiNsrpcCsvScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcCsvScriptnameResponse, error)
+
+	// PostApiNsrpcDryRunScriptnameWithBodyWithResponse request with any body
+	PostApiNsrpcDryRunScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcDryRunScriptnameResponse, error)
+
+	PostApiNsrpcDryRunScriptnameWithResponse(ctx context.Context, scriptname string, body PostApiNsrpcDryRunScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiNsrpcDryRunScriptnameResponse, error)
+
+	// PostApiNsrpcExecuteScriptnameWithBodyWithResponse request with any body
+	PostApiNsrpcExecuteScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcExecuteScriptnameResponse, error)
+
+	PostApiNsrpcExecuteScriptnameWithResponse(ctx context.Context, scriptname string, body PostApiNsrpcExecuteScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiNsrpcExecuteScriptnameResponse, error)
+
+	// GetApiNsrpcLogFwidWithResponse request
+	GetApiNsrpcLogFwidWithResponse(ctx context.Context, fwid string, reqEditors ...RequestEditorFn) (*GetApiNsrpcLogFwidResponse, error)
+
+	// GetApiNsrpcPendingWithResponse request
+	GetApiNsrpcPendingWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiNsrpcPendingResponse, error)
+
+	// PostApiNsrpcPendingCancelWithResponse request
+	PostApiNsrpcPendingCancelWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostApiNsrpcPendingCancelResponse, error)
+
+	// GetApiNsrpcProgressWithResponse request
+	GetApiNsrpcProgressWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiNsrpcProgressResponse, error)
+
+	// PutApiNsrpcScheduleScriptnameWithBodyWithResponse request with any body
+	PutApiNsrpcScheduleScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiNsrpcScheduleScriptnameResponse, error)
+
+	PutApiNsrpcScheduleScriptnameWithResponse(ctx context.Context, scriptname string, body PutApiNsrpcScheduleScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiNsrpcScheduleScriptnameResponse, error)
+
+	// GetApiNsrpcScriptWithResponse request
+	GetApiNsrpcScriptWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiNsrpcScriptResponse, error)
+
+	// DeleteApiNsrpcScriptScriptnameWithResponse request
+	DeleteApiNsrpcScriptScriptnameWithResponse(ctx context.Context, scriptname string, reqEditors ...RequestEditorFn) (*DeleteApiNsrpcScriptScriptnameResponse, error)
+
+	// GetApiNsrpcScriptScriptnameWithResponse request
+	GetApiNsrpcScriptScriptnameWithResponse(ctx context.Context, scriptname string, params *GetApiNsrpcScriptScriptnameParams, reqEditors ...RequestEditorFn) (*GetApiNsrpcScriptScriptnameResponse, error)
+
+	// PostApiNsrpcScriptScriptnameWithBodyWithResponse request with any body
+	PostApiNsrpcScriptScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcScriptScriptnameResponse, error)
+
+	// GetApiNsrpcScriptScriptnameFwidWithResponse request
+	GetApiNsrpcScriptScriptnameFwidWithResponse(ctx context.Context, scriptname string, fwid string, reqEditors ...RequestEditorFn) (*GetApiNsrpcScriptScriptnameFwidResponse, error)
+
+	// PostApiNsrpcUsebackupscriptWithBodyWithResponse request with any body
+	PostApiNsrpcUsebackupscriptWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcUsebackupscriptResponse, error)
+
+	PostApiNsrpcUsebackupscriptWithResponse(ctx context.Context, body PostApiNsrpcUsebackupscriptJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiNsrpcUsebackupscriptResponse, error)
+
+	// GetApiQosIfacesAssignationsWithResponse request
+	GetApiQosIfacesAssignationsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiQosIfacesAssignationsResponse, error)
+
+	// PostApiQosIfacesAssignationsWithBodyWithResponse request with any body
+	PostApiQosIfacesAssignationsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiQosIfacesAssignationsResponse, error)
+
+	PostApiQosIfacesAssignationsWithResponse(ctx context.Context, body PostApiQosIfacesAssignationsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiQosIfacesAssignationsResponse, error)
+
+	// DeleteApiQosIfacesAssignationsBulkWithBodyWithResponse request with any body
+	DeleteApiQosIfacesAssignationsBulkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteApiQosIfacesAssignationsBulkResponse, error)
+
+	DeleteApiQosIfacesAssignationsBulkWithResponse(ctx context.Context, body DeleteApiQosIfacesAssignationsBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteApiQosIfacesAssignationsBulkResponse, error)
+
+	// DeleteApiQosIfacesAssignationsUuidWithResponse request
+	DeleteApiQosIfacesAssignationsUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiQosIfacesAssignationsUuidResponse, error)
+
+	// GetApiQosIfacesAssignationsUuidWithResponse request
+	GetApiQosIfacesAssignationsUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiQosIfacesAssignationsUuidResponse, error)
+
+	// PutApiQosIfacesAssignationsUuidWithBodyWithResponse request with any body
+	PutApiQosIfacesAssignationsUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiQosIfacesAssignationsUuidResponse, error)
+
+	PutApiQosIfacesAssignationsUuidWithResponse(ctx context.Context, uuid string, body PutApiQosIfacesAssignationsUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiQosIfacesAssignationsUuidResponse, error)
+
+	// GetApiQosQueuesWithResponse request
+	GetApiQosQueuesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiQosQueuesResponse, error)
+
+	// PostApiQosQueuesWithBodyWithResponse request with any body
+	PostApiQosQueuesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiQosQueuesResponse, error)
+
+	PostApiQosQueuesWithResponse(ctx context.Context, body PostApiQosQueuesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiQosQueuesResponse, error)
+
+	// DeleteApiQosQueuesBulkWithBodyWithResponse request with any body
+	DeleteApiQosQueuesBulkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteApiQosQueuesBulkResponse, error)
+
+	DeleteApiQosQueuesBulkWithResponse(ctx context.Context, body DeleteApiQosQueuesBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteApiQosQueuesBulkResponse, error)
+
+	// DeleteApiQosQueuesUuidWithResponse request
+	DeleteApiQosQueuesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiQosQueuesUuidResponse, error)
+
+	// GetApiQosQueuesUuidWithResponse request
+	GetApiQosQueuesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiQosQueuesUuidResponse, error)
+
+	// PutApiQosQueuesUuidWithBodyWithResponse request with any body
+	PutApiQosQueuesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiQosQueuesUuidResponse, error)
+
+	PutApiQosQueuesUuidWithResponse(ctx context.Context, uuid string, body PutApiQosQueuesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiQosQueuesUuidResponse, error)
+
+	// GetApiQosTrafficShapersWithResponse request
+	GetApiQosTrafficShapersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiQosTrafficShapersResponse, error)
+
+	// PostApiQosTrafficShapersWithBodyWithResponse request with any body
+	PostApiQosTrafficShapersWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiQosTrafficShapersResponse, error)
+
+	PostApiQosTrafficShapersWithResponse(ctx context.Context, body PostApiQosTrafficShapersJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiQosTrafficShapersResponse, error)
+
+	// DeleteApiQosTrafficShapersBulkWithBodyWithResponse request with any body
+	DeleteApiQosTrafficShapersBulkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteApiQosTrafficShapersBulkResponse, error)
+
+	DeleteApiQosTrafficShapersBulkWithResponse(ctx context.Context, body DeleteApiQosTrafficShapersBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteApiQosTrafficShapersBulkResponse, error)
+
+	// DeleteApiQosTrafficShapersUuidWithResponse request
+	DeleteApiQosTrafficShapersUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiQosTrafficShapersUuidResponse, error)
+
+	// GetApiQosTrafficShapersUuidWithResponse request
+	GetApiQosTrafficShapersUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiQosTrafficShapersUuidResponse, error)
+
+	// PutApiQosTrafficShapersUuidWithBodyWithResponse request with any body
+	PutApiQosTrafficShapersUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiQosTrafficShapersUuidResponse, error)
+
+	PutApiQosTrafficShapersUuidWithResponse(ctx context.Context, uuid string, body PutApiQosTrafficShapersUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiQosTrafficShapersUuidResponse, error)
+
 	// GetApiRadiusWithResponse request
 	GetApiRadiusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiRadiusResponse, error)
 
@@ -9560,8 +16701,35 @@ type ClientWithResponsesInterface interface {
 
 	PostApiRadiusWithResponse(ctx context.Context, body PostApiRadiusJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiRadiusResponse, error)
 
+	// PostApiRoutingGetbirdconfigerrorWithBodyWithResponse request with any body
+	PostApiRoutingGetbirdconfigerrorWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiRoutingGetbirdconfigerrorResponse, error)
+
+	PostApiRoutingGetbirdconfigerrorWithResponse(ctx context.Context, body PostApiRoutingGetbirdconfigerrorJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiRoutingGetbirdconfigerrorResponse, error)
+
+	// PostApiRoutingImportWithBodyWithResponse request with any body
+	PostApiRoutingImportWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiRoutingImportResponse, error)
+
+	// DeleteApiRoutingUuidWithResponse request
+	DeleteApiRoutingUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiRoutingUuidResponse, error)
+
+	// GetApiRoutingUuidWithResponse request
+	GetApiRoutingUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiRoutingUuidResponse, error)
+
+	// PutApiRoutingUuidWithBodyWithResponse request with any body
+	PutApiRoutingUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiRoutingUuidResponse, error)
+
+	PutApiRoutingUuidWithResponse(ctx context.Context, uuid string, body PutApiRoutingUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiRoutingUuidResponse, error)
+
 	// GetApiSnsdiffDiffUuidWithResponse request
 	GetApiSnsdiffDiffUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiSnsdiffDiffUuidResponse, error)
+
+	// GetApiUnifiedconfigDeployWithResponse request
+	GetApiUnifiedconfigDeployWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiUnifiedconfigDeployResponse, error)
+
+	// PostApiUnifiedconfigDeployWithBodyWithResponse request with any body
+	PostApiUnifiedconfigDeployWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiUnifiedconfigDeployResponse, error)
+
+	PostApiUnifiedconfigDeployWithResponse(ctx context.Context, body PostApiUnifiedconfigDeployJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiUnifiedconfigDeployResponse, error)
 
 	// PostApiUpdateWithBodyWithResponse request with any body
 	PostApiUpdateWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiUpdateResponse, error)
@@ -11109,6 +18277,145 @@ func (r GetApiCfgdiffStatusResponse) StatusCode() int {
 	return 0
 }
 
+type GetApiConfigDrResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigDRActivation
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiConfigDrResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiConfigDrResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiConfigDrResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigDRActivation
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiConfigDrResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiConfigDrResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiConfigInitialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigInitial
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiConfigInitialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiConfigInitialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiConfigInitialResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON500 *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiConfigInitialResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiConfigInitialResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiConfigInitialCloudCloudNameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiConfigInitialCloudCloudNameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiConfigInitialCloudCloudNameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiConfigInitializedResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigInitializedState
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiConfigInitializedResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiConfigInitializedResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetApiConfigInterfacesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -11303,6 +18610,138 @@ func (r PostApiConfigNetworkResponse) StatusCode() int {
 	return 0
 }
 
+type GetApiConfigPapiResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigPAPIActivation
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiConfigPapiResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiConfigPapiResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiConfigPapiResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigPAPIActivation
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiConfigPapiResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiConfigPapiResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiConfigSlsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigSls
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiConfigSlsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiConfigSlsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiConfigSlsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigSls
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiConfigSlsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiConfigSlsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiConfigVpncrlrequiredResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigVpnCrlRequired
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiConfigVpncrlrequiredResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiConfigVpncrlrequiredResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiConfigVpncrlrequiredResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsConfigVpnCrlRequired
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiConfigVpncrlrequiredResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiConfigVpncrlrequiredResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetApiCustompropertiesResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -11416,6 +18855,154 @@ func (r PutApiCustompropertiesUuidResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r PutApiCustompropertiesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiDefinitionsEthernetprotocolsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result *[]struct {
+			// Name ethernet protocol name
+			Name *string `json:"name,omitempty"`
+		} `json:"result,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiDefinitionsEthernetprotocolsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiDefinitionsEthernetprotocolsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiDefinitionsIcmpcodesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result *[]struct {
+			Data *struct {
+				// All available only for "all_icmp_codes" or "all_icmpv6_codes" messages
+				All *GetApiDefinitionsIcmpcodes200ResultDataAll `json:"all,omitempty"`
+
+				// Code icmp message code number
+				Code *float32 `json:"code,omitempty"`
+
+				// Type icmp message type number
+				Type *float32 `json:"type,omitempty"`
+			} `json:"data,omitempty"`
+			Name *string `json:"name,omitempty"`
+
+			// Type icmp version the code belongs to
+			Type *GetApiDefinitionsIcmpcodes200ResultType `json:"type,omitempty"`
+		} `json:"result,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+type GetApiDefinitionsIcmpcodes200ResultDataAll bool
+type GetApiDefinitionsIcmpcodes200ResultType string
+
+// Status returns HTTPResponse.Status
+func (r GetApiDefinitionsIcmpcodesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiDefinitionsIcmpcodesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiDefinitionsIpprotocolsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result *[]struct {
+			// Name ip protocol name
+			Name *string `json:"name,omitempty"`
+		} `json:"result,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiDefinitionsIpprotocolsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiDefinitionsIpprotocolsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiDefinitionsProtocolsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DefinitionsMiscProtocolList `json:"result,omitempty"`
+		Success *bool                        `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiDefinitionsProtocolsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiDefinitionsProtocolsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiDeploymentWarningsEditorsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *[]DefinitionsDeploymentWarningsConfigEditors `json:"result,omitempty"`
+		Success *bool                                         `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiDeploymentWarningsEditorsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiDeploymentWarningsEditorsResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -11586,6 +19173,30 @@ func (r GetApiFeatureTogglingResponse) StatusCode() int {
 	return 0
 }
 
+type PostApiFirewallsUuidNetworkRefreshResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiFirewallsUuidNetworkRefreshResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiFirewallsUuidNetworkRefreshResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type PostApiFirewallsUuidPackageResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -11608,6 +19219,122 @@ func (r PostApiFirewallsUuidPackageResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r PostApiFirewallsUuidPackageResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiFirewallsUuidQosRefreshResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON409 *struct {
+		Errors []struct {
+			Code PostApiFirewallsUuidQosRefresh409ErrorsCode `json:"code"`
+			Ctx  []struct {
+				Name *string                                         `json:"name,omitempty"`
+				Type *PostApiFirewallsUuidQosRefresh409ErrorsCtxType `json:"type,omitempty"`
+				Uuid *string                                         `json:"uuid,omitempty"`
+			} `json:"ctx"`
+			Message PostApiFirewallsUuidQosRefresh409ErrorsMessage `json:"message"`
+		} `json:"errors"`
+		Success PostApiFirewallsUuidQosRefresh409Success `json:"success"`
+	}
+}
+type PostApiFirewallsUuidQosRefresh409ErrorsCode string
+type PostApiFirewallsUuidQosRefresh409ErrorsCtxType string
+type PostApiFirewallsUuidQosRefresh409ErrorsMessage string
+type PostApiFirewallsUuidQosRefresh409Success bool
+
+// Status returns HTTPResponse.Status
+func (r PostApiFirewallsUuidQosRefreshResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiFirewallsUuidQosRefreshResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiFirewallsUuidRoutingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsRoutingRouting
+	JSON404      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiFirewallsUuidRoutingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiFirewallsUuidRoutingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiFirewallsUuidRoutingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsRoutingRouting
+	JSON403      *DefinitionsCommonErrorResponse
+	JSON404      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiFirewallsUuidRoutingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiFirewallsUuidRoutingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiFirewallsUuidRoutingLocalResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result *struct {
+			IsReadOnly *bool                                 `json:"isReadOnly,omitempty"`
+			Objects    *[]DefinitionsObjectsObjectProperties `json:"objects,omitempty"`
+			Routes     *[]DefinitionsRoutingRouteInfo        `json:"routes,omitempty"`
+		} `json:"result,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiFirewallsUuidRoutingLocalResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiFirewallsUuidRoutingLocalResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -11968,6 +19695,1236 @@ func (r GetApiMessageBoxesResponse) StatusCode() int {
 	return 0
 }
 
+type GetApiNetworkInterfacesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsNetworkInterfacesNetworkInterfacesListResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiNetworkInterfacesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNetworkInterfacesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiNetworkInterfacesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		union json.RawMessage
+	}
+	JSON409 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiNetworkInterfacesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiNetworkInterfacesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiNetworkInterfacesBulkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *[]DeleteApiNetworkInterfacesBulk_200_Result_Item `json:"result,omitempty"`
+		Success *bool                                             `json:"success,omitempty"`
+	}
+}
+type DeleteApiNetworkInterfacesBulk_200_Result_Item struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiNetworkInterfacesBulkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiNetworkInterfacesBulkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNetworkInterfacesRootResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsNetworkInterfacesNetworkInterfacesTree
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiNetworkInterfacesRootResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNetworkInterfacesRootResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiNetworkInterfacesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result  *DeleteApiNetworkInterfacesUuid_200_Result `json:"result,omitempty"`
+		Success *bool                                      `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+type DeleteApiNetworkInterfacesUuid_200_Result struct {
+	union json.RawMessage
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiNetworkInterfacesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiNetworkInterfacesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNetworkInterfacesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		union json.RawMessage
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiNetworkInterfacesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNetworkInterfacesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiNetworkInterfacesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		union json.RawMessage
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON409 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiNetworkInterfacesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiNetworkInterfacesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiNetworkInterfacesUuidMembersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// MembersAdded list of the members uuid added to the parent interface
+		MembersAdded *[]string `json:"membersAdded,omitempty"`
+
+		// MembersRemoved list of the members uuid removed from the parent interface
+		MembersRemoved *[]string `json:"membersRemoved,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiNetworkInterfacesUuidMembersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiNetworkInterfacesUuidMembersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNsrpcArchiveResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiNsrpcArchiveResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNsrpcArchiveResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNsrpcArchiveFwidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiNsrpcArchiveFwidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNsrpcArchiveFwidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNsrpcAttachResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsNsrpcNsrpcAttachmentResponse
+	JSON400      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiNsrpcAttachResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNsrpcAttachResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiNsrpcAttachResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsNsrpcNsrpcResponse
+	JSON423      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiNsrpcAttachResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiNsrpcAttachResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiNsrpcCsvDryRunScriptnameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result *[]struct {
+			// Content Nsrpc script content with CSV data applied for this firewall
+			Content *string `json:"content,omitempty"`
+
+			// Fwid Firewall's UUID
+			Fwid *string `json:"fwid,omitempty"`
+
+			// Fwname Firewall's name
+			Fwname *string `json:"fwname,omitempty"`
+		} `json:"result,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON423 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiNsrpcCsvDryRunScriptnameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiNsrpcCsvDryRunScriptnameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiNsrpcCsvScriptnameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON423 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiNsrpcCsvScriptnameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiNsrpcCsvScriptnameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiNsrpcDryRunScriptnameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result *[]struct {
+			// Content Nsrpc script content with CSV data applied for this firewall
+			Content *string `json:"content,omitempty"`
+
+			// Fwid Firewall\'s UUID
+			Fwid *string `json:"fwid,omitempty"`
+
+			// Fwname Firewall\'s name
+			Fwname *string `json:"fwname,omitempty"`
+		} `json:"result,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiNsrpcDryRunScriptnameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiNsrpcDryRunScriptnameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiNsrpcExecuteScriptnameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *PostApiNsrpcExecuteScriptname200Success `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+type PostApiNsrpcExecuteScriptname200Success bool
+
+// Status returns HTTPResponse.Status
+func (r PostApiNsrpcExecuteScriptnameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiNsrpcExecuteScriptnameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNsrpcLogFwidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result *struct {
+			// Content NSRPC execution's logs
+			Content *string `json:"content,omitempty"`
+		} `json:"result,omitempty"`
+		Success *GetApiNsrpcLogFwid200Success `json:"success,omitempty"`
+	}
+}
+type GetApiNsrpcLogFwid200Success bool
+
+// Status returns HTTPResponse.Status
+func (r GetApiNsrpcLogFwidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNsrpcLogFwidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNsrpcPendingResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result *struct {
+			// Schedule (optional) The scheduled date
+			Schedule *string `json:"schedule,omitempty"`
+
+			// Script script's name
+			Script *string `json:"script,omitempty"`
+
+			// Target Firewalls UUIDs on which a script is pending
+			Target *[]string `json:"target,omitempty"`
+
+			// User the login of the user who scheduled the script
+			User *string `json:"user,omitempty"`
+		} `json:"result,omitempty"`
+		Success *GetApiNsrpcPending200Success `json:"success,omitempty"`
+	}
+}
+type GetApiNsrpcPending200Success bool
+
+// Status returns HTTPResponse.Status
+func (r GetApiNsrpcPendingResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNsrpcPendingResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiNsrpcPendingCancelResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *PostApiNsrpcPendingCancel200Success `json:"success,omitempty"`
+	}
+}
+type PostApiNsrpcPendingCancel200Success bool
+
+// Status returns HTTPResponse.Status
+func (r PostApiNsrpcPendingCancelResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiNsrpcPendingCancelResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNsrpcProgressResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsNsrpcNsrpcStateExecutionResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiNsrpcProgressResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNsrpcProgressResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiNsrpcScheduleScriptnameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *PutApiNsrpcScheduleScriptname200Success `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+type PutApiNsrpcScheduleScriptname200Success bool
+
+// Status returns HTTPResponse.Status
+func (r PutApiNsrpcScheduleScriptnameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiNsrpcScheduleScriptnameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNsrpcScriptResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsNsrpcNsrpcListResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiNsrpcScriptResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNsrpcScriptResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiNsrpcScriptScriptnameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsNsrpcNsrpcDeleteResponse
+	JSON404      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiNsrpcScriptScriptnameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiNsrpcScriptScriptnameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNsrpcScriptScriptnameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result *struct {
+			// Content The nsrpcScript content
+			Content *string `json:"content,omitempty"`
+		} `json:"result,omitempty"`
+		Success *GetApiNsrpcScriptScriptname200Success `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+}
+type GetApiNsrpcScriptScriptname200Success bool
+
+// Status returns HTTPResponse.Status
+func (r GetApiNsrpcScriptScriptnameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNsrpcScriptScriptnameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiNsrpcScriptScriptnameResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsNsrpcNsrpcResponse
+	JSON400      *DefinitionsCommonErrorResponse
+	JSON409      *DefinitionsCommonErrorResponse
+	JSON423      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiNsrpcScriptScriptnameResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiNsrpcScriptScriptnameResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiNsrpcScriptScriptnameFwidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsNsrpcNsrpcScriptContentResponse
+	JSON400      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiNsrpcScriptScriptnameFwidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiNsrpcScriptScriptnameFwidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiNsrpcUsebackupscriptResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsNsrpcNsrpcResponse
+	JSON400      *DefinitionsCommonErrorResponse
+	JSON409      *DefinitionsCommonErrorResponse
+	JSON423      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiNsrpcUsebackupscriptResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiNsrpcUsebackupscriptResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiQosIfacesAssignationsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsIfacesAssignationsMultipleIfacesAssignationsResponse
+	JSON401      *struct {
+		Success bool `json:"success"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiQosIfacesAssignationsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiQosIfacesAssignationsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiQosIfacesAssignationsResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DefinitionsIfacesAssignationsSingleIfaceAssignationResponse
+	JSON400      *struct {
+		Errors []struct {
+			Code    string  `json:"code"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors"`
+		Success bool `json:"success"`
+	}
+	JSON401 *struct {
+		Success bool `json:"success"`
+	}
+	JSON403 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON409 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiQosIfacesAssignationsResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiQosIfacesAssignationsResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiQosIfacesAssignationsBulkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON401 *struct {
+		Success bool `json:"success"`
+	}
+	JSON403 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiQosIfacesAssignationsBulkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiQosIfacesAssignationsBulkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiQosIfacesAssignationsUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *struct {
+		Success bool `json:"success"`
+	}
+	JSON403 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiQosIfacesAssignationsUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiQosIfacesAssignationsUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiQosIfacesAssignationsUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsIfacesAssignationsSingleIfaceAssignationResponse
+	JSON401      *struct {
+		Success bool `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiQosIfacesAssignationsUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiQosIfacesAssignationsUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiQosIfacesAssignationsUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsIfacesAssignationsSingleIfaceAssignationResponse
+	JSON400      *struct {
+		Errors []struct {
+			Code    string  `json:"code"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors"`
+		Success bool `json:"success"`
+	}
+	JSON401 *struct {
+		Success bool `json:"success"`
+	}
+	JSON403 *DefinitionsCommonErrorResponse
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiQosIfacesAssignationsUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiQosIfacesAssignationsUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiQosQueuesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsQueueMultipleQueuesResponse
+	JSON401      *struct {
+		Success bool `json:"success"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiQosQueuesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiQosQueuesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiQosQueuesResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DefinitionsQueueSingleQueueResponse
+	JSON400      *struct {
+		Errors []struct {
+			Code    string  `json:"code"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors"`
+		Success bool `json:"success"`
+	}
+	JSON401 *struct {
+		Success bool `json:"success"`
+	}
+	JSON409 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiQosQueuesResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiQosQueuesResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiQosQueuesBulkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON401 *struct {
+		Success bool `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiQosQueuesBulkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiQosQueuesBulkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiQosQueuesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *struct {
+		Success bool `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiQosQueuesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiQosQueuesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiQosQueuesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsQueueSingleQueueResponse
+	JSON401      *struct {
+		Success bool `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiQosQueuesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiQosQueuesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiQosQueuesUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsQueueSingleQueueResponse
+	JSON400      *struct {
+		Errors []struct {
+			Code    string  `json:"code"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors"`
+		Success bool `json:"success"`
+	}
+	JSON401 *struct {
+		Success bool `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON409 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiQosQueuesUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiQosQueuesUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiQosTrafficShapersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsTrafficShaperMultipleTrafficShapersResponse
+	JSON401      *struct {
+		Success bool `json:"success"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiQosTrafficShapersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiQosTrafficShapersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiQosTrafficShapersResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON201      *DefinitionsTrafficShaperSingleTrafficShaperResponse
+	JSON400      *struct {
+		Errors []struct {
+			Code    string  `json:"code"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors"`
+		Success bool `json:"success"`
+	}
+	JSON401 *struct {
+		Success bool `json:"success"`
+	}
+	JSON409 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiQosTrafficShapersResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiQosTrafficShapersResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiQosTrafficShapersBulkResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *bool `json:"success,omitempty"`
+	}
+	JSON401 *struct {
+		Success bool `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiQosTrafficShapersBulkResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiQosTrafficShapersBulkResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiQosTrafficShapersUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON401      *struct {
+		Success bool `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiQosTrafficShapersUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiQosTrafficShapersUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiQosTrafficShapersUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsTrafficShaperSingleTrafficShaperResponse
+	JSON401      *struct {
+		Success bool `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiQosTrafficShapersUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiQosTrafficShapersUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiQosTrafficShapersUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsTrafficShaperSingleTrafficShaperResponse
+	JSON400      *struct {
+		Errors []struct {
+			Code    string  `json:"code"`
+			Message *string `json:"message,omitempty"`
+		} `json:"errors"`
+		Success bool `json:"success"`
+	}
+	JSON401 *struct {
+		Success bool `json:"success"`
+	}
+	JSON404 *DefinitionsCommonErrorResponse
+	JSON409 *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiQosTrafficShapersUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiQosTrafficShapersUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetApiRadiusResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -12012,6 +20969,139 @@ func (r PostApiRadiusResponse) StatusCode() int {
 	return 0
 }
 
+type PostApiRoutingGetbirdconfigerrorResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		// Error present only if success = false
+		Error   *string `json:"error,omitempty"`
+		Success *bool   `json:"success,omitempty"`
+	}
+}
+
+// Status returns HTTPResponse.Status
+func (r PostApiRoutingGetbirdconfigerrorResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiRoutingGetbirdconfigerrorResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiRoutingImportResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Result *struct {
+			ImportSummary *struct {
+				// Routes number of routes created
+				Routes *float32 `json:"routes,omitempty"`
+			} `json:"importSummary,omitempty"`
+			Logs *[]struct {
+				// Level log level
+				Level *PostApiRoutingImport200ResultLogsLevel `json:"level,omitempty"`
+
+				// Message log message
+				Message *string `json:"message,omitempty"`
+			} `json:"logs,omitempty"`
+		} `json:"result,omitempty"`
+		Success *bool `json:"success,omitempty"`
+	}
+}
+type PostApiRoutingImport200ResultLogsLevel string
+
+// Status returns HTTPResponse.Status
+func (r PostApiRoutingImportResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiRoutingImportResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type DeleteApiRoutingUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsRoutingRouting
+	JSON403      *DefinitionsCommonErrorResponse
+	JSON404      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r DeleteApiRoutingUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r DeleteApiRoutingUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiRoutingUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsRoutingRouteInfo
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiRoutingUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiRoutingUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PutApiRoutingUuidResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsRoutingRouteInfo
+	JSON400      *DefinitionsCommonErrorResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r PutApiRoutingUuidResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PutApiRoutingUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
 type GetApiSnsdiffDiffUuidResponse struct {
 	Body         []byte
 	HTTPResponse *http.Response
@@ -12029,6 +21119,56 @@ func (r GetApiSnsdiffDiffUuidResponse) Status() string {
 
 // StatusCode returns HTTPResponse.StatusCode
 func (r GetApiSnsdiffDiffUuidResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type GetApiUnifiedconfigDeployResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *DefinitionsDeployDeploymentMonitoringResponse
+}
+
+// Status returns HTTPResponse.Status
+func (r GetApiUnifiedconfigDeployResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r GetApiUnifiedconfigDeployResponse) StatusCode() int {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.StatusCode
+	}
+	return 0
+}
+
+type PostApiUnifiedconfigDeployResponse struct {
+	Body         []byte
+	HTTPResponse *http.Response
+	JSON200      *struct {
+		Success *PostApiUnifiedconfigDeploy200Success `json:"success,omitempty"`
+	}
+	JSON400 *DefinitionsCommonErrorResponse
+	JSON423 *DefinitionsCommonErrorResponse
+	JSON500 *DefinitionsCommonErrorResponse
+}
+type PostApiUnifiedconfigDeploy200Success bool
+
+// Status returns HTTPResponse.Status
+func (r PostApiUnifiedconfigDeployResponse) Status() string {
+	if r.HTTPResponse != nil {
+		return r.HTTPResponse.Status
+	}
+	return http.StatusText(0)
+}
+
+// StatusCode returns HTTPResponse.StatusCode
+func (r PostApiUnifiedconfigDeployResponse) StatusCode() int {
 	if r.HTTPResponse != nil {
 		return r.HTTPResponse.StatusCode
 	}
@@ -13351,6 +22491,84 @@ func (c *ClientWithResponses) GetApiCfgdiffStatusWithResponse(ctx context.Contex
 	return ParseGetApiCfgdiffStatusResponse(rsp)
 }
 
+// GetApiConfigDrWithResponse request returning *GetApiConfigDrResponse
+func (c *ClientWithResponses) GetApiConfigDrWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigDrResponse, error) {
+	rsp, err := c.GetApiConfigDr(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiConfigDrResponse(rsp)
+}
+
+// PostApiConfigDrWithBodyWithResponse request with arbitrary body returning *PostApiConfigDrResponse
+func (c *ClientWithResponses) PostApiConfigDrWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiConfigDrResponse, error) {
+	rsp, err := c.PostApiConfigDrWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiConfigDrResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiConfigDrWithResponse(ctx context.Context, body PostApiConfigDrJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiConfigDrResponse, error) {
+	rsp, err := c.PostApiConfigDr(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiConfigDrResponse(rsp)
+}
+
+// GetApiConfigInitialWithResponse request returning *GetApiConfigInitialResponse
+func (c *ClientWithResponses) GetApiConfigInitialWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigInitialResponse, error) {
+	rsp, err := c.GetApiConfigInitial(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiConfigInitialResponse(rsp)
+}
+
+// PostApiConfigInitialWithBodyWithResponse request with arbitrary body returning *PostApiConfigInitialResponse
+func (c *ClientWithResponses) PostApiConfigInitialWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiConfigInitialResponse, error) {
+	rsp, err := c.PostApiConfigInitialWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiConfigInitialResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiConfigInitialWithResponse(ctx context.Context, body PostApiConfigInitialJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiConfigInitialResponse, error) {
+	rsp, err := c.PostApiConfigInitial(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiConfigInitialResponse(rsp)
+}
+
+// PostApiConfigInitialCloudCloudNameWithBodyWithResponse request with arbitrary body returning *PostApiConfigInitialCloudCloudNameResponse
+func (c *ClientWithResponses) PostApiConfigInitialCloudCloudNameWithBodyWithResponse(ctx context.Context, cloudName string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiConfigInitialCloudCloudNameResponse, error) {
+	rsp, err := c.PostApiConfigInitialCloudCloudNameWithBody(ctx, cloudName, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiConfigInitialCloudCloudNameResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiConfigInitialCloudCloudNameWithResponse(ctx context.Context, cloudName string, body PostApiConfigInitialCloudCloudNameJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiConfigInitialCloudCloudNameResponse, error) {
+	rsp, err := c.PostApiConfigInitialCloudCloudName(ctx, cloudName, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiConfigInitialCloudCloudNameResponse(rsp)
+}
+
+// GetApiConfigInitializedWithResponse request returning *GetApiConfigInitializedResponse
+func (c *ClientWithResponses) GetApiConfigInitializedWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigInitializedResponse, error) {
+	rsp, err := c.GetApiConfigInitialized(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiConfigInitializedResponse(rsp)
+}
+
 // GetApiConfigInterfacesWithResponse request returning *GetApiConfigInterfacesResponse
 func (c *ClientWithResponses) GetApiConfigInterfacesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigInterfacesResponse, error) {
 	rsp, err := c.GetApiConfigInterfaces(ctx, reqEditors...)
@@ -13430,6 +22648,84 @@ func (c *ClientWithResponses) PostApiConfigNetworkWithResponse(ctx context.Conte
 	return ParsePostApiConfigNetworkResponse(rsp)
 }
 
+// GetApiConfigPapiWithResponse request returning *GetApiConfigPapiResponse
+func (c *ClientWithResponses) GetApiConfigPapiWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigPapiResponse, error) {
+	rsp, err := c.GetApiConfigPapi(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiConfigPapiResponse(rsp)
+}
+
+// PutApiConfigPapiWithBodyWithResponse request with arbitrary body returning *PutApiConfigPapiResponse
+func (c *ClientWithResponses) PutApiConfigPapiWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiConfigPapiResponse, error) {
+	rsp, err := c.PutApiConfigPapiWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiConfigPapiResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiConfigPapiWithResponse(ctx context.Context, body PutApiConfigPapiJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiConfigPapiResponse, error) {
+	rsp, err := c.PutApiConfigPapi(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiConfigPapiResponse(rsp)
+}
+
+// GetApiConfigSlsWithResponse request returning *GetApiConfigSlsResponse
+func (c *ClientWithResponses) GetApiConfigSlsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigSlsResponse, error) {
+	rsp, err := c.GetApiConfigSls(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiConfigSlsResponse(rsp)
+}
+
+// PutApiConfigSlsWithBodyWithResponse request with arbitrary body returning *PutApiConfigSlsResponse
+func (c *ClientWithResponses) PutApiConfigSlsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiConfigSlsResponse, error) {
+	rsp, err := c.PutApiConfigSlsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiConfigSlsResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiConfigSlsWithResponse(ctx context.Context, body PutApiConfigSlsJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiConfigSlsResponse, error) {
+	rsp, err := c.PutApiConfigSls(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiConfigSlsResponse(rsp)
+}
+
+// GetApiConfigVpncrlrequiredWithResponse request returning *GetApiConfigVpncrlrequiredResponse
+func (c *ClientWithResponses) GetApiConfigVpncrlrequiredWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiConfigVpncrlrequiredResponse, error) {
+	rsp, err := c.GetApiConfigVpncrlrequired(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiConfigVpncrlrequiredResponse(rsp)
+}
+
+// PutApiConfigVpncrlrequiredWithBodyWithResponse request with arbitrary body returning *PutApiConfigVpncrlrequiredResponse
+func (c *ClientWithResponses) PutApiConfigVpncrlrequiredWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiConfigVpncrlrequiredResponse, error) {
+	rsp, err := c.PutApiConfigVpncrlrequiredWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiConfigVpncrlrequiredResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiConfigVpncrlrequiredWithResponse(ctx context.Context, body PutApiConfigVpncrlrequiredJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiConfigVpncrlrequiredResponse, error) {
+	rsp, err := c.PutApiConfigVpncrlrequired(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiConfigVpncrlrequiredResponse(rsp)
+}
+
 // GetApiCustompropertiesWithResponse request returning *GetApiCustompropertiesResponse
 func (c *ClientWithResponses) GetApiCustompropertiesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiCustompropertiesResponse, error) {
 	rsp, err := c.GetApiCustomproperties(ctx, reqEditors...)
@@ -13489,6 +22785,51 @@ func (c *ClientWithResponses) PutApiCustompropertiesUuidWithResponse(ctx context
 		return nil, err
 	}
 	return ParsePutApiCustompropertiesUuidResponse(rsp)
+}
+
+// GetApiDefinitionsEthernetprotocolsWithResponse request returning *GetApiDefinitionsEthernetprotocolsResponse
+func (c *ClientWithResponses) GetApiDefinitionsEthernetprotocolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDefinitionsEthernetprotocolsResponse, error) {
+	rsp, err := c.GetApiDefinitionsEthernetprotocols(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiDefinitionsEthernetprotocolsResponse(rsp)
+}
+
+// GetApiDefinitionsIcmpcodesWithResponse request returning *GetApiDefinitionsIcmpcodesResponse
+func (c *ClientWithResponses) GetApiDefinitionsIcmpcodesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDefinitionsIcmpcodesResponse, error) {
+	rsp, err := c.GetApiDefinitionsIcmpcodes(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiDefinitionsIcmpcodesResponse(rsp)
+}
+
+// GetApiDefinitionsIpprotocolsWithResponse request returning *GetApiDefinitionsIpprotocolsResponse
+func (c *ClientWithResponses) GetApiDefinitionsIpprotocolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDefinitionsIpprotocolsResponse, error) {
+	rsp, err := c.GetApiDefinitionsIpprotocols(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiDefinitionsIpprotocolsResponse(rsp)
+}
+
+// GetApiDefinitionsProtocolsWithResponse request returning *GetApiDefinitionsProtocolsResponse
+func (c *ClientWithResponses) GetApiDefinitionsProtocolsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDefinitionsProtocolsResponse, error) {
+	rsp, err := c.GetApiDefinitionsProtocols(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiDefinitionsProtocolsResponse(rsp)
+}
+
+// GetApiDeploymentWarningsEditorsWithResponse request returning *GetApiDeploymentWarningsEditorsResponse
+func (c *ClientWithResponses) GetApiDeploymentWarningsEditorsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiDeploymentWarningsEditorsResponse, error) {
+	rsp, err := c.GetApiDeploymentWarningsEditors(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiDeploymentWarningsEditorsResponse(rsp)
 }
 
 // GetApiDisclaimerWithResponse request returning *GetApiDisclaimerResponse
@@ -13562,6 +22903,15 @@ func (c *ClientWithResponses) GetApiFeatureTogglingWithResponse(ctx context.Cont
 	return ParseGetApiFeatureTogglingResponse(rsp)
 }
 
+// PostApiFirewallsUuidNetworkRefreshWithResponse request returning *PostApiFirewallsUuidNetworkRefreshResponse
+func (c *ClientWithResponses) PostApiFirewallsUuidNetworkRefreshWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidNetworkRefreshResponse, error) {
+	rsp, err := c.PostApiFirewallsUuidNetworkRefresh(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiFirewallsUuidNetworkRefreshResponse(rsp)
+}
+
 // PostApiFirewallsUuidPackageWithBodyWithResponse request with arbitrary body returning *PostApiFirewallsUuidPackageResponse
 func (c *ClientWithResponses) PostApiFirewallsUuidPackageWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidPackageResponse, error) {
 	rsp, err := c.PostApiFirewallsUuidPackageWithBody(ctx, uuid, contentType, body, reqEditors...)
@@ -13577,6 +22927,50 @@ func (c *ClientWithResponses) PostApiFirewallsUuidPackageWithResponse(ctx contex
 		return nil, err
 	}
 	return ParsePostApiFirewallsUuidPackageResponse(rsp)
+}
+
+// PostApiFirewallsUuidQosRefreshWithResponse request returning *PostApiFirewallsUuidQosRefreshResponse
+func (c *ClientWithResponses) PostApiFirewallsUuidQosRefreshWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidQosRefreshResponse, error) {
+	rsp, err := c.PostApiFirewallsUuidQosRefresh(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiFirewallsUuidQosRefreshResponse(rsp)
+}
+
+// GetApiFirewallsUuidRoutingWithResponse request returning *GetApiFirewallsUuidRoutingResponse
+func (c *ClientWithResponses) GetApiFirewallsUuidRoutingWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiFirewallsUuidRoutingResponse, error) {
+	rsp, err := c.GetApiFirewallsUuidRouting(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiFirewallsUuidRoutingResponse(rsp)
+}
+
+// PostApiFirewallsUuidRoutingWithBodyWithResponse request with arbitrary body returning *PostApiFirewallsUuidRoutingResponse
+func (c *ClientWithResponses) PostApiFirewallsUuidRoutingWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidRoutingResponse, error) {
+	rsp, err := c.PostApiFirewallsUuidRoutingWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiFirewallsUuidRoutingResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiFirewallsUuidRoutingWithResponse(ctx context.Context, uuid string, body PostApiFirewallsUuidRoutingJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiFirewallsUuidRoutingResponse, error) {
+	rsp, err := c.PostApiFirewallsUuidRouting(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiFirewallsUuidRoutingResponse(rsp)
+}
+
+// GetApiFirewallsUuidRoutingLocalWithResponse request returning *GetApiFirewallsUuidRoutingLocalResponse
+func (c *ClientWithResponses) GetApiFirewallsUuidRoutingLocalWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiFirewallsUuidRoutingLocalResponse, error) {
+	rsp, err := c.GetApiFirewallsUuidRoutingLocal(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiFirewallsUuidRoutingLocalResponse(rsp)
 }
 
 // GetApiFirewallsUuidTopologiesWithResponse request returning *GetApiFirewallsUuidTopologiesResponse
@@ -13721,6 +23115,547 @@ func (c *ClientWithResponses) GetApiMessageBoxesWithResponse(ctx context.Context
 	return ParseGetApiMessageBoxesResponse(rsp)
 }
 
+// GetApiNetworkInterfacesWithResponse request returning *GetApiNetworkInterfacesResponse
+func (c *ClientWithResponses) GetApiNetworkInterfacesWithResponse(ctx context.Context, params *GetApiNetworkInterfacesParams, reqEditors ...RequestEditorFn) (*GetApiNetworkInterfacesResponse, error) {
+	rsp, err := c.GetApiNetworkInterfaces(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNetworkInterfacesResponse(rsp)
+}
+
+// PostApiNetworkInterfacesWithBodyWithResponse request with arbitrary body returning *PostApiNetworkInterfacesResponse
+func (c *ClientWithResponses) PostApiNetworkInterfacesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNetworkInterfacesResponse, error) {
+	rsp, err := c.PostApiNetworkInterfacesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNetworkInterfacesResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiNetworkInterfacesWithResponse(ctx context.Context, body PostApiNetworkInterfacesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiNetworkInterfacesResponse, error) {
+	rsp, err := c.PostApiNetworkInterfaces(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNetworkInterfacesResponse(rsp)
+}
+
+// DeleteApiNetworkInterfacesBulkWithBodyWithResponse request with arbitrary body returning *DeleteApiNetworkInterfacesBulkResponse
+func (c *ClientWithResponses) DeleteApiNetworkInterfacesBulkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteApiNetworkInterfacesBulkResponse, error) {
+	rsp, err := c.DeleteApiNetworkInterfacesBulkWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiNetworkInterfacesBulkResponse(rsp)
+}
+
+func (c *ClientWithResponses) DeleteApiNetworkInterfacesBulkWithResponse(ctx context.Context, body DeleteApiNetworkInterfacesBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteApiNetworkInterfacesBulkResponse, error) {
+	rsp, err := c.DeleteApiNetworkInterfacesBulk(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiNetworkInterfacesBulkResponse(rsp)
+}
+
+// GetApiNetworkInterfacesRootWithResponse request returning *GetApiNetworkInterfacesRootResponse
+func (c *ClientWithResponses) GetApiNetworkInterfacesRootWithResponse(ctx context.Context, params *GetApiNetworkInterfacesRootParams, reqEditors ...RequestEditorFn) (*GetApiNetworkInterfacesRootResponse, error) {
+	rsp, err := c.GetApiNetworkInterfacesRoot(ctx, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNetworkInterfacesRootResponse(rsp)
+}
+
+// DeleteApiNetworkInterfacesUuidWithResponse request returning *DeleteApiNetworkInterfacesUuidResponse
+func (c *ClientWithResponses) DeleteApiNetworkInterfacesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiNetworkInterfacesUuidResponse, error) {
+	rsp, err := c.DeleteApiNetworkInterfacesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiNetworkInterfacesUuidResponse(rsp)
+}
+
+// GetApiNetworkInterfacesUuidWithResponse request returning *GetApiNetworkInterfacesUuidResponse
+func (c *ClientWithResponses) GetApiNetworkInterfacesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiNetworkInterfacesUuidResponse, error) {
+	rsp, err := c.GetApiNetworkInterfacesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNetworkInterfacesUuidResponse(rsp)
+}
+
+// PutApiNetworkInterfacesUuidWithBodyWithResponse request with arbitrary body returning *PutApiNetworkInterfacesUuidResponse
+func (c *ClientWithResponses) PutApiNetworkInterfacesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiNetworkInterfacesUuidResponse, error) {
+	rsp, err := c.PutApiNetworkInterfacesUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiNetworkInterfacesUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiNetworkInterfacesUuidWithResponse(ctx context.Context, uuid string, body PutApiNetworkInterfacesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiNetworkInterfacesUuidResponse, error) {
+	rsp, err := c.PutApiNetworkInterfacesUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiNetworkInterfacesUuidResponse(rsp)
+}
+
+// PutApiNetworkInterfacesUuidMembersWithBodyWithResponse request with arbitrary body returning *PutApiNetworkInterfacesUuidMembersResponse
+func (c *ClientWithResponses) PutApiNetworkInterfacesUuidMembersWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiNetworkInterfacesUuidMembersResponse, error) {
+	rsp, err := c.PutApiNetworkInterfacesUuidMembersWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiNetworkInterfacesUuidMembersResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiNetworkInterfacesUuidMembersWithResponse(ctx context.Context, uuid string, body PutApiNetworkInterfacesUuidMembersJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiNetworkInterfacesUuidMembersResponse, error) {
+	rsp, err := c.PutApiNetworkInterfacesUuidMembers(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiNetworkInterfacesUuidMembersResponse(rsp)
+}
+
+// GetApiNsrpcArchiveWithResponse request returning *GetApiNsrpcArchiveResponse
+func (c *ClientWithResponses) GetApiNsrpcArchiveWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiNsrpcArchiveResponse, error) {
+	rsp, err := c.GetApiNsrpcArchive(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNsrpcArchiveResponse(rsp)
+}
+
+// GetApiNsrpcArchiveFwidWithResponse request returning *GetApiNsrpcArchiveFwidResponse
+func (c *ClientWithResponses) GetApiNsrpcArchiveFwidWithResponse(ctx context.Context, fwid string, reqEditors ...RequestEditorFn) (*GetApiNsrpcArchiveFwidResponse, error) {
+	rsp, err := c.GetApiNsrpcArchiveFwid(ctx, fwid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNsrpcArchiveFwidResponse(rsp)
+}
+
+// GetApiNsrpcAttachWithResponse request returning *GetApiNsrpcAttachResponse
+func (c *ClientWithResponses) GetApiNsrpcAttachWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiNsrpcAttachResponse, error) {
+	rsp, err := c.GetApiNsrpcAttach(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNsrpcAttachResponse(rsp)
+}
+
+// PostApiNsrpcAttachWithBodyWithResponse request with arbitrary body returning *PostApiNsrpcAttachResponse
+func (c *ClientWithResponses) PostApiNsrpcAttachWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcAttachResponse, error) {
+	rsp, err := c.PostApiNsrpcAttachWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcAttachResponse(rsp)
+}
+
+// PostApiNsrpcCsvDryRunScriptnameWithBodyWithResponse request with arbitrary body returning *PostApiNsrpcCsvDryRunScriptnameResponse
+func (c *ClientWithResponses) PostApiNsrpcCsvDryRunScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcCsvDryRunScriptnameResponse, error) {
+	rsp, err := c.PostApiNsrpcCsvDryRunScriptnameWithBody(ctx, scriptname, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcCsvDryRunScriptnameResponse(rsp)
+}
+
+// PostApiNsrpcCsvScriptnameWithBodyWithResponse request with arbitrary body returning *PostApiNsrpcCsvScriptnameResponse
+func (c *ClientWithResponses) PostApiNsrpcCsvScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcCsvScriptnameResponse, error) {
+	rsp, err := c.PostApiNsrpcCsvScriptnameWithBody(ctx, scriptname, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcCsvScriptnameResponse(rsp)
+}
+
+// PostApiNsrpcDryRunScriptnameWithBodyWithResponse request with arbitrary body returning *PostApiNsrpcDryRunScriptnameResponse
+func (c *ClientWithResponses) PostApiNsrpcDryRunScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcDryRunScriptnameResponse, error) {
+	rsp, err := c.PostApiNsrpcDryRunScriptnameWithBody(ctx, scriptname, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcDryRunScriptnameResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiNsrpcDryRunScriptnameWithResponse(ctx context.Context, scriptname string, body PostApiNsrpcDryRunScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiNsrpcDryRunScriptnameResponse, error) {
+	rsp, err := c.PostApiNsrpcDryRunScriptname(ctx, scriptname, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcDryRunScriptnameResponse(rsp)
+}
+
+// PostApiNsrpcExecuteScriptnameWithBodyWithResponse request with arbitrary body returning *PostApiNsrpcExecuteScriptnameResponse
+func (c *ClientWithResponses) PostApiNsrpcExecuteScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcExecuteScriptnameResponse, error) {
+	rsp, err := c.PostApiNsrpcExecuteScriptnameWithBody(ctx, scriptname, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcExecuteScriptnameResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiNsrpcExecuteScriptnameWithResponse(ctx context.Context, scriptname string, body PostApiNsrpcExecuteScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiNsrpcExecuteScriptnameResponse, error) {
+	rsp, err := c.PostApiNsrpcExecuteScriptname(ctx, scriptname, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcExecuteScriptnameResponse(rsp)
+}
+
+// GetApiNsrpcLogFwidWithResponse request returning *GetApiNsrpcLogFwidResponse
+func (c *ClientWithResponses) GetApiNsrpcLogFwidWithResponse(ctx context.Context, fwid string, reqEditors ...RequestEditorFn) (*GetApiNsrpcLogFwidResponse, error) {
+	rsp, err := c.GetApiNsrpcLogFwid(ctx, fwid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNsrpcLogFwidResponse(rsp)
+}
+
+// GetApiNsrpcPendingWithResponse request returning *GetApiNsrpcPendingResponse
+func (c *ClientWithResponses) GetApiNsrpcPendingWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiNsrpcPendingResponse, error) {
+	rsp, err := c.GetApiNsrpcPending(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNsrpcPendingResponse(rsp)
+}
+
+// PostApiNsrpcPendingCancelWithResponse request returning *PostApiNsrpcPendingCancelResponse
+func (c *ClientWithResponses) PostApiNsrpcPendingCancelWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*PostApiNsrpcPendingCancelResponse, error) {
+	rsp, err := c.PostApiNsrpcPendingCancel(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcPendingCancelResponse(rsp)
+}
+
+// GetApiNsrpcProgressWithResponse request returning *GetApiNsrpcProgressResponse
+func (c *ClientWithResponses) GetApiNsrpcProgressWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiNsrpcProgressResponse, error) {
+	rsp, err := c.GetApiNsrpcProgress(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNsrpcProgressResponse(rsp)
+}
+
+// PutApiNsrpcScheduleScriptnameWithBodyWithResponse request with arbitrary body returning *PutApiNsrpcScheduleScriptnameResponse
+func (c *ClientWithResponses) PutApiNsrpcScheduleScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiNsrpcScheduleScriptnameResponse, error) {
+	rsp, err := c.PutApiNsrpcScheduleScriptnameWithBody(ctx, scriptname, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiNsrpcScheduleScriptnameResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiNsrpcScheduleScriptnameWithResponse(ctx context.Context, scriptname string, body PutApiNsrpcScheduleScriptnameJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiNsrpcScheduleScriptnameResponse, error) {
+	rsp, err := c.PutApiNsrpcScheduleScriptname(ctx, scriptname, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiNsrpcScheduleScriptnameResponse(rsp)
+}
+
+// GetApiNsrpcScriptWithResponse request returning *GetApiNsrpcScriptResponse
+func (c *ClientWithResponses) GetApiNsrpcScriptWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiNsrpcScriptResponse, error) {
+	rsp, err := c.GetApiNsrpcScript(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNsrpcScriptResponse(rsp)
+}
+
+// DeleteApiNsrpcScriptScriptnameWithResponse request returning *DeleteApiNsrpcScriptScriptnameResponse
+func (c *ClientWithResponses) DeleteApiNsrpcScriptScriptnameWithResponse(ctx context.Context, scriptname string, reqEditors ...RequestEditorFn) (*DeleteApiNsrpcScriptScriptnameResponse, error) {
+	rsp, err := c.DeleteApiNsrpcScriptScriptname(ctx, scriptname, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiNsrpcScriptScriptnameResponse(rsp)
+}
+
+// GetApiNsrpcScriptScriptnameWithResponse request returning *GetApiNsrpcScriptScriptnameResponse
+func (c *ClientWithResponses) GetApiNsrpcScriptScriptnameWithResponse(ctx context.Context, scriptname string, params *GetApiNsrpcScriptScriptnameParams, reqEditors ...RequestEditorFn) (*GetApiNsrpcScriptScriptnameResponse, error) {
+	rsp, err := c.GetApiNsrpcScriptScriptname(ctx, scriptname, params, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNsrpcScriptScriptnameResponse(rsp)
+}
+
+// PostApiNsrpcScriptScriptnameWithBodyWithResponse request with arbitrary body returning *PostApiNsrpcScriptScriptnameResponse
+func (c *ClientWithResponses) PostApiNsrpcScriptScriptnameWithBodyWithResponse(ctx context.Context, scriptname string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcScriptScriptnameResponse, error) {
+	rsp, err := c.PostApiNsrpcScriptScriptnameWithBody(ctx, scriptname, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcScriptScriptnameResponse(rsp)
+}
+
+// GetApiNsrpcScriptScriptnameFwidWithResponse request returning *GetApiNsrpcScriptScriptnameFwidResponse
+func (c *ClientWithResponses) GetApiNsrpcScriptScriptnameFwidWithResponse(ctx context.Context, scriptname string, fwid string, reqEditors ...RequestEditorFn) (*GetApiNsrpcScriptScriptnameFwidResponse, error) {
+	rsp, err := c.GetApiNsrpcScriptScriptnameFwid(ctx, scriptname, fwid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiNsrpcScriptScriptnameFwidResponse(rsp)
+}
+
+// PostApiNsrpcUsebackupscriptWithBodyWithResponse request with arbitrary body returning *PostApiNsrpcUsebackupscriptResponse
+func (c *ClientWithResponses) PostApiNsrpcUsebackupscriptWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiNsrpcUsebackupscriptResponse, error) {
+	rsp, err := c.PostApiNsrpcUsebackupscriptWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcUsebackupscriptResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiNsrpcUsebackupscriptWithResponse(ctx context.Context, body PostApiNsrpcUsebackupscriptJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiNsrpcUsebackupscriptResponse, error) {
+	rsp, err := c.PostApiNsrpcUsebackupscript(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiNsrpcUsebackupscriptResponse(rsp)
+}
+
+// GetApiQosIfacesAssignationsWithResponse request returning *GetApiQosIfacesAssignationsResponse
+func (c *ClientWithResponses) GetApiQosIfacesAssignationsWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiQosIfacesAssignationsResponse, error) {
+	rsp, err := c.GetApiQosIfacesAssignations(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiQosIfacesAssignationsResponse(rsp)
+}
+
+// PostApiQosIfacesAssignationsWithBodyWithResponse request with arbitrary body returning *PostApiQosIfacesAssignationsResponse
+func (c *ClientWithResponses) PostApiQosIfacesAssignationsWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiQosIfacesAssignationsResponse, error) {
+	rsp, err := c.PostApiQosIfacesAssignationsWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiQosIfacesAssignationsResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiQosIfacesAssignationsWithResponse(ctx context.Context, body PostApiQosIfacesAssignationsJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiQosIfacesAssignationsResponse, error) {
+	rsp, err := c.PostApiQosIfacesAssignations(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiQosIfacesAssignationsResponse(rsp)
+}
+
+// DeleteApiQosIfacesAssignationsBulkWithBodyWithResponse request with arbitrary body returning *DeleteApiQosIfacesAssignationsBulkResponse
+func (c *ClientWithResponses) DeleteApiQosIfacesAssignationsBulkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteApiQosIfacesAssignationsBulkResponse, error) {
+	rsp, err := c.DeleteApiQosIfacesAssignationsBulkWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiQosIfacesAssignationsBulkResponse(rsp)
+}
+
+func (c *ClientWithResponses) DeleteApiQosIfacesAssignationsBulkWithResponse(ctx context.Context, body DeleteApiQosIfacesAssignationsBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteApiQosIfacesAssignationsBulkResponse, error) {
+	rsp, err := c.DeleteApiQosIfacesAssignationsBulk(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiQosIfacesAssignationsBulkResponse(rsp)
+}
+
+// DeleteApiQosIfacesAssignationsUuidWithResponse request returning *DeleteApiQosIfacesAssignationsUuidResponse
+func (c *ClientWithResponses) DeleteApiQosIfacesAssignationsUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiQosIfacesAssignationsUuidResponse, error) {
+	rsp, err := c.DeleteApiQosIfacesAssignationsUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiQosIfacesAssignationsUuidResponse(rsp)
+}
+
+// GetApiQosIfacesAssignationsUuidWithResponse request returning *GetApiQosIfacesAssignationsUuidResponse
+func (c *ClientWithResponses) GetApiQosIfacesAssignationsUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiQosIfacesAssignationsUuidResponse, error) {
+	rsp, err := c.GetApiQosIfacesAssignationsUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiQosIfacesAssignationsUuidResponse(rsp)
+}
+
+// PutApiQosIfacesAssignationsUuidWithBodyWithResponse request with arbitrary body returning *PutApiQosIfacesAssignationsUuidResponse
+func (c *ClientWithResponses) PutApiQosIfacesAssignationsUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiQosIfacesAssignationsUuidResponse, error) {
+	rsp, err := c.PutApiQosIfacesAssignationsUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiQosIfacesAssignationsUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiQosIfacesAssignationsUuidWithResponse(ctx context.Context, uuid string, body PutApiQosIfacesAssignationsUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiQosIfacesAssignationsUuidResponse, error) {
+	rsp, err := c.PutApiQosIfacesAssignationsUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiQosIfacesAssignationsUuidResponse(rsp)
+}
+
+// GetApiQosQueuesWithResponse request returning *GetApiQosQueuesResponse
+func (c *ClientWithResponses) GetApiQosQueuesWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiQosQueuesResponse, error) {
+	rsp, err := c.GetApiQosQueues(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiQosQueuesResponse(rsp)
+}
+
+// PostApiQosQueuesWithBodyWithResponse request with arbitrary body returning *PostApiQosQueuesResponse
+func (c *ClientWithResponses) PostApiQosQueuesWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiQosQueuesResponse, error) {
+	rsp, err := c.PostApiQosQueuesWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiQosQueuesResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiQosQueuesWithResponse(ctx context.Context, body PostApiQosQueuesJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiQosQueuesResponse, error) {
+	rsp, err := c.PostApiQosQueues(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiQosQueuesResponse(rsp)
+}
+
+// DeleteApiQosQueuesBulkWithBodyWithResponse request with arbitrary body returning *DeleteApiQosQueuesBulkResponse
+func (c *ClientWithResponses) DeleteApiQosQueuesBulkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteApiQosQueuesBulkResponse, error) {
+	rsp, err := c.DeleteApiQosQueuesBulkWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiQosQueuesBulkResponse(rsp)
+}
+
+func (c *ClientWithResponses) DeleteApiQosQueuesBulkWithResponse(ctx context.Context, body DeleteApiQosQueuesBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteApiQosQueuesBulkResponse, error) {
+	rsp, err := c.DeleteApiQosQueuesBulk(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiQosQueuesBulkResponse(rsp)
+}
+
+// DeleteApiQosQueuesUuidWithResponse request returning *DeleteApiQosQueuesUuidResponse
+func (c *ClientWithResponses) DeleteApiQosQueuesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiQosQueuesUuidResponse, error) {
+	rsp, err := c.DeleteApiQosQueuesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiQosQueuesUuidResponse(rsp)
+}
+
+// GetApiQosQueuesUuidWithResponse request returning *GetApiQosQueuesUuidResponse
+func (c *ClientWithResponses) GetApiQosQueuesUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiQosQueuesUuidResponse, error) {
+	rsp, err := c.GetApiQosQueuesUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiQosQueuesUuidResponse(rsp)
+}
+
+// PutApiQosQueuesUuidWithBodyWithResponse request with arbitrary body returning *PutApiQosQueuesUuidResponse
+func (c *ClientWithResponses) PutApiQosQueuesUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiQosQueuesUuidResponse, error) {
+	rsp, err := c.PutApiQosQueuesUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiQosQueuesUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiQosQueuesUuidWithResponse(ctx context.Context, uuid string, body PutApiQosQueuesUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiQosQueuesUuidResponse, error) {
+	rsp, err := c.PutApiQosQueuesUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiQosQueuesUuidResponse(rsp)
+}
+
+// GetApiQosTrafficShapersWithResponse request returning *GetApiQosTrafficShapersResponse
+func (c *ClientWithResponses) GetApiQosTrafficShapersWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiQosTrafficShapersResponse, error) {
+	rsp, err := c.GetApiQosTrafficShapers(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiQosTrafficShapersResponse(rsp)
+}
+
+// PostApiQosTrafficShapersWithBodyWithResponse request with arbitrary body returning *PostApiQosTrafficShapersResponse
+func (c *ClientWithResponses) PostApiQosTrafficShapersWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiQosTrafficShapersResponse, error) {
+	rsp, err := c.PostApiQosTrafficShapersWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiQosTrafficShapersResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiQosTrafficShapersWithResponse(ctx context.Context, body PostApiQosTrafficShapersJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiQosTrafficShapersResponse, error) {
+	rsp, err := c.PostApiQosTrafficShapers(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiQosTrafficShapersResponse(rsp)
+}
+
+// DeleteApiQosTrafficShapersBulkWithBodyWithResponse request with arbitrary body returning *DeleteApiQosTrafficShapersBulkResponse
+func (c *ClientWithResponses) DeleteApiQosTrafficShapersBulkWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*DeleteApiQosTrafficShapersBulkResponse, error) {
+	rsp, err := c.DeleteApiQosTrafficShapersBulkWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiQosTrafficShapersBulkResponse(rsp)
+}
+
+func (c *ClientWithResponses) DeleteApiQosTrafficShapersBulkWithResponse(ctx context.Context, body DeleteApiQosTrafficShapersBulkJSONRequestBody, reqEditors ...RequestEditorFn) (*DeleteApiQosTrafficShapersBulkResponse, error) {
+	rsp, err := c.DeleteApiQosTrafficShapersBulk(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiQosTrafficShapersBulkResponse(rsp)
+}
+
+// DeleteApiQosTrafficShapersUuidWithResponse request returning *DeleteApiQosTrafficShapersUuidResponse
+func (c *ClientWithResponses) DeleteApiQosTrafficShapersUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiQosTrafficShapersUuidResponse, error) {
+	rsp, err := c.DeleteApiQosTrafficShapersUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiQosTrafficShapersUuidResponse(rsp)
+}
+
+// GetApiQosTrafficShapersUuidWithResponse request returning *GetApiQosTrafficShapersUuidResponse
+func (c *ClientWithResponses) GetApiQosTrafficShapersUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiQosTrafficShapersUuidResponse, error) {
+	rsp, err := c.GetApiQosTrafficShapersUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiQosTrafficShapersUuidResponse(rsp)
+}
+
+// PutApiQosTrafficShapersUuidWithBodyWithResponse request with arbitrary body returning *PutApiQosTrafficShapersUuidResponse
+func (c *ClientWithResponses) PutApiQosTrafficShapersUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiQosTrafficShapersUuidResponse, error) {
+	rsp, err := c.PutApiQosTrafficShapersUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiQosTrafficShapersUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiQosTrafficShapersUuidWithResponse(ctx context.Context, uuid string, body PutApiQosTrafficShapersUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiQosTrafficShapersUuidResponse, error) {
+	rsp, err := c.PutApiQosTrafficShapersUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiQosTrafficShapersUuidResponse(rsp)
+}
+
 // GetApiRadiusWithResponse request returning *GetApiRadiusResponse
 func (c *ClientWithResponses) GetApiRadiusWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiRadiusResponse, error) {
 	rsp, err := c.GetApiRadius(ctx, reqEditors...)
@@ -13747,6 +23682,67 @@ func (c *ClientWithResponses) PostApiRadiusWithResponse(ctx context.Context, bod
 	return ParsePostApiRadiusResponse(rsp)
 }
 
+// PostApiRoutingGetbirdconfigerrorWithBodyWithResponse request with arbitrary body returning *PostApiRoutingGetbirdconfigerrorResponse
+func (c *ClientWithResponses) PostApiRoutingGetbirdconfigerrorWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiRoutingGetbirdconfigerrorResponse, error) {
+	rsp, err := c.PostApiRoutingGetbirdconfigerrorWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiRoutingGetbirdconfigerrorResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiRoutingGetbirdconfigerrorWithResponse(ctx context.Context, body PostApiRoutingGetbirdconfigerrorJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiRoutingGetbirdconfigerrorResponse, error) {
+	rsp, err := c.PostApiRoutingGetbirdconfigerror(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiRoutingGetbirdconfigerrorResponse(rsp)
+}
+
+// PostApiRoutingImportWithBodyWithResponse request with arbitrary body returning *PostApiRoutingImportResponse
+func (c *ClientWithResponses) PostApiRoutingImportWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiRoutingImportResponse, error) {
+	rsp, err := c.PostApiRoutingImportWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiRoutingImportResponse(rsp)
+}
+
+// DeleteApiRoutingUuidWithResponse request returning *DeleteApiRoutingUuidResponse
+func (c *ClientWithResponses) DeleteApiRoutingUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*DeleteApiRoutingUuidResponse, error) {
+	rsp, err := c.DeleteApiRoutingUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseDeleteApiRoutingUuidResponse(rsp)
+}
+
+// GetApiRoutingUuidWithResponse request returning *GetApiRoutingUuidResponse
+func (c *ClientWithResponses) GetApiRoutingUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiRoutingUuidResponse, error) {
+	rsp, err := c.GetApiRoutingUuid(ctx, uuid, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiRoutingUuidResponse(rsp)
+}
+
+// PutApiRoutingUuidWithBodyWithResponse request with arbitrary body returning *PutApiRoutingUuidResponse
+func (c *ClientWithResponses) PutApiRoutingUuidWithBodyWithResponse(ctx context.Context, uuid string, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PutApiRoutingUuidResponse, error) {
+	rsp, err := c.PutApiRoutingUuidWithBody(ctx, uuid, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiRoutingUuidResponse(rsp)
+}
+
+func (c *ClientWithResponses) PutApiRoutingUuidWithResponse(ctx context.Context, uuid string, body PutApiRoutingUuidJSONRequestBody, reqEditors ...RequestEditorFn) (*PutApiRoutingUuidResponse, error) {
+	rsp, err := c.PutApiRoutingUuid(ctx, uuid, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePutApiRoutingUuidResponse(rsp)
+}
+
 // GetApiSnsdiffDiffUuidWithResponse request returning *GetApiSnsdiffDiffUuidResponse
 func (c *ClientWithResponses) GetApiSnsdiffDiffUuidWithResponse(ctx context.Context, uuid string, reqEditors ...RequestEditorFn) (*GetApiSnsdiffDiffUuidResponse, error) {
 	rsp, err := c.GetApiSnsdiffDiffUuid(ctx, uuid, reqEditors...)
@@ -13754,6 +23750,32 @@ func (c *ClientWithResponses) GetApiSnsdiffDiffUuidWithResponse(ctx context.Cont
 		return nil, err
 	}
 	return ParseGetApiSnsdiffDiffUuidResponse(rsp)
+}
+
+// GetApiUnifiedconfigDeployWithResponse request returning *GetApiUnifiedconfigDeployResponse
+func (c *ClientWithResponses) GetApiUnifiedconfigDeployWithResponse(ctx context.Context, reqEditors ...RequestEditorFn) (*GetApiUnifiedconfigDeployResponse, error) {
+	rsp, err := c.GetApiUnifiedconfigDeploy(ctx, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParseGetApiUnifiedconfigDeployResponse(rsp)
+}
+
+// PostApiUnifiedconfigDeployWithBodyWithResponse request with arbitrary body returning *PostApiUnifiedconfigDeployResponse
+func (c *ClientWithResponses) PostApiUnifiedconfigDeployWithBodyWithResponse(ctx context.Context, contentType string, body io.Reader, reqEditors ...RequestEditorFn) (*PostApiUnifiedconfigDeployResponse, error) {
+	rsp, err := c.PostApiUnifiedconfigDeployWithBody(ctx, contentType, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiUnifiedconfigDeployResponse(rsp)
+}
+
+func (c *ClientWithResponses) PostApiUnifiedconfigDeployWithResponse(ctx context.Context, body PostApiUnifiedconfigDeployJSONRequestBody, reqEditors ...RequestEditorFn) (*PostApiUnifiedconfigDeployResponse, error) {
+	rsp, err := c.PostApiUnifiedconfigDeploy(ctx, body, reqEditors...)
+	if err != nil {
+		return nil, err
+	}
+	return ParsePostApiUnifiedconfigDeployResponse(rsp)
 }
 
 // PostApiUpdateWithBodyWithResponse request with arbitrary body returning *PostApiUpdateResponse
@@ -16057,6 +26079,175 @@ func ParseGetApiCfgdiffStatusResponse(rsp *http.Response) (*GetApiCfgdiffStatusR
 	return response, nil
 }
 
+// ParseGetApiConfigDrResponse parses an HTTP response from a GetApiConfigDrWithResponse call
+func ParseGetApiConfigDrResponse(rsp *http.Response) (*GetApiConfigDrResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiConfigDrResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigDRActivation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiConfigDrResponse parses an HTTP response from a PostApiConfigDrWithResponse call
+func ParsePostApiConfigDrResponse(rsp *http.Response) (*PostApiConfigDrResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiConfigDrResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigDRActivation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiConfigInitialResponse parses an HTTP response from a GetApiConfigInitialWithResponse call
+func ParseGetApiConfigInitialResponse(rsp *http.Response) (*GetApiConfigInitialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiConfigInitialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigInitial
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiConfigInitialResponse parses an HTTP response from a PostApiConfigInitialWithResponse call
+func ParsePostApiConfigInitialResponse(rsp *http.Response) (*PostApiConfigInitialResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiConfigInitialResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiConfigInitialCloudCloudNameResponse parses an HTTP response from a PostApiConfigInitialCloudCloudNameWithResponse call
+func ParsePostApiConfigInitialCloudCloudNameResponse(rsp *http.Response) (*PostApiConfigInitialCloudCloudNameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiConfigInitialCloudCloudNameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiConfigInitializedResponse parses an HTTP response from a GetApiConfigInitializedWithResponse call
+func ParseGetApiConfigInitializedResponse(rsp *http.Response) (*GetApiConfigInitializedResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiConfigInitializedResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigInitializedState
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetApiConfigInterfacesResponse parses an HTTP response from a GetApiConfigInterfacesWithResponse call
 func ParseGetApiConfigInterfacesResponse(rsp *http.Response) (*GetApiConfigInterfacesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -16279,6 +26470,162 @@ func ParsePostApiConfigNetworkResponse(rsp *http.Response) (*PostApiConfigNetwor
 	return response, nil
 }
 
+// ParseGetApiConfigPapiResponse parses an HTTP response from a GetApiConfigPapiWithResponse call
+func ParseGetApiConfigPapiResponse(rsp *http.Response) (*GetApiConfigPapiResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiConfigPapiResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigPAPIActivation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiConfigPapiResponse parses an HTTP response from a PutApiConfigPapiWithResponse call
+func ParsePutApiConfigPapiResponse(rsp *http.Response) (*PutApiConfigPapiResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiConfigPapiResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigPAPIActivation
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiConfigSlsResponse parses an HTTP response from a GetApiConfigSlsWithResponse call
+func ParseGetApiConfigSlsResponse(rsp *http.Response) (*GetApiConfigSlsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiConfigSlsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigSls
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiConfigSlsResponse parses an HTTP response from a PutApiConfigSlsWithResponse call
+func ParsePutApiConfigSlsResponse(rsp *http.Response) (*PutApiConfigSlsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiConfigSlsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigSls
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiConfigVpncrlrequiredResponse parses an HTTP response from a GetApiConfigVpncrlrequiredWithResponse call
+func ParseGetApiConfigVpncrlrequiredResponse(rsp *http.Response) (*GetApiConfigVpncrlrequiredResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiConfigVpncrlrequiredResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigVpnCrlRequired
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiConfigVpncrlrequiredResponse parses an HTTP response from a PutApiConfigVpncrlrequiredWithResponse call
+func ParsePutApiConfigVpncrlrequiredResponse(rsp *http.Response) (*PutApiConfigVpncrlrequiredResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiConfigVpncrlrequiredResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsConfigVpnCrlRequired
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetApiCustompropertiesResponse parses an HTTP response from a GetApiCustompropertiesWithResponse call
 func ParseGetApiCustompropertiesResponse(rsp *http.Response) (*GetApiCustompropertiesResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -16454,6 +26801,172 @@ func ParsePutApiCustompropertiesUuidResponse(rsp *http.Response) (*PutApiCustomp
 			return nil, err
 		}
 		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiDefinitionsEthernetprotocolsResponse parses an HTTP response from a GetApiDefinitionsEthernetprotocolsWithResponse call
+func ParseGetApiDefinitionsEthernetprotocolsResponse(rsp *http.Response) (*GetApiDefinitionsEthernetprotocolsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiDefinitionsEthernetprotocolsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result *[]struct {
+				// Name ethernet protocol name
+				Name *string `json:"name,omitempty"`
+			} `json:"result,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiDefinitionsIcmpcodesResponse parses an HTTP response from a GetApiDefinitionsIcmpcodesWithResponse call
+func ParseGetApiDefinitionsIcmpcodesResponse(rsp *http.Response) (*GetApiDefinitionsIcmpcodesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiDefinitionsIcmpcodesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result *[]struct {
+				Data *struct {
+					// All available only for "all_icmp_codes" or "all_icmpv6_codes" messages
+					All *GetApiDefinitionsIcmpcodes200ResultDataAll `json:"all,omitempty"`
+
+					// Code icmp message code number
+					Code *float32 `json:"code,omitempty"`
+
+					// Type icmp message type number
+					Type *float32 `json:"type,omitempty"`
+				} `json:"data,omitempty"`
+				Name *string `json:"name,omitempty"`
+
+				// Type icmp version the code belongs to
+				Type *GetApiDefinitionsIcmpcodes200ResultType `json:"type,omitempty"`
+			} `json:"result,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiDefinitionsIpprotocolsResponse parses an HTTP response from a GetApiDefinitionsIpprotocolsWithResponse call
+func ParseGetApiDefinitionsIpprotocolsResponse(rsp *http.Response) (*GetApiDefinitionsIpprotocolsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiDefinitionsIpprotocolsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result *[]struct {
+				// Name ip protocol name
+				Name *string `json:"name,omitempty"`
+			} `json:"result,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiDefinitionsProtocolsResponse parses an HTTP response from a GetApiDefinitionsProtocolsWithResponse call
+func ParseGetApiDefinitionsProtocolsResponse(rsp *http.Response) (*GetApiDefinitionsProtocolsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiDefinitionsProtocolsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DefinitionsMiscProtocolList `json:"result,omitempty"`
+			Success *bool                        `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiDeploymentWarningsEditorsResponse parses an HTTP response from a GetApiDeploymentWarningsEditorsWithResponse call
+func ParseGetApiDeploymentWarningsEditorsResponse(rsp *http.Response) (*GetApiDeploymentWarningsEditorsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiDeploymentWarningsEditorsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *[]DefinitionsDeploymentWarningsConfigEditors `json:"result,omitempty"`
+			Success *bool                                         `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	}
 
@@ -16667,6 +27180,34 @@ func ParseGetApiFeatureTogglingResponse(rsp *http.Response) (*GetApiFeatureToggl
 	return response, nil
 }
 
+// ParsePostApiFirewallsUuidNetworkRefreshResponse parses an HTTP response from a PostApiFirewallsUuidNetworkRefreshWithResponse call
+func ParsePostApiFirewallsUuidNetworkRefreshResponse(rsp *http.Response) (*PostApiFirewallsUuidNetworkRefreshResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiFirewallsUuidNetworkRefreshResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParsePostApiFirewallsUuidPackageResponse parses an HTTP response from a PostApiFirewallsUuidPackageWithResponse call
 func ParsePostApiFirewallsUuidPackageResponse(rsp *http.Response) (*PostApiFirewallsUuidPackageResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -16705,6 +27246,158 @@ func ParsePostApiFirewallsUuidPackageResponse(rsp *http.Response) (*PostApiFirew
 			return nil, err
 		}
 		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiFirewallsUuidQosRefreshResponse parses an HTTP response from a PostApiFirewallsUuidQosRefreshWithResponse call
+func ParsePostApiFirewallsUuidQosRefreshResponse(rsp *http.Response) (*PostApiFirewallsUuidQosRefreshResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiFirewallsUuidQosRefreshResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest struct {
+			Errors []struct {
+				Code PostApiFirewallsUuidQosRefresh409ErrorsCode `json:"code"`
+				Ctx  []struct {
+					Name *string                                         `json:"name,omitempty"`
+					Type *PostApiFirewallsUuidQosRefresh409ErrorsCtxType `json:"type,omitempty"`
+					Uuid *string                                         `json:"uuid,omitempty"`
+				} `json:"ctx"`
+				Message PostApiFirewallsUuidQosRefresh409ErrorsMessage `json:"message"`
+			} `json:"errors"`
+			Success PostApiFirewallsUuidQosRefresh409Success `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiFirewallsUuidRoutingResponse parses an HTTP response from a GetApiFirewallsUuidRoutingWithResponse call
+func ParseGetApiFirewallsUuidRoutingResponse(rsp *http.Response) (*GetApiFirewallsUuidRoutingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiFirewallsUuidRoutingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsRoutingRouting
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiFirewallsUuidRoutingResponse parses an HTTP response from a PostApiFirewallsUuidRoutingWithResponse call
+func ParsePostApiFirewallsUuidRoutingResponse(rsp *http.Response) (*PostApiFirewallsUuidRoutingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiFirewallsUuidRoutingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsRoutingRouting
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiFirewallsUuidRoutingLocalResponse parses an HTTP response from a GetApiFirewallsUuidRoutingLocalWithResponse call
+func ParseGetApiFirewallsUuidRoutingLocalResponse(rsp *http.Response) (*GetApiFirewallsUuidRoutingLocalResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiFirewallsUuidRoutingLocalResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result *struct {
+				IsReadOnly *bool                                 `json:"isReadOnly,omitempty"`
+				Objects    *[]DefinitionsObjectsObjectProperties `json:"objects,omitempty"`
+				Routes     *[]DefinitionsRoutingRouteInfo        `json:"routes,omitempty"`
+			} `json:"result,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
 
 	}
 
@@ -17181,6 +27874,1842 @@ func ParseGetApiMessageBoxesResponse(rsp *http.Response) (*GetApiMessageBoxesRes
 	return response, nil
 }
 
+// ParseGetApiNetworkInterfacesResponse parses an HTTP response from a GetApiNetworkInterfacesWithResponse call
+func ParseGetApiNetworkInterfacesResponse(rsp *http.Response) (*GetApiNetworkInterfacesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNetworkInterfacesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsNetworkInterfacesNetworkInterfacesListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiNetworkInterfacesResponse parses an HTTP response from a PostApiNetworkInterfacesWithResponse call
+func ParsePostApiNetworkInterfacesResponse(rsp *http.Response) (*PostApiNetworkInterfacesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiNetworkInterfacesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			union json.RawMessage
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiNetworkInterfacesBulkResponse parses an HTTP response from a DeleteApiNetworkInterfacesBulkWithResponse call
+func ParseDeleteApiNetworkInterfacesBulkResponse(rsp *http.Response) (*DeleteApiNetworkInterfacesBulkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiNetworkInterfacesBulkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *[]DeleteApiNetworkInterfacesBulk_200_Result_Item `json:"result,omitempty"`
+			Success *bool                                             `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNetworkInterfacesRootResponse parses an HTTP response from a GetApiNetworkInterfacesRootWithResponse call
+func ParseGetApiNetworkInterfacesRootResponse(rsp *http.Response) (*GetApiNetworkInterfacesRootResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNetworkInterfacesRootResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsNetworkInterfacesNetworkInterfacesTree
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiNetworkInterfacesUuidResponse parses an HTTP response from a DeleteApiNetworkInterfacesUuidWithResponse call
+func ParseDeleteApiNetworkInterfacesUuidResponse(rsp *http.Response) (*DeleteApiNetworkInterfacesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiNetworkInterfacesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result  *DeleteApiNetworkInterfacesUuid_200_Result `json:"result,omitempty"`
+			Success *bool                                      `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNetworkInterfacesUuidResponse parses an HTTP response from a GetApiNetworkInterfacesUuidWithResponse call
+func ParseGetApiNetworkInterfacesUuidResponse(rsp *http.Response) (*GetApiNetworkInterfacesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNetworkInterfacesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			union json.RawMessage
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiNetworkInterfacesUuidResponse parses an HTTP response from a PutApiNetworkInterfacesUuidWithResponse call
+func ParsePutApiNetworkInterfacesUuidResponse(rsp *http.Response) (*PutApiNetworkInterfacesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiNetworkInterfacesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			union json.RawMessage
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiNetworkInterfacesUuidMembersResponse parses an HTTP response from a PutApiNetworkInterfacesUuidMembersWithResponse call
+func ParsePutApiNetworkInterfacesUuidMembersResponse(rsp *http.Response) (*PutApiNetworkInterfacesUuidMembersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiNetworkInterfacesUuidMembersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// MembersAdded list of the members uuid added to the parent interface
+			MembersAdded *[]string `json:"membersAdded,omitempty"`
+
+			// MembersRemoved list of the members uuid removed from the parent interface
+			MembersRemoved *[]string `json:"membersRemoved,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNsrpcArchiveResponse parses an HTTP response from a GetApiNsrpcArchiveWithResponse call
+func ParseGetApiNsrpcArchiveResponse(rsp *http.Response) (*GetApiNsrpcArchiveResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNsrpcArchiveResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNsrpcArchiveFwidResponse parses an HTTP response from a GetApiNsrpcArchiveFwidWithResponse call
+func ParseGetApiNsrpcArchiveFwidResponse(rsp *http.Response) (*GetApiNsrpcArchiveFwidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNsrpcArchiveFwidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNsrpcAttachResponse parses an HTTP response from a GetApiNsrpcAttachWithResponse call
+func ParseGetApiNsrpcAttachResponse(rsp *http.Response) (*GetApiNsrpcAttachResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNsrpcAttachResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsNsrpcNsrpcAttachmentResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiNsrpcAttachResponse parses an HTTP response from a PostApiNsrpcAttachWithResponse call
+func ParsePostApiNsrpcAttachResponse(rsp *http.Response) (*PostApiNsrpcAttachResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiNsrpcAttachResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsNsrpcNsrpcResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiNsrpcCsvDryRunScriptnameResponse parses an HTTP response from a PostApiNsrpcCsvDryRunScriptnameWithResponse call
+func ParsePostApiNsrpcCsvDryRunScriptnameResponse(rsp *http.Response) (*PostApiNsrpcCsvDryRunScriptnameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiNsrpcCsvDryRunScriptnameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result *[]struct {
+				// Content Nsrpc script content with CSV data applied for this firewall
+				Content *string `json:"content,omitempty"`
+
+				// Fwid Firewall's UUID
+				Fwid *string `json:"fwid,omitempty"`
+
+				// Fwname Firewall's name
+				Fwname *string `json:"fwname,omitempty"`
+			} `json:"result,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiNsrpcCsvScriptnameResponse parses an HTTP response from a PostApiNsrpcCsvScriptnameWithResponse call
+func ParsePostApiNsrpcCsvScriptnameResponse(rsp *http.Response) (*PostApiNsrpcCsvScriptnameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiNsrpcCsvScriptnameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiNsrpcDryRunScriptnameResponse parses an HTTP response from a PostApiNsrpcDryRunScriptnameWithResponse call
+func ParsePostApiNsrpcDryRunScriptnameResponse(rsp *http.Response) (*PostApiNsrpcDryRunScriptnameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiNsrpcDryRunScriptnameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result *[]struct {
+				// Content Nsrpc script content with CSV data applied for this firewall
+				Content *string `json:"content,omitempty"`
+
+				// Fwid Firewall\'s UUID
+				Fwid *string `json:"fwid,omitempty"`
+
+				// Fwname Firewall\'s name
+				Fwname *string `json:"fwname,omitempty"`
+			} `json:"result,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiNsrpcExecuteScriptnameResponse parses an HTTP response from a PostApiNsrpcExecuteScriptnameWithResponse call
+func ParsePostApiNsrpcExecuteScriptnameResponse(rsp *http.Response) (*PostApiNsrpcExecuteScriptnameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiNsrpcExecuteScriptnameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *PostApiNsrpcExecuteScriptname200Success `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNsrpcLogFwidResponse parses an HTTP response from a GetApiNsrpcLogFwidWithResponse call
+func ParseGetApiNsrpcLogFwidResponse(rsp *http.Response) (*GetApiNsrpcLogFwidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNsrpcLogFwidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result *struct {
+				// Content NSRPC execution's logs
+				Content *string `json:"content,omitempty"`
+			} `json:"result,omitempty"`
+			Success *GetApiNsrpcLogFwid200Success `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNsrpcPendingResponse parses an HTTP response from a GetApiNsrpcPendingWithResponse call
+func ParseGetApiNsrpcPendingResponse(rsp *http.Response) (*GetApiNsrpcPendingResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNsrpcPendingResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result *struct {
+				// Schedule (optional) The scheduled date
+				Schedule *string `json:"schedule,omitempty"`
+
+				// Script script's name
+				Script *string `json:"script,omitempty"`
+
+				// Target Firewalls UUIDs on which a script is pending
+				Target *[]string `json:"target,omitempty"`
+
+				// User the login of the user who scheduled the script
+				User *string `json:"user,omitempty"`
+			} `json:"result,omitempty"`
+			Success *GetApiNsrpcPending200Success `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiNsrpcPendingCancelResponse parses an HTTP response from a PostApiNsrpcPendingCancelWithResponse call
+func ParsePostApiNsrpcPendingCancelResponse(rsp *http.Response) (*PostApiNsrpcPendingCancelResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiNsrpcPendingCancelResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *PostApiNsrpcPendingCancel200Success `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNsrpcProgressResponse parses an HTTP response from a GetApiNsrpcProgressWithResponse call
+func ParseGetApiNsrpcProgressResponse(rsp *http.Response) (*GetApiNsrpcProgressResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNsrpcProgressResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsNsrpcNsrpcStateExecutionResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiNsrpcScheduleScriptnameResponse parses an HTTP response from a PutApiNsrpcScheduleScriptnameWithResponse call
+func ParsePutApiNsrpcScheduleScriptnameResponse(rsp *http.Response) (*PutApiNsrpcScheduleScriptnameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiNsrpcScheduleScriptnameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *PutApiNsrpcScheduleScriptname200Success `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNsrpcScriptResponse parses an HTTP response from a GetApiNsrpcScriptWithResponse call
+func ParseGetApiNsrpcScriptResponse(rsp *http.Response) (*GetApiNsrpcScriptResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNsrpcScriptResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsNsrpcNsrpcListResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiNsrpcScriptScriptnameResponse parses an HTTP response from a DeleteApiNsrpcScriptScriptnameWithResponse call
+func ParseDeleteApiNsrpcScriptScriptnameResponse(rsp *http.Response) (*DeleteApiNsrpcScriptScriptnameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiNsrpcScriptScriptnameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsNsrpcNsrpcDeleteResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNsrpcScriptScriptnameResponse parses an HTTP response from a GetApiNsrpcScriptScriptnameWithResponse call
+func ParseGetApiNsrpcScriptScriptnameResponse(rsp *http.Response) (*GetApiNsrpcScriptScriptnameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNsrpcScriptScriptnameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result *struct {
+				// Content The nsrpcScript content
+				Content *string `json:"content,omitempty"`
+			} `json:"result,omitempty"`
+			Success *GetApiNsrpcScriptScriptname200Success `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiNsrpcScriptScriptnameResponse parses an HTTP response from a PostApiNsrpcScriptScriptnameWithResponse call
+func ParsePostApiNsrpcScriptScriptnameResponse(rsp *http.Response) (*PostApiNsrpcScriptScriptnameResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiNsrpcScriptScriptnameResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsNsrpcNsrpcResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiNsrpcScriptScriptnameFwidResponse parses an HTTP response from a GetApiNsrpcScriptScriptnameFwidWithResponse call
+func ParseGetApiNsrpcScriptScriptnameFwidResponse(rsp *http.Response) (*GetApiNsrpcScriptScriptnameFwidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiNsrpcScriptScriptnameFwidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsNsrpcNsrpcScriptContentResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiNsrpcUsebackupscriptResponse parses an HTTP response from a PostApiNsrpcUsebackupscriptWithResponse call
+func ParsePostApiNsrpcUsebackupscriptResponse(rsp *http.Response) (*PostApiNsrpcUsebackupscriptResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiNsrpcUsebackupscriptResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsNsrpcNsrpcResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiQosIfacesAssignationsResponse parses an HTTP response from a GetApiQosIfacesAssignationsWithResponse call
+func ParseGetApiQosIfacesAssignationsResponse(rsp *http.Response) (*GetApiQosIfacesAssignationsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiQosIfacesAssignationsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsIfacesAssignationsMultipleIfacesAssignationsResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiQosIfacesAssignationsResponse parses an HTTP response from a PostApiQosIfacesAssignationsWithResponse call
+func ParsePostApiQosIfacesAssignationsResponse(rsp *http.Response) (*PostApiQosIfacesAssignationsResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiQosIfacesAssignationsResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DefinitionsIfacesAssignationsSingleIfaceAssignationResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Errors []struct {
+				Code    string  `json:"code"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors"`
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiQosIfacesAssignationsBulkResponse parses an HTTP response from a DeleteApiQosIfacesAssignationsBulkWithResponse call
+func ParseDeleteApiQosIfacesAssignationsBulkResponse(rsp *http.Response) (*DeleteApiQosIfacesAssignationsBulkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiQosIfacesAssignationsBulkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiQosIfacesAssignationsUuidResponse parses an HTTP response from a DeleteApiQosIfacesAssignationsUuidWithResponse call
+func ParseDeleteApiQosIfacesAssignationsUuidResponse(rsp *http.Response) (*DeleteApiQosIfacesAssignationsUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiQosIfacesAssignationsUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiQosIfacesAssignationsUuidResponse parses an HTTP response from a GetApiQosIfacesAssignationsUuidWithResponse call
+func ParseGetApiQosIfacesAssignationsUuidResponse(rsp *http.Response) (*GetApiQosIfacesAssignationsUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiQosIfacesAssignationsUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsIfacesAssignationsSingleIfaceAssignationResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiQosIfacesAssignationsUuidResponse parses an HTTP response from a PutApiQosIfacesAssignationsUuidWithResponse call
+func ParsePutApiQosIfacesAssignationsUuidResponse(rsp *http.Response) (*PutApiQosIfacesAssignationsUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiQosIfacesAssignationsUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsIfacesAssignationsSingleIfaceAssignationResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Errors []struct {
+				Code    string  `json:"code"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors"`
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiQosQueuesResponse parses an HTTP response from a GetApiQosQueuesWithResponse call
+func ParseGetApiQosQueuesResponse(rsp *http.Response) (*GetApiQosQueuesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiQosQueuesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsQueueMultipleQueuesResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiQosQueuesResponse parses an HTTP response from a PostApiQosQueuesWithResponse call
+func ParsePostApiQosQueuesResponse(rsp *http.Response) (*PostApiQosQueuesResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiQosQueuesResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DefinitionsQueueSingleQueueResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Errors []struct {
+				Code    string  `json:"code"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors"`
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiQosQueuesBulkResponse parses an HTTP response from a DeleteApiQosQueuesBulkWithResponse call
+func ParseDeleteApiQosQueuesBulkResponse(rsp *http.Response) (*DeleteApiQosQueuesBulkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiQosQueuesBulkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiQosQueuesUuidResponse parses an HTTP response from a DeleteApiQosQueuesUuidWithResponse call
+func ParseDeleteApiQosQueuesUuidResponse(rsp *http.Response) (*DeleteApiQosQueuesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiQosQueuesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiQosQueuesUuidResponse parses an HTTP response from a GetApiQosQueuesUuidWithResponse call
+func ParseGetApiQosQueuesUuidResponse(rsp *http.Response) (*GetApiQosQueuesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiQosQueuesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsQueueSingleQueueResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiQosQueuesUuidResponse parses an HTTP response from a PutApiQosQueuesUuidWithResponse call
+func ParsePutApiQosQueuesUuidResponse(rsp *http.Response) (*PutApiQosQueuesUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiQosQueuesUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsQueueSingleQueueResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Errors []struct {
+				Code    string  `json:"code"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors"`
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiQosTrafficShapersResponse parses an HTTP response from a GetApiQosTrafficShapersWithResponse call
+func ParseGetApiQosTrafficShapersResponse(rsp *http.Response) (*GetApiQosTrafficShapersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiQosTrafficShapersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsTrafficShaperMultipleTrafficShapersResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiQosTrafficShapersResponse parses an HTTP response from a PostApiQosTrafficShapersWithResponse call
+func ParsePostApiQosTrafficShapersResponse(rsp *http.Response) (*PostApiQosTrafficShapersResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiQosTrafficShapersResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 201:
+		var dest DefinitionsTrafficShaperSingleTrafficShaperResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON201 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Errors []struct {
+				Code    string  `json:"code"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors"`
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiQosTrafficShapersBulkResponse parses an HTTP response from a DeleteApiQosTrafficShapersBulkWithResponse call
+func ParseDeleteApiQosTrafficShapersBulkResponse(rsp *http.Response) (*DeleteApiQosTrafficShapersBulkResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiQosTrafficShapersBulkResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiQosTrafficShapersUuidResponse parses an HTTP response from a DeleteApiQosTrafficShapersUuidWithResponse call
+func ParseDeleteApiQosTrafficShapersUuidResponse(rsp *http.Response) (*DeleteApiQosTrafficShapersUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiQosTrafficShapersUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiQosTrafficShapersUuidResponse parses an HTTP response from a GetApiQosTrafficShapersUuidWithResponse call
+func ParseGetApiQosTrafficShapersUuidResponse(rsp *http.Response) (*GetApiQosTrafficShapersUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiQosTrafficShapersUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsTrafficShaperSingleTrafficShaperResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiQosTrafficShapersUuidResponse parses an HTTP response from a PutApiQosTrafficShapersUuidWithResponse call
+func ParsePutApiQosTrafficShapersUuidResponse(rsp *http.Response) (*PutApiQosTrafficShapersUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiQosTrafficShapersUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsTrafficShaperSingleTrafficShaperResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest struct {
+			Errors []struct {
+				Code    string  `json:"code"`
+				Message *string `json:"message,omitempty"`
+			} `json:"errors"`
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 401:
+		var dest struct {
+			Success bool `json:"success"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON401 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 409:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON409 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetApiRadiusResponse parses an HTTP response from a GetApiRadiusWithResponse call
 func ParseGetApiRadiusResponse(rsp *http.Response) (*GetApiRadiusResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -17233,6 +29762,176 @@ func ParsePostApiRadiusResponse(rsp *http.Response) (*PostApiRadiusResponse, err
 	return response, nil
 }
 
+// ParsePostApiRoutingGetbirdconfigerrorResponse parses an HTTP response from a PostApiRoutingGetbirdconfigerrorWithResponse call
+func ParsePostApiRoutingGetbirdconfigerrorResponse(rsp *http.Response) (*PostApiRoutingGetbirdconfigerrorResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiRoutingGetbirdconfigerrorResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			// Error present only if success = false
+			Error   *string `json:"error,omitempty"`
+			Success *bool   `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiRoutingImportResponse parses an HTTP response from a PostApiRoutingImportWithResponse call
+func ParsePostApiRoutingImportResponse(rsp *http.Response) (*PostApiRoutingImportResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiRoutingImportResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Result *struct {
+				ImportSummary *struct {
+					// Routes number of routes created
+					Routes *float32 `json:"routes,omitempty"`
+				} `json:"importSummary,omitempty"`
+				Logs *[]struct {
+					// Level log level
+					Level *PostApiRoutingImport200ResultLogsLevel `json:"level,omitempty"`
+
+					// Message log message
+					Message *string `json:"message,omitempty"`
+				} `json:"logs,omitempty"`
+			} `json:"result,omitempty"`
+			Success *bool `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseDeleteApiRoutingUuidResponse parses an HTTP response from a DeleteApiRoutingUuidWithResponse call
+func ParseDeleteApiRoutingUuidResponse(rsp *http.Response) (*DeleteApiRoutingUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &DeleteApiRoutingUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsRoutingRouting
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 403:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON403 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 404:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON404 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiRoutingUuidResponse parses an HTTP response from a GetApiRoutingUuidWithResponse call
+func ParseGetApiRoutingUuidResponse(rsp *http.Response) (*GetApiRoutingUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiRoutingUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsRoutingRouteInfo
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePutApiRoutingUuidResponse parses an HTTP response from a PutApiRoutingUuidWithResponse call
+func ParsePutApiRoutingUuidResponse(rsp *http.Response) (*PutApiRoutingUuidResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PutApiRoutingUuidResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsRoutingRouteInfo
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	}
+
+	return response, nil
+}
+
 // ParseGetApiSnsdiffDiffUuidResponse parses an HTTP response from a GetApiSnsdiffDiffUuidWithResponse call
 func ParseGetApiSnsdiffDiffUuidResponse(rsp *http.Response) (*GetApiSnsdiffDiffUuidResponse, error) {
 	bodyBytes, err := io.ReadAll(rsp.Body)
@@ -17253,6 +29952,81 @@ func ParseGetApiSnsdiffDiffUuidResponse(rsp *http.Response) (*GetApiSnsdiffDiffU
 			return nil, err
 		}
 		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON500 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParseGetApiUnifiedconfigDeployResponse parses an HTTP response from a GetApiUnifiedconfigDeployWithResponse call
+func ParseGetApiUnifiedconfigDeployResponse(rsp *http.Response) (*GetApiUnifiedconfigDeployResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &GetApiUnifiedconfigDeployResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest DefinitionsDeployDeploymentMonitoringResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	}
+
+	return response, nil
+}
+
+// ParsePostApiUnifiedconfigDeployResponse parses an HTTP response from a PostApiUnifiedconfigDeployWithResponse call
+func ParsePostApiUnifiedconfigDeployResponse(rsp *http.Response) (*PostApiUnifiedconfigDeployResponse, error) {
+	bodyBytes, err := io.ReadAll(rsp.Body)
+	defer func() { _ = rsp.Body.Close() }()
+	if err != nil {
+		return nil, err
+	}
+
+	response := &PostApiUnifiedconfigDeployResponse{
+		Body:         bodyBytes,
+		HTTPResponse: rsp,
+	}
+
+	switch {
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 200:
+		var dest struct {
+			Success *PostApiUnifiedconfigDeploy200Success `json:"success,omitempty"`
+		}
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON200 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 400:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON400 = &dest
+
+	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 423:
+		var dest DefinitionsCommonErrorResponse
+		if err := json.Unmarshal(bodyBytes, &dest); err != nil {
+			return nil, err
+		}
+		response.JSON423 = &dest
 
 	case strings.Contains(rsp.Header.Get("Content-Type"), "json") && rsp.StatusCode == 500:
 		var dest DefinitionsCommonErrorResponse

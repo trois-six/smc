@@ -2094,6 +2094,13 @@ paths:
         - config
   /api/config/initial/cloud/{cloudName}:
     post:
+      parameters:
+        - description: Cloud Name
+          in: path
+          name: cloudName
+          required: true
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -5181,6 +5188,7 @@ paths:
       summary: Script files list uploaded on SMC
       tags:
         - nsrpc
+  /api/nsrpc/script/{scriptname}:
     post:
       parameters:
         - description: CLI script to execute
@@ -5246,7 +5254,6 @@ paths:
       summary: Send a script to prepare its execution on a firewall.
       tags:
         - nsrpc
-  /api/nsrpc/script/{scriptname}:
     delete:
       parameters:
         - description: CLI script to delete

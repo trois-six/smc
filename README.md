@@ -4,7 +4,7 @@
 
 This package is based on the [OpenAPI specification](https://github.com/trois-six/smc/generator/source/smc-support-3.6-docs-api.zip) of the SMC API, provided by Stormshield.
 
-As you can see in the [generator/Makefile](generator/Makefile), the package is excluding a lot of the tags (cli|config|deployment|firewalls|misc|networkInterfaces|nsrpc|objects|proxy|QoS|routing|rules|rule-sets) of the API right now, as some part of the spec should be revised to be compatible with kin-openapi and oapi-codegen.
+As you can see in the [generator/Makefile](generator/Makefile), the package is excluding a lot of the tags (firewalls|objects|proxy|rules|rule-sets) of the API right now, as some part of the spec should be revised to be compatible with kin-openapi and oapi-codegen.
 
 # Installation
 
@@ -65,9 +65,33 @@ If you need to regenerate the client, you can use the following command:
 
 ```bash
 cd generator
+# this builds a small go binary that flattens the swagger spec
 make build
+# this executes the binary
 make swagger
-# remove the definitions_folders___FolderMember definition from the swagger_flat.yaml file and replace its usage in definitions_folders_FolderMember by '#/components/schemas/definitions_folders_FolderMember', it's a circular reference in the spec
+```
+
+The specification contains multiple issues, that need to be fixed manually:
+1. The `definitions_folders_FolderMember` definition is circular, so it needs to be removed from the spec and replaced by `#/components/schemas/definitions_folders_FolderMember` in the `definitions_folders_FolderMember` definition.
+2. In the POST to the path `/api/config/initial/cloud/{cloudName}` the `cloudName` parameter is not defined in the spec, so it needs to be added to the `parameters` section.
+```yaml
+      parameters:
+        - description: Cloud Name
+          in: path
+          name: cloudName
+          required: true
+          schema:
+            type: string
+```
+3. In the POST to the path `/api/nsrpc/script`, there is a path parameter `scriptName` that is not defined in the spec, the POST must be completely moved to the `/api/nsrpc/script/{scriptname}` path.
+
+Not resvolved yet:
+1. The DELETE options in the paths `/api/network/interfaces/bulk`, `/api/qos/ifaces-assignations/bulk`, `/api/qos/queues/bulk`, `/api/qos/traffic-shapers/bulk`, `/api/rules/{uuid}`, `/api/rules/bulk` contain requestBody. This is not allowed in the OpenAPI 3.0.1 specification and not supported by the generators. This is supported in OpenAPI 3.1.0, but the generators do not support it yet.
+2. In the GET to the path `/proxy/{uuid}/admin/{filename}`, two parameters are defined, but the parameters are not set after.
+
+Now, you can generate the client:
+
+```bash
 make generate
 ```
 
