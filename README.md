@@ -16,6 +16,10 @@ As you can see in the [generator/Makefile](generator/Makefile), the package is e
 
 - [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen), this package is basically the generated code from oapi-codegen for the SMC API spec.
 
+If you want to regenerate the client:
+- [go](https://go.dev/doc/install)
+- [yq](https://github.com/mikefarah/yq)
+
 # Quick Start
 
 ## Hello SMC
