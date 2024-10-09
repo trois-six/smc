@@ -11,10 +11,11 @@ import (
 )
 
 type FlatSwagger struct {
-	OpenAPI    string                 `yaml:"openapi"`
-	Info       map[string]interface{} `yaml:"info"`
-	Paths      map[string]interface{} `yaml:"paths"`
-	Components map[string]interface{} `yaml:"components"`
+	OpenAPI    string                         `yaml:"openapi"`
+	Info       map[string]interface{}         `yaml:"info"`
+	Paths      map[string]interface{}         `yaml:"paths"`
+	Components map[string]interface{}         `yaml:"components"`
+	Security   []openapi3.SecurityRequirement `yaml:"security"`
 }
 
 func main() {
@@ -26,14 +27,22 @@ func main() {
 		log.Fatalf("could not load swagger.yaml: %v", err)
 	}
 
+	// Resolve external references, to flatten the swagger.
 	doc.InternalizeRefs(context.Background(), nil)
-	// if schema, found := doc.Components.Schemas["definitions_folders___FolderMember"]; found {
-	// 	// log.Printf("found schema: %#v", schema.Value)
-	// 	// schema.Value.Extensions = make(map[string]any)
-	// 	// schema.Value.Extensions["x-go-name"] = "DefinitionsFoldersFolderMemberParentParentParent"
-	// 	// doc.Components.Schemas["definitions_folders___FolderMember"] = schema
-	// 	log.Printf("found schema: %#v", schema.Value)
-	// }
+
+	// Add the security scheme to the flat swagger.
+	doc.Components.SecuritySchemes = make(map[string]*openapi3.SecuritySchemeRef)
+	doc.Components.SecuritySchemes["apiKey"] = &openapi3.SecuritySchemeRef{
+		Value: &openapi3.SecurityScheme{
+			Type:   "http",
+			Scheme: "bearer",
+		},
+	}
+
+	// Add the security requirement to the flat swagger.
+	doc.Security = *openapi3.NewSecurityRequirements().With(openapi3.SecurityRequirement{
+		"apiKey": []string{},
+	})
 
 	bytesOpenAPIFlatSwagger, err := yaml.Marshal(doc)
 	if err != nil {

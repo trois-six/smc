@@ -14826,8 +14826,7 @@ components:
       type: object
   securitySchemes:
     apiKey:
-      type: http
       scheme: bearer
-
+      type: http
 security:
   - apiKey: []
