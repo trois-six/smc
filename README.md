@@ -85,7 +85,7 @@ The specification contains multiple issues, that need to be fixed manually:
 ```
 3. In the POST to the path `/api/nsrpc/script`, there is a path parameter `scriptName` that is not defined in the spec, the POST must be completely moved to the `/api/nsrpc/script/{scriptname}` path.
 
-Not resvolved yet:
+Not resolved yet:
 1. The DELETE operations in the paths `/api/network/interfaces/bulk`, `/api/qos/ifaces-assignations/bulk`, `/api/qos/queues/bulk`, `/api/qos/traffic-shapers/bulk`, `/api/rules/{uuid}`, `/api/rules/bulk` contain requestBody. This is not allowed in the OpenAPI 3.0.1 specification and not supported by the generators. This is supported in OpenAPI 3.1.0, but the generators do not support it yet.
 2. In the GET to the path `/proxy/{uuid}/admin/{filename}`, two parameters are defined, but the parameters are not set after.
 
